@@ -5,6 +5,6 @@ namespace Papyrus.Business
         void Save(Document document);
         Document GetDocument(string id);
         void Update(Document document);
-        void Delete(Document document);
+        void Delete(string documentId);
     }
 }

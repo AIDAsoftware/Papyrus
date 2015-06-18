@@ -24,9 +24,9 @@
             repository.Update(document);
         }
 
-        public void Remove(Document document)
+        public void Remove(string documentId)
         {
-            repository.Delete(document);
+            repository.Delete(documentId);
         }
     }
 }
