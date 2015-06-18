@@ -18,5 +18,10 @@
         {
             return repository.GetDocument(id);
         }
+
+        public void Update(Document document)
+        {
+            repository.Update(document);
+        }
     }
 }

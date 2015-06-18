@@ -49,5 +49,16 @@
         }
 
 
+        [Test]
+        public void update_a_given_document_when_it_is_modified()
+        {
+            var document = new Document().WithId("AnyId");
+
+            document.WithTitle("Login en el sistema");
+            service.Update(document);
+
+            repository.Received().Update(document);
+        }
+
     }
 }

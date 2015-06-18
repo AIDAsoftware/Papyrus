@@ -4,5 +4,6 @@ namespace Papyrus.Tests
     {
         void Save(Document document);
         Document GetDocument(string id);
+        void Update(Document document);
     }
 }
