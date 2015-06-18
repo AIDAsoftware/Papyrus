@@ -17,6 +17,7 @@
             service = new DocumentService(repository);
         }
 
+
         [Test]
         public void save_a_document_when_it_is_created()
         {
@@ -32,9 +33,6 @@
         }
 
 
-        // Dado un documento guardado con identificador "1"
-        // Cuando el usuario solicita un documento con identificador "1"
-        // El sistema devolverá el documento con identificador "1"
         [Test]
         public void get_a_saved_document_when_it_is_requested()
         {
