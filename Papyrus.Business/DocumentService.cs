@@ -1,5 +1,7 @@
 ﻿namespace Papyrus.Business
 {
+    using System;
+
     public class DocumentService
     {
         private readonly DocumentRepository repository;
@@ -11,6 +13,7 @@
 
         public void Create(Document document)
         {
+            document.GenerateAutomaticId();
             repository.Save(document);
         }
 

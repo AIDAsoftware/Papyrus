@@ -33,8 +33,8 @@
             service.Create(document);
 
             repository.Received().Save(document);
+            repository.Received().Save(Arg.Is<Document>(x => !string.IsNullOrWhiteSpace(x.Id)));
         }
-
 
         [Test]
         public void get_a_saved_document_when_it_is_requested()
@@ -68,12 +68,9 @@
         public void remove_a_given_document_when_it_is_deleted()
         {
             const string documentId = "AnyId";
-
             service.Remove(documentId);
-
             repository.Received().Delete(documentId);
         }
-
 
     }
 }

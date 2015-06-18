@@ -38,5 +38,10 @@ namespace Papyrus.Business
             Id = id;
             return this;
         }
+
+        public void GenerateAutomaticId()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 }
