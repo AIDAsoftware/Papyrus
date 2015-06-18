@@ -37,6 +37,15 @@
         }
 
         [Test]
+        public void throw_an_exception_when_try_to_create_a_document_with_an_id()
+        {
+            var document = new Document().WithId("AnyId");
+
+            Action action = () => service.Create(document);
+            action.ShouldThrow<DocumentIdCouldNotBeDefinedException>();
+        }
+
+        [Test]
         public void get_a_saved_document_when_it_is_requested()
         {
             var id = "1";

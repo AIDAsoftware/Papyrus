@@ -1,6 +1,8 @@
 ﻿namespace Papyrus.Business
 {
     using System;
+    using Tests;
+    using static System.String;
 
     public class DocumentService
     {
@@ -13,6 +15,8 @@
 
         public void Create(Document document)
         {
+            if (!IsNullOrWhiteSpace(document.Id))
+                throw new DocumentIdCouldNotBeDefinedException();
             document.GenerateAutomaticId();
             repository.Save(document);
         }

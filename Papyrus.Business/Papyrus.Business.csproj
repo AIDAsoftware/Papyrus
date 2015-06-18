@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Document.cs" />
+    <Compile Include="DocumentIdCouldNotBeDefinedException.cs" />
     <Compile Include="DocumentRepository.cs" />
     <Compile Include="DocumentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
