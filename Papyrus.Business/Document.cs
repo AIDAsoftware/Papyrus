@@ -1,7 +1,5 @@
-namespace Papyrus.Tests
+namespace Papyrus.Business
 {
-    using System;
-
     public class Document
     {
         public string Id { get; private set; }

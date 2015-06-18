@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DE4059F0-5988-4F42-95AB-C8E8899347A8}</ProjectGuid>
+    <ProjectGuid>{7A99DDC4-A4CC-45DB-ACE6-5A8D10D66DB7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Papyrus.Tests</RootNamespace>
-    <AssemblyName>Papyrus.Tests</AssemblyName>
+    <RootNamespace>Papyrus.Business</RootNamespace>
+    <AssemblyName>Papyrus.Business</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,22 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentAssertions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FluentAssertions.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NSubstitute, Version=1.8.2.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
-      <HintPath>..\packages\NSubstitute.1.8.2.0\lib\net45\NSubstitute.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -56,23 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DocumentServiceShould.cs" />
+    <Compile Include="Document.cs" />
+    <Compile Include="DocumentRepository.cs" />
+    <Compile Include="DocumentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Specs\1 - Gestionar documentos.feature" />
-    <None Include="Specs\2 - Convertir documentos a HTML.feature" />
-    <None Include="Specs\3 - Añadir imágenes a un documento.feature" />
-    <None Include="Specs\4 - Definir índices de ayuda.feature" />
-    <None Include="Specs\5 - Permitir referencias entre documentos.feature" />
-    <None Include="Specs\6 - Asignar categorías y versiones a documentos.feature" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Papyrus.Business\Papyrus.Business.csproj">
-      <Project>{7a99ddc4-a4cc-45db-ace6-5a8d10d66db7}</Project>
-      <Name>Papyrus.Business</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,4 @@
-﻿namespace Papyrus.Tests
+﻿namespace Papyrus.Business
 {
     public class DocumentService
     {

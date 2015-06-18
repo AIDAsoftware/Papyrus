@@ -1,5 +1,6 @@
 ﻿namespace Papyrus.Tests
 {
+    using Business;
     using FluentAssertions;
     using NSubstitute;
     using NUnit.Framework;
