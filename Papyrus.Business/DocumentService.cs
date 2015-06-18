@@ -23,5 +23,10 @@
         {
             repository.Update(document);
         }
+
+        public void Remove(Document document)
+        {
+            repository.Delete(document);
+        }
     }
 }

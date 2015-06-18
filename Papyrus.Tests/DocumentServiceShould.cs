@@ -1,8 +1,10 @@
 ﻿namespace Papyrus.Tests
 {
+    using System;
     using Business;
     using FluentAssertions;
     using NSubstitute;
+    using NSubstitute.ExceptionExtensions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -61,5 +63,28 @@
             repository.Received().Update(document);
         }
 
+
+        /*
+        Escenario: Eliminar un documento existente
+	    Dado un documento en la biblioteca de documentos
+	    Cuando el documentalista elija eliminar dicho documento
+	    Entonces ese documento dejará de aparecer en la biblioteca de documentos
+        */
+        [Test]
+        public void remove_a_given_document_when_it_is_deleted()
+        {
+            var document = new Document().WithId("AnyId");
+            repository.GetDocument("AnyId")
+                .Returns(x => {
+                    throw new Exception("That document does not exist");
+                });
+
+            service.Remove(document);
+
+            repository.Received().Delete(document);
+        }
+
+
     }
 }
+ 
