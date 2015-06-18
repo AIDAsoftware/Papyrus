@@ -29,3 +29,7 @@ Escenario: Eliminar un documento existente
 	Dado un documento en la biblioteca de documentos
 	Cuando el documentalista elija eliminar dicho documento
 	Entonces ese documento dejará de aparecer en la biblioteca de documentos
+
+
+Escenario: Verificar que el Servicio de documento añade un id automaticamente al guardar si no posee uno
+	
