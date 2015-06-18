@@ -33,7 +33,7 @@ Escenario: Eliminar un documento existente
 
 Verificar que el Servicio de documento añade un id automaticamente al guardar si no posee uno
 
-Verificar que una vez asignada una id a un documento no se podrá modificar la id
+Verificar que una vez asignada una id a un documento el servicio no podrá crearlo
 
 Verificar que al llamar al update sin id asignada al documento lance una exception
 
