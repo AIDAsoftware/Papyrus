@@ -64,24 +64,14 @@
         }
 
 
-        /*
-        Escenario: Eliminar un documento existente
-	    Dado un documento en la biblioteca de documentos
-	    Cuando el documentalista elija eliminar dicho documento
-	    Entonces ese documento dejará de aparecer en la biblioteca de documentos
-        */
         [Test]
         public void remove_a_given_document_when_it_is_deleted()
         {
-            var document = new Document().WithId("AnyId");
-            repository.GetDocument("AnyId")
-                .Returns(x => {
-                    throw new Exception("That document does not exist");
-                });
+            const string documentId = "AnyId";
 
-            service.Remove(document);
+            service.Remove(documentId);
 
-            repository.Received().Delete(document);
+            repository.Received().Delete(documentId);
         }
 
 
