@@ -7,6 +7,15 @@
     [TestFixture]
     public class DocumentServiceShould
     {
+        private DocumentRepository repository;
+        private DocumentService service;
+
+        [SetUp]
+        public void SetUp()
+        {
+            repository = Substitute.For<DocumentRepository>();
+            service = new DocumentService(repository);
+        }
 
         [Test]
         public void save_a_document_when_it_is_created()
@@ -17,9 +26,6 @@
                 .WithContent("El usuario podrá acceder al sistema indicando su usuario")
                 .ForLanguage("es-Es");
 
-            var repository = Substitute.For<DocumentRepository>();
-            var service = new DocumentService(repository);
-            
             service.Create(document);
 
             repository.Received().Save(document);
@@ -34,12 +40,10 @@
         {
             var id = "1";
 
-            var repository = Substitute.For<DocumentRepository>();
             repository.GetDocument(id).Returns(new Document()
                     .WithId(id)
                 );
 
-            var service = new DocumentService(repository);
             var document = service.GetDocumentById(id);
 
             repository.Received().GetDocument(id);
