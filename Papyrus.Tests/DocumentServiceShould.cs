@@ -1,6 +1,5 @@
 ﻿namespace Papyrus.Tests
 {
-    using FluentAssertions;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -24,28 +23,6 @@
 
             repository.Received().Save(document);
         }
-
-
-        // Dado un documento guardado con identificador "1"
-        // Cuando el usuario solicita un documento con identificador "1"
-        // El sistema devolverá el documento con identificador "1"
-        [Test]
-        public void get_a_saved_document_when_it_is_requested()
-        {
-            var id = "1";
-
-            var repository = Substitute.For<DocumentRepository>();
-            repository.GetDocument(id).Returns(new Document()
-                    .WithId(id)
-                );
-
-            var service = new DocumentService(repository);
-            var document = service.GetDocumentById(id);
-
-            repository.Received().GetDocument(id);
-            document.Id.Should().Be(id);
-        }
-
-
+         
     }
 }

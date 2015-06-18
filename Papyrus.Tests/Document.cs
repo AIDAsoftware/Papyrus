@@ -4,7 +4,6 @@ namespace Papyrus.Tests
 
     public class Document
     {
-        public string Id { get; private set; }
         private string title;
         private string description;
         private string content;
@@ -32,12 +31,6 @@ namespace Papyrus.Tests
         public Document ForLanguage(string language)
         {
             this.language = language;
-            return this;
-        }
-
-        public Document WithId(string id)
-        {
-            Id = id;
             return this;
         }
     }

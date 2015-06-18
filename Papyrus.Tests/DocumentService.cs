@@ -13,10 +13,5 @@
         {
             repository.Save(document);
         }
-
-        public Document GetDocumentById(string id)
-        {
-            return repository.GetDocument(id);
-        }
     }
 }
