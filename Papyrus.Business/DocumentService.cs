@@ -28,6 +28,8 @@
 
         public void Update(Document document)
         {
+            if(IsNullOrWhiteSpace(document.Id))
+                throw new DocumentIdCouldBeDefinedException();
             repository.Update(document);
         }
 
