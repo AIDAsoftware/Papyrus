@@ -1,6 +1,7 @@
 namespace Papyrus.Business
 {
     using System;
+    using Tests;
 
     public class Document
     {
@@ -37,6 +38,8 @@ namespace Papyrus.Business
 
         public Document WithId(string id)
         {
+            if (!string.IsNullOrWhiteSpace(Id))
+                throw new CannotModifyDocumentIdException();
             Id = id;
             return this;
         }

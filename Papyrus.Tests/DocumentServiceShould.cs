@@ -40,9 +40,16 @@
         public void throw_an_exception_when_try_to_create_a_document_with_an_id()
         {
             var document = new Document().WithId("AnyId");
-
             Action action = () => service.Create(document);
             action.ShouldThrow<DocumentIdCouldNotBeDefinedException>();
+        }
+
+        [Test]
+        public void throw_an_exception_when_try_to_change_the_id_of_a_document()
+        {
+            var document = new Document().WithId("AnyId");
+            Action action = () => document.WithId("AnotherId");
+            action.ShouldThrow<CannotModifyDocumentIdException>();
         }
 
         [Test]
@@ -51,8 +58,8 @@
             var id = "1";
 
             repository.GetDocument(id).Returns(new Document()
-                    .WithId(id)
-                );
+                .WithId(id)
+            );
 
             var document = service.GetDocumentById(id);
 
@@ -77,7 +84,6 @@
         public void throw_an_exception_when_try_to_update_a_document_without_id()
         {
             var document = new Document();
-
             Action action = () => service.Update(document);
             action.ShouldThrow<DocumentIdCouldBeDefinedException>();
         }
