@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="CreateDocumentTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SetDocumentRowsNullableMigration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
