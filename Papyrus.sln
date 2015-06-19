@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Tests", "Papyrus.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Business", "Papyrus.Business\Papyrus.Business.csproj", "{7A99DDC4-A4CC-45DB-ACE6-5A8D10D66DB7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Infrastructure.Migrations", "Papyrus.Infrastructure.Migrations\Papyrus.Infrastructure.Migrations.csproj", "{72C8FCFC-7BA4-4D3D-8A83-6523653B6AF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7A99DDC4-A4CC-45DB-ACE6-5A8D10D66DB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A99DDC4-A4CC-45DB-ACE6-5A8D10D66DB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A99DDC4-A4CC-45DB-ACE6-5A8D10D66DB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72C8FCFC-7BA4-4D3D-8A83-6523653B6AF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72C8FCFC-7BA4-4D3D-8A83-6523653B6AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72C8FCFC-7BA4-4D3D-8A83-6523653B6AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72C8FCFC-7BA4-4D3D-8A83-6523653B6AF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
