@@ -16,7 +16,7 @@
         public void SetUp()
         {
             connection = new SqlConnection(
-                @"server=.\SQLExpress;database=Papyrus;trusted_connection = true"
+                @"server=.;database=Papyrus;trusted_connection = true"
                 );
             connection.Open();
         }
