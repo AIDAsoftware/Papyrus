@@ -16,7 +16,7 @@
         public void SetUp()
         {
             connection = new SqlConnection(
-                @"server=.;database=Papyrus;trusted_connection = true"
+                @"server=.\SQLExpress;database=Papyrus;trusted_connection = true"
                 );
             connection.Open();
         }
@@ -29,6 +29,10 @@
             connection.Close();
         }
 
+
+        // Obtener un documento por ID de la base de datos
+        // Hacer un update de de un documento
+        // Eliminar un documento de la base de datos
 
         [Test]
         public void save_a_document()
