@@ -2,7 +2,6 @@
 {
     using System;
     using Tests;
-    using static System.String;
 
     public class DocumentService
     {
@@ -15,7 +14,7 @@
 
         public void Create(Document document)
         {
-            if (!IsNullOrWhiteSpace(document.Id))
+            if (!String.IsNullOrWhiteSpace(document.Id))
                 throw new DocumentIdCouldNotBeDefinedException();
             document.GenerateAutomaticId();
             repository.Save(document);
@@ -28,7 +27,7 @@
 
         public void Update(Document document)
         {
-            if(IsNullOrWhiteSpace(document.Id))
+            if (String.IsNullOrWhiteSpace(document.Id))
                 throw new DocumentIdCouldBeDefinedException();
             repository.Update(document);
         }
