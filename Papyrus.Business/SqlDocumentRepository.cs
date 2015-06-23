@@ -8,19 +8,16 @@ namespace Papyrus.Tests
     {
         public void Save(Document document)
         {
-            var connection = new SqlConnection(@"server=.\SQLExpress;database=Papyrus;trusted_connection = true");
-            connection.Open();
-            connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
-                                VALUES (@id, @t, @d, @c, @l);", 
-                new
-                {
-                    id = document.Id,
-                    t = document.Title,
-                    d = document.Description,
-                    c = document.Content,
-                    l = document.Language,
-                });
-            connection.Close();
+            using (var connection = new SqlConnection(@"server=.\SQLExpress;database=Papyrus;trusted_connection = true"))
+            {
+                connection.Open();
+                connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
+                                VALUES (@id, @title, @desc, @content, @lang);", 
+                                new { id = document.Id, title = document.Title, desc = document.Description,
+                                    content = document.Content, lang = document.Language,
+                                });
+            }
+            
         }
 
         public Document GetDocument(string id)
