@@ -1,6 +1,7 @@
 namespace Papyrus.Tests
 {
     using System.Data.SqlClient;
+    using System.Linq;
     using Business;
     using Dapper;
 
@@ -22,7 +23,13 @@ namespace Papyrus.Tests
 
         public Document GetDocument(string id)
         {
-            throw new System.NotImplementedException();
+            using (var connection = new SqlConnection(@"server=.\SQLExpress;database=Papyrus;trusted_connection = true"))
+            {
+                return connection.Query<Document>(@"SELECT *" +
+                                           "FROM [Documents]" +
+                                           "WHERE Id = @Id;", new {Id = "AnyId"})
+                                           .First();
+            }
         }
 
         public void Update(Document document)

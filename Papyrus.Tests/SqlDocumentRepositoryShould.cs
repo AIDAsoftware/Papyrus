@@ -48,5 +48,21 @@
                                     "WHERE Id = @Id;", new { Id = "AnyId" });
             requestedDocuments.First().ShouldBeEquivalentTo(document);
         }
+
+        [Test]
+        public void load_a_document()
+        {
+            connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
+                                VALUES (@id, NULL, NULL, NULL, NULL);",
+                                new { id = "AnyId" });
+
+            var document = new SqlDocumentRepository().GetDocument("AnyId");
+
+            document.Id.Should().Be("AnyId");
+            document.Title.Should().BeNull();
+            document.Description.Should().BeNull();
+            document.Content.Should().BeNull();
+            document.Language.Should().BeNull();
+        }
     }
 }
