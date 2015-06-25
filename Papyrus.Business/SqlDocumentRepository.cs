@@ -42,7 +42,7 @@ namespace Papyrus.Tests
         {
             using (var connection = new SqlConnection(Server))
             {
-                return connection.Query<Document>(SelectSqlQuery, new {Id = "AnyId"}).First();
+                return connection.Query<Document>(SelectSqlQuery, new {Id = id}).First();
             }
         }
 
