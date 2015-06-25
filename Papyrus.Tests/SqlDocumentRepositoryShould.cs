@@ -71,7 +71,10 @@
                                 VALUES (@id, @title, NULL, NULL, NULL);",
                                 new { id = "AnyId", title = "AnyTitle" });
 
-            var document = new Document().WithId("AnyId").WithTitle("NewTitle");
+            var document = new Document()
+                .WithId("AnyId")
+                .WithTitle("NewTitle")
+                .WithDescription("AnyDescription");
 
             new SqlDocumentRepository().Update(document);
             document = connection
@@ -81,6 +84,7 @@
 
             document.Id.Should().Be("AnyId");
             document.Title.Should().Be("NewTitle");
+            document.Description.Should().Be("AnyDescription");
         }
 
         [Test]
