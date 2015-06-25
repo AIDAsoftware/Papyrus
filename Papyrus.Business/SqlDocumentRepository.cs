@@ -21,6 +21,8 @@ namespace Papyrus.Tests
                                                     "Language = @Language " + 
                                                 "WHERE Id = @Id;";
 
+        private const string DeleteSqlQuery = @"DELETE FROM Documents WHERE Id = @Id";
+
 
         public void Save(Document document)
         {
@@ -62,7 +64,12 @@ namespace Papyrus.Tests
 
         public void Delete(string documentId)
         {
-            throw new System.NotImplementedException();
+            using (var connection = new SqlConnection(Server))
+            {
+                connection.Query<Document>(DeleteSqlQuery, new {
+                    Id = documentId,
+                });
+            }
         }
     }
 }

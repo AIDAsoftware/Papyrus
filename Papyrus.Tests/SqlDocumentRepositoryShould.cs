@@ -82,5 +82,23 @@
             document.Id.Should().Be("AnyId");
             document.Title.Should().Be("NewTitle");
         }
+
+        [Test]
+        public void remove_a_document()
+        {
+            const string id = "AnyId";
+            connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
+                                VALUES (@id, NULL, NULL, NULL, NULL);",
+                                new { id = id});
+
+            new SqlDocumentRepository().Delete(id);
+
+            var document = connection
+                .Query<Document>(@"SELECT *" +
+                                    "FROM [Documents]" +
+                                    "WHERE Id = @Id;", new { Id = id });
+
+            document.Should().BeEmpty();
+        }
     }
 }
