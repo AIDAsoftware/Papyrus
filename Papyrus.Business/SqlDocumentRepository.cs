@@ -34,7 +34,22 @@ namespace Papyrus.Tests
 
         public void Update(Document document)
         {
-            throw new System.NotImplementedException();
+            using (var connection = new SqlConnection(@"server=.\SQLExpress;database=Papyrus;trusted_connection = true"))
+            {
+                connection.Query<Document>(@"UPDATE Documents " +
+                                           "SET Title = @Title, " +
+                                                "Description = @Description, " +
+                                                "Content = @Content, " +
+                                                "Language = @Language " +
+                                           "WHERE Id = @Id;", 
+                                           new {
+                                               Id = document.Id,
+                                               Title = document.Title,
+                                               Description = document.Description,
+                                               Content = document.Content,
+                                               Language = document.Language
+                                           });
+            }
         }
 
         public void Delete(string documentId)
