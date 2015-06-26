@@ -24,6 +24,8 @@ namespace Papyrus.Tests
 
         private const string DeleteSqlQuery = @"DELETE FROM Documents WHERE Id = @Id";
 
+        private const string AllDocumentsSqlQuery = @"SELECT * FROM Documents";
+
 
         public void Save(Document document)
         {
@@ -44,41 +46,35 @@ namespace Papyrus.Tests
         public Document GetDocument(string id)
         {
             using (var connection = new SqlConnection(Server))
-            {
                 return connection.Query<Document>(SelectSqlQuery, new {Id = id}).First();
-            }
         }
 
         public void Update(Document document)
         {
             using (var connection = new SqlConnection(Server))
-            {
-                connection.Query<Document>(UpdateSqlQuery, new {
+                connection.Query<Document>(UpdateSqlQuery, new
+                {
                     Id = document.Id,
                     Title = document.Title,
                     Description = document.Description,
                     Content = document.Content,
                     Language = document.Language
                 });
-            }
         }
 
         public void Delete(string documentId)
         {
             using (var connection = new SqlConnection(Server))
-            {
-                connection.Query<Document>(DeleteSqlQuery, new {
+                connection.Query<Document>(DeleteSqlQuery, new
+                {
                     Id = documentId,
                 });
-            }
         }
 
         public IEnumerable<Document> GetAllDocuments()
         {
             using (var connection = new SqlConnection(Server))
-            {
-                return connection.Query<Document>(@"SELECT * FROM Documents");
-            }
+                return connection.Query<Document>(AllDocumentsSqlQuery);
         }
     }
 }
