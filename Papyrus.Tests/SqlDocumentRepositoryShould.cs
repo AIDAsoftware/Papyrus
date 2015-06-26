@@ -27,7 +27,7 @@
         [TearDown]
         public void TearDown()
         {
-            connection.Execute(@"DELETE FROM Documents WHERE Id = @Id;", new {Id = "AnyId"});
+            connection.Execute(@"DELETE FROM Documents");
             connection.Close();
         }
 
