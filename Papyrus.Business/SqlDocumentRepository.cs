@@ -1,5 +1,6 @@
 namespace Papyrus.Tests
 {
+    using System.Collections.Generic;
     using System.Data.SqlClient;
     using System.Linq;
     using Business;
@@ -40,6 +41,7 @@ namespace Papyrus.Tests
             
         }
 
+        // TODO debería petar si la ID no existe?
         public Document GetDocument(string id)
         {
             using (var connection = new SqlConnection(Server))
@@ -48,6 +50,7 @@ namespace Papyrus.Tests
             }
         }
 
+        // TODO debería petar si la ID no existe?
         public void Update(Document document)
         {
             using (var connection = new SqlConnection(Server))
@@ -62,6 +65,7 @@ namespace Papyrus.Tests
             }
         }
 
+        // TODO debería petar si la ID no existe?
         public void Delete(string documentId)
         {
             using (var connection = new SqlConnection(Server))
@@ -70,6 +74,11 @@ namespace Papyrus.Tests
                     Id = documentId,
                 });
             }
+        }
+
+        public IEnumerable<Document> GetAllDocuments()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

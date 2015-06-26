@@ -1,6 +1,7 @@
 ﻿namespace Papyrus.Business
 {
     using System;
+    using System.Linq;
     using Tests;
 
     public class DocumentService
@@ -35,6 +36,11 @@
         public void Remove(string documentId)
         {
             repository.Delete(documentId);
+        }
+
+        public Document[] AllDocuments()
+        {
+            return repository.GetAllDocuments().ToArray();
         }
     }
 }

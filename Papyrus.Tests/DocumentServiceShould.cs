@@ -97,6 +97,26 @@
             repository.Received().Delete(documentId);
         }
 
+
+        [Test]
+        public void return_a_list_of_documents_when_user_want_to_see_all_documents()
+        {
+            repository.GetAllDocuments().Returns(
+                    new[] {
+                        new Document().WithId("1"),
+                        new Document().WithId("2"),
+                        new Document().WithId("3"),
+                    }
+                );
+
+            var documents = service.AllDocuments();
+
+            documents.Should().Contain(x => x.Id == "1");
+            documents.Should().Contain(x => x.Id == "2");
+            documents.Should().Contain(x => x.Id == "3");
+            documents.Length.Should().Be(3);
+        }
+
     }
 }
  
