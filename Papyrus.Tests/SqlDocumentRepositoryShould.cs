@@ -1,10 +1,12 @@
 ﻿namespace Papyrus.Tests
 {
+    using System;
     using System.Data.SqlClient;
     using System.Linq;
     using Business;
     using Dapper;
     using FluentAssertions;
+    using NSubstitute.Exceptions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -28,10 +30,6 @@
             connection.Execute(@"DELETE FROM Documents WHERE Id = @Id;", new {Id = "AnyId"});
             connection.Close();
         }
-
-
-        // Hacer un update de de un documento
-        // Eliminar un documento de la base de datos
 
         [Test]
         public void save_a_document()
@@ -103,6 +101,24 @@
                                     "WHERE Id = @Id;", new { Id = id });
 
             document.Should().BeEmpty();
+        }
+
+        [Test]
+        public void load_a_list_with_all_documents()
+        {
+            for (var i = 1; i < 5; i++)
+            {
+                connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
+                                VALUES (@id, NULL, NULL, NULL, NULL);", new { id = i });
+            }
+
+            var documents = new SqlDocumentRepository().GetAllDocuments();
+
+            documents.Should().Contain(doc => doc.Id == "1");
+            documents.Should().Contain(doc => doc.Id == "2");
+            documents.Should().Contain(doc => doc.Id == "3");
+            documents.Should().Contain(doc => doc.Id == "4");
+            documents.ToArray().Length.Should().Be(4);
         }
     }
 }
