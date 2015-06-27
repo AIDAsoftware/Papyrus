@@ -120,5 +120,13 @@
             documents.Should().Contain(doc => doc.Id == "4");
             documents.ToArray().Length.Should().Be(4);
         }
+
+        [Test]
+        public void throw_an_exception_when_try_to_update_a_non_existent_document()
+        {
+            var document = new Document().WithId("NonExistentId");
+            Action update = () => new SqlDocumentRepository().Update(document);
+            update.ShouldThrow<DocumentNotFoundException>();
+        }
     }
 }

@@ -52,7 +52,8 @@ namespace Papyrus.Tests
         public void Update(Document document)
         {
             using (var connection = new SqlConnection(Server))
-                connection.Execute(UpdateSqlQuery, new
+            {
+                var affectedRows = connection.Execute(UpdateSqlQuery, new
                 {
                     Id = document.Id,
                     Title = document.Title,
@@ -60,6 +61,8 @@ namespace Papyrus.Tests
                     Content = document.Content,
                     Language = document.Language
                 });
+                if (affectedRows == 0) throw new DocumentNotFoundException();
+            }
         }
 
         public void Delete(string documentId)

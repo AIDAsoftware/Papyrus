@@ -50,6 +50,7 @@
     <Compile Include="Document.cs" />
     <Compile Include="DocumentIdCouldBeDefinedException.cs" />
     <Compile Include="DocumentIdCouldNotBeDefinedException.cs" />
+    <Compile Include="DocumentNotFoundException.cs" />
     <Compile Include="DocumentRepository.cs" />
     <Compile Include="DocumentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
