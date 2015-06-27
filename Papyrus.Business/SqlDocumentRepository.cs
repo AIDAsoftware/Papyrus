@@ -52,7 +52,7 @@ namespace Papyrus.Tests
         public void Update(Document document)
         {
             using (var connection = new SqlConnection(Server))
-                connection.Query<Document>(UpdateSqlQuery, new
+                connection.Execute(UpdateSqlQuery, new
                 {
                     Id = document.Id,
                     Title = document.Title,
@@ -65,7 +65,7 @@ namespace Papyrus.Tests
         public void Delete(string documentId)
         {
             using (var connection = new SqlConnection(Server))
-                connection.Query<Document>(DeleteSqlQuery, new
+                connection.Execute(DeleteSqlQuery, new
                 {
                     Id = documentId,
                 });
