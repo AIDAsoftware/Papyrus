@@ -3,6 +3,7 @@
     using System;
     using System.Data.SqlClient;
     using System.Linq;
+    using System.Threading.Tasks;
     using Business;
     using Dapper;
     using FluentAssertions;
@@ -63,7 +64,7 @@
         }
 
         [Test]
-        public void update_a_document()
+        public async Task update_a_document()
         {
             connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
                                 VALUES (@id, @title, NULL, NULL, NULL);",
@@ -74,7 +75,7 @@
                 .WithTitle("NewTitle")
                 .WithDescription("AnyDescription");
 
-            new SqlDocumentRepository().Update(document);
+            await new SqlDocumentRepository().Update(document);
             document = connection
                 .Query<Document>(@"SELECT *" +
                                     "FROM [Documents]" +
@@ -125,8 +126,8 @@
         public void throw_an_exception_when_try_to_update_a_non_existent_document()
         {
             var document = new Document().WithId("NonExistentId");
-            Action update = () => new SqlDocumentRepository().Update(document);
-            update.ShouldThrow<DocumentNotFoundException>();
+            var updateTask = new Func<Task>(async () => await new SqlDocumentRepository().Update(document));
+            updateTask.ShouldThrow<DocumentNotFoundException>();
         }
     }
 }

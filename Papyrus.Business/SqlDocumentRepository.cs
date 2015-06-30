@@ -3,6 +3,7 @@ namespace Papyrus.Tests
     using System.Collections.Generic;
     using System.Data.SqlClient;
     using System.Linq;
+    using System.Threading.Tasks;
     using Business;
     using Dapper;
 
@@ -49,11 +50,11 @@ namespace Papyrus.Tests
                 return connection.Query<Document>(SelectSqlQuery, new {Id = id}).First();
         }
 
-        public void Update(Document document)
+        public async Task Update(Document document)
         {
             using (var connection = new SqlConnection(Server))
             {
-                var affectedRows = connection.Execute(UpdateSqlQuery, new
+                var affectedRows = await connection.ExecuteAsync(UpdateSqlQuery, new
                 {
                     Id = document.Id,
                     Title = document.Title,
