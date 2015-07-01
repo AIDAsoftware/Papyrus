@@ -27,12 +27,12 @@ namespace Papyrus.Business
         private const string AllDocumentsSqlQuery = @"SELECT * FROM Documents";
 
 
-        public void Save(Document document)
+        public async Task Save(Document document)
         {
             using (var connection = new SqlConnection(Server))
             {
                 connection.Open();
-                connection.Execute(InsertSqlQuery, new {
+                await connection.ExecuteAsync(InsertSqlQuery, new {
                     id = document.Id,
                     title = document.Title,
                     desc = document.Description,

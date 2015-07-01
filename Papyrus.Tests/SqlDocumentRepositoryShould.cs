@@ -33,12 +33,12 @@
         }
 
         [Test]
-        public void save_a_document()
+        public async Task save_a_document()
         {
             var document = new Document()
                 .WithId("AnyId");
 
-            new SqlDocumentRepository().Save(document);
+            await new SqlDocumentRepository().Save(document);
 
             var requestedDocuments = connection
                 .Query<Document>(@"SELECT *" +
