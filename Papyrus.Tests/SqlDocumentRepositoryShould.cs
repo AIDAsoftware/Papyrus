@@ -48,13 +48,13 @@
         }
 
         [Test]
-        public void load_a_document()
+        public async void load_a_document()
         {
             connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
                                 VALUES (@id, NULL, NULL, NULL, NULL);",
                                 new { id = "AnyId" });
 
-            var document = new SqlDocumentRepository().GetDocument("AnyId");
+            var document = await new SqlDocumentRepository().GetDocument("AnyId");
 
             document.Id.Should().Be("AnyId");
             document.Title.Should().BeNull();

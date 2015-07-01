@@ -44,10 +44,10 @@ namespace Papyrus.Tests
             
         }
 
-        public Document GetDocument(string id)
+        public async Task<Document> GetDocument(string id)
         {
             using (var connection = new SqlConnection(Server))
-                return connection.Query<Document>(SelectSqlQuery, new {Id = id}).First();
+                return (await connection.QueryAsync<Document>(SelectSqlQuery, new {Id = id})).First();
         }
 
         public async Task Update(Document document)

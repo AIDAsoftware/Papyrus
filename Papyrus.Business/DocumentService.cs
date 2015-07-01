@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using Tests;
 
     public class DocumentService
@@ -21,9 +22,9 @@
             repository.Save(document);
         }
 
-        public Document GetDocumentById(string id)
+        public async Task<Document> GetDocumentById(string id)
         {
-            return repository.GetDocument(id);
+            return await repository.GetDocument(id);
         }
 
         public void Update(Document document)

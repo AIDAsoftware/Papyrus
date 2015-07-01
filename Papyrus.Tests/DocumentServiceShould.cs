@@ -1,6 +1,7 @@
 ﻿namespace Papyrus.Tests
 {
     using System;
+    using System.Threading.Tasks;
     using Business;
     using FluentAssertions;
     using NSubstitute;
@@ -53,17 +54,18 @@
         }
 
         [Test]
-        public void get_a_saved_document_when_it_is_requested()
+        public async void get_a_saved_document_when_it_is_requested()
         {
             var id = "1";
 
-            repository.GetDocument(id).Returns(new Document()
-                .WithId(id)
+            repository.GetDocument(id).Returns(Task.FromResult(new Document()
+                .WithId(id))
             );
 
-            var document = service.GetDocumentById(id);
+            var document = await service.GetDocumentById(id);
 
-            repository.Received().GetDocument(id);
+            //TODO: Revisar, me pide el await, pero creo que no es necesario
+            repository.Received().GetDocument(id); 
             document.Id.Should().Be(id);
         }
 
