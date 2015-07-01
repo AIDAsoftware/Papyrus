@@ -94,10 +94,10 @@
 
 
         [Test]
-        public void remove_a_given_document_when_it_is_deleted()
+        public async Task remove_a_given_document_when_it_is_deleted()
         {
             const string documentId = "AnyId";
-            service.Remove(documentId);
+            await service.Remove(documentId);
             repository.Received().Delete(documentId);
         }
 

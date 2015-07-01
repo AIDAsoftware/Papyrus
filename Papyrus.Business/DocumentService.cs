@@ -34,9 +34,9 @@
             await repository.Update(document);
         }
 
-        public void Remove(string documentId)
+        public async Task Remove(string documentId)
         {
-            repository.Delete(documentId);
+            await repository.Delete(documentId);
         }
 
         public async Task<Document[]> AllDocuments()
