@@ -1,10 +1,9 @@
-namespace Papyrus.Tests
+namespace Papyrus.Business
 {
     using System.Collections.Generic;
     using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
-    using Business;
     using Dapper;
 
     public class SqlDocumentRepository : DocumentRepository
