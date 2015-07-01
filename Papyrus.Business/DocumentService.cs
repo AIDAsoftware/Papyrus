@@ -27,11 +27,11 @@
             return await repository.GetDocument(id);
         }
 
-        public void Update(Document document)
+        public async Task Update(Document document)
         {
             if (String.IsNullOrWhiteSpace(document.Id))
                 throw new DocumentIdCouldBeDefinedException();
-            repository.Update(document);
+            await repository.Update(document);
         }
 
         public void Remove(string documentId)

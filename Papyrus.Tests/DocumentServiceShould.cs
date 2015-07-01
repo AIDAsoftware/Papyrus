@@ -86,7 +86,7 @@
         public void throw_an_exception_when_try_to_update_a_document_without_id()
         {
             var document = new Document();
-            Action action = () => service.Update(document);
+            Func<Task> action = async () => await service.Update(document);
             action.ShouldThrow<DocumentIdCouldBeDefinedException>();
         }
 
