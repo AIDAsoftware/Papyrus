@@ -87,14 +87,13 @@
         }
 
         [Test]
-        public void remove_a_document()
+        public async void remove_a_document()
         {
             const string id = "AnyId";
             connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
                                 VALUES (@id, NULL, NULL, NULL, NULL);",
                                 new { id = id});
-
-            new SqlDocumentRepository().Delete(id);
+            await new SqlDocumentRepository().Delete(id);
 
             var document = connection
                 .Query<Document>(@"SELECT *" +

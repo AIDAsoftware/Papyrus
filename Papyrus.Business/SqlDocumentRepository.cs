@@ -65,10 +65,10 @@ namespace Papyrus.Business
             }
         }
 
-        public void Delete(string documentId)
+        public async Task Delete(string documentId)
         {
             using (var connection = new SqlConnection(Server))
-                connection.Execute(DeleteSqlQuery, new
+                await connection.ExecuteAsync(DeleteSqlQuery, new
                 {
                     Id = documentId,
                 });

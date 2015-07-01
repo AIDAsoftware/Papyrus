@@ -8,7 +8,7 @@ namespace Papyrus.Business
         void Save(Document document);
         Task<Document> GetDocument(string id);
         Task Update(Document document);
-        void Delete(string documentId);
+        Task Delete(string documentId);
         IEnumerable<Document> GetAllDocuments();
     }
 }
