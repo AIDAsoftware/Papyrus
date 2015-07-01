@@ -9,6 +9,6 @@ namespace Papyrus.Business
         Task<Document> GetDocument(string id);
         Task Update(Document document);
         Task Delete(string documentId);
-        IEnumerable<Document> GetAllDocuments();
+        Task<List<Document>> GetAllDocuments();
     }
 }

@@ -74,10 +74,11 @@ namespace Papyrus.Business
                 });
         }
 
-        public IEnumerable<Document> GetAllDocuments()
+        //TODO: devolver IEnumerable ??
+        public async Task<List<Document>> GetAllDocuments()
         {
             using (var connection = new SqlConnection(Server))
-                return connection.Query<Document>(AllDocumentsSqlQuery);
+                return (await connection.QueryAsync<Document>(AllDocumentsSqlQuery)).ToList();
         }
     }
 }

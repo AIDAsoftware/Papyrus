@@ -1,11 +1,11 @@
 ﻿namespace Papyrus.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Business;
     using FluentAssertions;
     using NSubstitute;
-    using NSubstitute.ExceptionExtensions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -103,17 +103,15 @@
 
 
         [Test]
-        public void return_a_list_of_documents_when_user_want_to_see_all_documents()
+        public async Task return_a_list_of_documents_when_user_want_to_see_all_documents()
         {
-            repository.GetAllDocuments().Returns(
-                    new[] {
-                        new Document().WithId("1"),
-                        new Document().WithId("2"),
-                        new Document().WithId("3"),
-                    }
-                );
+            repository.GetAllDocuments().Returns(Task.FromResult(new List<Document> {
+                new Document().WithId("1"),
+                new Document().WithId("2"),
+                new Document().WithId("3")
+            }));
 
-            var documents = service.AllDocuments();
+            var documents = await service.AllDocuments();
 
             documents.Should().Contain(x => x.Id == "1");
             documents.Should().Contain(x => x.Id == "2");

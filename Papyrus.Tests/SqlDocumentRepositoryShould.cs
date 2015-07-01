@@ -104,7 +104,7 @@
         }
 
         [Test]
-        public void load_a_list_with_all_documents()
+        public async Task load_a_list_with_all_documents()
         {
             for (var i = 1; i < 5; i++)
             {
@@ -112,7 +112,7 @@
                                 VALUES (@id, NULL, NULL, NULL, NULL);", new { id = i });
             }
 
-            var documents = new SqlDocumentRepository().GetAllDocuments();
+            var documents = await new SqlDocumentRepository().GetAllDocuments();
 
             documents.Should().Contain(doc => doc.Id == "1");
             documents.Should().Contain(doc => doc.Id == "2");
