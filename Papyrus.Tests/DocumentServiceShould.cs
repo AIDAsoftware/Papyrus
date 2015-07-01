@@ -65,19 +65,21 @@
             var document = await service.GetDocumentById(id);
 
             //TODO: Revisar, me pide el await, pero creo que no es necesario
-            repository.Received().GetDocument(id); 
+            repository.Received().GetDocument(id);
             document.Id.Should().Be(id);
+            
         }
 
 
         [Test]
-        public void update_a_given_document_when_it_is_modified()
+        public async void update_a_given_document_when_it_is_modified()
         {
             var document = new Document().WithId("AnyId");
 
             document.WithTitle("Login en el sistema");
-            service.Update(document);
+            await service.Update(document);
 
+            //TODO: Revisar, me pide el await, pero creo que no es necesario
             repository.Received().Update(document);
         }
 
