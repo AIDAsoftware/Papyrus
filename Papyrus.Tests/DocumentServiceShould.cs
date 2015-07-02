@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Business;
+    using Business.Documents;
+    using Business.Documents.Exceptions;
     using FluentAssertions;
     using NSubstitute;
     using NUnit.Framework;

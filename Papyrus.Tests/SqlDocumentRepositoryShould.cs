@@ -1,6 +1,7 @@
 ﻿namespace Papyrus.Tests
 {
     using System;
+    using System.Configuration;
     using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
@@ -20,9 +21,8 @@
         [SetUp]
         public void SetUp()
         {
-            connection = new SqlConnection(
-                @"server=.\SQLExpress;database=Papyrus;trusted_connection = true"
-                );
+            var connectionString = ConfigurationManager.ConnectionStrings["ConnectionForTests"].ConnectionString;
+            connection = new SqlConnection(connectionString);
             connection.Open();
         }
 
