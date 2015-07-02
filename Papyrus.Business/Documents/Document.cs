@@ -1,7 +1,7 @@
-namespace Papyrus.Business
+namespace Papyrus.Business.Documents
 {
     using System;
-    using Tests;
+    using Exceptions;
 
     public class Document
     {

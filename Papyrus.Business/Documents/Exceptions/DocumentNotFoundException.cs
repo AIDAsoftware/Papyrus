@@ -1,4 +1,4 @@
-﻿namespace Papyrus.Business
+﻿namespace Papyrus.Business.Documents.Exceptions
 {
     using System;
 

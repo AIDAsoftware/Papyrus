@@ -1,4 +1,4 @@
-namespace Papyrus.Business
+namespace Papyrus.Business.Documents
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

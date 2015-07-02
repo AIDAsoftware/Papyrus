@@ -1,9 +1,8 @@
-﻿namespace Papyrus.Business
+﻿namespace Papyrus.Business.Documents
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
-    using Tests;
+    using Exceptions;
 
     public class DocumentService
     {

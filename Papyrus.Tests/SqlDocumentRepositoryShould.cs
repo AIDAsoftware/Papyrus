@@ -5,6 +5,8 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Business;
+    using Business.Documents;
+    using Business.Documents.Exceptions;
     using Dapper;
     using FluentAssertions;
     using NSubstitute.Exceptions;
