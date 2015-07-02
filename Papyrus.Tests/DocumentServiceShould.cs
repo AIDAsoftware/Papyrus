@@ -57,17 +57,13 @@
         public async void get_a_saved_document_when_it_is_requested()
         {
             var id = "1";
-
             repository.GetDocument(id).Returns(Task.FromResult(new Document()
                 .WithId(id))
             );
 
             var document = await service.GetDocumentById(id);
 
-            //TODO: Revisar, me pide el await, pero creo que no es necesario
-            repository.Received().GetDocument(id);
             document.Id.Should().Be(id);
-            
         }
 
 
