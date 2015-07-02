@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Business;
     using Business.Documents;
     using Business.Documents.Exceptions;
     using FluentAssertions;
@@ -78,25 +77,24 @@
             await service.Update(document);
 
             //TODO: Revisar, me pide el await, pero creo que no es necesario
-            repository.Received().Update(document);
+            await repository.Received().Update(document);
         }
-
 
         [Test]
-        public void throw_an_exception_when_try_to_update_a_document_without_id()
+        [ExpectedException(typeof(DocumentIdCouldBeDefinedException))]
+        public async Task throw_an_exception_when_try_to_update_a_document_without_id()
         {
             var document = new Document();
-            Func<Task> action = async () => await service.Update(document);
-            action.ShouldThrow<DocumentIdCouldBeDefinedException>();
+            await service.Update(document);
         }
-
+                                                            
 
         [Test]
         public async Task remove_a_given_document_when_it_is_deleted()
         {
             const string documentId = "AnyId";
             await service.Remove(documentId);
-            repository.Received().Delete(documentId);
+            await repository.Received().Delete(documentId);
         }
 
 
