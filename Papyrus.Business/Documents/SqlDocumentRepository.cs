@@ -1,6 +1,7 @@
 namespace Papyrus.Business
 {
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
@@ -10,8 +11,6 @@ namespace Papyrus.Business
 
     public class SqlDocumentRepository : DocumentRepository
     {
-        private const string Server = @"server=.\SQLExpress;database=Papyrus;trusted_connection = true";
-
         private const string InsertSqlQuery = @"INSERT Documents(Id, Title, Description, Content, Language) 
                                                 VALUES (@id, @title, @desc, @content, @lang);";
 
@@ -28,10 +27,16 @@ namespace Papyrus.Business
 
         private const string AllDocumentsSqlQuery = @"SELECT * FROM Documents";
 
+        private readonly string connectionString;
+
+        public SqlDocumentRepository()
+        {
+            connectionString = ConfigurationManager.ConnectionStrings["ConnectionForTests"].ConnectionString;
+        }
 
         public async Task Save(Document document)
         {
-            using (var connection = new SqlConnection(Server))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 await connection.ExecuteAsync(InsertSqlQuery, new {
@@ -47,13 +52,13 @@ namespace Papyrus.Business
 
         public async Task<Document> GetDocument(string id)
         {
-            using (var connection = new SqlConnection(Server))
+            using (var connection = new SqlConnection(connectionString))
                 return (await connection.QueryAsync<Document>(SelectSqlQuery, new {Id = id})).First();
         }
 
         public async Task Update(Document document)
         {
-            using (var connection = new SqlConnection(Server))
+            using (var connection = new SqlConnection(connectionString))
             {
                 var affectedRows = await connection.ExecuteAsync(UpdateSqlQuery, new
                 {
@@ -69,7 +74,7 @@ namespace Papyrus.Business
 
         public async Task Delete(string documentId)
         {
-            using (var connection = new SqlConnection(Server))
+            using (var connection = new SqlConnection(connectionString))
                 await connection.ExecuteAsync(DeleteSqlQuery, new
                 {
                     Id = documentId,
@@ -79,7 +84,7 @@ namespace Papyrus.Business
         //TODO: devolver IEnumerable ??
         public async Task<List<Document>> GetAllDocuments()
         {
-            using (var connection = new SqlConnection(Server))
+            using (var connection = new SqlConnection(connectionString))
                 return (await connection.QueryAsync<Document>(AllDocumentsSqlQuery)).ToList();
         }
     }
