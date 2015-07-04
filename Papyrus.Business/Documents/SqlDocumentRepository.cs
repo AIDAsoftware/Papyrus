@@ -1,4 +1,4 @@
-namespace Papyrus.Business
+namespace Papyrus.Business.Documents
 {
     using System.Collections.Generic;
     using System.Configuration;
@@ -6,8 +6,6 @@ namespace Papyrus.Business
     using System.Linq;
     using System.Threading.Tasks;
     using Dapper;
-    using Documents;
-    using Documents.Exceptions;
 
     public class SqlDocumentRepository : DocumentRepository
     {
