@@ -1,6 +1,7 @@
 ﻿namespace Papyrus.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Data.SqlClient;
     using System.Linq;
@@ -41,11 +42,8 @@
 
             await new SqlDocumentRepository().Save(document);
 
-            var requestedDocuments = connection
-                .Query<Document>(@"SELECT *" +
-                                    "FROM [Documents]" +
-                                    "WHERE Id = @Id;", new { Id = "AnyId" });
-            requestedDocuments.First().ShouldBeEquivalentTo(document);
+            var requestedDocuments = LoadDocumentWithId("AnyId");
+            requestedDocuments.ShouldBeEquivalentTo(document);
         }
 
         [Test]
@@ -77,10 +75,7 @@
                 .WithDescription("AnyDescription");
 
             await new SqlDocumentRepository().Update(document);
-            var updatedDocument = connection
-                .Query<Document>(@"SELECT *" +
-                                    "FROM [Documents]" +
-                                    "WHERE Id = @Id;", new { Id = "AnyId" }).First();
+            var updatedDocument = LoadDocumentWithId("AnyId");
 
             updatedDocument.ShouldBeEquivalentTo(document);
         }
@@ -92,12 +87,9 @@
             InsertDocumentWith(id: id);
             await new SqlDocumentRepository().Delete(id);
 
-            var document = connection
-                .Query<Document>(@"SELECT *" +
-                                    "FROM [Documents]" +
-                                    "WHERE Id = @Id;", new { Id = id });
+            var document = LoadDocumentWithId(id);
 
-            document.Should().BeEmpty();
+            document.Should().BeNull();
         }
 
         [Test]
@@ -133,6 +125,15 @@
                                     Content = content,
                                     Language = language                    
                                 });
+        }
+
+        private Document LoadDocumentWithId(string id)
+        {
+            var result = connection
+                .Query<Document>(@"SELECT *" +
+                                 "FROM [Documents]" +
+                                 "WHERE Id = @Id;", new { Id = id }).ToArray();
+            return result.Any() ? result.First() : null;
         }
     }
 }
