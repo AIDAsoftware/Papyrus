@@ -6,6 +6,7 @@ namespace Papyrus.Business.Documents
     using System.Linq;
     using System.Threading.Tasks;
     using Dapper;
+    using Exceptions;
 
     public class SqlDocumentRepository : DocumentRepository
     {
