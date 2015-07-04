@@ -11,22 +11,6 @@ namespace Papyrus.Business
 
     public class SqlDocumentRepository : DocumentRepository
     {
-        private const string InsertSqlQuery = @"INSERT Documents(Id, Title, Description, Content, Language) 
-                                                VALUES (@id, @title, @desc, @content, @lang);";
-
-        private const string SelectSqlQuery = @"SELECT *" + "FROM [Documents]" + "WHERE Id = @Id;";
-
-        private const string UpdateSqlQuery = @"UPDATE Documents " + 
-                                                "SET Title = @Title, " + 
-                                                    "Description = @Description, " + 
-                                                    "Content = @Content, " + 
-                                                    "Language = @Language " + 
-                                                "WHERE Id = @Id;";
-
-        private const string DeleteSqlQuery = @"DELETE FROM Documents WHERE Id = @Id";
-
-        private const string AllDocumentsSqlQuery = @"SELECT * FROM Documents";
-
         private readonly string connectionString;
 
         public SqlDocumentRepository()
@@ -39,7 +23,9 @@ namespace Papyrus.Business
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                await connection.ExecuteAsync(InsertSqlQuery, new {
+                const string insertSqlQuery = @"INSERT Documents(Id, Title, Description, Content, Language) 
+                                                VALUES (@id, @title, @desc, @content, @lang);";
+                await connection.ExecuteAsync(insertSqlQuery, new {
                     id = document.Id,
                     title = document.Title,
                     desc = document.Description,
@@ -53,14 +39,24 @@ namespace Papyrus.Business
         public async Task<Document> GetDocument(string id)
         {
             using (var connection = new SqlConnection(connectionString))
-                return (await connection.QueryAsync<Document>(SelectSqlQuery, new {Id = id})).First();
+            {
+                //TODO: explicit select
+                const string selectSqlQuery = @"SELECT *" + "FROM [Documents]" + "WHERE Id = @Id;";
+                return (await connection.QueryAsync<Document>(selectSqlQuery, new {Id = id})).First();
+            }
         }
 
         public async Task Update(Document document)
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                var affectedRows = await connection.ExecuteAsync(UpdateSqlQuery, new
+                const string updateSqlQuery = @"UPDATE Documents " + 
+                                              "SET Title = @Title, " + 
+                                              "Description = @Description, " + 
+                                              "Content = @Content, " + 
+                                              "Language = @Language " + 
+                                              "WHERE Id = @Id;";
+                var affectedRows = await connection.ExecuteAsync(updateSqlQuery, new
                 {
                     Id = document.Id,
                     Title = document.Title,
@@ -75,17 +71,23 @@ namespace Papyrus.Business
         public async Task Delete(string documentId)
         {
             using (var connection = new SqlConnection(connectionString))
-                await connection.ExecuteAsync(DeleteSqlQuery, new
+            {
+                const string deleteSqlQuery = @"DELETE FROM Documents WHERE Id = @Id";
+                await connection.ExecuteAsync(deleteSqlQuery, new
                 {
                     Id = documentId,
                 });
+            }
         }
 
         //TODO: devolver IEnumerable ??
         public async Task<List<Document>> GetAllDocuments()
         {
             using (var connection = new SqlConnection(connectionString))
-                return (await connection.QueryAsync<Document>(AllDocumentsSqlQuery)).ToList();
+            {
+                const string selectAllDocumentsSqlQuery = @"SELECT * FROM Documents";
+                return (await connection.QueryAsync<Document>(selectAllDocumentsSqlQuery)).ToList();
+            }
         }
     }
 }
