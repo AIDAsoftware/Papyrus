@@ -76,8 +76,7 @@
             document.WithTitle("Login en el sistema");
             await service.Update(document);
 
-            //TODO: Revisar, me pide el await, pero creo que no es necesario
-            await repository.Received().Update(document);
+            repository.Received().Update(document);
         }
 
         [Test]
@@ -94,7 +93,7 @@
         {
             const string documentId = "AnyId";
             await service.Remove(documentId);
-            await repository.Received().Delete(documentId);
+            repository.Received().Delete(documentId);
         }
 
 
