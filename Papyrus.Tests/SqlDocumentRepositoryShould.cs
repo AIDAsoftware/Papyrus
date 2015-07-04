@@ -1,12 +1,10 @@
 ﻿namespace Papyrus.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.Configuration;
     using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
-    using Business;
     using Business.Documents;
     using Business.Documents.Exceptions;
     using Dapper;
