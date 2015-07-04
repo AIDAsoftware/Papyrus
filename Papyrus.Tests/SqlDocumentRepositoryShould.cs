@@ -10,7 +10,6 @@
     using Business.Documents.Exceptions;
     using Dapper;
     using FluentAssertions;
-    using NSubstitute.Exceptions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -31,7 +30,7 @@
         public void TearDown()
         {
             connection.Execute(@"DELETE FROM Documents");
-            connection.Close();
+            connection.Dispose();
         }
 
         [Test]
@@ -52,6 +51,7 @@
         [Test]
         public async void load_a_document()
         {
+            //TODO: extract method
             connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
                                 VALUES (@id, NULL, NULL, NULL, NULL);",
                                 new { id = "AnyId" });
@@ -68,8 +68,8 @@
         [Test]
         public async Task update_a_document()
         {
-            connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
-                                VALUES (@id, @title, NULL, NULL, NULL);",
+            connection.Execute(@"INSERT Documents(Id, Title) 
+                                VALUES (@id, @title);",
                                 new { id = "AnyId", title = "AnyTitle" });
 
             var document = new Document()
@@ -78,14 +78,12 @@
                 .WithDescription("AnyDescription");
 
             await new SqlDocumentRepository().Update(document);
-            document = connection
+            var updatedDocument = connection
                 .Query<Document>(@"SELECT *" +
                                     "FROM [Documents]" +
                                     "WHERE Id = @Id;", new { Id = "AnyId" }).First();
 
-            document.Id.Should().Be("AnyId");
-            document.Title.Should().Be("NewTitle");
-            document.Description.Should().Be("AnyDescription");
+            updatedDocument.ShouldBeEquivalentTo(document);
         }
 
         [Test]
