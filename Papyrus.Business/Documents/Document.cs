@@ -14,25 +14,25 @@ namespace Papyrus.Business.Documents
 
         public Document WithTitle(string title)
         {
-            this.Title = title;
+            Title = title;
             return this;
         }
 
         public Document WithDescription(string description)
         {
-            this.Description = description;
+            Description = description;
             return this;
         }
 
         public Document WithContent(string content)
         {
-            this.Content = content;
+            Content = content;
             return this;
         }
 
         public Document ForLanguage(string language)
         {
-            this.Language = language;
+            Language = language;
             return this;
         }
 
