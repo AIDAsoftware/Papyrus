@@ -39,8 +39,8 @@ namespace Papyrus.Business.Documents
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                //TODO: explicit select
-                const string selectSqlQuery = @"SELECT *" + "FROM [Documents]" + "WHERE Id = @Id;";
+                const string selectSqlQuery = @"SELECT Id, Title, Content, Description, Language
+                                                FROM [Documents] WHERE Id = @Id;";
                 return (await connection.QueryAsync<Document>(selectSqlQuery, new {Id = id})).First();
             }
         }
@@ -84,7 +84,8 @@ namespace Papyrus.Business.Documents
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string selectAllDocumentsSqlQuery = @"SELECT * FROM Documents";
+                const string selectAllDocumentsSqlQuery = @"SELECT Id, Title, Content, Description, Language
+                                                            FROM Documents";
                 return (await connection.QueryAsync<Document>(selectAllDocumentsSqlQuery)).ToList();
             }
         }

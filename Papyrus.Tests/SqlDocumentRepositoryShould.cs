@@ -128,7 +128,7 @@
         private Document LoadDocumentWithId(string id)
         {
             var result = connection
-                .Query<Document>(@"SELECT *" +
+                .Query<Document>(@"SELECT Id, Title, Content, Description, Language " +
                                  "FROM [Documents]" +
                                  "WHERE Id = @Id;", new { Id = id }).ToArray();
             return result.Any() ? result.First() : null;
