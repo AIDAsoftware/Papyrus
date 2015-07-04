@@ -51,18 +51,17 @@
         [Test]
         public async void load_a_document()
         {
-            //TODO: extract method
-            connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
-                                VALUES (@id, NULL, NULL, NULL, NULL);",
-                                new { id = "AnyId" });
+            InsertDocumentWith(
+                id: "AnyID", title: "AnyTitle", content: "AnyContent", description: "AnyDescription", language: "es"
+            );
 
             var document = await new SqlDocumentRepository().GetDocument("AnyId");
 
-            document.Id.Should().Be("AnyId");
-            document.Title.Should().BeNull();
-            document.Description.Should().BeNull();
-            document.Content.Should().BeNull();
-            document.Language.Should().BeNull();
+            document.Id.Should().Be("AnyID");
+            document.Title.Should().Be("AnyTitle");
+            document.Description.Should().Be("AnyDescription");
+            document.Content.Should().Be("AnyContent");
+            document.Language.Should().Be("es");
         }
 
         [Test]
@@ -90,9 +89,7 @@
         public async void remove_a_document()
         {
             const string id = "AnyId";
-            connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
-                                VALUES (@id, NULL, NULL, NULL, NULL);",
-                                new { id = id});
+            InsertDocumentWith(id: id);
             await new SqlDocumentRepository().Delete(id);
 
             var document = connection
@@ -106,11 +103,7 @@
         [Test]
         public async Task load_a_list_with_all_documents()
         {
-            for (var i = 1; i < 5; i++)
-            {
-                connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
-                                VALUES (@id, NULL, NULL, NULL, NULL);", new { id = i });
-            }
+            for (var i = 1; i < 5; i++) InsertDocumentWith(id: i.ToString());
 
             var documents = await new SqlDocumentRepository().GetAllDocuments();
 
@@ -127,6 +120,19 @@
             var document = new Document().WithId("NonExistentId");
             var updateTask = new Func<Task>(async () => await new SqlDocumentRepository().Update(document));
             updateTask.ShouldThrow<DocumentNotFoundException>();
+        }
+
+        private void InsertDocumentWith(string id, string title = null, string description = null, string content = null, string language = null)
+        {
+            connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
+                                VALUES (@Id, @Title, @Description, @Content, @Language);",
+                                new {
+                                    Id = id,
+                                    Title = title,
+                                    Description = description,
+                                    Content = content,
+                                    Language = language                    
+                                });
         }
     }
 }
