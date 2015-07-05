@@ -105,11 +105,11 @@
         }
 
         [Test]
-        public void throw_an_exception_when_try_to_update_a_non_existent_document()
+        [ExpectedException(typeof(DocumentNotFoundException))]
+        public async Task throw_an_exception_when_try_to_update_a_non_existent_document()
         {
             var document = new Document().WithId("NonExistentId");
-            var updateTask = new Func<Task>(async () => await new SqlDocumentRepository().Update(document));
-            updateTask.ShouldThrow<DocumentNotFoundException>();
+            await new SqlDocumentRepository().Update(document);
         }
 
         private void InsertDocumentWith(string id, string title = null, string description = null, string content = null, string language = null)

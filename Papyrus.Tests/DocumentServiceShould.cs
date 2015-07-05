@@ -47,11 +47,11 @@
         }
 
         [Test]
+        [ExpectedException(typeof(CannotModifyDocumentIdException))]
         public void throw_an_exception_when_try_to_change_the_id_of_a_document()
         {
             var document = new Document().WithId("AnyId");
-            Action action = () => document.WithId("AnotherId");
-            action.ShouldThrow<CannotModifyDocumentIdException>();
+            document.WithId("AnotherId");
         }
 
         [Test]
