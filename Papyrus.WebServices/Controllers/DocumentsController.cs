@@ -2,12 +2,11 @@
 {
     using System.Web.Http;
     using System.Web.Http.Results;
-    using System.Web.Mvc;
     using Business.Documents;
 
     public class DocumentsController : ApiController
     {
-        [System.Web.Http.HttpPost]
+        [HttpPost]
         public string Add([FromBody] DocumentDto document)
         {
             var documentService = new DocumentService(new SqlDocumentRepository());
@@ -21,9 +20,9 @@
             return "{ Message: Document created }";
         }
 
-        public string Get()
+        public DocumentDto Get()
         {
-            return "Hello World!";
+            return new DocumentDto() {Title="Any"};
         }
          
     }
