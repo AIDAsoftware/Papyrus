@@ -5,8 +5,8 @@
     using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
-    using Business.Documents;
-    using Business.Documents.Exceptions;
+    using Papyrus.Business.Documents;
+    using Papyrus.Business.Documents.Exceptions;
     using Dapper;
     using FluentAssertions;
     using NUnit.Framework;

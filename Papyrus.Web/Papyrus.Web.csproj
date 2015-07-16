@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -82,11 +83,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\one-page-wonder.css" />
     <Content Include="Global.asax" />
+    <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-1.11.3.min.js" />
+    <None Include="Views\Home\index.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -104,7 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
+    <Folder Include="Content\fonts\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
@@ -122,7 +129,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>11899</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:11899/</IISUrl>
+          <IISUrl>http://localhost:8888/papyrus</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

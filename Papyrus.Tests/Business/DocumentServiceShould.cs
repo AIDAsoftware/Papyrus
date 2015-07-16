@@ -1,13 +1,13 @@
-﻿namespace Papyrus.Tests
+﻿namespace Papyrus.Tests.Business
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Business.Documents;
-    using Business.Documents.Exceptions;
     using FluentAssertions;
     using NSubstitute;
     using NUnit.Framework;
+    using Papyrus.Business.Documents;
+    using Papyrus.Business.Documents.Exceptions;
 
     [TestFixture]
     public class DocumentServiceShould
