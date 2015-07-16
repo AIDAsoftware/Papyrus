@@ -1,8 +1,9 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿namespace Papyrus.Tests.WebServices {
 
-namespace Papyrus.Tests.WebServices {
+    using System;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    
     internal class RestClient {
         private readonly HttpClient httpClient;
 
