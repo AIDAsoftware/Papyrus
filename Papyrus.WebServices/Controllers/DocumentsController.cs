@@ -1,7 +1,6 @@
 ﻿namespace Papyrus.WebServices.Controllers
 {
     using System.Web.Http;
-    using System.Web.Http.Results;
     using Business.Documents;
 
     public class DocumentsController : ApiController
