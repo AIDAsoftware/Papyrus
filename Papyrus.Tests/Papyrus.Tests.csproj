@@ -98,6 +98,7 @@
     <Compile Include="Business\DocumentServiceShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlDocumentRepositoryShould.cs" />
+    <Compile Include="WebServices\OwinRunner.cs" />
     <Compile Include="WebServices\RestApiTest.cs" />
     <Compile Include="WebServices\Startup.cs" />
   </ItemGroup>
