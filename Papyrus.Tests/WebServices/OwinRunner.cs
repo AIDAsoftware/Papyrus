@@ -27,11 +27,6 @@ namespace Papyrus.Tests.WebServices {
         public void Configuration(IAppBuilder appBuilder)
         {
             var config = new HttpConfiguration();
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
             // Takes all the referenced DLLs in the project
             // Finds all the WebApi controllers and runs them all
             WebApiConfig.Register(config);
