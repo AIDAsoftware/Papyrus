@@ -1,14 +1,19 @@
-﻿namespace Papyrus.WebServices.Controllers
+﻿using Papyrus.WebServices.Models;
+
+namespace Papyrus.WebServices.Controllers
 {
     using System.Web.Http;
     using Business.Documents;
 
-    public class DocumentsController : ApiController
-    {
+    public class DocumentsController : ApiController {
+        private readonly DocumentService documentService;
+        public DocumentsController(DocumentService documentService) {
+            this.documentService = documentService;
+        }
+
         [HttpPost]
         public string Add([FromBody] DocumentDto document)
         {
-            var documentService = new DocumentService(new SqlDocumentRepository(null));
             documentService.Create(
                 new Document()
                     .WithContent(document.Content)
@@ -24,13 +29,5 @@
             return new DocumentDto() {Title="Any"};
         }
          
-    }
-
-    public class DocumentDto
-    {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Content { get; set; }
-        public string Language { get; set; }
     }
 }
