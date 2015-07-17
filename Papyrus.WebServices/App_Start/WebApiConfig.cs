@@ -1,24 +1,25 @@
 ﻿using System.Configuration;
 using Papyrus.Business.Documents;
-using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.WebServices
 {
     using System.Web.Http;
     using LightInject;
+    using Infrastructure.Core.Database;
 
     public static class WebApiConfig
     {
+        public static ServiceContainer Container = new ServiceContainer();
+
         public static void Register(HttpConfiguration config)
         {
-            var container = new ServiceContainer();
-            container.RegisterApiControllers();
-            container.EnableWebApi(GlobalConfiguration.Configuration);
+            Container.RegisterApiControllers();
+            Container.EnableWebApi(config);
 
             var connectionString = ConfigurationManager.ConnectionStrings["Papyrus"].ToString();
             var databaseConnection = new DatabaseConnection(connectionString);
             var documentService = new DocumentService(new SqlDocumentRepository(databaseConnection));
-            container.RegisterInstance(documentService);
+            Container.RegisterInstance(documentService);
 
             // Web API configuration and services
             config.Formatters.Remove(config.Formatters.XmlFormatter);
