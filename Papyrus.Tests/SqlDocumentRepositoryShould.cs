@@ -1,57 +1,37 @@
-﻿namespace Papyrus.Tests
+﻿
+namespace Papyrus.Tests
 {
-    using System;
-    using System.Configuration;
-    using System.Data.SqlClient;
+    using Papyrus.Infrastructure.Core.Database;
     using System.Linq;
     using System.Threading.Tasks;
     using Papyrus.Business.Documents;
     using Papyrus.Business.Documents.Exceptions;
-    using Dapper;
     using FluentAssertions;
     using NUnit.Framework;
 
     [TestFixture]
-    public class SqlDocumentRepositoryShould
+    public class SqlDocumentRepositoryShould : SqlTest
     {
-        private SqlConnection connection;
-
-        [SetUp]
-        public void SetUp()
-        {
-            var connectionString = ConfigurationManager.ConnectionStrings["ConnectionForTests"].ConnectionString;
-            connection = new SqlConnection(connectionString);
-            connection.Open();
-        }
-
-
-        [TearDown]
-        public void TearDown()
-        {
-            connection.Execute(@"DELETE FROM Documents");
-            connection.Dispose();
-        }
-
         [Test]
         public async Task save_a_document()
         {
             var document = new Document()
                 .WithId("AnyId");
 
-            await new SqlDocumentRepository().Save(document);
+            await new SqlDocumentRepository(dbConnection).Save(document);
 
-            var requestedDocuments = LoadDocumentWithId("AnyId");
+            var requestedDocuments = await LoadDocumentWithId("AnyId");
             requestedDocuments.ShouldBeEquivalentTo(document);
         }
 
         [Test]
         public async void load_a_document()
         {
-            InsertDocumentWith(
+            await InsertDocumentWith(
                 id: "AnyID", title: "AnyTitle", content: "AnyContent", description: "AnyDescription", language: "es"
             );
 
-            var document = await new SqlDocumentRepository().GetDocument("AnyId");
+            var document = await new SqlDocumentRepository(dbConnection).GetDocument("AnyId");
 
             document.Id.Should().Be("AnyID");
             document.Title.Should().Be("AnyTitle");
@@ -63,7 +43,7 @@
         [Test]
         public async Task update_a_document()
         {
-            connection.Execute(@"INSERT Documents(Id, Title) 
+            await dbConnection.Execute(@"INSERT Documents(Id, Title) 
                                 VALUES (@id, @title);",
                                 new { id = "AnyId", title = "AnyTitle" });
 
@@ -72,8 +52,8 @@
                 .WithTitle("NewTitle")
                 .WithDescription("AnyDescription");
 
-            await new SqlDocumentRepository().Update(document);
-            var updatedDocument = LoadDocumentWithId("AnyId");
+            await new SqlDocumentRepository(dbConnection).Update(document);
+            var updatedDocument = await LoadDocumentWithId("AnyId");
 
             updatedDocument.ShouldBeEquivalentTo(document);
         }
@@ -82,10 +62,10 @@
         public async void remove_a_document()
         {
             const string id = "AnyId";
-            InsertDocumentWith(id: id);
-            await new SqlDocumentRepository().Delete(id);
+            await InsertDocumentWith(id: id);
+            await new SqlDocumentRepository(dbConnection).Delete(id);
 
-            var document = LoadDocumentWithId(id);
+            var document = await LoadDocumentWithId(id);
 
             document.Should().BeNull();
         }
@@ -93,9 +73,11 @@
         [Test]
         public async Task load_a_list_with_all_documents()
         {
-            for (var i = 1; i < 5; i++) InsertDocumentWith(id: i.ToString());
+            for (var i = 1; i < 5; i++) {
+                await InsertDocumentWith(id: i.ToString());
+            }
 
-            var documents = await new SqlDocumentRepository().GetAllDocuments();
+            var documents = await new SqlDocumentRepository(dbConnection).GetAllDocuments();
 
             documents.Should().Contain(doc => doc.Id == "1");
             documents.Should().Contain(doc => doc.Id == "2");
@@ -109,12 +91,12 @@
         public async Task throw_an_exception_when_try_to_update_a_non_existent_document()
         {
             var document = new Document().WithId("NonExistentId");
-            await new SqlDocumentRepository().Update(document);
+            await new SqlDocumentRepository(dbConnection).Update(document);
         }
 
-        private void InsertDocumentWith(string id, string title = null, string description = null, string content = null, string language = null)
+        private async Task InsertDocumentWith(string id, string title = null, string description = null, string content = null, string language = null)
         {
-            connection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
+            await dbConnection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
                                 VALUES (@Id, @Title, @Description, @Content, @Language);",
                                 new {
                                     Id = id,
@@ -125,12 +107,12 @@
                                 });
         }
 
-        private Document LoadDocumentWithId(string id)
+        private async Task<Document> LoadDocumentWithId(string id)
         {
-            var result = connection
+            var result = await dbConnection
                 .Query<Document>(@"SELECT Id, Title, Content, Description, Language " +
                                  "FROM [Documents]" +
-                                 "WHERE Id = @Id;", new { Id = id }).ToArray();
+                                 "WHERE Id = @Id;", new { Id = id });
             return result.Any() ? result.First() : null;
         }
     }

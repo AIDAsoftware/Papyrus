@@ -8,7 +8,7 @@
         [HttpPost]
         public string Add([FromBody] DocumentDto document)
         {
-            var documentService = new DocumentService(new SqlDocumentRepository());
+            var documentService = new DocumentService(new SqlDocumentRepository(null));
             documentService.Create(
                 new Document()
                     .WithContent(document.Content)
