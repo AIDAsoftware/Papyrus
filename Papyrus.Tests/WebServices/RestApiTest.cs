@@ -1,8 +1,9 @@
-﻿namespace Papyrus.Tests.WebServices
+﻿using Papyrus.WebServices.Models;
+
+namespace Papyrus.Tests.WebServices
 {
     using FluentAssertions;
     using NUnit.Framework;
-    using Papyrus.WebServices.Controllers;
 
     [TestFixture]
     public class RestApiRunner : OwinRunner {
