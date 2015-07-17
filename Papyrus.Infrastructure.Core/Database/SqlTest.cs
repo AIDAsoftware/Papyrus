@@ -6,7 +6,7 @@ namespace Papyrus.Infrastructure.Core.Database {
         protected DatabaseConnection dbConnection;
         [SetUp]
         public void SetUp() {
-            var connectionString = ConfigurationManager.ConnectionStrings["ConnectionForTests"].ConnectionString;
+            var connectionString = ConfigurationManager.ConnectionStrings["Papyrus"].ConnectionString;
             dbConnection = new DatabaseConnection(connectionString);
             dbConnection.EstablishConnection();
         }

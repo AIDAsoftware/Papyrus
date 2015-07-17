@@ -16,7 +16,7 @@
 
         [SetUp]
         public void SetUp() {
-            var connectionString = ConfigurationManager.ConnectionStrings["ConnectionForTests"].ConnectionString;
+            var connectionString = ConfigurationManager.ConnectionStrings["Papyrus"].ConnectionString;
             connection = new DatabaseConnection(connectionString);
         }
 
