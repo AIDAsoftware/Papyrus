@@ -1,17 +1,11 @@
-﻿using System;
-using System.Net.Http;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web.Http;
-using LightInject;
-using Microsoft.Owin.Hosting;
-using NUnit.Framework;
-using Owin;
-using Papyrus.WebServices;
-using Papyrus.WebServices.Controllers;
+﻿namespace Papyrus.Tests.WebServices {
+    using System;
+    using System.Web.Http;
+    using Microsoft.Owin.Hosting;
+    using NUnit.Framework;
+    using Owin;
+    using Papyrus.WebServices;
 
-namespace Papyrus.Tests.WebServices {
     [TestFixture]
     public abstract class OwinRunner {
         private IDisposable webServer;
