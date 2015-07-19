@@ -1,12 +1,10 @@
 ﻿namespace Papyrus.Tests.WebServices {
-
     using System;
+    using System.Globalization;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using System.Globalization;
-    using System.Net.Http.Headers;
     using Newtonsoft.Json;
-    
+
     internal class RestClient {
         private readonly string baseAddress;
 
