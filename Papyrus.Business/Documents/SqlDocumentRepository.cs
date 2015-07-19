@@ -18,13 +18,13 @@ namespace Papyrus.Business.Documents
         public async Task Save(Document document)
         {
             const string insertSqlQuery = @"INSERT Documents(Id, Title, Description, Content, Language) 
-                                            VALUES (@id, @title, @desc, @content, @lang);";
+                                            VALUES (@Id, @Title, @Description, @Content, @Language);";
             await connection.Execute(insertSqlQuery, new {
-                id = document.Id,
-                title = document.Title,
-                desc = document.Description,
-                content = document.Content,
-                lang = document.Language,
+                Id = document.Id,
+                Title = document.Title,
+                Description = document.Description,
+                Content = document.Content,
+                Language = document.Language,
             });
         }
 
