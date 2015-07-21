@@ -21,7 +21,7 @@
             repository.Save(document);
         }
 
-        public async Task<Document> GetDocumentById(string id)
+        public virtual async Task<Document> GetDocumentById(string id)
         {
             return await repository.GetDocument(id);
         }
