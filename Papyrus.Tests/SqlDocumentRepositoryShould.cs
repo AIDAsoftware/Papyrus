@@ -73,17 +73,14 @@ namespace Papyrus.Tests
         [Test]
         public async Task load_a_list_with_all_documents()
         {
-            for (var i = 1; i < 5; i++) {
-                await InsertDocumentWith(id: i.ToString());
-            }
+            await InsertDocumentWith(id: "1");
+            await InsertDocumentWith(id: "2");
 
             var documents = await new SqlDocumentRepository(dbConnection).GetAllDocuments();
 
             documents.Should().Contain(doc => doc.Id == "1");
             documents.Should().Contain(doc => doc.Id == "2");
-            documents.Should().Contain(doc => doc.Id == "3");
-            documents.Should().Contain(doc => doc.Id == "4");
-            documents.ToArray().Length.Should().Be(4);
+            documents.ToArray().Length.Should().Be(2);
         }
 
         [Test]
