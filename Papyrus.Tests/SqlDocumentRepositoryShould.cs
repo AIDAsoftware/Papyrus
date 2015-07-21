@@ -41,6 +41,14 @@ namespace Papyrus.Tests
         }
 
         [Test]
+        public async void return_null_when_try_to_load_an_no_existing_document()
+        {
+            var document = await new SqlDocumentRepository(dbConnection).GetDocument("AnyId");
+
+            document.Should().Be(null);
+        }
+
+        [Test]
         public async Task update_a_document()
         {
             await dbConnection.Execute(@"INSERT Documents(Id, Title) 
