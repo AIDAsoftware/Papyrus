@@ -7,6 +7,7 @@ namespace Papyrus.Tests.WebServices
 
     [TestFixture]
     public class RestApiRunner : OwinRunner {
+        [Ignore]
         [Test]
         public async void hello_world() {
             var client = new RestClient(baseAddress);
