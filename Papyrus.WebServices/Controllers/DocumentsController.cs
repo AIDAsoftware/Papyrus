@@ -2,9 +2,13 @@
 
 namespace Papyrus.WebServices.Controllers
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
     using Business.Documents;
+    using Business.Documents.Exceptions;
 
     public class DocumentsController : ApiController {
         private readonly DocumentService documentService;
@@ -28,6 +32,9 @@ namespace Papyrus.WebServices.Controllers
         public async Task<DocumentDto> Get(string id)
         {
             var document = await documentService.GetDocumentById(id);
+            if (document == null)
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+
             return new DocumentDto()
             {
                 Title = document.Title,

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using System.Web.Http;
     using FluentAssertions;
     using NSubstitute;
     using NSubstitute.ExceptionExtensions;
@@ -43,8 +44,8 @@
         }
 
         [Test]
-        [ExpectedException(typeof(DocumentNotFoundException))]
-        public async void when_looking_for_a_no_existing_document()
+        [ExpectedException(typeof(HttpResponseException))]
+        public async void throw_an_exception_when_looking_for_a_no_existing_document()
         {
             var documentService = Substitute.For<DocumentService>(new NotImplementedRepository());
             documentService.GetDocumentById(Arg.Any<string>()).Returns(Task.FromResult((Document) null));
