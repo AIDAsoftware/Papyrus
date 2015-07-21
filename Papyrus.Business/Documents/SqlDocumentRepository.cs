@@ -32,7 +32,7 @@ namespace Papyrus.Business.Documents
         {
             const string selectSqlQuery = @"SELECT Id, Title, Content, Description, Language
                                             FROM [Documents] WHERE Id = @Id;";
-            return (await connection.Query<Document>(selectSqlQuery, new {Id = id})).First();
+            return (await connection.Query<Document>(selectSqlQuery, new {Id = id})).FirstOrDefault();
         }
 
         public async Task Update(Document document)

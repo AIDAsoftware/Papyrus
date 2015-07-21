@@ -4,8 +4,10 @@
     using System.Threading.Tasks;
     using FluentAssertions;
     using NSubstitute;
+    using NSubstitute.ExceptionExtensions;
     using NUnit.Framework;
     using Papyrus.Business.Documents;
+    using Papyrus.Business.Documents.Exceptions;
     using Papyrus.WebServices.Controllers;
     using Papyrus.WebServices.Models;
 
@@ -13,7 +15,6 @@
     public class DocumentControllerShould
     {
         // TODO:
-        //  when looking for an existing Document, it should return a DocumentDto with this Document's information
         //  when looking for a no existing Document, it should return an error message
         //  when getting all Documents, it should return a list of dtos corresponding to all existant documents
         //  when creating a document, it should return a message which confirms creation
@@ -40,6 +41,17 @@
 
             ShouldBeADocumentDtoWithNoNullFields(documentDto);
         }
+
+        [Test]
+        [ExpectedException(typeof(DocumentNotFoundException))]
+        public async void when_looking_for_a_no_existing_document()
+        {
+            var documentService = Substitute.For<DocumentService>(new NotImplementedRepository());
+            documentService.GetDocumentById(Arg.Any<string>()).Returns(Task.FromResult((Document) null));
+
+            await new DocumentsController(documentService).Get(AnyId);
+        }
+
 
         private static void ShouldBeADocumentDtoWithNoNullFields(DocumentDto documentDto)
         {
