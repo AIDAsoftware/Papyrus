@@ -2,6 +2,7 @@
 
 namespace Papyrus.WebServices.Controllers
 {
+    using System.Threading.Tasks;
     using System.Web.Http;
     using Business.Documents;
 
@@ -24,9 +25,16 @@ namespace Papyrus.WebServices.Controllers
             return "{ Message: Document created }";
         }
 
-        public DocumentDto Get()
+        public async Task<DocumentDto> Get(string id)
         {
-            return new DocumentDto() {Title="Any"};
+            var document = await documentService.GetDocumentById(id);
+            return new DocumentDto()
+            {
+                Title = document.Title,
+                Description = document.Description,
+                Content = document.Content,
+                Language = document.Language
+            };
         }
          
     }
