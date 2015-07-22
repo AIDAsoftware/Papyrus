@@ -11,11 +11,12 @@
     using NUnit.Framework;
     using Papyrus.Business.Documents;
     using Papyrus.Business.Documents.Exceptions;
+    using Papyrus.WebServices;
     using Papyrus.WebServices.Controllers;
     using Papyrus.WebServices.Models;
 
     [TestFixture]
-    public class DocumentApiShould
+    public class DocumentApiShould : OwinRunner
     {
         // TODO:
         //  when getting all Documents, it should return a list of dtos corresponding to all existant documents
@@ -38,8 +39,10 @@
             documentService.GetDocumentById(AnyId).Returns(
                 Task.FromResult(AnyDocument())
             );
+            WebApiConfig.Container.RegisterInstance(documentService);
 
-            var documentDto = await new DocumentsController(documentService).Get("AnyId");
+            var client = new RestClient(baseAddress);
+            var documentDto = await client.Get<DocumentDto>("documents/" + AnyId);
 
             ShouldBeADocumentDtoWithNoNullFields(documentDto);
         }
@@ -76,6 +79,8 @@
         }
     }
 
+
+    //TODO: Remove this class
     public class NotImplementedRepository : DocumentRepository
     {
         public Task Save(Document document)
