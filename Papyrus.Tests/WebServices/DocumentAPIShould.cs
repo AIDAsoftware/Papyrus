@@ -15,15 +15,15 @@
     using Papyrus.WebServices.Models;
 
     [TestFixture]
-    public class DocumentControllerShould
+    public class DocumentApiShould
     {
         // TODO:
         //  when getting all Documents, it should return a list of dtos corresponding to all existant documents
-        //  when creating a document, it should return a message which confirms creation
-        //  when update a document, it should return a message which confirms the update
-        //  when try to update a no existing document, it should return a message which confirms the update
-        //  when remove a document, it should return a message which confirms elimination
-        //  when try to remove a no existing document, it should return a fail message 
+        //  when creating a document, it should return a 201 http status code
+        //  when update a document, it should return a 200 http status code
+        //  when try to update a no existing document, it should return a 404 http status code
+        //  when remove a document, it should return a 204 http status code
+        //  when try to remove a no existing document, it should return a 404 http status code 
 
         private const string AnyId = "AnyId";
         private const string AnyTitle = "AnyTitle";
