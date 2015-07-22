@@ -58,7 +58,8 @@
 
         private void GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(Document anyDocument)
         {
-            var documentService = Substitute.For<DocumentService>(new NotImplementedRepository());
+            var anyRepository = Substitute.For<DocumentRepository>();
+            var documentService = Substitute.For<DocumentService>(anyRepository);
             documentService.GetDocumentById(AnyId).Returns(
                 Task.FromResult(anyDocument)
             );
@@ -81,36 +82,6 @@
                 .WithContent(AnyContent)
                 .WithDescription(AnyDescription)
                 .ForLanguage(AnyLanguage);
-        }
-    }
-
-
-    //TODO: Remove this class
-    public class NotImplementedRepository : DocumentRepository
-    {
-        public Task Save(Document document)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<Document> GetDocument(string id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task Update(Document document)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task Delete(string documentId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<List<Document>> GetAllDocuments()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
