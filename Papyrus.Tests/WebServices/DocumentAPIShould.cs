@@ -72,11 +72,10 @@
         public async void return_a_201_http_status_code_when_creating_a_document()
         {
             var documentService = SubstituteForDocumentService();
-            var document = new Document().WithTitle("New Title");
             WebApiConfig.Container.RegisterInstance(documentService);
 
             var client = new RestClient(baseAddress);
-            var response = await client.PostAsJson("documents/", document);
+            var response = await client.PostAsJson("documents/", AnyDocument());
 
             documentService.Received().Create(Arg.Any<Document>());  //TODO: Should I check if it is the same document I created above?           
             response.StatusCode.Should().Be(HttpStatusCode.Created);
