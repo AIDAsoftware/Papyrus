@@ -35,11 +35,8 @@
         [Test]
         public async void when_looking_for_an_existing_document_it_should_return_a_dto_with_its_information()
         {
-            var documentService = Substitute.For<DocumentService>(new NotImplementedRepository());
-            documentService.GetDocumentById(AnyId).Returns(
-                Task.FromResult(AnyDocument())
-            );
-            WebApiConfig.Container.RegisterInstance(documentService);
+            var documentService = DocumentServiceWhichWhenTryingToGetADocumentReturns(AnyDocument());
+            InjectDocumentServiceToTheWebApi(documentService);
 
             var client = new RestClient(baseAddress);
             var documentDto = await client.Get<DocumentDto>("documents/" + AnyId);
@@ -50,9 +47,8 @@
         [Test]
         public void return_a_404_http_status_code_when_looking_for_a_no_existing_document()
         {
-            var documentService = Substitute.For<DocumentService>(new NotImplementedRepository());
-            documentService.GetDocumentById(Arg.Any<string>()).Returns(Task.FromResult((Document) null));
-            WebApiConfig.Container.RegisterInstance(documentService);
+            var documentService = DocumentServiceWhichWhenTryingToGetADocumentReturns(null);
+            InjectDocumentServiceToTheWebApi(documentService);
 
             var client = new RestClient(baseAddress);
             Func<Task> asyncCall = async () => await client.Get<DocumentDto>("documents/" + AnyId);
@@ -60,6 +56,20 @@
             asyncCall.ShouldThrow<HttpResponseException>()
                 .Which.Response.StatusCode.Should()
                 .Be(HttpStatusCode.NotFound);
+        }
+
+        private static DocumentService DocumentServiceWhichWhenTryingToGetADocumentReturns(Document anyDocument)
+        {
+            var documentService = Substitute.For<DocumentService>(new NotImplementedRepository());
+            documentService.GetDocumentById(AnyId).Returns(
+                Task.FromResult(anyDocument)
+            );
+            return documentService;
+        }
+
+        private static void InjectDocumentServiceToTheWebApi(DocumentService documentService)
+        {
+            WebApiConfig.Container.RegisterInstance(documentService);
         }
 
         private static void ShouldBeADocumentDtoWithNoNullFields(DocumentDto documentDto)
