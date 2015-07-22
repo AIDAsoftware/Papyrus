@@ -38,7 +38,7 @@
             await repository.Delete(documentId);
         }
 
-        public async Task<Document[]> AllDocuments()
+        public virtual async Task<Document[]> AllDocuments()
         {
             return (await repository.GetAllDocuments()).ToArray();
         }

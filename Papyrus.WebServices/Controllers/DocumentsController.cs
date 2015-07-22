@@ -3,6 +3,7 @@
 namespace Papyrus.WebServices.Controllers
 {
     using System;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -14,19 +15,6 @@ namespace Papyrus.WebServices.Controllers
         private readonly DocumentService documentService;
         public DocumentsController(DocumentService documentService) {
             this.documentService = documentService;
-        }
-
-        [HttpPost]
-        public string Add([FromBody] DocumentDto document)
-        {
-            documentService.Create(
-                new Document()
-                    .WithContent(document.Content)
-                    .WithDescription(document.Description)
-                    .WithTitle(document.Title)
-                    .ForLanguage(document.Language)
-                );
-            return "{ Message: Document created }";
         }
 
         public async Task<DocumentDto> Get(string id)
@@ -43,6 +31,20 @@ namespace Papyrus.WebServices.Controllers
                 Language = document.Language
             };
         }
-         
+
+        public async Task<DocumentDto[]> Get()
+        {
+            var documents = await documentService.AllDocuments();
+
+            return documents.Select(document => new DocumentDto
+            {
+                Title = document.Title,
+                Description = document.Description,
+                Content = document.Content,
+                Language = document.Language
+            }).ToArray();
+        }
+
+
     }
 }

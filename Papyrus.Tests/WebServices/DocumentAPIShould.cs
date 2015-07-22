@@ -56,6 +56,24 @@
                 .Be(HttpStatusCode.NotFound);
         }
 
+        [Test]
+        public async void return_a_list_whit_a_documentdto_for_each_existing_document_when_getting_all_documents()
+        {
+            var anyRepository = Substitute.For<DocumentRepository>();
+            var documentService = Substitute.For<DocumentService>(anyRepository);
+            var expectedDocumentsList = new[] { new Document().WithTitle(AnyTitle) };
+            documentService.AllDocuments().Returns(
+                Task.FromResult(expectedDocumentsList)
+            );
+            WebApiConfig.Container.RegisterInstance(documentService);
+
+            var client = new RestClient(baseAddress);
+            var documents = await client.Get<DocumentDto[]>("documents/");
+
+            documents.Length.Should().Be(1);
+            documents[0].Title.Should().Be("AnyTitle");
+        }
+
         private void GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(Document anyDocument)
         {
             var anyRepository = Substitute.For<DocumentRepository>();
