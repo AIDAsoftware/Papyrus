@@ -62,11 +62,6 @@
             documentService.GetDocumentById(AnyId).Returns(
                 Task.FromResult(anyDocument)
             );
-            InjectDocumentServiceToTheWebApi(documentService);
-        }
-
-        private static void InjectDocumentServiceToTheWebApi(DocumentService documentService)
-        {
             WebApiConfig.Container.RegisterInstance(documentService);
         }
 
