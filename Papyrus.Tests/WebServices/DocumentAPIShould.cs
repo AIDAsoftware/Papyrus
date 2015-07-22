@@ -35,9 +35,8 @@
         [Test]
         public async void when_looking_for_an_existing_document_it_should_return_a_dto_with_its_information()
         {
-            var documentService = DocumentServiceWhichWhenTryingToGetADocumentReturns(AnyDocument());
-            InjectDocumentServiceToTheWebApi(documentService);
-
+            GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(AnyDocument());
+            
             var client = new RestClient(baseAddress);
             var documentDto = await client.Get<DocumentDto>("documents/" + AnyId);
 
@@ -47,8 +46,7 @@
         [Test]
         public void return_a_404_http_status_code_when_looking_for_a_no_existing_document()
         {
-            var documentService = DocumentServiceWhichWhenTryingToGetADocumentReturns(null);
-            InjectDocumentServiceToTheWebApi(documentService);
+            GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(null);
 
             var client = new RestClient(baseAddress);
             Func<Task> asyncCall = async () => await client.Get<DocumentDto>("documents/" + AnyId);
@@ -58,13 +56,13 @@
                 .Be(HttpStatusCode.NotFound);
         }
 
-        private static DocumentService DocumentServiceWhichWhenTryingToGetADocumentReturns(Document anyDocument)
+        private void GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(Document anyDocument)
         {
             var documentService = Substitute.For<DocumentService>(new NotImplementedRepository());
             documentService.GetDocumentById(AnyId).Returns(
                 Task.FromResult(anyDocument)
             );
-            return documentService;
+            InjectDocumentServiceToTheWebApi(documentService);
         }
 
         private static void InjectDocumentServiceToTheWebApi(DocumentService documentService)
