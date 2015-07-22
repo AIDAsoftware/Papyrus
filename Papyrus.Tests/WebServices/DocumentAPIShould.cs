@@ -59,8 +59,7 @@
         [Test]
         public async void return_a_list_whit_a_documentdto_for_each_existing_document_when_getting_all_documents()
         {
-            var anyRepository = Substitute.For<DocumentRepository>();
-            var documentService = Substitute.For<DocumentService>(anyRepository);
+            var documentService = SubstituteForDocumentService();
             var expectedDocumentsList = new[] { new Document().WithTitle(AnyTitle) };
             documentService.AllDocuments().Returns(
                 Task.FromResult(expectedDocumentsList)
@@ -74,10 +73,15 @@
             documents[0].Title.Should().Be("AnyTitle");
         }
 
-        private void GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(Document anyDocument)
+        private static DocumentService SubstituteForDocumentService()
         {
             var anyRepository = Substitute.For<DocumentRepository>();
-            var documentService = Substitute.For<DocumentService>(anyRepository);
+            return Substitute.For<DocumentService>(anyRepository);
+        }
+
+        private void GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(Document anyDocument)
+        {
+            var documentService = SubstituteForDocumentService();
             documentService.GetDocumentById(AnyId).Returns(
                 Task.FromResult(anyDocument)
             );
