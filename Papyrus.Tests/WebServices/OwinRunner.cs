@@ -1,6 +1,7 @@
 ﻿namespace Papyrus.Tests.WebServices {
     using System;
     using System.Web.Http;
+    using LightInject;
     using Microsoft.Owin.Hosting;
     using NUnit.Framework;
     using Owin;
@@ -19,6 +20,7 @@
         [TearDown]
         public void TearDown() {
             webServer.Dispose();
+            WebApiConfig.Container = new ServiceContainer();
         }
     }
 
