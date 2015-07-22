@@ -48,16 +48,18 @@
         }
 
         [Test]
-        public void throw_an_exception_when_looking_for_a_no_existing_document()
+        public void return_a_404_http_status_code_when_looking_for_a_no_existing_document()
         {
             var documentService = Substitute.For<DocumentService>(new NotImplementedRepository());
             documentService.GetDocumentById(Arg.Any<string>()).Returns(Task.FromResult((Document) null));
+            WebApiConfig.Container.RegisterInstance(documentService);
 
-            Func<Task> asyncCall = async () => await new DocumentsController(documentService).Get(AnyId);
+            var client = new RestClient(baseAddress);
+            Func<Task> asyncCall = async () => await client.Get<DocumentDto>("documents/" + AnyId);
+
             asyncCall.ShouldThrow<HttpResponseException>()
                 .Which.Response.StatusCode.Should()
                 .Be(HttpStatusCode.NotFound);
-           
         }
 
         private static void ShouldBeADocumentDtoWithNoNullFields(DocumentDto documentDto)

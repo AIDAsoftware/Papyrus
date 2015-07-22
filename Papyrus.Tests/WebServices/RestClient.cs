@@ -3,6 +3,7 @@
     using System.Globalization;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using System.Web.Http;
     using Newtonsoft.Json;
 
     internal class RestClient {
@@ -34,10 +35,7 @@
                     if (response.IsSuccessStatusCode) {
                         return deserialize(responseResult);
                     }
-                    var msg = String.Format("{0}: {1}",
-                        response.StatusCode,
-                        responseResult);
-                    throw new UnexpectedResponseException(msg);
+                    throw new HttpResponseException(response.StatusCode);
                 }
             } catch (HttpRequestException ex) {
                 throw new UnexpectedResponseException("RequestException", ex);
