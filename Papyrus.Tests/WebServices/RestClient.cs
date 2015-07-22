@@ -1,7 +1,10 @@
 ﻿namespace Papyrus.Tests.WebServices {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
+    using System.Net;
     using System.Net.Http;
+    using System.Net.Http.Formatting;
     using System.Threading.Tasks;
     using System.Web.Http;
     using Newtonsoft.Json;
@@ -11,6 +14,40 @@
 
         public RestClient(string baseAddress) {
             this.baseAddress = baseAddress;
+        }
+
+        public virtual async Task<HttpResponseMessage> PostAsJson<T>(
+            string uri, T body)
+        {
+            var httpRequest = await PreparePost(uri, body);
+            return await DoRequest(httpRequest);
+        }
+
+        private async Task<HttpRequestMessage> PreparePost<T>(string uri, T body)
+        {
+            var request = new HttpRequestMessageBuilder()
+                    .WithUri(uri)
+                    .WithMethod(HttpMethod.Post)
+                    .WithLanguageCulture(CultureInfo.CurrentCulture.ToString())
+                    .WithContent(new ObjectContent(typeof(T), body, new JsonMediaTypeFormatter()))
+                    .CreateHttpRequestMessage();
+            return request;
+        }
+
+        private async Task<HttpResponseMessage> DoRequest(HttpRequestMessage httpRequest)
+        {
+            try
+            {
+                using (var client = new HttpClient { BaseAddress = new Uri(baseAddress) })
+                {
+                    var response = await client.SendAsync(httpRequest).ConfigureAwait(false);
+                    return response;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new UnexpectedResponseException("RequestException", ex);
+            }
         }
 
         public async Task<T> Get<T>(string path) {
