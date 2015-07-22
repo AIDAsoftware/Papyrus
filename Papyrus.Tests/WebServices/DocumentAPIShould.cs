@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using System.Web.Http;
     using FluentAssertions;
+    using Newtonsoft.Json;
     using NSubstitute;
     using NSubstitute.ExceptionExtensions;
     using NUnit.Framework;
@@ -19,8 +20,6 @@
     public class DocumentApiShould : OwinRunner
     {
         // TODO:
-        //  when getting all Documents, it should return a list of dtos corresponding to all existant documents
-        //  when creating a document, it should return a 201 http status code
         //  when update a document, it should return a 200 http status code
         //  when try to update a no existing document, it should return a 404 http status code
         //  when remove a document, it should return a 204 http status code
@@ -67,6 +66,20 @@
 
             documentDtos.Length.Should().Be(1);
             documentDtos[0].ShouldBeEquivalentTo(expectedDocumentsList[0]);
+        }
+
+        [Test]
+        public async void return_a_201_http_status_code_when_creating_a_document()
+        {
+            var documentService = SubstituteForDocumentService();
+            var document = new Document().WithTitle("New Title");
+            WebApiConfig.Container.RegisterInstance(documentService);
+
+            var client = new RestClient(baseAddress);
+            var response = await client.PostAsJson("documents/", document);
+
+            documentService.Received().Create(Arg.Any<Document>());  //TODO: Should I check if it is the same document I created above?           
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
         private void GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(Document anyDocument)

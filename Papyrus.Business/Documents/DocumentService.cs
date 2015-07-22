@@ -13,7 +13,7 @@
             this.repository = repository;
         }
 
-        public void Create(Document document)
+        public virtual void Create(Document document)
         {
             if (!String.IsNullOrWhiteSpace(document.Id))
                 throw new DocumentIdCouldNotBeDefinedException();

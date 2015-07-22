@@ -1,6 +1,4 @@
-﻿using Papyrus.WebServices.Models;
-
-namespace Papyrus.WebServices.Controllers
+﻿namespace Papyrus.WebServices.Controllers
 {
     using System;
     using System.Linq;
@@ -9,7 +7,7 @@ namespace Papyrus.WebServices.Controllers
     using System.Threading.Tasks;
     using System.Web.Http;
     using Business.Documents;
-    using Business.Documents.Exceptions;
+    using Models;
 
     public class DocumentsController : ApiController {
         private readonly DocumentService documentService;
@@ -30,6 +28,19 @@ namespace Papyrus.WebServices.Controllers
                 Content = document.Content,
                 Language = document.Language
             };
+        }
+
+        [HttpPost]
+        public async Task<HttpResponseMessage> Add([FromBody] DocumentDto documentDto)
+        {
+            var document = new Document()
+                .WithTitle(documentDto.Title)
+                .WithContent(documentDto.Content)
+                .WithDescription(documentDto.Description)
+                .ForLanguage(documentDto.Language);
+            documentService.Create(document);
+            return new HttpResponseMessage(HttpStatusCode.Created);
+
         }
 
         public async Task<DocumentDto[]> Get()
