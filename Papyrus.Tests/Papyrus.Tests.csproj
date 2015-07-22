@@ -109,7 +109,6 @@
     <Compile Include="SqlDocumentRepositoryShould.cs" />
     <Compile Include="WebServices\DocumentAPIShould.cs" />
     <Compile Include="WebServices\OwinRunner.cs" />
-    <Compile Include="WebServices\RestApiTest.cs" />
     <Compile Include="WebServices\RestClient.cs" />
   </ItemGroup>
   <ItemGroup>
