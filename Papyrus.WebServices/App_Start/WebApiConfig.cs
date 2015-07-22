@@ -16,11 +16,6 @@ namespace Papyrus.WebServices
             Container.RegisterApiControllers();
             Container.EnableWebApi(config);
 
-            var connectionString = ConfigurationManager.ConnectionStrings["Papyrus"].ToString();
-            var databaseConnection = new DatabaseConnection(connectionString);
-            var documentService = new DocumentService(new SqlDocumentRepository(databaseConnection));
-            Container.RegisterInstance(documentService);
-
             // Web API configuration and services
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 
