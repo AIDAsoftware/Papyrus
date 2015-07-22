@@ -74,10 +74,11 @@
             var documentService = SubstituteForDocumentService();
             WebApiConfig.Container.RegisterInstance(documentService);
 
+            var document = AnyDocument();
             var client = new RestClient(baseAddress);
-            var response = await client.PostAsJson("documents/", AnyDocument());
+            var response = await client.PostAsJson("documents/", document);
 
-            documentService.Received().Create(Arg.Any<Document>());  //TODO: Should I check if it is the same document I created above?           
+            documentService.Received().Create(document);
             response.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
@@ -107,7 +108,7 @@
 
         private static Document AnyDocument()
         {
-            return new Document()
+            return new ComparableDocument()
                 .WithId(AnyId)
                 .WithTitle(AnyTitle)
                 .WithContent(AnyContent)
@@ -121,6 +122,19 @@
             documentDto.Description.Should().Be(AnyDescription);
             documentDto.Content.Should().Be(AnyContent);
             documentDto.Language.Should().Be(AnyLanguage);
+        }
+    }
+
+    internal class ComparableDocument : Document
+    {
+        public override bool Equals(object obj)
+        {
+            var other = obj as Document;
+            if (other == null) return false;
+            if (Title == other.Title && Description == other.Description &&
+                Language == other.Language && Content == other.Content)
+                return true;
+            return false;
         }
     }
 }
