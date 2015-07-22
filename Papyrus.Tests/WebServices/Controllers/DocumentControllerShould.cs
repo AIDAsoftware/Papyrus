@@ -16,7 +16,6 @@
     public class DocumentControllerShould
     {
         // TODO:
-        //  when looking for a no existing Document, it should return an error message
         //  when getting all Documents, it should return a list of dtos corresponding to all existant documents
         //  when creating a document, it should return a message which confirms creation
         //  when update a document, it should return a message which confirms the update
