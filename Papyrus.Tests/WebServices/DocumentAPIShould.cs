@@ -59,24 +59,14 @@
         [Test]
         public async void return_a_list_whit_a_documentdto_for_each_existing_document_when_getting_all_documents()
         {
-            var documentService = SubstituteForDocumentService();
             var expectedDocumentsList = new[] { new Document().WithTitle(AnyTitle) };
-            documentService.AllDocuments().Returns(
-                Task.FromResult(expectedDocumentsList)
-            );
-            WebApiConfig.Container.RegisterInstance(documentService);
+            GivenAWebApiWithADocumentServiceWhichWhenGettingAllDocumentsReturns(expectedDocumentsList);
 
             var client = new RestClient(baseAddress);
-            var documents = await client.Get<DocumentDto[]>("documents/");
+            var documentDtos = await client.Get<DocumentDto[]>("documents/");
 
-            documents.Length.Should().Be(1);
-            documents[0].Title.Should().Be("AnyTitle");
-        }
-
-        private static DocumentService SubstituteForDocumentService()
-        {
-            var anyRepository = Substitute.For<DocumentRepository>();
-            return Substitute.For<DocumentService>(anyRepository);
+            documentDtos.Length.Should().Be(1);
+            documentDtos[0].ShouldBeEquivalentTo(expectedDocumentsList[0]);
         }
 
         private void GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(Document anyDocument)
@@ -84,16 +74,23 @@
             var documentService = SubstituteForDocumentService();
             documentService.GetDocumentById(AnyId).Returns(
                 Task.FromResult(anyDocument)
-            );
+                );
             WebApiConfig.Container.RegisterInstance(documentService);
         }
 
-        private static void ShouldBeADocumentDtoWithNoNullFields(DocumentDto documentDto)
+        private static void GivenAWebApiWithADocumentServiceWhichWhenGettingAllDocumentsReturns(Document[] expectedDocumentsList)
         {
-            documentDto.Title.Should().Be(AnyTitle);
-            documentDto.Description.Should().Be(AnyDescription);
-            documentDto.Content.Should().Be(AnyContent);
-            documentDto.Language.Should().Be(AnyLanguage);
+            var documentService = SubstituteForDocumentService();
+            documentService.AllDocuments().Returns(
+                Task.FromResult(expectedDocumentsList)
+                );
+            WebApiConfig.Container.RegisterInstance(documentService);
+        }
+
+        private static DocumentService SubstituteForDocumentService()
+        {
+            var anyRepository = Substitute.For<DocumentRepository>();
+            return Substitute.For<DocumentService>(anyRepository);
         }
 
         private static Document AnyDocument()
@@ -104,6 +101,14 @@
                 .WithContent(AnyContent)
                 .WithDescription(AnyDescription)
                 .ForLanguage(AnyLanguage);
+        }
+
+        private static void ShouldBeADocumentDtoWithNoNullFields(DocumentDto documentDto)
+        {
+            documentDto.Title.Should().Be(AnyTitle);
+            documentDto.Description.Should().Be(AnyDescription);
+            documentDto.Content.Should().Be(AnyContent);
+            documentDto.Language.Should().Be(AnyLanguage);
         }
     }
 }
