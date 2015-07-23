@@ -44,16 +44,20 @@ describe("DocumentService", function(){
         var apiClient = new DocumentApiClient();
         spyOn(apiClient, 'saveDocument');
         var documentService = new DocumentService(apiClient);
-        const papyrusDocument = new PapyrusDocument()
-            .withTitle(anyTitle)
-            .withDescription(anyDescription)
-            .withContent(anyContent)
-            .forLanguage(anyLanguage);
+        const papyrusDocument = anyDocumentWithoutId();
 
         documentService.createDocument(papyrusDocument);
 
         expect(apiClient.saveDocument).toHaveBeenCalledWith(papyrusDocument);
     });
+
+    function anyDocumentWithoutId() {
+        return new PapyrusDocument()
+            .withTitle(anyTitle)
+            .withDescription(anyDescription)
+            .withContent(anyContent)
+            .forLanguage(anyLanguage);
+    }
 
     function anyPapyrusDocument() {
         return new PapyrusDocument()
