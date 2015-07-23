@@ -8,7 +8,7 @@ describe("DocumentService", function(){
 
 		var documents = documentService.allDocuments();
 
-        var papyrusDocument = new PapyrusDocument("Any", "Any", "Any", "Any");
+        var papyrusDocument = new PapyrusDocument("Any", "Any", "Any", "es");
         var expectedList = [papyrusDocument];
 		expect(documents).toEqual(expectedList);
 	});
