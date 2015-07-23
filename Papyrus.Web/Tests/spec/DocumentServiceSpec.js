@@ -60,11 +60,7 @@ describe("DocumentService", function(){
     }
 
     function anyPapyrusDocument() {
-        return new PapyrusDocument()
-            .withId(anyId)
-            .withTitle(anyTitle)
-            .withContent(anyContent)
-            .withDescription(anyDescription)
-            .forLanguage(anyLanguage);
+        return anyDocumentWithoutId()
+            .withId(anyId);
     }
 });
