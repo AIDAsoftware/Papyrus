@@ -46,15 +46,17 @@ describe("DocumentService", function(){
     });
 
     function anyDocumentWithoutId() {
-        return new PapyrusDocument()
-            .withTitle(anyTitle)
-            .withDescription(anyDescription)
-            .withContent(anyContent)
-            .forLanguage(anyLanguage);
+        return {
+            Title: anyTitle,
+            Content: anyContent,
+            Description: anyDescription,
+            Language: anyLanguage
+        }
     }
 
     function anyPapyrusDocument() {
-        return anyDocumentWithoutId()
-            .withId(anyId);
+        var document = anyDocumentWithoutId();
+        document["Id"] = anyId;
+        return document;
     }
 });
