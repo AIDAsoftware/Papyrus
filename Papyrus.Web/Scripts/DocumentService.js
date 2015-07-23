@@ -7,7 +7,7 @@ DocumentService.prototype = {
         return $.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8888/papyrusapi/api/documents"
+            url: "http://localhost:8888/papyrusapi/documents"
         });
     },
 
@@ -15,12 +15,22 @@ DocumentService.prototype = {
         return $.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8888/papyrusapi/api/documents/" + documentId
+            url: "http://localhost:8888/papyrusapi/documents/" + documentId
         });
     },
 
     createDocument: function (document) {
-        this.api.saveDocument(document);
+        return $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "http://localhost:8888/papyrusapi/documents",
+            data: {
+                Title: document.Title,
+                Description: document.Description,
+                Content: document.Content,
+                Language: document.Language
+            }
+        });
     }
 };
 

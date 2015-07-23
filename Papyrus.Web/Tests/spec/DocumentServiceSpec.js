@@ -17,7 +17,7 @@ describe("DocumentService", function(){
         expect($.ajax).toHaveBeenCalledWith({
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8888/papyrusapi/api/documents"
+            url: "http://localhost:8888/papyrusapi/documents"
         });
         var expectedList = [anyPapyrusDocument()];
 		expect(documents).toEqual(expectedList);
@@ -34,21 +34,30 @@ describe("DocumentService", function(){
         expect($.ajax).toHaveBeenCalledWith({
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8888/papyrusapi/api/documents/" + anyId
+            url: "http://localhost:8888/papyrusapi/documents/" + anyId
         });
         var expectedPapyrusDocument = anyPapyrusDocument();
         expect(document).toEqual(expectedPapyrusDocument);
     });
 
     it("should save a document when try to create it", function(){
-        var apiClient = new DocumentApiClient();
-        spyOn(apiClient, 'saveDocument');
-        var documentService = new DocumentService(apiClient);
+        spyOn($, 'ajax');
+        var documentService = new DocumentService();
         const papyrusDocument = anyDocumentWithoutId();
 
         documentService.createDocument(papyrusDocument);
 
-        expect(apiClient.saveDocument).toHaveBeenCalledWith(papyrusDocument);
+        expect($.ajax).toHaveBeenCalledWith({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "http://localhost:8888/papyrusapi/documents",
+            data: {
+                Title: anyTitle,
+                Description: anyDescription,
+                Content: anyContent,
+                Language: anyLanguage
+            }
+        });
     });
 
     function anyDocumentWithoutId() {
