@@ -7,6 +7,10 @@ DocumentService.prototype = {
         return this.api.allDocuments().map(function (obj) {
             return new PapyrusDocument(obj.Title, obj.Description, obj.Content, obj.Language);
         });
+    },
+
+    GetDocument: function (documentId) {
+
     }
 };
 
