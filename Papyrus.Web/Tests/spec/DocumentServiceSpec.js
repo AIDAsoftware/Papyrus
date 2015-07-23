@@ -1,5 +1,9 @@
 describe("DocumentService", function(){
 
+    function anyPapyrusDocument() {
+        return new PapyrusDocument("AnyId", "Any", "Any", "Any", "es");
+    }
+
     /**
      * TODO:
      *  Get a document by Id
@@ -15,7 +19,7 @@ describe("DocumentService", function(){
 
 		var documents = documentService.allDocuments();
 
-        var papyrusDocument = new PapyrusDocument("AnyId", "Any", "Any", "Any", "es");
+        var papyrusDocument = anyPapyrusDocument();
         var expectedList = [papyrusDocument];
 		expect(documents).toEqual(expectedList);
 	});
@@ -30,7 +34,7 @@ describe("DocumentService", function(){
         var document = documentService.GetDocument("AnyId");
 
         expect(apiRest.GetDocument).toHaveBeenCalledWith("AnyId");
-        var expectedPapyrusDocument = new PapyrusDocument("AnyId", "Any", "Any", "Any", "es");
+        var expectedPapyrusDocument = anyPapyrusDocument();
         expect(document).toEqual(expectedPapyrusDocument);
     });
 });
