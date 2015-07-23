@@ -12,6 +12,10 @@ DocumentService.prototype = {
         return this.parseJsonToDocument(documentAsJson);
     },
 
+    createDocument: function (document) {
+        this.api.saveDocument(document);
+    },
+
     parseJsonToDocument: function (documentAsJson) {
         return new PapyrusDocument()
             .withId(documentAsJson.Id)

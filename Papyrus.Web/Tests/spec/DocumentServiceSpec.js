@@ -40,6 +40,21 @@ describe("DocumentService", function(){
         expect(document).toEqual(expectedPapyrusDocument);
     });
 
+    it("should save a document when try to create it", function(){
+        var apiClient = new DocumentApiClient();
+        spyOn(apiClient, 'saveDocument');
+        var documentService = new DocumentService(apiClient);
+        const papyrusDocument = new PapyrusDocument()
+            .withTitle(anyTitle)
+            .withDescription(anyDescription)
+            .withContent(anyContent)
+            .forLanguage(anyLanguage);
+
+        documentService.createDocument(papyrusDocument);
+
+        expect(apiClient.saveDocument).toHaveBeenCalledWith(papyrusDocument);
+    });
+
     function anyPapyrusDocument() {
         return new PapyrusDocument()
             .withId(anyId)
