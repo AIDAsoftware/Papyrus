@@ -10,7 +10,14 @@ DocumentService.prototype = {
     },
 
     GetDocument: function (documentId) {
-
+        var documentAsJson = this.api.GetDocument(documentId);
+        return new PapyrusDocument(
+            documentAsJson.Id,
+            documentAsJson.Title,
+            documentAsJson.Description,
+            documentAsJson.Content,
+            documentAsJson.Language
+        );
     }
 };
 

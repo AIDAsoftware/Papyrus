@@ -22,13 +22,14 @@ describe("DocumentService", function(){
 
     it("should return a document when it exist and try to get it", function(){
         var apiRest = new DocumentApiClient();
-        spyOn(apiRest, 'GetDocument').and.returnValue([
+        spyOn(apiRest, 'GetDocument').and.returnValue(
             {"Id": "AnyId", "Title": "Any", "Content": "Any", "Description": "Any", "Language": "es"}
-        ]);
+        );
         var documentService = new DocumentService(apiRest);
 
         var document = documentService.GetDocument("AnyId");
 
+        expect(apiRest.GetDocument).toHaveBeenCalledWith("AnyId");
         var expectedPapyrusDocument = new PapyrusDocument("AnyId", "Any", "Any", "Any", "es");
         expect(document).toEqual(expectedPapyrusDocument);
     });
