@@ -24,15 +24,18 @@ describe("DocumentService", function(){
 	});
 
     it("should return a document when it exist and try to get it", function(){
-        var apiRest = new DocumentApiClient();
-        spyOn(apiRest, 'GetDocument').and.returnValue(
+        spyOn($, 'ajax').and.returnValue(
             {"Id": anyId, "Title": anyTitle, "Content": anyContent, "Description": anyDescription, "Language": anyLanguage}
         );
-        var documentService = new DocumentService(apiRest);
+        var documentService = new DocumentService();
 
         var document = documentService.GetDocument(anyId);
 
-        expect(apiRest.GetDocument).toHaveBeenCalledWith(anyId);
+        expect($.ajax).toHaveBeenCalledWith({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: "http://localhost:8888/papyrusapi/api/documents/" + anyId
+        });
         var expectedPapyrusDocument = anyPapyrusDocument();
         expect(document).toEqual(expectedPapyrusDocument);
     });
