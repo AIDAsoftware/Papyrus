@@ -4,7 +4,11 @@ function DocumentService(apiClient) {
 
 DocumentService.prototype = {
     allDocuments: function () {
-        return this.api.allDocuments();
+        return $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: "http://localhost:8888/papyrusapi/api/documents"
+        });
     },
 
     GetDocument: function (documentId) {

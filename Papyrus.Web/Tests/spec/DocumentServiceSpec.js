@@ -7,16 +7,19 @@ describe("DocumentService", function(){
     const anyLanguage = "es";
 
     it("should return a list of documents when there are documents and try to get all", function(){
-		var apiRest = new DocumentApiClient();
-        spyOn(apiRest, 'allDocuments').and.returnValue([
+        spyOn($, 'ajax').and.returnValue([
             {"Id": anyId, "Title": anyTitle, "Content": anyContent, "Description": anyDescription, "Language": anyLanguage}
         ]);
-		var documentService = new DocumentService(apiRest);
+		var documentService = new DocumentService();
 
 		var documents = documentService.allDocuments();
 
-        var papyrusDocument = anyPapyrusDocument();
-        var expectedList = [papyrusDocument];
+        expect($.ajax).toHaveBeenCalledWith({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: "http://localhost:8888/papyrusapi/api/documents"
+        });
+        var expectedList = [anyPapyrusDocument()];
 		expect(documents).toEqual(expectedList);
 	});
 
