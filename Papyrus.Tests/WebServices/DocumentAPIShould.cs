@@ -69,7 +69,7 @@
             var documentService = SubstituteForDocumentService();
             WebApiConfig.Container.RegisterInstance(documentService);
 
-            var document = AnyDocument();
+            var document = new ComparableDocument().WithTitle(AnyTitle);
             var client = new RestClient(baseAddress);
             var response = await client.PostAsJson("documents/", document);
 
