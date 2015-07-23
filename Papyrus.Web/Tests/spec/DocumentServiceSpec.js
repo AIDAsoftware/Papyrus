@@ -1,10 +1,4 @@
 describe("DocumentService", function(){
-
-    /**
-     * TODO:
-     *  Get a document by Id
-     *  Create a document
-     */
     
     const anyId = "AnyId";
     const anyTitle = "AnyTitle";
