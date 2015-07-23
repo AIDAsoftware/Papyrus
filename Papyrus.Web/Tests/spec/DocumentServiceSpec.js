@@ -5,11 +5,17 @@ describe("DocumentService", function(){
      *  Get a document by Id
      *  Create a document
      */
+    
+    const anyId = "AnyId";
+    const anyTitle = "AnyTitle";
+    const anyContent = "AnyContent";
+    const anyDescription = "AnyDescription";
+    const anyLanguage = "es";
 
     it("should return a list of documents when there are documents and try to get all", function(){
 		var apiRest = new DocumentApiClient();
         spyOn(apiRest, 'allDocuments').and.returnValue([
-            {"Id": "AnyId", "Title": "Any", "Content": "Any", "Description": "Any", "Language": "es"}
+            {"Id": anyId, "Title": anyTitle, "Content": anyContent, "Description": anyDescription, "Language": anyLanguage}
         ]);
 		var documentService = new DocumentService(apiRest);
 
@@ -23,23 +29,23 @@ describe("DocumentService", function(){
     it("should return a document when it exist and try to get it", function(){
         var apiRest = new DocumentApiClient();
         spyOn(apiRest, 'GetDocument').and.returnValue(
-            {"Id": "AnyId", "Title": "Any", "Content": "Any", "Description": "Any", "Language": "es"}
+            {"Id": anyId, "Title": anyTitle, "Content": anyContent, "Description": anyDescription, "Language": anyLanguage}
         );
         var documentService = new DocumentService(apiRest);
 
-        var document = documentService.GetDocument("AnyId");
+        var document = documentService.GetDocument(anyId);
 
-        expect(apiRest.GetDocument).toHaveBeenCalledWith("AnyId");
+        expect(apiRest.GetDocument).toHaveBeenCalledWith(anyId);
         var expectedPapyrusDocument = anyPapyrusDocument();
         expect(document).toEqual(expectedPapyrusDocument);
     });
 
     function anyPapyrusDocument() {
         return new PapyrusDocument()
-            .withId("AnyId")
-            .withTitle("Any")
-            .withContent("Any")
-            .withDescription("Any")
-            .forLanguage("es");
+            .withId(anyId)
+            .withTitle(anyTitle)
+            .withContent(anyContent)
+            .withDescription(anyDescription)
+            .forLanguage(anyLanguage);
     }
 });
