@@ -4,25 +4,15 @@ function DocumentService(apiClient) {
 
 DocumentService.prototype = {
     allDocuments: function () {
-        return this.api.allDocuments().map(this.parseJsonToDocument);
+        return this.api.allDocuments();
     },
 
     GetDocument: function (documentId) {
-        var documentAsJson = this.api.GetDocument(documentId);
-        return this.parseJsonToDocument(documentAsJson);
+        return this.api.GetDocument(documentId);
     },
 
     createDocument: function (document) {
         this.api.saveDocument(document);
-    },
-
-    parseJsonToDocument: function (documentAsJson) {
-        return new PapyrusDocument()
-            .withId(documentAsJson.Id)
-            .withTitle(documentAsJson.Title)
-            .withDescription(documentAsJson.Description)
-            .withContent(documentAsJson.Content)
-            .forLanguage(documentAsJson.Language);
     }
 };
 
