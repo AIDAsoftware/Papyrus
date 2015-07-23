@@ -1,19 +1,14 @@
 ﻿namespace Papyrus.Tests.WebServices.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Net;
     using System.Threading.Tasks;
     using System.Web.Http;
     using FluentAssertions;
-    using Newtonsoft.Json;
     using NSubstitute;
-    using NSubstitute.ExceptionExtensions;
     using NUnit.Framework;
     using Papyrus.Business.Documents;
-    using Papyrus.Business.Documents.Exceptions;
     using Papyrus.WebServices;
-    using Papyrus.WebServices.Controllers;
     using Papyrus.WebServices.Models;
 
     [TestFixture]
@@ -131,10 +126,9 @@
         {
             var other = obj as Document;
             if (other == null) return false;
-            if (Title == other.Title && Description == other.Description &&
-                Language == other.Language && Content == other.Content)
-                return true;
-            return false;
+
+            return (Title == other.Title && Description == other.Description &&
+                    Language == other.Language && Content == other.Content);
         }
     }
 }
