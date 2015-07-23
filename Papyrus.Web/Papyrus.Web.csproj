@@ -89,6 +89,17 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
     <None Include="Views\Home\index.cshtml" />
+    <Content Include="Tests\lib\jasmine-2.3.4\boot.js" />
+    <Content Include="Tests\lib\jasmine-2.3.4\console.js" />
+    <Content Include="Tests\lib\jasmine-2.3.4\jasmine-html.js" />
+    <Content Include="Tests\lib\jasmine-2.3.4\jasmine.css" />
+    <Content Include="Tests\lib\jasmine-2.3.4\jasmine.js" />
+    <Content Include="Tests\lib\jasmine-2.3.4\jasmine_favicon.png" />
+    <Content Include="Tests\SpecRunner.html" />
+    <Content Include="Tests\spec\PlayerSpec.js" />
+    <Content Include="Tests\spec\SpecHelper.js" />
+    <Content Include="Scripts\Player.js" />
+    <Content Include="Scripts\Song.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

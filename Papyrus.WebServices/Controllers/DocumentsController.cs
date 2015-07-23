@@ -23,6 +23,7 @@
 
             return new DocumentDto()
             {
+                Id = document.Id,
                 Title = document.Title,
                 Description = document.Description,
                 Content = document.Content,
@@ -49,6 +50,7 @@
 
             return documents.Select(document => new DocumentDto
             {
+                Id = document.Id,
                 Title = document.Title,
                 Description = document.Description,
                 Content = document.Content,

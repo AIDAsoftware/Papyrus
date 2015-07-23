@@ -77,11 +77,11 @@
             response.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
-        private void GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(Document anyDocument)
+        private void GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(Document document)
         {
             var documentService = SubstituteForDocumentService();
             documentService.GetDocumentById(AnyId).Returns(
-                Task.FromResult(anyDocument)
+                Task.FromResult(document)
                 );
             WebApiConfig.Container.RegisterInstance(documentService);
         }
@@ -113,6 +113,7 @@
 
         private static void ShouldBeADocumentDtoWithNoNullFields(DocumentDto documentDto)
         {
+            documentDto.Id.Should().Be(AnyId);
             documentDto.Title.Should().Be(AnyTitle);
             documentDto.Description.Should().Be(AnyDescription);
             documentDto.Content.Should().Be(AnyContent);
