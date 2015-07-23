@@ -13,13 +13,12 @@ DocumentService.prototype = {
     },
 
     parseJsonToDocument: function (documentAsJson) {
-        return new PapyrusDocument(
-            documentAsJson.Id,
-            documentAsJson.Title,
-            documentAsJson.Description,
-            documentAsJson.Content,
-            documentAsJson.Language
-        );
+        return new PapyrusDocument()
+            .withId(documentAsJson.Id)
+            .withTitle(documentAsJson.Title)
+            .withDescription(documentAsJson.Description)
+            .withContent(documentAsJson.Content)
+            .forLanguage(documentAsJson.Language);
     }
 };
 
