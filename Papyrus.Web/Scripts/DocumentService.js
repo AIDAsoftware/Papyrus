@@ -1,6 +1,4 @@
-function DocumentService(apiClient) {
-    this.api = apiClient;
-}
+function DocumentService() {}
 
 DocumentService.prototype = {
     allDocuments: function () {
