@@ -8,7 +8,7 @@ describe("DocumentService", function(){
           documentsURL = "http://localhost:8888/papyrusapi/documents/";
 
     it("should return a list of documents when there are documents and try to get all", function(){
-        spyOn($, 'ajax').and.returnValue([anyPapyrusDocument()]);
+        spyOn($, 'ajax').and.returnValue([anyDocument()]);
 		var documentService = new DocumentService();
 
 		var documents = documentService.allDocuments();
@@ -18,12 +18,12 @@ describe("DocumentService", function(){
             contentType: "application/json; charset=utf-8",
             url: documentsURL
         });
-        var expectedList = [anyPapyrusDocument()];
+        var expectedList = [anyDocument()];
 		expect(documents).toEqual(expectedList);
 	});
 
     it("should return a document when it exist and try to get it", function(){
-        spyOn($, 'ajax').and.returnValue(anyPapyrusDocument());
+        spyOn($, 'ajax').and.returnValue(anyDocument());
         var documentService = new DocumentService();
 
         var document = documentService.GetDocument(anyId);
@@ -33,8 +33,8 @@ describe("DocumentService", function(){
             contentType: "application/json; charset=utf-8",
             url: documentsURL + anyId
         });
-        var expectedPapyrusDocument = anyPapyrusDocument();
-        expect(document).toEqual(expectedPapyrusDocument);
+        var expectedDocument = anyDocument();
+        expect(document).toEqual(expectedDocument);
     });
 
     it("should save a document when try to create it", function(){
@@ -66,7 +66,7 @@ describe("DocumentService", function(){
         }
     }
 
-    function anyPapyrusDocument() {
+    function anyDocument() {
         var document = anyDocumentWithoutId();
         document["Id"] = anyId;
         return document;
