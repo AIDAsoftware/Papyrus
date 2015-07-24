@@ -13,11 +13,10 @@ describe("DocumentService", function(){
 
 		var documents = documentService.allDocuments();
 
-        expect($.ajax).toHaveBeenCalledWith({
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            url: documentsURL
-        });
+        const lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
+        expect(lastAjaxArgument.type).toEqual("GET");
+        expect(lastAjaxArgument.contentType).toEqual("application/json; charset=utf-8");
+        expect(lastAjaxArgument.url).toEqual(documentsURL);
         expect(documents).toEqual([anyDocument()]);
 	});
 
@@ -27,11 +26,10 @@ describe("DocumentService", function(){
 
         var document = documentService.GetDocument(anyId);
 
-        expect($.ajax).toHaveBeenCalledWith({
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            url: documentsURL + anyId
-        });
+        const lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
+        expect(lastAjaxArgument.type).toEqual("GET");
+        expect(lastAjaxArgument.contentType).toEqual("application/json; charset=utf-8");
+        expect(lastAjaxArgument.url).toEqual(documentsURL + anyId);
         expect(document).toEqual(anyDocument());
     });
 
@@ -42,12 +40,11 @@ describe("DocumentService", function(){
 
         documentService.createDocument(documentToSave);
 
-        expect($.ajax).toHaveBeenCalledWith({
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            url: documentsURL,
-            data: documentToSave
-        });
+        const lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
+        expect(lastAjaxArgument.type).toEqual("POST");
+        expect(lastAjaxArgument.contentType).toEqual("application/json; charset=utf-8");
+        expect(lastAjaxArgument.url).toEqual(documentsURL);
+        expect(lastAjaxArgument.data).toEqual(documentToSave);
     });
 
     function anyDocumentWithoutId() {
