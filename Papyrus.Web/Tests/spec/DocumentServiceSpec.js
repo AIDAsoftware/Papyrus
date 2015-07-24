@@ -76,7 +76,7 @@ describe("DocumentService", function(){
         return {
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8888/papyrusapi/documents"
+            url: "http://localhost:8888/papyrusapi/documents/"
         };
     }
 });

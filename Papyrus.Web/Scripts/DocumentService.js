@@ -5,7 +5,7 @@ DocumentService.prototype = {
         return $.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8888/papyrusapi/documents"
+            url: "http://localhost:8888/papyrusapi/documents/"
         });
     },
 
@@ -21,7 +21,7 @@ DocumentService.prototype = {
         return $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8888/papyrusapi/documents",
+            url: "http://localhost:8888/papyrusapi/documents/",
             data: {
                 Title: document.Title,
                 Description: document.Description,
