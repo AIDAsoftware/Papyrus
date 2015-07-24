@@ -64,12 +64,4 @@ describe("DocumentService", function(){
         document["Id"] = anyId;
         return document;
     }
-
-    function getAllDocumentAjaxRequest() {
-        return {
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8888/papyrusapi/documents/"
-        };
-    }
 });
