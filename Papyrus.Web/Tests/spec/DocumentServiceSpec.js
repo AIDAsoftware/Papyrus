@@ -18,8 +18,7 @@ describe("DocumentService", function(){
             contentType: "application/json; charset=utf-8",
             url: documentsURL
         });
-        var expectedList = [anyDocument()];
-		expect(documents).toEqual(expectedList);
+        expect(documents).toEqual([anyDocument()]);
 	});
 
     it("should return a document when it exist and try to get it", function(){
@@ -33,8 +32,7 @@ describe("DocumentService", function(){
             contentType: "application/json; charset=utf-8",
             url: documentsURL + anyId
         });
-        var expectedDocument = anyDocument();
-        expect(document).toEqual(expectedDocument);
+        expect(document).toEqual(anyDocument());
     });
 
     it("should save a document when try to create it", function(){
