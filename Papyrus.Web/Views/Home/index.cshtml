@@ -152,15 +152,16 @@
     <script src="@Url.Content("~/Scripts/jquery-1.11.3.min.js")"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/DocumentService.js")"></script>
 
     <script>
         function SaveDocument() {
-            var document = JSON.stringify({
+            var document = {
                 Title: $("#inputTitle").val(),
                 Description: $("#inputDescription").val(),
                 Content: $("#inputContent").val(),
                 Language: $("#inputLanguage").val()
-            });
+            };
             new DocumentService().createDocument(document);
         }
     </script>
