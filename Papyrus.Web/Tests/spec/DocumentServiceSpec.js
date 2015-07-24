@@ -38,15 +38,15 @@ describe("DocumentService", function(){
     it("should save a document when try to create it", function(){
         spyOn($, 'ajax');
         var documentService = new DocumentService();
-        const document = anyDocumentWithoutId();
+        const documentToSave = anyDocumentWithoutId();
 
-        documentService.createDocument(document);
+        documentService.createDocument(documentToSave);
 
         expect($.ajax).toHaveBeenCalledWith({
             type: "POST",
             contentType: "application/json; charset=utf-8",
             url: documentsURL,
-            data: anyDocumentWithoutId()
+            data: documentToSave
         });
     });
 
