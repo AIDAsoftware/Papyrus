@@ -33,7 +33,7 @@ DocumentService.prototype = {
             type: "POST",
             contentType: this.ajaxContentType(),
             url: this.documentsURL(),
-            data: document,
+            data: JSON.stringify(document),
             success: function() {},
             error: function (request, status, error) {}
         });

@@ -44,7 +44,7 @@ describe("DocumentService", function(){
         expect(lastAjaxArgument.type).toEqual("POST");
         expect(lastAjaxArgument.contentType).toEqual("application/json; charset=utf-8");
         expect(lastAjaxArgument.url).toEqual(documentsURL);
-        expect(lastAjaxArgument.data).toEqual(documentToSave);
+        expect(lastAjaxArgument.data).toEqual(JSON.stringify(documentToSave));
     });
 
     function anyDocumentWithoutId() {
