@@ -29,12 +29,7 @@ DocumentService.prototype = {
             type: "POST",
             contentType: this.ajaxContentType(),
             url: this.documentsURL(),
-            data: {
-                Title: document.Title,
-                Description: document.Description,
-                Content: document.Content,
-                Language: document.Language
-            }
+            data: document
         });
     }
 };
