@@ -12,7 +12,9 @@ DocumentService.prototype = {
         return $.ajax({
             type: "GET",
             contentType: this.ajaxContentType(),
-            url: this.documentsURL()
+            url: this.documentsURL(),
+            success: function() {},
+            error: function (request, status, error) {}
         });
     },
 
@@ -20,7 +22,9 @@ DocumentService.prototype = {
         return $.ajax({
             type: "GET",
             contentType: this.ajaxContentType(),
-            url: this.documentsURL() + documentId
+            url: this.documentsURL() + documentId,
+            success: function() {},
+            error: function (request, status, error) {}
         });
     },
 
@@ -29,7 +33,9 @@ DocumentService.prototype = {
             type: "POST",
             contentType: this.ajaxContentType(),
             url: this.documentsURL(),
-            data: document
+            data: document,
+            success: function() {},
+            error: function (request, status, error) {}
         });
     }
 };
