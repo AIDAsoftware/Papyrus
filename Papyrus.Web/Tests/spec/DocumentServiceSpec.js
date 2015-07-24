@@ -8,9 +8,7 @@ describe("DocumentService", function(){
           documentsURL = "http://localhost:8888/papyrusapi/documents/";
 
     it("should return a list of documents when there are documents and try to get all", function(){
-        spyOn($, 'ajax').and.returnValue([
-            {"Id": anyId, "Title": anyTitle, "Content": anyContent, "Description": anyDescription, "Language": anyLanguage}
-        ]);
+        spyOn($, 'ajax').and.returnValue([anyPapyrusDocument()]);
 		var documentService = new DocumentService();
 
 		var documents = documentService.allDocuments();
@@ -25,9 +23,7 @@ describe("DocumentService", function(){
 	});
 
     it("should return a document when it exist and try to get it", function(){
-        spyOn($, 'ajax').and.returnValue(
-            {"Id": anyId, "Title": anyTitle, "Content": anyContent, "Description": anyDescription, "Language": anyLanguage}
-        );
+        spyOn($, 'ajax').and.returnValue(anyPapyrusDocument());
         var documentService = new DocumentService();
 
         var document = documentService.GetDocument(anyId);
