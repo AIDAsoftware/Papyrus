@@ -43,9 +43,9 @@ describe("DocumentService", function(){
     it("should save a document when try to create it", function(){
         spyOn($, 'ajax');
         var documentService = new DocumentService();
-        const papyrusDocument = anyDocumentWithoutId();
+        const document = anyDocumentWithoutId();
 
-        documentService.createDocument(papyrusDocument);
+        documentService.createDocument(document);
 
         expect($.ajax).toHaveBeenCalledWith({
             type: "POST",
