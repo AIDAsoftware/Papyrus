@@ -106,7 +106,7 @@
               </div>
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                  <button class="btn btn-default" onclick="SaveDocument()">Create</button>
+                  <button class="btn btn-default" onclick="createButtonClick()">Create</button>
                 </div>
               </div>
             </div>
@@ -155,7 +155,7 @@
     <script src="@Url.Content("~/Scripts/DocumentService.js")"></script>
 
     <script>
-        function SaveDocument() {
+        function createButtonClick() {
             var document = {
                 Title: $("#inputTitle").val(),
                 Description: $("#inputDescription").val(),
