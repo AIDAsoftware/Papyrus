@@ -46,12 +46,7 @@ describe("DocumentService", function(){
             type: "POST",
             contentType: "application/json; charset=utf-8",
             url: documentsURL,
-            data: {
-                Title: anyTitle,
-                Description: anyDescription,
-                Content: anyContent,
-                Language: anyLanguage
-            }
+            data: anyDocumentWithoutId()
         });
     });
 
