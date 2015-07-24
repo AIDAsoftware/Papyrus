@@ -1,10 +1,11 @@
 describe("DocumentService", function(){
     
-    const anyId = "AnyId";
-    const anyTitle = "AnyTitle";
-    const anyContent = "AnyContent";
-    const anyDescription = "AnyDescription";
-    const anyLanguage = "es";
+    const anyId = "AnyId",
+          anyTitle = "AnyTitle",
+          anyContent = "AnyContent",
+          anyDescription = "AnyDescription",
+          anyLanguage = "es",
+          documentsURL = "http://localhost:8888/papyrusapi/documents/";
 
     it("should return a list of documents when there are documents and try to get all", function(){
         spyOn($, 'ajax').and.returnValue([
@@ -17,7 +18,7 @@ describe("DocumentService", function(){
         expect($.ajax).toHaveBeenCalledWith({
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8888/papyrusapi/documents"
+            url: documentsURL
         });
         var expectedList = [anyPapyrusDocument()];
 		expect(documents).toEqual(expectedList);
@@ -34,7 +35,7 @@ describe("DocumentService", function(){
         expect($.ajax).toHaveBeenCalledWith({
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8888/papyrusapi/documents/" + anyId
+            url: documentsURL + anyId
         });
         var expectedPapyrusDocument = anyPapyrusDocument();
         expect(document).toEqual(expectedPapyrusDocument);
@@ -50,7 +51,7 @@ describe("DocumentService", function(){
         expect($.ajax).toHaveBeenCalledWith({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8888/papyrusapi/documents",
+            url: documentsURL,
             data: {
                 Title: anyTitle,
                 Description: anyDescription,
@@ -73,5 +74,13 @@ describe("DocumentService", function(){
         var document = anyDocumentWithoutId();
         document["Id"] = anyId;
         return document;
+    }
+
+    function getAllDocumentAjaxRequest() {
+        return {
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: "http://localhost:8888/papyrusapi/documents"
+        };
     }
 });
