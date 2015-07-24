@@ -1,6 +1,9 @@
 function DocumentService() {
     this.documentsURL = function () {
         return "http://localhost:8888/papyrusapi/documents/";
+    };
+    this.ajaxContentType = function () {
+        return "application/json; charset=utf-8";
     }
 }
 
@@ -8,7 +11,7 @@ DocumentService.prototype = {
     allDocuments: function () {
         return $.ajax({
             type: "GET",
-            contentType: "application/json; charset=utf-8",
+            contentType: this.ajaxContentType(),
             url: this.documentsURL()
         });
     },
@@ -16,7 +19,7 @@ DocumentService.prototype = {
     GetDocument: function (documentId) {
         return $.ajax({
             type: "GET",
-            contentType: "application/json; charset=utf-8",
+            contentType: this.ajaxContentType(),
             url: this.documentsURL() + documentId
         });
     },
@@ -24,7 +27,7 @@ DocumentService.prototype = {
     createDocument: function (document) {
         return $.ajax({
             type: "POST",
-            contentType: "application/json; charset=utf-8",
+            contentType: this.ajaxContentType(),
             url: this.documentsURL(),
             data: {
                 Title: document.Title,
