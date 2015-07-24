@@ -34,8 +34,14 @@ DocumentService.prototype = {
             contentType: this.ajaxContentType(),
             url: this.documentsURL(),
             data: JSON.stringify(document),
-            success: function() {},
-            error: function (request, status, error) {}
+            success: function() {
+                //TODO: remove from here
+                alert("Document created");
+            },
+            error: function (request, status, error) {
+                //TODO: remove from here
+                alert(request.responseText);
+            }
         });
     }
 };
