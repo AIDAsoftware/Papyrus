@@ -18,8 +18,12 @@ function refreshDocumentsList() {
     $("#documents-list").html("");
     new DocumentService().allDocuments().done(function (documents) {
         documents.forEach(function(document) {
-            $("#documents-list").append('<a href="http://localhost:8888/papyrus/document/detail/' + document.Id
-                + '" class="list-group-item">' + document.Title + '</a>');
-        })
+            paintDocumentDetailsFor(document);
+        });
     });
+}
+
+function paintDocumentRowFor(document) {
+    $("#documents-list").append('<a href="http://localhost:8888/papyrus/document/detail/' + document.Id
+        + '" class="list-group-item">' + document.Title + '</a>');
 }
