@@ -12,6 +12,12 @@ namespace Papyrus.Tests
     [TestFixture]
     public class SqlDocumentRepositoryShould : SqlTest
     {
+        [SetUp]
+        public async void TruncateDataBase()
+        {
+            await dbConnection.Execute("TRUNCATE TABLE Documents");
+        }
+
         [Test]
         public async Task save_a_document()
         {
