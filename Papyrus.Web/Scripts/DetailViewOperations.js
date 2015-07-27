@@ -1,9 +1,17 @@
 ﻿$(document).ready(function () {
-    var url = window.location.href;
-    var id = url.substring(url.lastIndexOf("/") + 1);
+    var id = getIdFromUrl();
     new DocumentService().GetDocument(id).done(function(document) {
-        $("#document-title").html(document.Title);
-        $("#document-content").html(document.Content);
-        $("#document-description").html(document.Description);
+        paintDocumentDetailsFor(document);
     });
 });
+
+function paintDocumentDetailsFor(document) {
+    $("#document-title").html(document.Title);
+    $("#document-content").html(document.Content);
+    $("#document-description").html(document.Description);
+}
+
+function getIdFromUrl() {
+    var url = window.location.href;
+    return url.substring(url.lastIndexOf("/") + 1);
+}
