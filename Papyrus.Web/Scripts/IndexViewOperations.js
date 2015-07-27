@@ -17,9 +17,9 @@ function createButtonClick() {
 function refreshDocumentsList() {
     $("#documents-list").html("");
     new DocumentService().allDocuments().done(function (documents) {
-        for (var i = 0; i < documents.length; i++) {
-            $("#documents-list").append('<a href="http://localhost:8888/papyrus/document/detail/' + documents[i].Id
-                + '" class="list-group-item">' + documents[i].Title + '</a>');
-        }
+        documents.forEach(function(document) {
+            $("#documents-list").append('<a href="http://localhost:8888/papyrus/document/detail/' + document.Id
+                + '" class="list-group-item">' + document.Title + '</a>');
+        })
     });
 }
