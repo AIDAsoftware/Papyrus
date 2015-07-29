@@ -98,22 +98,18 @@
         }
 
 
-        //TODO: simplify test
         [Test]
         public async Task return_a_list_of_documents_when_user_want_to_see_all_documents()
         {
+            var anyId = "AnyId";
             repository.GetAllDocuments().Returns(Task.FromResult(new List<Document> {
-                new Document().WithId("1"),
-                new Document().WithId("2"),
-                new Document().WithId("3")
+                new Document().WithId(anyId),
             }));
 
             var documents = await service.AllDocuments();
 
-            documents.Should().Contain(x => x.Id == "1");
-            documents.Should().Contain(x => x.Id == "2");
-            documents.Should().Contain(x => x.Id == "3");
-            documents.Length.Should().Be(3);
+            documents.Should().Contain(x => x.Id == anyId);
+            documents.Length.Should().Be(1);
         }
 
     }
