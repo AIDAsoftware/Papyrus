@@ -15,7 +15,7 @@
 
         public virtual async Task Create(Document document)
         {
-            if (!String.IsNullOrWhiteSpace(document.Id))
+            if (!string.IsNullOrWhiteSpace(document.Id))
                 throw new DocumentIdCouldNotBeDefinedException();
             document.GenerateAutomaticId();
             await repository.Save(document);
@@ -28,7 +28,7 @@
 
         public virtual async Task Update(Document document)
         {
-            if (String.IsNullOrWhiteSpace(document.Id))
+            if (string.IsNullOrWhiteSpace(document.Id))
                 throw new DocumentIdMustBeDefinedException();
             await repository.Update(document);
         }
