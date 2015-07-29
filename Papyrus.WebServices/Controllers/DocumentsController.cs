@@ -58,8 +58,15 @@
         [HttpDelete]
         public async Task<HttpResponseMessage> Delete(string id)
         {
-            await documentService.Remove(id);
-            return new HttpResponseMessage(HttpStatusCode.NoContent);
+            try
+            {
+                await documentService.Remove(id);
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
+            }
+            catch (DocumentNotFoundException)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
         }
 
         private static Document DocumentFrom(DocumentDto documentDto)
