@@ -1,6 +1,7 @@
 // The Jasmine Test Framework
 /// <reference path="/Scripts/jquery-1.11.3.min.js"/>
 /// <reference path="/Scripts/DocumentService.js"/>
+/// <reference path="~/Tests/lib/jasmine-2.3.4/jasmine.js" />
 
 describe("DocumentService", function () {
     
@@ -9,11 +10,15 @@ describe("DocumentService", function () {
           anyContent = "AnyContent",
           anyDescription = "AnyDescription",
           anyLanguage = "es",
-          documentsURL = "http://localhost:8888/papyrusapi/documents/";
+          documentsURL = "http://localhost:8888/papyrusapi/documents/"
+    var documentService;
+
+    beforeEach(function() {
+        documentService = new DocumentService();
+    });
 
     it("should return a list of documents when there are documents and try to get all", function(){
         spyOn($, 'ajax').and.returnValue([anyDocument()]);
-		var documentService = new DocumentService();
 
 		var documents = documentService.allDocuments();
 
@@ -22,11 +27,10 @@ describe("DocumentService", function () {
         expect(lastAjaxArgument.contentType).toEqual("application/json; charset=utf-8");
         expect(lastAjaxArgument.url).toEqual(documentsURL);
         expect(documents).toEqual([anyDocument()]);
-	});
+    });
 
     it("should return a document when it exist and try to get it", function(){
         spyOn($, 'ajax').and.returnValue(anyDocument());
-        var documentService = new DocumentService();
 
         var document = documentService.GetDocument(anyId);
 
@@ -39,7 +43,6 @@ describe("DocumentService", function () {
 
     it("should save a document when try to create it", function(){
         spyOn($, 'ajax');
-        var documentService = new DocumentService();
         var documentToSave = anyDocumentWithoutId();
 
         documentService.createDocument(documentToSave);
