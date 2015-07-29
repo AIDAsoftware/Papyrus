@@ -99,7 +99,7 @@
             var documentService = SubstituteForDocumentService();
             documentService.
                 Update(Arg.Any<Document>()).
-                Throws<DocumentIdCouldBeDefinedException>();
+                Throws<DocumentIdMustBeDefinedException>();
             WebApiConfig.Container.RegisterInstance(documentService);
 
             var document = new ComparableDocument().WithId(AnyId);

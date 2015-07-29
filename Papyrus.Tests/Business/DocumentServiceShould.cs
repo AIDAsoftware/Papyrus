@@ -80,7 +80,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(DocumentIdCouldBeDefinedException))]
+        [ExpectedException(typeof(DocumentIdMustBeDefinedException))]
         public async Task throw_an_exception_when_try_to_update_a_document_without_id()
         {
             var document = new Document();

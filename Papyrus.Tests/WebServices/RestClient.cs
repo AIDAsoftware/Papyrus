@@ -70,6 +70,22 @@
                 .WithContent(new ObjectContent(typeof(T), body, new JsonMediaTypeFormatter()));
         }
 
+        public async Task<HttpResponseMessage> Delete(string path)
+        {
+            var httpRequest = PrepareDelete(path);
+            return await DoRequest(httpRequest);
+        }
+
+        private HttpRequestMessage PrepareDelete(string uri)
+        {
+            var request = new HttpRequestMessageBuilder()
+                    .WithUri(uri)
+                    .WithMethod(HttpMethod.Delete)
+                    .WithLanguageCulture(CultureInfo.CurrentCulture.ToString())
+                    .CreateHttpRequestMessage();
+            return request;
+        }
+
         public async Task<T> Get<T>(string path) {
             var httpRequest = PrepareGet(path);
             return await DoRequest(httpRequest, JsonConvert.DeserializeObject<T>);

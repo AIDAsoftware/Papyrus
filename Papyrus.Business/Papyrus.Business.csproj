@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Documents\Exceptions\CanNotModifyDocumentIdException.cs" />
     <Compile Include="Documents\Document.cs" />
-    <Compile Include="Documents\Exceptions\DocumentIdCouldBeDefinedException.cs" />
+    <Compile Include="Documents\Exceptions\DocumentIdMustBeDefinedException.cs" />
     <Compile Include="Documents\Exceptions\DocumentIdCouldNotBeDefinedException.cs" />
     <Compile Include="Documents\Exceptions\DocumentNotFoundException.cs" />
     <Compile Include="Documents\DocumentRepository.cs" />

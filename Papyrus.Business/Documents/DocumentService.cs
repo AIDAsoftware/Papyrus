@@ -29,7 +29,7 @@
         public virtual async Task Update(Document document)
         {
             if (String.IsNullOrWhiteSpace(document.Id))
-                throw new DocumentIdCouldBeDefinedException();
+                throw new DocumentIdMustBeDefinedException();
             await repository.Update(document);
         }
 
