@@ -4,7 +4,7 @@
 
 describe("DocumentService", function () {
     
-    const anyId = "AnyId",
+    var anyId = "AnyId",
           anyTitle = "AnyTitle",
           anyContent = "AnyContent",
           anyDescription = "AnyDescription",
@@ -17,7 +17,7 @@ describe("DocumentService", function () {
 
 		var documents = documentService.allDocuments();
 
-        const lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
+        var lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
         expect(lastAjaxArgument.type).toEqual("GET");
         expect(lastAjaxArgument.contentType).toEqual("application/json; charset=utf-8");
         expect(lastAjaxArgument.url).toEqual(documentsURL);
@@ -30,7 +30,7 @@ describe("DocumentService", function () {
 
         var document = documentService.GetDocument(anyId);
 
-        const lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
+        var lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
         expect(lastAjaxArgument.type).toEqual("GET");
         expect(lastAjaxArgument.contentType).toEqual("application/json; charset=utf-8");
         expect(lastAjaxArgument.url).toEqual(documentsURL + anyId);
@@ -40,11 +40,11 @@ describe("DocumentService", function () {
     it("should save a document when try to create it", function(){
         spyOn($, 'ajax');
         var documentService = new DocumentService();
-        const documentToSave = anyDocumentWithoutId();
+        var documentToSave = anyDocumentWithoutId();
 
         documentService.createDocument(documentToSave);
 
-        const lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
+        var lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
         expect(lastAjaxArgument.type).toEqual("POST");
         expect(lastAjaxArgument.contentType).toEqual("application/json; charset=utf-8");
         expect(lastAjaxArgument.url).toEqual(documentsURL);
