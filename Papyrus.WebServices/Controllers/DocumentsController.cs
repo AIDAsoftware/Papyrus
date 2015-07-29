@@ -11,6 +11,7 @@
 
     public class DocumentsController : ApiController {
         private readonly DocumentService documentService;
+
         public DocumentsController(DocumentService documentService) {
             this.documentService = documentService;
         }
@@ -24,6 +25,12 @@
             return DocumentDtoFrom(document);
         }
 
+        public async Task<DocumentDto[]> Get()
+        {
+            var documents = await documentService.AllDocuments();
+            return documents.Select(document => DocumentDtoFrom(document)).ToArray();
+        }
+
         [HttpPost]
         public async Task<HttpResponseMessage> Add([FromBody] DocumentDto documentDto)
         {
@@ -31,15 +38,6 @@
             await documentService.Create(document);
             return new HttpResponseMessage(HttpStatusCode.Created);
 
-        }
-
-        private static Document DocumentFrom(DocumentDto documentDto)
-        {
-            return new Document()
-                .WithTitle(documentDto.Title)
-                .WithContent(documentDto.Content)
-                .WithDescription(documentDto.Description)
-                .ForLanguage(documentDto.Language);
         }
 
         [HttpPut]
@@ -50,11 +48,13 @@
             return new HttpResponseMessage(HttpStatusCode.Accepted);
         }
 
-        public async Task<DocumentDto[]> Get()
+        private static Document DocumentFrom(DocumentDto documentDto)
         {
-            var documents = await documentService.AllDocuments();
-
-            return documents.Select(document => DocumentDtoFrom(document)).ToArray();
+            return new Document()
+                .WithTitle(documentDto.Title)
+                .WithContent(documentDto.Content)
+                .WithDescription(documentDto.Description)
+                .ForLanguage(documentDto.Language);
         }
 
         private static DocumentDto DocumentDtoFrom(Document document)
