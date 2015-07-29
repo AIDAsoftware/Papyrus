@@ -26,11 +26,13 @@
         private const string AnyDescription = "AnyDescription";
         private const string AnyLanguage = "AnyLanguage";
         private RestClient restClient;
+        private DocumentService documentService;
 
         [SetUp]
-        public void InitializeRestClient()
+        public void InitializeRestClientAndService()
         {
             restClient = new RestClient(baseAddress);
+            documentService = SubstituteForDocumentService();
         }
 
         [Test]
@@ -70,7 +72,6 @@
         [Test]
         public async void return_a_201_http_status_code_when_creating_a_document()
         {
-            var documentService = SubstituteForDocumentService();
             WebApiConfig.Container.RegisterInstance(documentService);
 
             var document = new ComparableDocument().WithTitle(AnyTitle);
@@ -83,7 +84,6 @@
         [Test]
         public async void return_a_200_http_status_code_when_updated_a_document()
         {
-            var documentService = SubstituteForDocumentService();
             WebApiConfig.Container.RegisterInstance(documentService);
 
             var document = new ComparableDocument().WithId(AnyId);
@@ -96,7 +96,6 @@
         [Test]
         public async Task return_a_404_http_status_code_when_updating_no_existing_document()
         {
-            var documentService = SubstituteForDocumentService();
             documentService.
                 Update(Arg.Any<Document>()).
                 Throws<DocumentIdMustBeDefinedException>();
@@ -111,7 +110,6 @@
 
         private void GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(Document document)
         {
-            var documentService = SubstituteForDocumentService();
             documentService.GetDocumentById(AnyId).Returns(
                 Task.FromResult(document)
                 );
