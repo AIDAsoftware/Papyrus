@@ -132,7 +132,7 @@
         {
             documentService.
                 Update(Arg.Any<Document>()).
-                Throws<DocumentIdMustBeDefinedException>(); //TODO: change exception (confusion)
+                Throws<DocumentNotFoundException>(); //TODO: change exception (confusion)
             WebApiConfig.Container.RegisterInstance(documentService);
         }
 

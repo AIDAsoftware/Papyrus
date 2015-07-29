@@ -49,7 +49,7 @@
                 await documentService.Update(document);
                 return new HttpResponseMessage(HttpStatusCode.Accepted);
             }
-            catch (DocumentIdMustBeDefinedException)
+            catch (DocumentNotFoundException)
             {
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
