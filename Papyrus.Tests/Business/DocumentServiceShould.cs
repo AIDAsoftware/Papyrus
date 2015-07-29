@@ -24,7 +24,7 @@
 
 
         [Test]
-        public void save_a_document_when_it_is_created()
+        public async Task save_a_document_when_it_is_created()
         {
             var document = new Document()
                 .WithTitle("Login en el sistema")
@@ -32,7 +32,7 @@
                 .WithContent("El usuario podrá acceder al sistema indicando su usuario")
                 .ForLanguage("es-Es");
 
-            service.Create(document);
+            await service.Create(document);
 
             repository.Received().Save(document);
             repository.Received().Save(Arg.Is<Document>(x => !string.IsNullOrWhiteSpace(x.Id)));
