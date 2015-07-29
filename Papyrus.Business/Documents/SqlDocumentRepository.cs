@@ -57,10 +57,11 @@ namespace Papyrus.Business.Documents
         public async Task Delete(string documentId)
         {
             const string deleteSqlQuery = @"DELETE FROM Documents WHERE Id = @Id";
-            await connection.Execute(deleteSqlQuery, new
+            var affectedRows = await connection.Execute(deleteSqlQuery, new
             {
                 Id = documentId,
             });
+            if (affectedRows == 0) throw new DocumentNotFoundException();
         }
 
         //TODO: devolver IEnumerable ??

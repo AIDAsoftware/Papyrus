@@ -105,6 +105,13 @@ namespace Papyrus.Tests
             await new SqlDocumentRepository(dbConnection).Update(document);
         }
 
+        [Test]
+        [ExpectedException(typeof (DocumentNotFoundException))]
+        public async Task throw_an_exception_when_try_to_delete_a_no_existing_document()
+        {
+            await new SqlDocumentRepository(dbConnection).Delete("NoExistingId");
+        }
+
         private async Task InsertDocumentWith(string id, string title = null, string description = null, string content = null, string language = null)
         {
             await dbConnection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
