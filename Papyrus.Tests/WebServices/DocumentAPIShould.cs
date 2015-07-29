@@ -86,7 +86,6 @@
             WebApiConfig.Container.RegisterInstance(documentService);
 
             var document = new ComparableDocument().WithId(AnyId);
-            //TODO: extract client as field
             var response = await restClient.PutAsJson("documents/" + document.Id, document);
 
             documentService.Received().Update(document);
