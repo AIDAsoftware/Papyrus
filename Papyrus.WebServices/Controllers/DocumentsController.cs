@@ -21,6 +21,11 @@
             if (document == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
+            return DocumentDtoFrom(document);
+        }
+
+        private static DocumentDto DocumentDtoFrom(Document document)
+        {
             return new DocumentDto()
             {
                 Id = document.Id,
@@ -61,16 +66,7 @@
         {
             var documents = await documentService.AllDocuments();
 
-            return documents.Select(document => new DocumentDto
-            {
-                Id = document.Id,
-                Title = document.Title,
-                Description = document.Description,
-                Content = document.Content,
-                Language = document.Language
-            }).ToArray();
+            return documents.Select(document => DocumentDtoFrom(document)).ToArray();
         }
-
-
     }
 }
