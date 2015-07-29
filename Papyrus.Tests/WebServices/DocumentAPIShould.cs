@@ -116,11 +116,23 @@
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
+        [Test]
+        public async Task return_a_404_http_status_code_when_removing_a_no_existing_document()
+        {
+            documentService.Remove(Arg.Any<string>()).Throws<DocumentNotFoundException>();
+            WebApiConfig.Container.RegisterInstance(documentService);
+
+            var response = await restClient.Delete("documents/" + AnyId);
+
+            documentService.Received().Remove(AnyId);
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
         private void GivenAWebApiWithDocumentServiceWithoutDocuments()
         {
             documentService.
                 Update(Arg.Any<Document>()).
-                Throws<DocumentIdMustBeDefinedException>();
+                Throws<DocumentIdMustBeDefinedException>(); //TODO: change exception (confusion)
             WebApiConfig.Container.RegisterInstance(documentService);
         }
 
