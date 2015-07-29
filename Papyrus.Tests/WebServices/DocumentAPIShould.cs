@@ -96,16 +96,21 @@
         [Test]
         public async Task return_a_404_http_status_code_when_updating_no_existing_document()
         {
-            documentService.
-                Update(Arg.Any<Document>()).
-                Throws<DocumentIdMustBeDefinedException>();
-            WebApiConfig.Container.RegisterInstance(documentService);
+            GivenAWebApiWithDocumentServiceWithoutDocuments();
 
             var document = new ComparableDocument().WithId(AnyId);
             var response = await restClient.PutAsJson("documents/" + document.Id, document);
 
             documentService.Received().Update(document);
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        private void GivenAWebApiWithDocumentServiceWithoutDocuments()
+        {
+            documentService.
+                Update(Arg.Any<Document>()).
+                Throws<DocumentIdMustBeDefinedException>();
+            WebApiConfig.Container.RegisterInstance(documentService);
         }
 
         private void GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(Document document)
