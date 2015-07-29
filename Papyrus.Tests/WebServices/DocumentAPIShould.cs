@@ -77,6 +77,21 @@
             response.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
+        [Test]
+        public async void return_a_200_http_status_code_when_updated_a_document()
+        {
+            var documentService = SubstituteForDocumentService();
+            WebApiConfig.Container.RegisterInstance(documentService);
+
+            var document = new ComparableDocument().WithId(AnyId);
+            //TODO: extract client as field
+            var client = new RestClient(baseAddress);
+            var response = await client.PutAsJson("documents/" + document.Id, document);
+
+            documentService.Received().Update(document);
+            response.StatusCode.Should().Be(HttpStatusCode.Accepted);
+        }
+
         private void GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(Document document)
         {
             var documentService = SubstituteForDocumentService();

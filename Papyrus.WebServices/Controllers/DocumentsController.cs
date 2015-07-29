@@ -44,6 +44,19 @@
 
         }
 
+        [HttpPut]
+        public async Task<HttpResponseMessage> Update(string id, [FromBody] DocumentDto documentDto)
+        {
+            var document = new Document()
+                .WithId(id)
+                .WithTitle(documentDto.Title)
+                .WithContent(documentDto.Content)
+                .WithDescription(documentDto.Description)
+                .ForLanguage(documentDto.Language);
+            documentService.Update(document);
+            return new HttpResponseMessage(HttpStatusCode.Accepted);
+        }
+
         public async Task<DocumentDto[]> Get()
         {
             var documents = await documentService.AllDocuments();
