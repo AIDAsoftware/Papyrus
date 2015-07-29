@@ -129,7 +129,7 @@
         {
             documentService.
                 Update(Arg.Any<Document>()).
-                Throws<DocumentNotFoundException>(); //TODO: change exception (confusion)
+                Throws<DocumentNotFoundException>();
             WebApiConfig.Container.RegisterInstance(documentService);
         }
 
