@@ -55,6 +55,13 @@
             }
         }
 
+        [HttpDelete]
+        public async Task<HttpResponseMessage> Delete(string id)
+        {
+            await documentService.Remove(id);
+            return new HttpResponseMessage(HttpStatusCode.NoContent);
+        }
+
         private static Document DocumentFrom(DocumentDto documentDto)
         {
             return new Document()

@@ -105,6 +105,17 @@
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
+        [Test]
+        public async Task return_a_204_http_status_code_when_removed_a_document()
+        {
+            WebApiConfig.Container.RegisterInstance(documentService);
+
+            var response = await restClient.Delete("documents/" + AnyId);
+
+            documentService.Received().Remove(AnyId);
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
         private void GivenAWebApiWithDocumentServiceWithoutDocuments()
         {
             documentService.
