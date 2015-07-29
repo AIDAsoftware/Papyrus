@@ -1,4 +1,8 @@
-describe("DocumentService", function(){
+// The Jasmine Test Framework
+/// <reference path="/Scripts/jquery-1.11.3.min.js"/>
+/// <reference path="/Scripts/DocumentService.js"/>
+
+describe("DocumentService", function () {
     
     const anyId = "AnyId",
           anyTitle = "AnyTitle",

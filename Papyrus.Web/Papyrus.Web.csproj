@@ -99,7 +99,6 @@
     <Content Include="Tests\lib\jasmine-2.3.4\jasmine.css" />
     <Content Include="Tests\lib\jasmine-2.3.4\jasmine.js" />
     <Content Include="Tests\lib\jasmine-2.3.4\jasmine_favicon.png" />
-    <Content Include="Tests\SpecRunner.html" />
     <Content Include="Tests\spec\DocumentServiceSpec.js" />
     <Content Include="Web.config" />
   </ItemGroup>
