@@ -43,16 +43,16 @@
         [HttpPut]
         public async Task<HttpResponseMessage> Update(string id, [FromBody] DocumentDto documentDto)
         {
-            var document = DocumentFrom(documentDto);
+            var document = DocumentFrom(documentDto).WithId(id);
             try
             {
                 await documentService.Update(document);
+                return new HttpResponseMessage(HttpStatusCode.Accepted);
             }
             catch (DocumentIdCouldBeDefinedException)
             {
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
-            return new HttpResponseMessage(HttpStatusCode.Accepted);
         }
 
         private static Document DocumentFrom(DocumentDto documentDto)
