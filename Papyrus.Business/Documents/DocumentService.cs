@@ -26,7 +26,7 @@
             return await repository.GetDocument(id);
         }
 
-        public async Task Update(Document document)
+        public virtual async Task Update(Document document)
         {
             if (String.IsNullOrWhiteSpace(document.Id))
                 throw new DocumentIdCouldBeDefinedException();
