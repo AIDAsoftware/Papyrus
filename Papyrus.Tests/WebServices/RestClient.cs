@@ -25,12 +25,9 @@
 
         private async Task<HttpRequestMessage> PreparePut<T>(string uri, T body)
         {
-            var request = new HttpRequestMessageBuilder()
-                    .WithUri(uri)
-                    .WithMethod(HttpMethod.Put)
-                    .WithLanguageCulture(CultureInfo.CurrentCulture.ToString())
-                    .WithContent(new ObjectContent(typeof(T), body, new JsonMediaTypeFormatter()))
-                    .CreateHttpRequestMessage();
+            var request = PrepareRequestWithBody(uri, body)
+                .WithMethod(HttpMethod.Put)
+                .CreateHttpRequestMessage();
             return request;
         }
 
@@ -43,11 +40,8 @@
 
         private async Task<HttpRequestMessage> PreparePost<T>(string uri, T body)
         {
-            var request = new HttpRequestMessageBuilder()
-                    .WithUri(uri)
+            var request = PrepareRequestWithBody(uri, body)
                     .WithMethod(HttpMethod.Post)
-                    .WithLanguageCulture(CultureInfo.CurrentCulture.ToString())
-                    .WithContent(new ObjectContent(typeof(T), body, new JsonMediaTypeFormatter()))
                     .CreateHttpRequestMessage();
             return request;
         }
@@ -66,6 +60,14 @@
             {
                 throw new UnexpectedResponseException("RequestException", ex);
             }
+        }
+
+        private static HttpRequestMessageBuilder PrepareRequestWithBody<T>(string uri, T body)
+        {
+            return new HttpRequestMessageBuilder()
+                .WithUri(uri)
+                .WithLanguageCulture(CultureInfo.CurrentCulture.ToString())
+                .WithContent(new ObjectContent(typeof(T), body, new JsonMediaTypeFormatter()));
         }
 
         public async Task<T> Get<T>(string path) {
