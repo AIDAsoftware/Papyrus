@@ -39,7 +39,7 @@
                 .WithContent(documentDto.Content)
                 .WithDescription(documentDto.Description)
                 .ForLanguage(documentDto.Language);
-            documentService.Create(document);
+            await documentService.Create(document);
             return new HttpResponseMessage(HttpStatusCode.Created);
 
         }
@@ -53,7 +53,7 @@
                 .WithContent(documentDto.Content)
                 .WithDescription(documentDto.Description)
                 .ForLanguage(documentDto.Language);
-            documentService.Update(document);
+            await documentService.Update(document);
             return new HttpResponseMessage(HttpStatusCode.Accepted);
         }
 
