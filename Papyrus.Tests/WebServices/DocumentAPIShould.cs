@@ -16,9 +16,6 @@
     [TestFixture]
     public class DocumentApiShould : OwinRunner
     {
-        // TODO:
-        //  when remove a document, it should return a 204 http status code
-        //  when try to remove a no existing document, it should return a 404 http status code 
 
         private const string AnyId = "AnyId";
         private const string AnyTitle = "AnyTitle";
