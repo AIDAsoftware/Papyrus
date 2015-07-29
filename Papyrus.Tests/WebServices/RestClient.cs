@@ -8,12 +8,30 @@
     using System.Threading.Tasks;
     using System.Web.Http;
     using Newtonsoft.Json;
+    using Papyrus.Business.Documents;
 
     internal class RestClient {
         private readonly string baseAddress;
 
         public RestClient(string baseAddress) {
             this.baseAddress = baseAddress;
+        }
+
+        public async Task<HttpResponseMessage> PutAsJson<T>(string url, T body)
+        {
+            var httpRequest = await PreparePut(url, body);
+            return await DoRequest(httpRequest);
+        }
+
+        private async Task<HttpRequestMessage> PreparePut<T>(string uri, T body)
+        {
+            var request = new HttpRequestMessageBuilder()
+                    .WithUri(uri)
+                    .WithMethod(HttpMethod.Put)
+                    .WithLanguageCulture(CultureInfo.CurrentCulture.ToString())
+                    .WithContent(new ObjectContent(typeof(T), body, new JsonMediaTypeFormatter()))
+                    .CreateHttpRequestMessage();
+            return request;
         }
 
         public virtual async Task<HttpResponseMessage> PostAsJson<T>(
