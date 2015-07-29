@@ -1,4 +1,4 @@
-﻿namespace Papyrus.Tests.WebServices.Controllers
+﻿namespace Papyrus.Tests.WebServices
 {
     using System;
     using System.Net;
