@@ -17,9 +17,9 @@
             this.baseAddress = baseAddress;
         }
 
-        public async Task<HttpResponseMessage> PutAsJson<T>(string url, T body)
+        public async Task<HttpResponseMessage> PutAsJson<T>(string uri, T body)
         {
-            var httpRequest = await PreparePut(url, body);
+            var httpRequest = await PreparePut(uri, body);
             return await DoRequest(httpRequest);
         }
 
