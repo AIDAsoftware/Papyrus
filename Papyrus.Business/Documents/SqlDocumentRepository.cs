@@ -51,6 +51,7 @@ namespace Papyrus.Business.Documents
                 Content = document.Content,
                 Language = document.Language
             });
+            // TODO: move this responsibility to the Service
             if (affectedRows == 0) throw new DocumentNotFoundException();
         }
 
@@ -61,6 +62,7 @@ namespace Papyrus.Business.Documents
             {
                 Id = documentId,
             });
+            // TODO: move this responsibility to the Service
             if (affectedRows == 0) throw new DocumentNotFoundException();
         }
 

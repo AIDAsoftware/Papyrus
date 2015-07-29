@@ -46,6 +46,7 @@
             await service.Create(document);
         }
 
+        //TODO: Move to another file
         [Test]
         [ExpectedException(typeof(CannotModifyDocumentIdException))]
         public void throw_an_exception_when_try_to_change_the_id_of_a_document()
@@ -97,6 +98,7 @@
         }
 
 
+        //TODO: simplify test
         [Test]
         public async Task return_a_list_of_documents_when_user_want_to_see_all_documents()
         {
