@@ -13,12 +13,12 @@
             this.repository = repository;
         }
 
-        public virtual void Create(Document document)
+        public virtual async Task Create(Document document)
         {
             if (!String.IsNullOrWhiteSpace(document.Id))
                 throw new DocumentIdCouldNotBeDefinedException();
             document.GenerateAutomaticId();
-            repository.Save(document);
+            await repository.Save(document);
         }
 
         public virtual async Task<Document> GetDocumentById(string id)

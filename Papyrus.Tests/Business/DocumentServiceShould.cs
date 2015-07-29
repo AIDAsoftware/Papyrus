@@ -39,11 +39,11 @@
         }
 
         [Test]
-        public void throw_an_exception_when_try_to_create_a_document_with_an_id()
+        [ExpectedException(typeof(DocumentIdCouldNotBeDefinedException))]
+        public async Task throw_an_exception_when_try_to_create_a_document_with_an_id()
         {
             var document = new Document().WithId("AnyId");
-            Action action = () => service.Create(document);
-            action.ShouldThrow<DocumentIdCouldNotBeDefinedException>();
+            await service.Create(document);
         }
 
         [Test]
