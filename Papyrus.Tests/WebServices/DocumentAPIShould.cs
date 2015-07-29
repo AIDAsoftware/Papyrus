@@ -15,7 +15,6 @@
     public class DocumentApiShould : OwinRunner
     {
         // TODO:
-        //  when update a document, it should return a 200 http status code
         //  when try to update a no existing document, it should return a 404 http status code
         //  when remove a document, it should return a 204 http status code
         //  when try to remove a no existing document, it should return a 404 http status code 
@@ -25,14 +24,20 @@
         private const string AnyContent = "AnyContent";
         private const string AnyDescription = "AnyDescription";
         private const string AnyLanguage = "AnyLanguage";
+        private RestClient restClient;
+
+        [SetUp]
+        public void InitializeRestClient()
+        {
+            restClient = new RestClient(baseAddress);
+        }
 
         [Test]
         public async void when_looking_for_an_existing_document_it_should_return_a_dto_with_its_information()
         {
             GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(AnyDocument());
             
-            var client = new RestClient(baseAddress);
-            var documentDto = await client.Get<DocumentDto>("documents/" + AnyId);
+            var documentDto = await restClient.Get<DocumentDto>("documents/" + AnyId);
 
             ShouldBeADocumentDtoWithNoNullFields(documentDto);
         }
@@ -42,8 +47,7 @@
         {
             GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(null);
 
-            var client = new RestClient(baseAddress);
-            Func<Task> asyncCall = async () => await client.Get<DocumentDto>("documents/" + AnyId);
+            Func<Task> asyncCall = async () => await restClient.Get<DocumentDto>("documents/" + AnyId);
 
             asyncCall.ShouldThrow<HttpResponseException>()
                 .Which.Response.StatusCode.Should()
@@ -56,8 +60,7 @@
             var expectedDocumentsList = new[] { new Document().WithTitle(AnyTitle) };
             GivenAWebApiWithADocumentServiceWhichWhenGettingAllDocumentsReturns(expectedDocumentsList);
 
-            var client = new RestClient(baseAddress);
-            var documentDtos = await client.Get<DocumentDto[]>("documents/");
+            var documentDtos = await restClient.Get<DocumentDto[]>("documents/");
 
             documentDtos.Length.Should().Be(1);
             documentDtos[0].ShouldBeEquivalentTo(expectedDocumentsList[0]);
@@ -70,8 +73,7 @@
             WebApiConfig.Container.RegisterInstance(documentService);
 
             var document = new ComparableDocument().WithTitle(AnyTitle);
-            var client = new RestClient(baseAddress);
-            var response = await client.PostAsJson("documents/", document);
+            var response = await restClient.PostAsJson("documents/", document);
 
             documentService.Received().Create(document);
             response.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -85,8 +87,7 @@
 
             var document = new ComparableDocument().WithId(AnyId);
             //TODO: extract client as field
-            var client = new RestClient(baseAddress);
-            var response = await client.PutAsJson("documents/" + document.Id, document);
+            var response = await restClient.PutAsJson("documents/" + document.Id, document);
 
             documentService.Received().Update(document);
             response.StatusCode.Should().Be(HttpStatusCode.Accepted);
