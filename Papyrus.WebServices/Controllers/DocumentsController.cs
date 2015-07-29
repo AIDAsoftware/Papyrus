@@ -1,12 +1,12 @@
 ﻿namespace Papyrus.WebServices.Controllers
 {
-    using System;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
     using Business.Documents;
+    using Business.Documents.Exceptions;
     using Models;
 
     public class DocumentsController : ApiController {
@@ -44,7 +44,14 @@
         public async Task<HttpResponseMessage> Update(string id, [FromBody] DocumentDto documentDto)
         {
             var document = DocumentFrom(documentDto);
-            await documentService.Update(document);
+            try
+            {
+                await documentService.Update(document);
+            }
+            catch (DocumentIdCouldBeDefinedException)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
             return new HttpResponseMessage(HttpStatusCode.Accepted);
         }
 

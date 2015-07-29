@@ -6,8 +6,10 @@
     using System.Web.Http;
     using FluentAssertions;
     using NSubstitute;
+    using NSubstitute.ExceptionExtensions;
     using NUnit.Framework;
     using Papyrus.Business.Documents;
+    using Papyrus.Business.Documents.Exceptions;
     using Papyrus.WebServices;
     using Papyrus.WebServices.Models;
 
@@ -15,7 +17,6 @@
     public class DocumentApiShould : OwinRunner
     {
         // TODO:
-        //  when try to update a no existing document, it should return a 404 http status code
         //  when remove a document, it should return a 204 http status code
         //  when try to remove a no existing document, it should return a 404 http status code 
 
@@ -90,6 +91,22 @@
 
             documentService.Received().Update(document);
             response.StatusCode.Should().Be(HttpStatusCode.Accepted);
+        }
+
+        [Test]
+        public async Task return_a_404_http_status_code_when_updating_no_existing_document()
+        {
+            var documentService = SubstituteForDocumentService();
+            documentService.
+                Update(Arg.Any<Document>()).
+                Throws<DocumentIdCouldBeDefinedException>();
+            WebApiConfig.Container.RegisterInstance(documentService);
+
+            var document = new ComparableDocument().WithId(AnyId);
+            var response = await restClient.PutAsJson("documents/" + document.Id, document);
+
+            documentService.Received().Update(document);
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
         private void GivenAWebApiWithADocumentServiceWhichWhenTryingToGetADocumentReturns(Document document)
