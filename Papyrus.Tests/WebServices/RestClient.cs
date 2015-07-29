@@ -106,8 +106,7 @@
         private HttpContent content;
 
         public HttpRequestMessageBuilder WithMethod(HttpMethod method) {
-            this.method = method;
-            this.method = (method ?? HttpMethod.Get);
+            this.method = method ?? HttpMethod.Get;
             return this;
         }
 
