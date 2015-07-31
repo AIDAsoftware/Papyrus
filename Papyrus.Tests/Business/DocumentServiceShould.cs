@@ -11,6 +11,7 @@
     [TestFixture]
     public class DocumentServiceShould
     {
+        private const string AnyId = "AnyId";
         private DocumentRepository repository;
         private DocumentService service;
 
@@ -18,8 +19,8 @@
         public void SetUp()
         {
             repository = Substitute.For<DocumentRepository>();
-            repository.GetDocument("AnyId").Returns(            //TODO extract field
-                Task.FromResult(new Document().WithId("AnyId"))
+            repository.GetDocument(AnyId).Returns(            //TODO extract field
+                Task.FromResult(new Document().WithId(AnyId))
             );
             service = new DocumentService(repository);
         }
@@ -44,7 +45,7 @@
         [ExpectedException(typeof(DocumentIdCouldNotBeDefinedException))]
         public async Task throw_an_exception_when_try_to_create_a_document_with_an_id()
         {
-            var document = new Document().WithId("AnyId");
+            var document = new Document().WithId(AnyId);
             await service.Create(document);
         }
 
@@ -66,7 +67,7 @@
         [Test]
         public async void update_a_given_document_when_it_is_modified()
         {
-            var document = new Document().WithId("AnyId");
+            var document = new Document().WithId(AnyId);
 
             document.WithTitle("Login en el sistema");
             await service.Update(document);
@@ -108,7 +109,7 @@
         [Test]
         public async Task remove_a_given_document_when_it_is_deleted()
         {
-            const string documentId = "AnyId";
+            const string documentId = AnyId;
             await service.Remove(documentId);
             repository.Received().Delete(documentId);
         }
@@ -117,7 +118,7 @@
         [Test]
         public async Task return_a_list_of_documents_when_user_want_to_see_all_documents()
         {
-            var anyId = "AnyId";
+            var anyId = AnyId;
             repository.GetAllDocuments().Returns(Task.FromResult(new List<Document> {
                 new Document().WithId(anyId),
             }));
