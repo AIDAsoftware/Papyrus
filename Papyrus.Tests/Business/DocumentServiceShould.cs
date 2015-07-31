@@ -87,10 +87,7 @@
         [ExpectedException(typeof(DocumentNotFoundException))]
         public async Task throw_an_exception_when_try_to_update_a_non_existent_document()
         {
-            repository.GetDocument("NoExistingId").Returns(
-                Task.FromResult((Document)null)
-            );
-            var document = new Document().WithId("NonExistentId");
+            var document = new Document().WithId("NoExistingId");
             await service.Update(document);
         }
 
@@ -107,9 +104,6 @@
         [ExpectedException(typeof(DocumentNotFoundException))]
         public async Task throw_an_exception_when_try_to_delete_a_no_existing_document()
         {
-            repository.GetDocument("NoExistingId").Returns(
-                Task.FromResult((Document) null)
-                );
             await service.Remove("NoExistingId");
         }
 
