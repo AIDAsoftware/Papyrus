@@ -1,6 +1,5 @@
 ﻿namespace Papyrus.Tests.Business
 {
-    using System.Threading.Tasks;
     using NUnit.Framework;
     using Papyrus.Business.Documents;
     using Papyrus.Business.Documents.Exceptions;
