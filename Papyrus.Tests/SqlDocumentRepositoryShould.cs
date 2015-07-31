@@ -117,7 +117,7 @@ namespace Papyrus.Tests
                 .Query<Document>(@"SELECT Id, Title, Content, Description, Language " +
                                  "FROM [Documents]" +
                                  "WHERE Id = @Id;", new { Id = id });
-            return result.Any() ? result.First() : null;
+            return result.FirstOrDefault();
         }
     }
 }
