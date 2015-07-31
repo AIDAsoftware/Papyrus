@@ -2,5 +2,5 @@ namespace Papyrus.Business.Documents.Exceptions
 {
     using System;
 
-    public class DocumentIdCouldNotBeDefinedException : Exception {}
+    public class DocumentIdMustNotBeDefinedException : Exception {}
 }

@@ -42,7 +42,7 @@
         }
 
         [Test]
-        [ExpectedException(typeof(DocumentIdCouldNotBeDefinedException))]
+        [ExpectedException(typeof(DocumentIdMustNotBeDefinedException))]
         public async Task throw_an_exception_when_try_to_create_a_document_with_an_id()
         {
             var document = new Document().WithId(AnyId);
