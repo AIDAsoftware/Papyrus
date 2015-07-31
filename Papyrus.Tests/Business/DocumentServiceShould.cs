@@ -18,6 +18,9 @@
         public void SetUp()
         {
             repository = Substitute.For<DocumentRepository>();
+            repository.GetDocument("AnyId").Returns(            //TODO extract field
+                Task.FromResult(new Document().WithId("AnyId"))
+            );
             service = new DocumentService(repository);
         }
 
@@ -78,7 +81,29 @@
             var document = new Document();
             await service.Update(document);
         }
-                                                            
+
+        [Test]
+        [ExpectedException(typeof(DocumentNotFoundException))]
+        public async Task throw_an_exception_when_try_to_update_a_non_existent_document()
+        {
+            repository.GetDocument("NoExistingId").Returns(
+                Task.FromResult((Document)null)
+            );
+            var document = new Document().WithId("NonExistentId");
+            await service.Update(document);
+        }
+
+
+        [Test]
+        [ExpectedException(typeof(DocumentNotFoundException))]
+        public async Task throw_an_exception_when_try_to_delete_a_no_existing_document()
+        {
+            repository.GetDocument("NoExistingId").Returns(
+                Task.FromResult((Document) null)
+            );
+            await service.Remove("NoExistingId");
+        }
+
 
         [Test]
         public async Task remove_a_given_document_when_it_is_deleted()

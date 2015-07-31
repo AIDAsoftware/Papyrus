@@ -97,20 +97,6 @@ namespace Papyrus.Tests
             documents.ToArray().Length.Should().Be(2);
         }
 
-        [Test]
-        [ExpectedException(typeof(DocumentNotFoundException))]
-        public async Task throw_an_exception_when_try_to_update_a_non_existent_document()
-        {
-            var document = new Document().WithId("NonExistentId");
-            await new SqlDocumentRepository(dbConnection).Update(document);
-        }
-
-        [Test]
-        [ExpectedException(typeof (DocumentNotFoundException))]
-        public async Task throw_an_exception_when_try_to_delete_a_no_existing_document()
-        {
-            await new SqlDocumentRepository(dbConnection).Delete("NoExistingId");
-        }
 
         private async Task InsertDocumentWith(string id, string title = null, string description = null, string content = null, string language = null)
         {

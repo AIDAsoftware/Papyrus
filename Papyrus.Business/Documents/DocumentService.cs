@@ -30,11 +30,15 @@
         {
             if (string.IsNullOrWhiteSpace(document.Id))
                 throw new DocumentIdMustBeDefinedException();
+            if (await GetDocumentById(document.Id) == null)
+                throw new DocumentNotFoundException();
             await repository.Update(document);
         }
 
-        public async Task Remove(string documentId)
+        public virtual async Task Remove(string documentId)
         {
+            if (await GetDocumentById(documentId) == null)
+                throw new DocumentNotFoundException();
             await repository.Delete(documentId);
         }
 
