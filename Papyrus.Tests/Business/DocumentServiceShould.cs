@@ -46,14 +46,6 @@
             await service.Create(document);
         }
 
-        //TODO: Move to another file
-        [Test]
-        [ExpectedException(typeof(CannotModifyDocumentIdException))]
-        public void throw_an_exception_when_try_to_change_the_id_of_a_document()
-        {
-            var document = new Document().WithId("AnyId");
-            document.WithId("AnotherId");
-        }
 
         [Test]
         public async void get_a_saved_document_when_it_is_requested()
