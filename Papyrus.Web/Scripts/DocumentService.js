@@ -35,12 +35,10 @@ DocumentService.prototype = {
             url: this.documentsURL(),
             data: JSON.stringify(document),
             success: function() {
-                //TODO: remove from here
-                alert("Document created");
+                console.log("document created");
             },
             error: function (request, status, error) {
-                //TODO: remove from here
-                alert(request.responseText);
+                console.log(request.responseText);
             }
         });
     }
