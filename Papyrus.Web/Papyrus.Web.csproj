@@ -95,7 +95,7 @@
     <Content Include="Views\Documents\Create.cshtml" />
     <Content Include="Views\Documents\AllDocuments.cshtml" />
     <None Include="Views\Home\index.cshtml" />
-    <Content Include="Scripts\IndexViewOperations.js" />
+    <Content Include="Scripts\AllDocumentsViewOperations.js" />
     <Content Include="Tests\lib\jasmine-2.3.4\boot.js" />
     <Content Include="Tests\lib\jasmine-2.3.4\console.js" />
     <Content Include="Tests\lib\jasmine-2.3.4\jasmine-html.js" />
