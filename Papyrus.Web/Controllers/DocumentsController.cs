@@ -4,7 +4,7 @@
 
     public class DocumentsController : Controller
     {
-        public ActionResult Detail(string id)
+        public ActionResult Details(string id)
         {
             return View();
         }
