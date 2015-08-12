@@ -1,11 +1,14 @@
-﻿$(document).ready(function () {
+﻿var papyrus = papyrus || {};
+
+$(document).ready(function () {
     var id = getIdFromUrl();
-    new DocumentService().GetDocument(id).done(function(document) {
+    new papyrus.DocumentService().getDocument(id).done(function(document) {
         paintDocumentDetailsFor(document);
     });
 });
 
-function paintDocumentDetailsFor(document) {
+function
+    paintDocumentDetailsFor(document) {
     $("#document-title").html(document.Title);
     $("#document-content").html(document.Content);
     $("#document-description").html(document.Description);

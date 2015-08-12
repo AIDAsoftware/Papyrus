@@ -5,5 +5,5 @@
         Content: $("#inputContent").val(),
         Language: $("#inputLanguage").val()
     };
-    new DocumentService().createDocument(document);
+    new papyrus.DocumentService().createDocument(document);
 }

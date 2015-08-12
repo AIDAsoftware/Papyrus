@@ -1,46 +1,50 @@
-function DocumentService() {
-    this.documentsURL = function () {
-        return "http://localhost:8888/papyrusapi/documents/";
-    };
-    this.ajaxContentType = function () {
-        return "application/json; charset=utf-8";
+var papyrus = papyrus || {};
+
+(function(ns) {
+    function DocumentService() {
+        var documentsUrl = "http://localhost:8888/papyrusapi/documents/";
+        var ajaxContentType = "application/json; charset=utf-8";
+
+        var allDocuments = function () {
+            return $.ajax({
+                type: "GET",
+                contentType: ajaxContentType,
+                url: documentsUrl,
+                success: function () { },
+                error: function (request, status, error) { }
+            });
+        };
+
+        var getDocument = function (documentId) {
+            return $.ajax({
+                type: "GET",
+                contentType: ajaxContentType,
+                url: documentsUrl + documentId,
+                success: function () { },
+                error: function (request, status, error) { }
+            });
+        };
+
+        var createDocument = function (document) {
+            return $.ajax({
+                type: "POST",
+                contentType: ajaxContentType,
+                url: documentsUrl,
+                data: JSON.stringify(document),
+                success: function () {
+                    console.log("document created");
+                },
+                error: function (request, status, error) {
+                    console.log(request.responseText);
+                }
+            });
+        }
+
+        return {
+            getDocument: getDocument,
+            createDocument: createDocument,
+            allDocuments: allDocuments
+        }
     }
-}
-
-DocumentService.prototype = {
-    allDocuments: function () {
-        return $.ajax({
-            type: "GET",
-            contentType: this.ajaxContentType(),
-            url: this.documentsURL(),
-            success: function() {},
-            error: function (request, status, error) {}
-        });
-    },
-
-    GetDocument: function (documentId) {
-        return $.ajax({
-            type: "GET",
-            contentType: this.ajaxContentType(),
-            url: this.documentsURL() + documentId,
-            success: function() {},
-            error: function (request, status, error) {}
-        });
-    },
-
-    createDocument: function (document) {
-        return $.ajax({
-            type: "POST",
-            contentType: this.ajaxContentType(),
-            url: this.documentsURL(),
-            data: JSON.stringify(document),
-            success: function() {
-                console.log("document created");
-            },
-            error: function (request, status, error) {
-                console.log(request.responseText);
-            }
-        });
-    }
-};
-
+    ns.DocumentService = DocumentService;
+})(papyrus);
