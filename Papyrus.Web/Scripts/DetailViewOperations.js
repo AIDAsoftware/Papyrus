@@ -1,5 +1,4 @@
-﻿var papyrus = papyrus || {};
-
+﻿
 $(document).ready(function () {
     var id = getIdFromUrl();
     new papyrus.DocumentService().getDocument(id).done(function(document) {
