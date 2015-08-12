@@ -48,7 +48,7 @@
                         <a href="@Url.Action("Create", "Documents")">Create</a>
                     </li>
                     <li>
-                        <a href="#documents">Services</a>
+                        <a href="@Url.Action("AllDocuments", "Documents")">Documents</a>
                     </li>
                     <li>
                         <a href="#contact">Contact</a>
@@ -73,16 +73,6 @@
     <!-- Page Content -->
     <div class="container">
 
-        <hr class="featurette-divider">
-
-        <!-- Second Featurette -->
-        <div class="featurette" id="documents">
-            <h2 class="title">Documents</h2><br/>
-            <div class="list-group col-sm-offset-1 col-sm-10" id="documents-list"></div>
-        </div>
-
-        <hr class="featurette-divider">
-
         <!-- Footer -->
         <footer>
             <div class="row">
@@ -100,9 +90,6 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 
-    <script src="@Url.Content("~/Scripts/DocumentService.js")"></script>
-
-    <script src="@Url.Content("~/Scripts/IndexViewOperations.js")"></script>
 </body>
 
 </html>

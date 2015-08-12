@@ -92,6 +92,7 @@
     <Content Include="Scripts\jquery-1.11.3.min.js" />
     <Content Include="Views\Documents\Details.cshtml" />
     <Content Include="Views\Documents\Create.cshtml" />
+    <Content Include="Views\Documents\AllDocuments.cshtml" />
     <None Include="Views\Home\index.cshtml" />
     <Content Include="Scripts\IndexViewOperations.js" />
     <Content Include="Tests\lib\jasmine-2.3.4\boot.js" />

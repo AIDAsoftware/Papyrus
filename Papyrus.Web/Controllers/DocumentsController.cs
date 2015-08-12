@@ -13,5 +13,10 @@
         {
             return View();
         }
+
+        public ActionResult AllDocuments()
+        {
+            return View();
+        }
     }
 }
