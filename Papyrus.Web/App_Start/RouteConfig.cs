@@ -16,22 +16,9 @@ namespace Papyrus.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Create",
-                url: "Document/{action}",
-                defaults: new {controller = "Document", action = "Create"}    
-            );
-
-            routes.MapRoute(
-                name: "Details",
-                url: "{controller}/{action}/{id}",
-                defaults: new {controller = "Document", action = "Detail"}    
-            );
-
-
-            routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}",
-                defaults: new { controller = "Home", action = "Index"}
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional}
             );
         }
     }

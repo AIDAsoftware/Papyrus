@@ -2,7 +2,7 @@
 {
     using System.Web.Mvc;
 
-    public class DocumentController : Controller
+    public class DocumentsController : Controller
     {
         public ActionResult Detail(string id)
         {

@@ -25,7 +25,7 @@ function refreshDocumentsList() {
 }
 
 function paintDocumentRowFor(document) {
-    var url = "http://localhost:8888/papyrus/document/detail/" + document.Id;
+    var url = "http://localhost:8888/papyrus/documents/detail/" + document.Id;
     $("#documents-list").append(
         '<a href="' + url + '" class="list-group-item">'
             + document.Title +
