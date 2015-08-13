@@ -14,7 +14,7 @@ describe("DocumentService", function () {
     var documentService;
 
     beforeEach(function() {
-        documentService = new DocumentService();
+        documentService = new papyrus.DocumentService();
     });
 
     it("should return a list of documents when there are documents and try to get all", function(){
@@ -32,7 +32,7 @@ describe("DocumentService", function () {
     it("should return a document when it exist and try to get it", function(){
         spyOn($, 'ajax').and.returnValue(anyDocument());
 
-        var document = documentService.GetDocument(anyId);
+        var document = documentService.getDocument(anyId);
 
         var lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
         expect(lastAjaxArgument.type).toEqual("GET");
