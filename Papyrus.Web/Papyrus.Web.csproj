@@ -89,7 +89,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\CreateViewOperations.js" />
     <Content Include="Scripts\DetailViewOperations.js" />
-    <Content Include="Scripts\restClient.js" />
+    <Content Include="Scripts\DocumentService.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
     <Content Include="Views\Documents\Details.cshtml" />
     <Content Include="Views\Documents\Create.cshtml" />

@@ -1,7 +1,7 @@
 var papyrus = papyrus || {};
 
 (function(ns) {
-    function restClient() {
+    function DocumentService() {
         var ajaxContentType = "application/json; charset=utf-8";
         var apiUrl = "http://localhost:8888/papyrusapi/";
         var documents = "documents/";
@@ -13,14 +13,6 @@ var papyrus = papyrus || {};
         var getDocument = function (documentId) {
             return get(documents + documentId);
         };
-
-        function get (url) {
-            return $.ajax({
-                type: "GET",
-                contentType: ajaxContentType,
-                url: apiUrl + url
-        });
-        }
 
         var createDocument = function (document) {
             return $.ajax({
@@ -37,11 +29,21 @@ var papyrus = papyrus || {};
             });
         }
 
+        function get(url) {
+            return $.ajax({
+                type: "GET",
+                contentType: ajaxContentType,
+                url: apiUrl + url
+            });
+        }
+
+
         return {
             getDocument: getDocument,
             createDocument: createDocument,
             allDocuments: allDocuments
         }
     }
-    ns.RestClient = restClient;
+
+    ns.DocumentService = DocumentService;
 })(papyrus);

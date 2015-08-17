@@ -1,9 +1,9 @@
 // The Jasmine Test Framework
 /// <reference path="/Scripts/jquery-1.11.3.min.js"/>
-/// <reference path="/Scripts/restClient.js"/>
+/// <reference path="/Scripts/DocumentService.js"/>
 /// <reference path="~/Tests/lib/jasmine-2.3.4/jasmine.js" />
 
-describe("RestClient", function () {
+describe("DocumentService", function () {
 
     var anyId = "AnyId",
         anyTitle = "AnyTitle",
@@ -11,16 +11,16 @@ describe("RestClient", function () {
         anyDescription = "AnyDescription",
         anyLanguage = "es",
         documentsURL = "http://localhost:8888/papyrusapi/documents/";
-    var restClient;
+    var documentService;
 
     beforeEach(function() {
-        restClient = new papyrus.RestClient();
+        documentService = new papyrus.DocumentService();
     });
 
     it("should return a list of documents when there are documents and try to get all", function(){
         spyOn($, 'ajax').and.returnValue([anyDocument()]);
 
-		var documents = restClient.allDocuments();
+		var documents = documentService.allDocuments();
 
         var lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
         expect(lastAjaxArgument.type).toEqual("GET");
@@ -32,7 +32,7 @@ describe("RestClient", function () {
     it("should return a document when it exist and try to get it", function(){
         spyOn($, 'ajax').and.returnValue(anyDocument());
 
-        var document = restClient.getDocument(anyId);
+        var document = documentService.getDocument(anyId);
 
         var lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
         expect(lastAjaxArgument.type).toEqual("GET");
@@ -45,7 +45,7 @@ describe("RestClient", function () {
         spyOn($, 'ajax');
         var documentToSave = anyDocumentWithoutId();
 
-        restClient.createDocument(documentToSave);
+        documentService.createDocument(documentToSave);
 
         var lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
         expect(lastAjaxArgument.type).toEqual("POST");

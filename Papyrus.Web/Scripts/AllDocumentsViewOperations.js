@@ -4,5 +4,5 @@
 
 function refreshDocumentsList() {
     $("#documents-list").html("");
-    new papyrus.RestClient().allDocuments();
+    new papyrus.DocumentService().allDocuments();
 }
