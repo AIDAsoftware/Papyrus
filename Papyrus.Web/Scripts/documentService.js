@@ -2,19 +2,19 @@ var papyrus = papyrus || {};
 
 (function(ns) {
     function DocumentService() {
-        var documents = "documents/";
+        var documentsURL = "documents/";
         var restClient = new papyrus.RestClient();
 
         var allDocuments = function () {
-            return restClient.get(documents);
+            return restClient.get(documentsURL);
         };
 
         var getDocument = function (documentId) {
-            return restClient.get(documents + documentId);
+            return restClient.get(documentsURL + documentId);
         };
 
         var createDocument = function (document) {
-            return restClient.post(documents, document);
+            return restClient.post(documentsURL, document);
         }
 
         return {
