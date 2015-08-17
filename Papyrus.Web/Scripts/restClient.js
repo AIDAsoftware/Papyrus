@@ -4,6 +4,7 @@ var papyrus = papyrus || {};
     function restClient() {
         var documentsUrl = "http://localhost:8888/papyrusapi/documents/";
         var ajaxContentType = "application/json; charset=utf-8";
+        var apiUrl = "http://localhost:8888/papyrusapi/";
 
         var allDocuments = function () {
             return get("documents/");
@@ -14,7 +15,6 @@ var papyrus = papyrus || {};
         };
 
         function get (url, successCallBack) {
-            var apiUrl = "http://localhost:8888/papyrusapi/";
             return $.ajax({
                 type: "GET",
                 contentType: ajaxContentType,
