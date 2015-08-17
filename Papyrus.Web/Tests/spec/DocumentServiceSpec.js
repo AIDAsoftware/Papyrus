@@ -1,26 +1,26 @@
 // The Jasmine Test Framework
 /// <reference path="/Scripts/jquery-1.11.3.min.js"/>
-/// <reference path="/Scripts/DocumentService.js"/>
+/// <reference path="/Scripts/restClient.js"/>
 /// <reference path="~/Tests/lib/jasmine-2.3.4/jasmine.js" />
 
-describe("DocumentService", function () {
-    
+describe("RestClient", function () {
+
     var anyId = "AnyId",
-          anyTitle = "AnyTitle",
-          anyContent = "AnyContent",
-          anyDescription = "AnyDescription",
-          anyLanguage = "es",
-          documentsURL = "http://localhost:8888/papyrusapi/documents/"
-    var documentService;
+        anyTitle = "AnyTitle",
+        anyContent = "AnyContent",
+        anyDescription = "AnyDescription",
+        anyLanguage = "es",
+        documentsURL = "http://localhost:8888/papyrusapi/documents/";
+    var restClient;
 
     beforeEach(function() {
-        documentService = new papyrus.DocumentService();
+        restClient = new papyrus.RestClient();
     });
 
     it("should return a list of documents when there are documents and try to get all", function(){
         spyOn($, 'ajax').and.returnValue([anyDocument()]);
 
-		var documents = documentService.allDocuments();
+		var documents = restClient.allDocuments();
 
         var lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
         expect(lastAjaxArgument.type).toEqual("GET");
@@ -28,11 +28,11 @@ describe("DocumentService", function () {
         expect(lastAjaxArgument.url).toEqual(documentsURL);
         expect(documents).toEqual([anyDocument()]);
     });
-
+    
     it("should return a document when it exist and try to get it", function(){
         spyOn($, 'ajax').and.returnValue(anyDocument());
 
-        var document = documentService.getDocument(anyId);
+        var document = restClient.getDocument(anyId);
 
         var lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
         expect(lastAjaxArgument.type).toEqual("GET");
@@ -45,7 +45,7 @@ describe("DocumentService", function () {
         spyOn($, 'ajax');
         var documentToSave = anyDocumentWithoutId();
 
-        documentService.createDocument(documentToSave);
+        restClient.createDocument(documentToSave);
 
         var lastAjaxArgument = $.ajax.calls.mostRecent().args[0];
         expect(lastAjaxArgument.type).toEqual("POST");

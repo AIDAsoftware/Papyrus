@@ -4,7 +4,7 @@
 
 function refreshDocumentsList() {
     $("#documents-list").html("");
-    new papyrus.DocumentService().allDocuments().done(function (documents) {
+    new papyrus.RestClient().allDocuments().done(function (documents) {
         console.log(documents);
         documents.forEach(function (document) {
             paintDocumentRowFor(document);

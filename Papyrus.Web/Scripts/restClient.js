@@ -1,7 +1,7 @@
 var papyrus = papyrus || {};
 
 (function(ns) {
-    function DocumentService() {
+    function restClient() {
         var documentsUrl = "http://localhost:8888/papyrusapi/documents/";
         var ajaxContentType = "application/json; charset=utf-8";
 
@@ -46,5 +46,5 @@ var papyrus = papyrus || {};
             allDocuments: allDocuments
         }
     }
-    ns.DocumentService = DocumentService;
+    ns.RestClient = restClient;
 })(papyrus);
