@@ -1,17 +1,7 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
     var id = getIdFromUrl();
-    new papyrus.RestClient().getDocument(id).done(function(document) {
-        paintDocumentDetailsFor(document);
-    });
+    new papyrus.RestClient().getDocument(id);
 });
-
-function
-    paintDocumentDetailsFor(document) {
-    $("#document-title").html(document.Title);
-    $("#document-content").html(document.Content);
-    $("#document-description").html(document.Description);
-}
 
 function getIdFromUrl() {
     var url = window.location.href;
