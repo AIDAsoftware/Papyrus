@@ -9,6 +9,10 @@ var papyrus = papyrus || {};
             return get("documents/");
         };
 
+        var getDocument = function (documentId) {
+            return get("documents/" + documentId);
+        };
+
         function get (url, successCallBack) {
             var apiUrl = "http://localhost:8888/papyrusapi/";
             return $.ajax({
@@ -19,16 +23,6 @@ var papyrus = papyrus || {};
                 error: function (request, status, error) { }
             });
         }
-
-        var getDocument = function (documentId) {
-            return $.ajax({
-                type: "GET",
-                contentType: ajaxContentType,
-                url: documentsUrl + documentId,
-                success: function () { },
-                error: function (request, status, error) { }
-            });
-        };
 
         var createDocument = function (document) {
             return $.ajax({
