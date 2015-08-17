@@ -1,10 +1,12 @@
-﻿var papyrus = papyrus || {}
+﻿var papyrus = papyrus || {};
 
 (function (ns) {
 
     function RestClient() {
+        var ajaxContentType = "application/json; charset=utf-8";
+        var apiUrl = "http://localhost:8888/papyrusapi/";
 
-        function get(url) {
+        var get = function (url) {
             return $.ajax({
                 type: "GET",
                 contentType: ajaxContentType,
@@ -18,5 +20,5 @@
 
     }
 
-    ns.RestClient = RestClient();
+    ns.RestClient = RestClient;
 })(papyrus);

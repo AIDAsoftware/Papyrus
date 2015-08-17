@@ -5,13 +5,14 @@ var papyrus = papyrus || {};
         var ajaxContentType = "application/json; charset=utf-8";
         var apiUrl = "http://localhost:8888/papyrusapi/";
         var documents = "documents/";
+        var restClient = new papyrus.RestClient();
 
         var allDocuments = function () {
-            return RestClient.get(documents);
+            return restClient.get(documents);
         };
 
         var getDocument = function (documentId) {
-            return RestClient.get(documents + documentId);
+            return restClient.get(documents + documentId);
         };
 
         var createDocument = function (document) {
