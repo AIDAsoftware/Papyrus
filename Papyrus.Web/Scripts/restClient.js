@@ -6,14 +6,19 @@ var papyrus = papyrus || {};
         var ajaxContentType = "application/json; charset=utf-8";
 
         var allDocuments = function () {
+            return get("documents/");
+        };
+
+        function get (url, successCallBack) {
+            var apiUrl = "http://localhost:8888/papyrusapi/";
             return $.ajax({
                 type: "GET",
                 contentType: ajaxContentType,
-                url: documentsUrl,
-                success: function () { },
+                url: apiUrl + url,
+                success: successCallBack,
                 error: function (request, status, error) { }
             });
-        };
+        }
 
         var getDocument = function (documentId) {
             return $.ajax({
