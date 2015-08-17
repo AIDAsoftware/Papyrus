@@ -2,16 +2,16 @@ var papyrus = papyrus || {};
 
 (function(ns) {
     function restClient() {
-        var documentsUrl = "http://localhost:8888/papyrusapi/documents/";
         var ajaxContentType = "application/json; charset=utf-8";
         var apiUrl = "http://localhost:8888/papyrusapi/";
+        var documents = "documents/";
 
         var allDocuments = function () {
-            return get("documents/");
+            return get(documents);
         };
 
         var getDocument = function (documentId) {
-            return get("documents/" + documentId);
+            return get(documents + documentId);
         };
 
         function get (url, successCallBack) {
@@ -28,7 +28,7 @@ var papyrus = papyrus || {};
             return $.ajax({
                 type: "POST",
                 contentType: ajaxContentType,
-                url: documentsUrl,
+                url: apiUrl + documents,
                 data: JSON.stringify(document),
                 success: function () {
                     console.log("document created");
