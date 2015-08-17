@@ -2,8 +2,6 @@ var papyrus = papyrus || {};
 
 (function(ns) {
     function DocumentService() {
-        var ajaxContentType = "application/json; charset=utf-8";
-        var apiUrl = "http://localhost:8888/papyrusapi/";
         var documents = "documents/";
         var restClient = new papyrus.RestClient();
 
