@@ -16,18 +16,7 @@ var papyrus = papyrus || {};
         };
 
         var createDocument = function (document) {
-            return $.ajax({
-                type: "POST",
-                contentType: ajaxContentType,
-                url: apiUrl + documents,
-                data: JSON.stringify(document),
-                success: function () {
-                    console.log("document created");
-                },
-                error: function (request, status, error) {
-                    console.log(request.responseText);
-                }
-            });
+            return restClient.post(documents, document);
         }
 
         return {

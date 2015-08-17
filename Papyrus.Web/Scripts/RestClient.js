@@ -14,8 +14,24 @@
             });
         }
 
+        var post = function(url, document) {
+            return $.ajax({
+                type: "POST",
+                contentType: ajaxContentType,
+                url: apiUrl + url,
+                data: JSON.stringify(document),
+                success: function () {
+                    console.log("document created");
+                },
+                error: function (request, status, error) {
+                    console.log(request.responseText);
+                }
+            });
+        }
+
         return {
-            get: get
+            get : get,
+            post : post
         }
 
     }
