@@ -7,11 +7,11 @@ var papyrus = papyrus || {};
         var documents = "documents/";
 
         var allDocuments = function () {
-            return get(documents);
+            return RestClient.get(documents);
         };
 
         var getDocument = function (documentId) {
-            return get(documents + documentId);
+            return RestClient.get(documents + documentId);
         };
 
         var createDocument = function (document) {
@@ -28,15 +28,6 @@ var papyrus = papyrus || {};
                 }
             });
         }
-
-        function get(url) {
-            return $.ajax({
-                type: "GET",
-                contentType: ajaxContentType,
-                url: apiUrl + url
-            });
-        }
-
 
         return {
             getDocument: getDocument,
