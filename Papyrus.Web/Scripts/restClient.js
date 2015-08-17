@@ -14,14 +14,12 @@ var papyrus = papyrus || {};
             return get(documents + documentId);
         };
 
-        function get (url, successCallBack) {
+        function get (url) {
             return $.ajax({
                 type: "GET",
                 contentType: ajaxContentType,
-                url: apiUrl + url,
-                success: successCallBack,
-                error: function (request, status, error) { }
-            });
+                url: apiUrl + url
+        });
         }
 
         var createDocument = function (document) {
