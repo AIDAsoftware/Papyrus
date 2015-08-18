@@ -6,19 +6,19 @@
         var ajaxContentType = "application/json; charset=utf-8";
         var apiUrl = "http://localhost:8888/papyrusapi/";
 
-        var get = function (url) {
+        var get = function (resourceUrl) {
             return $.ajax({
                 type: "GET",
                 contentType: ajaxContentType,
-                url: apiUrl + url
+                url: apiUrl + resourceUrl
             });
         }
 
-        var post = function(url, document) {
+        var post = function(resourceUrl, document) {
             return $.ajax({
                 type: "POST",
                 contentType: ajaxContentType,
-                url: apiUrl + url,
+                url: apiUrl + resourceUrl,
                 data: JSON.stringify(document),
                 success: function () {
                     console.log("document created");
