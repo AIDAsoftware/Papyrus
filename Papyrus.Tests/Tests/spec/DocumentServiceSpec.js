@@ -1,7 +1,7 @@
 // The Jasmine Test Framework
-/// <reference path="/Scripts/jquery-1.11.3.min.js"/>
-/// <reference path="/Scripts/RestClient.js"/>
-/// <reference path="/Scripts/DocumentService.js"/>
+/// <reference path="~/../Papyrus.Web/Scripts/jquery-1.11.3.min.js"/>
+/// <reference path="~/../Papyrus.Web/Scripts/RestClient.js"/>
+/// <reference path="~/../Papyrus.Web/Scripts/DocumentService.js"/>
 /// <reference path="~/Tests/lib/jasmine-2.3.4/jasmine.js" />
 
 describe("DocumentService", function () {

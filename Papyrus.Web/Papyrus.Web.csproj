@@ -97,13 +97,6 @@
     <Content Include="Views\Documents\AllDocuments.cshtml" />
     <None Include="Views\Home\index.cshtml" />
     <Content Include="Scripts\AllDocumentsViewOperations.js" />
-    <Content Include="Tests\lib\jasmine-2.3.4\boot.js" />
-    <Content Include="Tests\lib\jasmine-2.3.4\console.js" />
-    <Content Include="Tests\lib\jasmine-2.3.4\jasmine-html.js" />
-    <Content Include="Tests\lib\jasmine-2.3.4\jasmine.css" />
-    <Content Include="Tests\lib\jasmine-2.3.4\jasmine.js" />
-    <Content Include="Tests\lib\jasmine-2.3.4\jasmine_favicon.png" />
-    <Content Include="Tests\spec\DocumentServiceSpec.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
