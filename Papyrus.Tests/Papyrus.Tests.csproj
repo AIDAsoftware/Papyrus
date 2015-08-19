@@ -149,7 +149,7 @@
     <Content Include="Web\lib\jasmine-2.3.4\jasmine.js" />
     <Content Include="Web\lib\jasmine-2.3.4\jasmine_favicon.png" />
     <Content Include="Web\spec\DocumentServiceSpec.js" />
-    <Content Include="Web\spec\ViewOperationsSpec.js" />
+    <Content Include="Web\spec\OperationResultDisplayerSpec.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
