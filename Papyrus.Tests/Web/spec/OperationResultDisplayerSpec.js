@@ -23,6 +23,20 @@ describe("OperationResultDisplayer", function () {
         expect(message.css("display")).toEqual("inline-block");
     });
 
+    it("show error message in red when a document is not created", function () {
+        var displayer = new papyrus.OperationResultDisplayer();
+        var message = {
+            title: "Cant create the document",
+            type: "fail"
+        }
+
+        displayer.displayMessage(message);
+        var message = $("#message-notifier");
+        expect(message.children("h3").text()).toEqual("Cant create the document");
+        expect(message.css("background-color")).toEqual("rgb(204, 0, 13)");
+        expect(message.css("display")).toEqual("inline-block");
+    });
+
     afterEach(function() {                    
         $("#message-notifier").remove();
     });

@@ -5,7 +5,7 @@
     function OperationResultDisplayer() {
 
         var displayMessage = function(message) {
-            var displayColor = "rgb(166, 215, 133)";
+            var displayColor = (message.type == "success") ? "rgb(166, 215, 133)" : "rgb(204, 0, 13)";
             $("#message-notifier").css("background-color", displayColor);
             $("#message-notifier").children("h3").text(message.title);
             $("#message-notifier").css("display", "inline-block");
