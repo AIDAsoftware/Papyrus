@@ -117,12 +117,12 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Web\1 - Gestionar documentos.feature" />
-    <None Include="Web\2 - Convertir documentos a HTML.feature" />
-    <None Include="Web\3 - Añadir imágenes a un documento.feature" />
-    <None Include="Web\4 - Definir índices de ayuda.feature" />
-    <None Include="Web\5 - Permitir referencias entre documentos.feature" />
-    <None Include="Web\6 - Asignar categorías y versiones a documentos.feature" />
+    <None Include="Specs\1 - Gestionar documentos.feature" />
+    <None Include="Specs\2 - Convertir documentos a HTML.feature" />
+    <None Include="Specs\3 - Añadir imágenes a un documento.feature" />
+    <None Include="Specs\4 - Definir índices de ayuda.feature" />
+    <None Include="Specs\5 - Permitir referencias entre documentos.feature" />
+    <None Include="Specs\6 - Asignar categorías y versiones a documentos.feature" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Papyrus.Business\Papyrus.Business.csproj">
@@ -142,13 +142,14 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Tests\lib\jasmine-2.3.4\boot.js" />
-    <Content Include="Tests\lib\jasmine-2.3.4\console.js" />
-    <Content Include="Tests\lib\jasmine-2.3.4\jasmine-html.js" />
-    <Content Include="Tests\lib\jasmine-2.3.4\jasmine.css" />
-    <Content Include="Tests\lib\jasmine-2.3.4\jasmine.js" />
-    <Content Include="Tests\lib\jasmine-2.3.4\jasmine_favicon.png" />
-    <Content Include="Tests\spec\DocumentServiceSpec.js" />
+    <Content Include="Web\lib\jasmine-2.3.4\boot.js" />
+    <Content Include="Web\lib\jasmine-2.3.4\console.js" />
+    <Content Include="Web\lib\jasmine-2.3.4\jasmine-html.js" />
+    <Content Include="Web\lib\jasmine-2.3.4\jasmine.css" />
+    <Content Include="Web\lib\jasmine-2.3.4\jasmine.js" />
+    <Content Include="Web\lib\jasmine-2.3.4\jasmine_favicon.png" />
+    <Content Include="Web\spec\DocumentServiceSpec.js" />
+    <Content Include="Web\spec\ViewOperationsSpec.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
