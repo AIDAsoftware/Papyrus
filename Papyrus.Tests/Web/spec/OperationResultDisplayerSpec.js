@@ -21,8 +21,8 @@ describe("OperationResultDisplayer", function () {
         }
         
         displayer.displayMessage(message, messageNotifierId);
-        var green = "rgb(166, 215, 133)";
-        expectMessageIsShownWith(message.title, green);
+        var notifierSuccessCssClass = "notifier-success-message";
+        expectMessageIsShownWith(message.title, notifierSuccessCssClass);
     });
 
     it("should show error message in red when a document is not created", function () {
@@ -31,19 +31,18 @@ describe("OperationResultDisplayer", function () {
             type: "fail"
         }
 
-        var red = "rgb(204, 0, 13)";
+        var cssNotifierErrorClass = "notifier-error-message";
         displayer.displayMessage(message, messageNotifierId);
-        expectMessageIsShownWith(message.title, red);
+        expectMessageIsShownWith(message.title, cssNotifierErrorClass);
     });
 
     afterEach(function() {                    
         $("#message-notifier").remove();
     });
 
-    function expectMessageIsShownWith(title, color) {
+    function expectMessageIsShownWith(title, cssClass) {
         var messageNotifier = $(messageNotifierId);
         expect(messageNotifier.children("h3").text()).toEqual(title);
-        expect(messageNotifier.css("background-color")).toEqual(color);
-        expect(messageNotifier.css("display")).toEqual("inline-block");
+        expect(messageNotifier.hasClass(cssClass)).toBeTruthy();
     }
 });
