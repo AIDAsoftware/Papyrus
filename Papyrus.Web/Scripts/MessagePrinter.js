@@ -10,10 +10,10 @@
         }
 
         function print (message) {
-            var notifierWidget = $(idWithSpecialChar);
-            notifierWidget.css("background-color", colorForType(message.type));
-            notifierWidget.children("h3").text(message.title);
-            notifierWidget.css("display", "inline-block");
+            var $notifierWidget = $(idWithSpecialChar);
+            $notifierWidget.css("background-color", colorForType(message.type));
+            $notifierWidget.children("h3").text(message.title);
+            $notifierWidget.css("display", "inline-block");
         }
         return {
             print: print
