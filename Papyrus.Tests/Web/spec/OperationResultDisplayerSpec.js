@@ -5,7 +5,6 @@
 
 describe("OperationResultDisplayer", function () {
 
-    var displayer;
     var messageNotifierId;
 
     beforeEach(function () {
