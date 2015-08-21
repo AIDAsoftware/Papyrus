@@ -9,9 +9,6 @@ describe("OperationResultDisplayer", function () {
     var displayer;
     var messageNotifierId;
 
-    //TODO: 
-    //  create message notifier in javascript instead of html
-
     beforeEach(function () {
         messageNotifierId = "#message-notifier"; //TODO: think a name
         displayer = new papyrus.OperationResultDisplayer();
