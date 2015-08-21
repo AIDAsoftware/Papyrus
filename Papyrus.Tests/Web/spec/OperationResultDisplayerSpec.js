@@ -1,7 +1,6 @@
 ﻿// The Jasmine Test Framework
 /// <reference path="~/../Papyrus.Web/Scripts/jquery-1.11.3.min.js"/>
-/// <reference path="~/../Papyrus.Web/Scripts/MessagePrinter.js"/>
-/// <reference path="~/../Papyrus.Web/Scripts/OperationResultDisplayer.js"/>
+/// <reference path="~/../Papyrus.Web/Scripts/MessageNotifier.js"/>
 /// <reference path="~/Web/lib/jasmine-2.3.4/jasmine.js" />
 
 describe("OperationResultDisplayer", function () {
@@ -19,7 +18,7 @@ describe("OperationResultDisplayer", function () {
             type: "success"
         }
         
-        papyrus.messagePrinter(messageNotifierId).print(message);
+        papyrus.notifier(messageNotifierId).notify(message);
 
         var notifierSuccessCssClass = "notifier-success-message";
         expectMessageIsShownWith(message.title, notifierSuccessCssClass);
@@ -31,7 +30,7 @@ describe("OperationResultDisplayer", function () {
             type: "fail"
         }
 
-        papyrus.messagePrinter(messageNotifierId).print(message);
+        papyrus.notifier(messageNotifierId).notify(message);
 
         var cssNotifierErrorClass = "notifier-error-message";
         expectMessageIsShownWith(message.title, cssNotifierErrorClass);

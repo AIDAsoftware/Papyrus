@@ -1,7 +1,7 @@
 ﻿var papyrus = papyrus || {};
 
 (function (ns) {
-    function messagePrinter(idWithSpecialChar) {
+    function notifier(idWithSpecialChar) {
         var idWithoutSpecialChar = idWithSpecialChar.substr(1);
         $("body").prepend('<div id="' + idWithoutSpecialChar + '" style="display: none"><h3></h3></div>');
 
@@ -9,15 +9,15 @@
             return (messageType == "success") ? "notifier-success-message" : "notifier-error-message";
         }
 
-        function print (message) {
+        function notify (message) {
             var $notifierWidget = $(idWithSpecialChar);
             $notifierWidget.children("h3").text(message.title);
             $notifierWidget.addClass(cssClassFor(message.type));
         }
         return {
-            print: print
+            notify: notify
         }
     }
-    ns.messagePrinter = messagePrinter;
+    ns.notifier = notifier;
     
 })(papyrus)
