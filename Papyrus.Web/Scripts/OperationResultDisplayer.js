@@ -4,7 +4,7 @@
 
     function OperationResultDisplayer() {
 
-        var displayMessage = function (message, idWithSpecialChar) {
+        function displayMessage(message, idWithSpecialChar) {
             var messagePrinter = papyrus.messagePrinter(idWithSpecialChar);
             messagePrinter.print(message);
         };

@@ -6,7 +6,7 @@
         var ajaxContentType = "application/json; charset=utf-8";
         var apiUrl = "http://localhost:8888/papyrusapi/";
 
-        var get = function (resourceUrl) {
+        function get(resourceUrl) {
             return $.ajax({
                 type: "GET",
                 contentType: ajaxContentType,
@@ -14,7 +14,7 @@
             });
         }
 
-        var post = function(resourceUrl, document) {
+        function post(resourceUrl, document) {
             return $.ajax({
                 type: "POST",
                 contentType: ajaxContentType,

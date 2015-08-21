@@ -5,15 +5,15 @@ var papyrus = papyrus || {};
         var documentsURL = "documents/";
         var restClient = papyrus.restClient();
 
-        var allDocuments = function () {
+        function allDocuments() {
             return restClient.get(documentsURL);
         };
 
-        var getDocument = function (documentId) {
+        function getDocument(documentId) {
             return restClient.get(documentsURL + documentId);
         };
 
-        var createDocument = function (document) {
+        function createDocument(document) {
             return restClient.post(documentsURL, document);
         }
 

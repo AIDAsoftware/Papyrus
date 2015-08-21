@@ -9,7 +9,7 @@
             return (messageType == "success") ? "rgb(166, 215, 133)" : "rgb(204, 0, 13)";
         }
 
-        var print = function (message) {
+        function print (message) {
             var notifierWidget = $(idWithSpecialChar);
             notifierWidget.css("background-color", colorForType(message.type));
             notifierWidget.children("h3").text(message.title);
