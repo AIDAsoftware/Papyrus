@@ -8,7 +8,7 @@ describe("Message Notifier", function () {
     var messageNotifierId;
 
     beforeEach(function () {
-        messageNotifierId = "#message-notifier"; //TODO: think a name
+        messageNotifierId = "#message-notifier";
     });
 
     it("should show success message when a document is created", function() {
