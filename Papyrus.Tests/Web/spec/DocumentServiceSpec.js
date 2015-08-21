@@ -4,7 +4,7 @@
 /// <reference path="~/../Papyrus.Web/Scripts/DocumentService.js"/>
 /// <reference path="~/Web/lib/jasmine-2.3.4/jasmine.js" />
 
-describe("DocumentService", function () {
+describe("documentService", function () {
 
     var anyId = "AnyId",
         anyTitle = "AnyTitle",
@@ -15,7 +15,7 @@ describe("DocumentService", function () {
     var documentService;
 
     beforeEach(function() {
-        documentService = new papyrus.DocumentService();
+        documentService = papyrus.documentService();
     });
 
     it("should return a list of documents when there are documents and try to get all", function(){

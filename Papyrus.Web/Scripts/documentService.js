@@ -1,7 +1,7 @@
 var papyrus = papyrus || {};
 
 (function(ns) {
-    function DocumentService() {
+    function documentService() {
         var documentsURL = "documents/";
         var restClient = new papyrus.RestClient();
 
@@ -24,5 +24,5 @@ var papyrus = papyrus || {};
         }
     }
 
-    ns.DocumentService = DocumentService;
+    ns.documentService = documentService;
 })(papyrus);
