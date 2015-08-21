@@ -11,7 +11,6 @@ describe("OperationResultDisplayer", function () {
 
     beforeEach(function () {
         messageNotifierId = "#message-notifier"; //TODO: think a name
-        displayer = new papyrus.OperationResultDisplayer();
     });
 
     it("should show green confirmation message when a document is created", function() {
@@ -20,7 +19,8 @@ describe("OperationResultDisplayer", function () {
             type: "success"
         }
         
-        displayer.displayMessage(message, messageNotifierId);
+        papyrus.messagePrinter(messageNotifierId).print(message);
+
         var notifierSuccessCssClass = "notifier-success-message";
         expectMessageIsShownWith(message.title, notifierSuccessCssClass);
     });
@@ -31,8 +31,9 @@ describe("OperationResultDisplayer", function () {
             type: "fail"
         }
 
+        papyrus.messagePrinter(messageNotifierId).print(message);
+
         var cssNotifierErrorClass = "notifier-error-message";
-        displayer.displayMessage(message, messageNotifierId);
         expectMessageIsShownWith(message.title, cssNotifierErrorClass);
     });
 
