@@ -26,7 +26,7 @@ describe("Message Notifier", function () {
     it("should show error message when a document is not created", function () {
         var message = {
             title: "Cant create the document",
-            type: "fail"
+            type: "error"
         }
 
         papyrus.notifier(messageNotifierId).notify(message);
