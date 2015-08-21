@@ -2,7 +2,7 @@
 
 (function (ns) {
 
-    function RestClient() {
+    function restClient() {
         var ajaxContentType = "application/json; charset=utf-8";
         var apiUrl = "http://localhost:8888/papyrusapi/";
 
@@ -36,5 +36,5 @@
 
     }
 
-    ns.RestClient = RestClient;
+    ns.restClient = restClient;
 })(papyrus);

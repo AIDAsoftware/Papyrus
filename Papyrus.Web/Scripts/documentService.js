@@ -3,7 +3,7 @@ var papyrus = papyrus || {};
 (function(ns) {
     function documentService() {
         var documentsURL = "documents/";
-        var restClient = new papyrus.RestClient();
+        var restClient = papyrus.restClient();
 
         var allDocuments = function () {
             return restClient.get(documentsURL);
