@@ -7,11 +7,13 @@
 describe("OperationResultDisplayer", function () {
 
     var displayer;
-    var $message_notifier;
+    var messageNotifierId;
+
+    //TODO: 
+    //  create message notifier in javascript instead of html
 
     beforeEach(function () {
-        $("body").append('<div id="message-notifier" style="display: none"><h3></h3></div>');
-        $message_notifier = $("#message-notifier"); //TODO: think a name
+        messageNotifierId = "#message-notifier"; //TODO: think a name
         displayer = new papyrus.OperationResultDisplayer();
     });
 
@@ -21,7 +23,7 @@ describe("OperationResultDisplayer", function () {
             type: "success"
         }
         
-        displayer.displayMessage(message, $message_notifier);
+        displayer.displayMessage(message, messageNotifierId);
         var green = "rgb(166, 215, 133)";
         expectMessageIsShownWith(message.title, green);
     });
@@ -33,7 +35,7 @@ describe("OperationResultDisplayer", function () {
         }
 
         var red = "rgb(204, 0, 13)";
-        displayer.displayMessage(message, $message_notifier);
+        displayer.displayMessage(message, messageNotifierId);
         expectMessageIsShownWith(message.title, red);
     });
 
@@ -42,8 +44,9 @@ describe("OperationResultDisplayer", function () {
     });
 
     function expectMessageIsShownWith(title, color) {
-        expect($message_notifier.children("h3").text()).toEqual(title);
-        expect($message_notifier.css("background-color")).toEqual(color);
-        expect($message_notifier.css("display")).toEqual("inline-block");
+        var messageNotifier = $(messageNotifierId);
+        expect(messageNotifier.children("h3").text()).toEqual(title);
+        expect(messageNotifier.css("background-color")).toEqual(color);
+        expect(messageNotifier.css("display")).toEqual("inline-block");
     }
 });

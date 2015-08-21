@@ -1,11 +1,14 @@
 ﻿var papyrus = papyrus || {};
 
 (function (ns) {
-    function MessagePrinter($element) {
-        var print = function(messageTitle, color) {
-            $element.css("background-color", color);
-            $element.children("h3").text(messageTitle);
-            $element.css("display", "inline-block");
+    function MessagePrinter(element) {
+        var id = element.substr(1);
+        $("body").prepend('<div id="' + id + '" style="display: none"><h3></h3></div>');
+        var print = function (messageTitle, color) {
+            var notifierWidget = $(element);            
+            notifierWidget.css("background-color", color);
+            notifierWidget.children("h3").text(messageTitle);
+            notifierWidget.css("display", "inline-block");
         }
 
         return {
