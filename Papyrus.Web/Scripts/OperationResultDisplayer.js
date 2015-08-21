@@ -5,7 +5,7 @@
     function OperationResultDisplayer() {
 
         var displayMessage = function (message, element) {
-            var messagePrinter = papyrus.MessagePrinter(element);
+            var messagePrinter = papyrus.messagePrinter(element);
             var displayColor = (message.type == "success") ? "rgb(166, 215, 133)" : "rgb(204, 0, 13)";
             messagePrinter.print(message.title, displayColor);
         };

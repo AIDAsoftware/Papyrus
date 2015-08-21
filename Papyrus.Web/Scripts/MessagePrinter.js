@@ -1,7 +1,7 @@
 ﻿var papyrus = papyrus || {};
 
 (function (ns) {
-    function MessagePrinter(element) {
+    function messagePrinter(element) {
         var id = element.substr(1);
         $("body").prepend('<div id="' + id + '" style="display: none"><h3></h3></div>');
         var print = function (messageTitle, color) {
@@ -15,6 +15,6 @@
             print: print
         }
     }
-    ns.MessagePrinter = MessagePrinter;
+    ns.messagePrinter = messagePrinter;
     
 })(papyrus)
