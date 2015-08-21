@@ -3,7 +3,7 @@
 /// <reference path="~/../Papyrus.Web/Scripts/MessageNotifier.js"/>
 /// <reference path="~/Web/lib/jasmine-2.3.4/jasmine.js" />
 
-describe("OperationResultDisplayer", function () {
+describe("Message Notifier", function () {
 
     var messageNotifierId;
 
@@ -11,7 +11,7 @@ describe("OperationResultDisplayer", function () {
         messageNotifierId = "#message-notifier"; //TODO: think a name
     });
 
-    it("should show green confirmation message when a document is created", function() {
+    it("should show success message when a document is created", function() {
         var message = {
             title: "Document created",
             type: "success"
@@ -23,7 +23,7 @@ describe("OperationResultDisplayer", function () {
         expectMessageIsShownWith(message.title, notifierSuccessCssClass);
     });
 
-    it("should show error message in red when a document is not created", function () {
+    it("should show error message when a document is not created", function () {
         var message = {
             title: "Cant create the document",
             type: "fail"
