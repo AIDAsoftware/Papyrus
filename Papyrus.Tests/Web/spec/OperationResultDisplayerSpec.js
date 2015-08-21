@@ -14,7 +14,7 @@ describe("OperationResultDisplayer", function () {
         displayer = new papyrus.OperationResultDisplayer();
     });
 
-    it("show green confirmation message when a document is created", function() {
+    it("should show green confirmation message when a document is created", function() {
         var message = {
             title: "Document created",
             type: "success"
@@ -25,7 +25,7 @@ describe("OperationResultDisplayer", function () {
         expectMessageIsShownWith(message.title, green);
     });
 
-    it("show error message in red when a document is not created", function () {
+    it("should show error message in red when a document is not created", function () {
         var message = {
             title: "Cant create the document",
             type: "fail"
