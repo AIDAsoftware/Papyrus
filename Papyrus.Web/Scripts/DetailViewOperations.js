@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     var id = getIdFromUrl();
-    new papyrus.RestClient().getDocument(id);
+    papyrus.RestClient().getDocument(id);
 });
 
 function getIdFromUrl() {
