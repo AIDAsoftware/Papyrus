@@ -13,6 +13,7 @@
     using Papyrus.WebServices;
     using Papyrus.WebServices.Models;
 
+    [Ignore]
     [TestFixture]
     public class DocumentApiShould : OwinRunner
     {
