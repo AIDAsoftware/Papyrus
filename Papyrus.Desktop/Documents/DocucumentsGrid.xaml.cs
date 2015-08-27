@@ -13,14 +13,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Papyrus.Desktop {
+namespace Papyrus.Desktop.Documents {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for DocucumentsGrid.xaml
     /// </summary>
-    public partial class MainWindow : Window {
-        public MainWindow() {
+    public partial class DocucumentsGrid : UserControl {
+        public DocucumentsGrid() {
             InitializeComponent();
-            
         }
     }
 }
