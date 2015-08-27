@@ -6,11 +6,16 @@ namespace Papyrus.Business.Documents
     public class Document
     {
         public string Id { get; private set; }
+        public string ProductVersionId { get; private set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
         public string Content { get; private set; }
         public string Language { get; private set; }
 
+        public Document ForProductVersion(string versionId) {
+            ProductVersionId = versionId;
+            return this;
+        }
 
         public Document WithTitle(string title)
         {
