@@ -24,7 +24,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
 
             await new SqlDocumentRepository(dbConnection).Save(document);
 
-            var requestedDocuments = await LoadDocumentWithId("AnyId");
+            var requestedDocuments = await LoadDocumentWithId("AnyId", "AnyProductVersion", "AnyLanguage");
             requestedDocuments.ShouldBeEquivalentTo(document);
         }
 
@@ -56,17 +56,22 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         [Test]
         public async Task update_a_document()
         {
-            await dbConnection.Execute(@"INSERT Documents(Id, Title) 
-                                VALUES (@id, @title);",
-                                new { id = "AnyId", title = "AnyTitle" });
+            await dbConnection.Execute(@"INSERT Documents(Id, ProductVersionId, Language, Title) 
+                                VALUES (@id, @productVersionId, @language, @title);",
+                                new {   id = "AnyId", 
+                                        productVersionId = "AnyProductVersionId", 
+                                        language = "es-ES", 
+                                        title = "AnyTitle" });
 
             var document = new Document()
                 .WithId("AnyId")
+                .ForLanguage("es-ES")
+                .ForProductVersion("AnyProductVersionId")
                 .WithTitle("NewTitle")
                 .WithDescription("AnyDescription");
 
             await new SqlDocumentRepository(dbConnection).Update(document);
-            var updatedDocument = await LoadDocumentWithId("AnyId");
+            var updatedDocument = await LoadDocumentWithId("AnyId", "AnyProductVersionId", "es-ES");
 
             updatedDocument.ShouldBeEquivalentTo(document);
         }
@@ -75,10 +80,10 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         public async void remove_a_document()
         {
             const string id = "AnyId";
-            await InsertDocumentWith(id: id);
+            await InsertDocumentWith(id: id, productVersionId: "AnyProductVersionId", language: "es-ES");
             await new SqlDocumentRepository(dbConnection).Delete(id);
 
-            var document = await LoadDocumentWithId(id);
+            var document = await LoadDocumentWithId(id, "AnyProductVersionId", "es-ES");
 
             document.Should().BeNull();
         }
@@ -111,12 +116,17 @@ namespace Papyrus.Tests.Infrastructure.Repositories
                                 });
         }
 
-        private async Task<Document> LoadDocumentWithId(string id)
+        private async Task<Document> LoadDocumentWithId(string id, string productVersionId, string language)
         {
             var result = await dbConnection
-                .Query<Document>(@"SELECT Id, ProductVersionId, Language, Title, Content, Description " +
+                .Query<Document>(sql: @"SELECT Id, ProductVersionId, Language, Title, Content, Description " +
                                  "FROM [Documents] " +
-                                 "WHERE Id = @Id;", new { Id = id });
+                                 "WHERE Id = @Id AND ProductVersionId = @ProductVersionId AND Language = @language;",
+                                 param: new {
+                                    Id = id,
+                                    ProductVersionId = productVersionId,
+                                    Language = language
+                                 });
             return result.FirstOrDefault();
         }
     }

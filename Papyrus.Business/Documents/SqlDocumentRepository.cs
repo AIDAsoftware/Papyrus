@@ -41,16 +41,16 @@ namespace Papyrus.Business.Documents
             const string updateSqlQuery = @"UPDATE Documents " + 
                                             "SET Title = @Title, " + 
                                             "Description = @Description, " + 
-                                            "Content = @Content, " + 
-                                            "Language = @Language " + 
-                                            "WHERE Id = @Id;";
+                                            "Content = @Content " + 
+                                            "WHERE Id = @Id AND ProductVersionId = @ProductVersionId AND Language = @Language;";
             var affectedRows = await connection.Execute(updateSqlQuery, new
             {
                 Id = document.Id,
+                ProductVersionId = document.ProductVersionId,
+                Language = document.Language,
                 Title = document.Title,
                 Description = document.Description,
-                Content = document.Content,
-                Language = document.Language
+                Content = document.Content
             });
         }
 
