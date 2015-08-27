@@ -20,7 +20,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         public async Task save_a_document()
         {
             var document = new Document()
-                .WithId("AnyId");
+                .WithId("AnyId").ForProductVersion("AnyProductVersion").ForLanguage("AnyLanguage");
 
             await new SqlDocumentRepository(dbConnection).Save(document);
 
@@ -114,8 +114,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         private async Task<Document> LoadDocumentWithId(string id)
         {
             var result = await dbConnection
-                .Query<Document>(@"SELECT Id, Title, Content, Description, Language " +
-                                 "FROM [Documents]" +
+                .Query<Document>(@"SELECT Id, ProductVersionId, Language, Title, Content, Description " +
+                                 "FROM [Documents] " +
                                  "WHERE Id = @Id;", new { Id = id });
             return result.FirstOrDefault();
         }
