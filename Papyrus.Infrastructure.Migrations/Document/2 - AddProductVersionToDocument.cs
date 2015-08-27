@@ -6,7 +6,7 @@ namespace Papyrus.Infrastructure.Migrations.Document
     public class AddProductVerstionToDocument : Migration
     {
         public override void Up() {
-            Alter.Table("Documents").AddColumn("ProductVersionId").AsString(50).NotNullable().PrimaryKey("PK_Documents");
+            Alter.Table("Documents").AddColumn("ProductVersionId").AsString(50).NotNullable();
             Alter.Table("Documents").AlterColumn("Language").AsString(15).NotNullable();
 
             Delete.PrimaryKey("PK_Documents").FromTable("Documents");
@@ -15,11 +15,11 @@ namespace Papyrus.Infrastructure.Migrations.Document
         }
 
         public override void Down() {
+            Delete.PrimaryKey("DocumentsPK").FromTable("Documents");
             Delete.Column("ProductVersionId").FromTable("Documents").InSchema("dbo");
 
-            Delete.PrimaryKey("DocumentsPK").FromTable("Documents");
-            Alter.Table("Documents").AlterColumn("Id").AsString(50).PrimaryKey().NotNullable();
-            Alter.Table("Documents").AlterColumn("Language").AsString(15);
+            Alter.Table("Documents").AlterColumn("Language").AsString(15).Nullable();
+            Create.PrimaryKey("PK_Documents").OnTable("Documents").WithSchema("dbo").Columns("Id");
         }
     }
 }
