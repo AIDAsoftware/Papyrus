@@ -1,5 +1,4 @@
-﻿
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
@@ -33,13 +32,14 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         public async void load_a_document()
         {
             await InsertDocumentWith(
-                id: "AnyID", title: "AnyTitle", content: "AnyContent", description: "AnyDescription", language: "es"
+                id: "AnyID", productVersionId: "AnyProductVersion", title: "AnyTitle", content: "AnyContent", description: "AnyDescription", language: "es"
             );
 
             var document = await new SqlDocumentRepository(dbConnection).GetDocument("AnyId");
 
             document.Id.Should().Be("AnyID");
             document.Title.Should().Be("AnyTitle");
+            document.ProductVersionId.Should().Be("AnyProductVersion");
             document.Description.Should().Be("AnyDescription");
             document.Content.Should().Be("AnyContent");
             document.Language.Should().Be("es");
@@ -97,16 +97,17 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         }
 
 
-        private async Task InsertDocumentWith(string id, string title = null, string description = null, string content = null, string language = null)
+        private async Task InsertDocumentWith(string id, string productVersionId = "anyProductVersionId", string title = null, string description = null, string content = null, string language = "es-ES")
         {
-            await dbConnection.Execute(@"INSERT Documents(Id, Title, Description, Content, Language) 
-                                VALUES (@Id, @Title, @Description, @Content, @Language);",
+            await dbConnection.Execute(@"INSERT Documents(Id, ProductVersionId, Language, Title, Description, Content) 
+                                VALUES (@Id, @ProductVersionId, @Language, @Title, @Description, @Content);",
                                 new {
                                     Id = id,
+                                    ProductVersionId = productVersionId,
+                                    Language = language,                    
                                     Title = title,
                                     Description = description,
-                                    Content = content,
-                                    Language = language                    
+                                    Content = content
                                 });
         }
 

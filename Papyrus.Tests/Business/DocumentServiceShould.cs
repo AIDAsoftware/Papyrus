@@ -30,6 +30,7 @@
         public async Task save_a_document_when_it_is_created()
         {
             var document = new Document()
+                .ForProductVersion("anyProductVersion")
                 .WithTitle("Login en el sistema")
                 .WithDescription("Modos de acceso disponibles a SIMA 2")
                 .WithContent("El usuario podrá acceder al sistema indicando su usuario")

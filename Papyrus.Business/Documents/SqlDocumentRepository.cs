@@ -30,7 +30,7 @@ namespace Papyrus.Business.Documents
 
         public async Task<Document> GetDocument(string id)
         {
-            const string selectSqlQuery = @"SELECT Id, Title, Content, Description, Language
+            const string selectSqlQuery = @"SELECT Id, ProductVersionId, Title, Content, Description, Language
                                             FROM [Documents] WHERE Id = @Id;";
             return (await connection.Query<Document>(selectSqlQuery, new {Id = id})).FirstOrDefault();
         }
