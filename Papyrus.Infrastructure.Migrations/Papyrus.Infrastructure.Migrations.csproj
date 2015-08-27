@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Document\2 - AddProductVersionToDocument.cs" />
     <Compile Include="Document\1 - CreateDocumentTable.cs" />
     <Compile Include="Product\1 - CreateProductTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
