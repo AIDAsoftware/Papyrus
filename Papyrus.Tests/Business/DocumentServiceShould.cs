@@ -1,4 +1,6 @@
-﻿namespace Papyrus.Tests.Business
+﻿using System;
+
+namespace Papyrus.Tests.Business
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -25,6 +27,17 @@
             service = new DocumentService(repository);
         }
 
+        [Test]
+        [ExpectedException(typeof(DocumentMustBeAssignedToAProductVersion))]
+        public async void fail_saving_document_without_productVersionId() {
+            var document = new Document()
+                .WithTitle("Login en el sistema")
+                .WithDescription("Modos de acceso disponibles a SIMA 2")
+                .WithContent("El usuario podrá acceder al sistema indicando su usuario")
+                .ForLanguage("es-Es");
+
+            await service.Create(document);
+        }
 
         [Test]
         public async Task save_a_document_when_it_is_created()

@@ -15,6 +15,9 @@
 
         public virtual async Task Create(Document document)
         {
+            if (string.IsNullOrWhiteSpace(document.ProductVersionId))
+                throw new DocumentMustBeAssignedToAProductVersion();
+
             if (!string.IsNullOrWhiteSpace(document.Id))
                 throw new DocumentIdMustNotBeDefinedException();
             document.GenerateAutomaticId();
@@ -47,4 +50,6 @@
             return (await repository.GetAllDocuments()).ToArray();
         }
     }
+
+    public class DocumentMustBeAssignedToAProductVersion : Exception {}
 }
