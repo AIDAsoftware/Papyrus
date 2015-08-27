@@ -46,7 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateDocumentTable.cs" />
+    <Compile Include="Document\1 - CreateDocumentTable.cs" />
+    <Compile Include="Product\1 - CreateProductTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetDocumentRowsNullableMigration.cs" />
   </ItemGroup>

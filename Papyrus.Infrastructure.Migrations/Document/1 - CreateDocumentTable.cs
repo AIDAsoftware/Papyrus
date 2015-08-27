@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentMigrator;
 
-namespace Papyrus.Infrastructure.Migrations
+namespace Papyrus.Infrastructure.Migrations.Document
 {
-    using FluentMigrator;
-
     [TimestampedMigration(2015, 6, 19, 11, 04)]
     public class CreateDocumentTable : Migration
     {

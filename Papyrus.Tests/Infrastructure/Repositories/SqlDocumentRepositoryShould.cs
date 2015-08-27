@@ -1,14 +1,13 @@
 ﻿
-namespace Papyrus.Tests
-{
-    using Papyrus.Infrastructure.Core.Database;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Papyrus.Business.Documents;
-    using Papyrus.Business.Documents.Exceptions;
-    using FluentAssertions;
-    using NUnit.Framework;
+using System.Linq;
+using System.Threading.Tasks;
+using FluentAssertions;
+using NUnit.Framework;
+using Papyrus.Business.Documents;
+using Papyrus.Infrastructure.Core.Database;
 
+namespace Papyrus.Tests.Infrastructure.Repositories
+{
     [TestFixture]
     public class SqlDocumentRepositoryShould : SqlTest
     {
