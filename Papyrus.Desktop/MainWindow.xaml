@@ -7,7 +7,7 @@
     <Grid>
         <DockPanel LastChildFill="True">
             <mainMenu:MainMenuView DockPanel.Dock="Top"/>
-            <Documents:DocucumentsGrid DockPanel.Dock="Bottom"/>
+            <Documents:DocumentsGrid DockPanel.Dock="Bottom"/>
         </DockPanel>
     </Grid>
 </Window>

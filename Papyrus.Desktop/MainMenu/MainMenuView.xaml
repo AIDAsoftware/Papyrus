@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mainMenu="clr-namespace:Papyrus.Desktop.MainMenu"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type=mainMenu:DesignModeMainMenuVm, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance Type=mainMenu:DesignModeMainMenuVM, IsDesignTimeCreatable=True}"
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Grid>
         <StackPanel Margin="8" Orientation="Horizontal" HorizontalAlignment="Right">

@@ -5,7 +5,7 @@ using Papyrus.Business.Products;
 namespace Papyrus.Desktop.MainMenu {
     public class MainMenuVM {
         private ProductService productService;
-        public ObservableCollection<Product> Products { get; protected set; }
+        public ObservableCollection<Product> Products { get; private set; }
 
         protected MainMenuVM() {
             Products = new ObservableCollection<Product>();
@@ -24,8 +24,8 @@ namespace Papyrus.Desktop.MainMenu {
         }
     }
 
-    public class DesignModeMainMenuVm : MainMenuVM {
-        public DesignModeMainMenuVm() {
+    public class DesignModeMainMenuVM : MainMenuVM {
+        public DesignModeMainMenuVM() {
             Products.Add(new Product("Any product name"));
             Products.Add(new Product("Any other product name"));
         }

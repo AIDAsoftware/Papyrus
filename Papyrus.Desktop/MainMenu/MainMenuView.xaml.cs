@@ -18,7 +18,7 @@ namespace Papyrus.Desktop.MainMenu {
             InitializeComponent();
 
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) {
-                DataContext = new DesignModeMainMenuVm();
+                DataContext = new DesignModeMainMenuVM();
             }
             else {
                 DataContext = ViewModelsFactory.MainMenu();

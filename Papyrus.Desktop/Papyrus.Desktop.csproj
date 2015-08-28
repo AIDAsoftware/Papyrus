@@ -54,14 +54,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Documents\DocucumentsGrid.xaml.cs">
-      <DependentUpon>DocucumentsGrid.xaml</DependentUpon>
+    <Compile Include="Documents\DocumentsGrid.xaml.cs">
+      <DependentUpon>DocumentsGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="Documents\DocumentsGridVM.cs" />
     <Compile Include="MainMenu\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Documents\DocucumentsGrid.xaml">
+    <Page Include="Documents\DocumentsGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
