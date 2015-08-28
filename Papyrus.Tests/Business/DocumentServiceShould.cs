@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Papyrus.Tests.Business
+﻿namespace Papyrus.Tests.Business
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -28,13 +26,26 @@ namespace Papyrus.Tests.Business
         }
 
         [Test]
-        [ExpectedException(typeof(DocumentMustBeAssignedToAProductVersion))]
+        [ExpectedException(typeof(DocumentMustBeAssignedToAProductVersionException))]
         public async void fail_saving_document_without_productVersionId() {
             var document = new Document()
                 .WithTitle("Login en el sistema")
                 .WithDescription("Modos de acceso disponibles a SIMA 2")
                 .WithContent("El usuario podrá acceder al sistema indicando su usuario")
                 .ForLanguage("es-Es");
+
+            await service.Create(document);
+        }
+
+
+        [Test]
+        [ExpectedException(typeof(DocumentMustHaveALanguageException))]
+        public async void fail_saving_document_without_language() {
+            var document = new Document()
+                .ForProductVersion("anyProductVersion")
+                .WithTitle("Login en el sistema")
+                .WithDescription("Modos de acceso disponibles a SIMA 2")
+                .WithContent("El usuario podrá acceder al sistema indicando su usuario");
 
             await service.Create(document);
         }
@@ -59,7 +70,13 @@ namespace Papyrus.Tests.Business
         [ExpectedException(typeof(DocumentIdMustNotBeDefinedException))]
         public async Task throw_an_exception_when_try_to_create_a_document_with_an_id()
         {
-            var document = new Document().WithId(AnyId);
+            var document = new Document()
+                .WithId(AnyId)
+                .ForProductVersion("anyProductVersion")
+                .WithTitle("Login en el sistema")
+                .WithDescription("Modos de acceso disponibles a SIMA 2")
+                .WithContent("El usuario podrá acceder al sistema indicando su usuario")
+                .ForLanguage("es-Es");
             await service.Create(document);
         }
 

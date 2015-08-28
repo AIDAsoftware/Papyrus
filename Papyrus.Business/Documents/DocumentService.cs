@@ -1,6 +1,5 @@
 ﻿namespace Papyrus.Business.Documents
 {
-    using System;
     using System.Threading.Tasks;
     using Exceptions;
 
@@ -16,7 +15,10 @@
         public virtual async Task Create(Document document)
         {
             if (string.IsNullOrWhiteSpace(document.ProductVersionId))
-                throw new DocumentMustBeAssignedToAProductVersion();
+                throw new DocumentMustBeAssignedToAProductVersionException();
+
+            if (string.IsNullOrWhiteSpace(document.Language))
+                throw new DocumentMustHaveALanguageException();
 
             if (!string.IsNullOrWhiteSpace(document.Id))
                 throw new DocumentIdMustNotBeDefinedException();
@@ -50,6 +52,4 @@
             return (await repository.GetAllDocuments()).ToArray();
         }
     }
-
-    public class DocumentMustBeAssignedToAProductVersion : Exception {}
 }

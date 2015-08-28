@@ -1,5 +1,4 @@
-﻿
-namespace Papyrus.Infrastructure.Core.Database {
+﻿namespace Papyrus.Infrastructure.Core.Database {
     using Dapper;
     using System.Collections.Generic;
     using System.Data;
@@ -7,8 +6,7 @@ namespace Papyrus.Infrastructure.Core.Database {
     using System.Threading.Tasks;
     
     public class DatabaseConnection {
-
-        private static readonly object lockObject = new object();
+        private readonly object lockObject = new object();
         private SqlConnection currentConnection;
         private SqlTransaction currenTransaction;
         private readonly string connectionString;

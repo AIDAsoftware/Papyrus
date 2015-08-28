@@ -66,7 +66,7 @@ namespace Papyrus.Business.Documents
         //TODO: devolver IEnumerable ??
         public async Task<List<Document>> GetAllDocuments()
         {
-            const string selectAllDocumentsSqlQuery = @"SELECT Id, Title, Content, Description, Language
+            const string selectAllDocumentsSqlQuery = @"SELECT Id, ProductVersionId, Title, Content, Description, Language
                                                         FROM Documents";
             return (await connection.Query<Document>(selectAllDocumentsSqlQuery)).ToList();
         }

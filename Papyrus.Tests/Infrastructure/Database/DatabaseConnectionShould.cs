@@ -1,4 +1,6 @@
-﻿namespace Papyrus.Tests.Infrastructure.Database {
+﻿using System.Diagnostics;
+
+namespace Papyrus.Tests.Infrastructure.Database {
     using System;
     using System.Configuration;
     using System.Data.SqlClient;

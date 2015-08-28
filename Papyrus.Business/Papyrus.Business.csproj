@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Documents\Exceptions\DocumentMustBeAssignedToAProductVersionException.cs" />
+    <Compile Include="Documents\Exceptions\DocumentMustHaveALanguageException.cs" />
     <Compile Include="Products\Product.cs" />
     <Compile Include="Products\ProductRepository.cs" />
     <Compile Include="Products\ProductService.cs" />
