@@ -54,14 +54,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Documents\DocumentsGrid.xaml.cs">
+    <Compile Include="Features\Documents\DocumentsGrid.xaml.cs">
       <DependentUpon>DocumentsGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Documents\DocumentsGridVM.cs" />
-    <Compile Include="MainMenu\MainMenuView.xaml.cs">
+    <Compile Include="Features\Documents\DocumentsGridVM.cs" />
+    <Compile Include="Features\Documents\Events.cs" />
+    <Compile Include="Features\Documents\NewDocumentWindow.xaml.cs">
+      <DependentUpon>NewDocumentWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\MainMenu\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Documents\DocumentsGrid.xaml">
+    <Page Include="Features\Documents\DocumentsGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Documents\NewDocumentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -77,13 +85,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MainMenu\MainMenuView.xaml">
+    <Page Include="Features\MainMenu\MainMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainMenu\MainMenuVM.cs" />
+    <Compile Include="Features\MainMenu\MainMenuVM.cs" />
+    <Compile Include="Util\Command\IAsyncCommand.cs" />
+    <Compile Include="Util\Command\NotifyTaskCompletion.cs" />
+    <Compile Include="Util\Command\RelayAsyncCommandBase.cs" />
+    <Compile Include="Util\Command\RelayAsyncSimpleCommand.cs" />
+    <Compile Include="Util\Command\RelayCommand.cs" />
+    <Compile Include="Util\Command\RelaySimpleCommand.cs" />
     <Compile Include="ViewModelsFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

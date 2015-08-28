@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
 
-namespace Papyrus.Desktop.MainMenu {
+namespace Papyrus.Desktop.Features.MainMenu {
     public class MainMenuVM {
-        private ProductService productService;
+        private readonly ProductService productService;
         public ObservableCollection<Product> Products { get; private set; }
 
         protected MainMenuVM() {

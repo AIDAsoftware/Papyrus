@@ -1,10 +1,9 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Papyrus.Business.Products;
+using Papyrus.Desktop.Features.Documents;
 
-namespace Papyrus.Desktop.MainMenu {
+namespace Papyrus.Desktop.Features.MainMenu {
     /// <summary>
     /// Interaction logic for MainMenuView.xaml
     /// </summary>
@@ -28,6 +27,10 @@ namespace Papyrus.Desktop.MainMenu {
 
         private async void MainMenuView_Loaded(object sender, RoutedEventArgs e) {
             await ViewModel.Initialize();
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e) {
+            new NewDocumentWindow().Show();
         }
     }
 }

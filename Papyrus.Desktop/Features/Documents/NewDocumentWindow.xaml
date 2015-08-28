@@ -1,0 +1,17 @@
+﻿<Window x:Class="Papyrus.Desktop.Features.Documents.NewDocumentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="New document">
+    <Grid>
+        <StackPanel>
+            <Label Content="Title"/>
+            <TextBox />
+            <Label Content="Description"/>
+            <TextBox />
+            <Label Content="Content"/>
+            <TextBox MinLines="50"/>
+            <Button>Save</Button>
+        </StackPanel>
+
+    </Grid>
+</Window>

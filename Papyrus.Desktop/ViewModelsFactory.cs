@@ -1,8 +1,8 @@
 ﻿using System.Configuration;
 using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
-using Papyrus.Desktop.Documents;
-using Papyrus.Desktop.MainMenu;
+using Papyrus.Desktop.Features.Documents;
+using Papyrus.Desktop.Features.MainMenu;
 using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Desktop {

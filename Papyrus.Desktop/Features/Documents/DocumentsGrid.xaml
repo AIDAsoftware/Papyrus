@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="Papyrus.Desktop.Documents.DocumentsGrid"
+﻿<UserControl x:Class="Papyrus.Desktop.Features.Documents.DocumentsGrid"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:documents="clr-namespace:Papyrus.Desktop.Documents"
+             xmlns:documents1="clr-namespace:Papyrus.Desktop.Features.Documents"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=documents:DesignModeDocumentsGridVM, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance Type=documents1:DesignModeDocumentsGridVM, IsDesignTimeCreatable=True}"
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Grid>
         <DataGrid ItemsSource="{Binding Documents}"/>
