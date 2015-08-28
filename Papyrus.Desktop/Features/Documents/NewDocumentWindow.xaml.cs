@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Papyrus.Business.Documents;
+using Papyrus.Desktop.Features.Documents.Events;
+using Papyrus.Infrastructure.Core.DomainEvents;
 
 namespace Papyrus.Desktop.Features.Documents {
     /// <summary>
@@ -19,6 +22,11 @@ namespace Papyrus.Desktop.Features.Documents {
     public partial class NewDocumentWindow : Window {
         public NewDocumentWindow() {
             InitializeComponent();
+        }
+
+        private void Save_OnClick(object sender, RoutedEventArgs e) {
+            var document = new Document().WithTitle("Test title");
+            EventBus.Raise(new CreateNewDocument(document));
         }
     }
 }

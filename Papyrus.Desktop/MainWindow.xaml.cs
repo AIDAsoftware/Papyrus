@@ -12,15 +12,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Papyrus.Infrastructure.Core.DomainEvents;
 
 namespace Papyrus.Desktop {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window {
+    public partial class MainWindow : Window, Subscriber<ApplicationErrorOcurred> {
         public MainWindow() {
             InitializeComponent();
-            
+            EventBus.Subscribe(this);
+        }
+
+        public void Handle(ApplicationErrorOcurred domainEvent) {
+            MessageBox.Show(domainEvent.Exception.Message);
         }
     }
 }

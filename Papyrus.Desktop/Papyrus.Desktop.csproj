@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Features\Documents\Events.cs" />
     <Compile Include="Features\Documents\DocumentsGrid.xaml.cs">
       <DependentUpon>DocumentsGrid.xaml</DependentUpon>
     </Compile>
@@ -91,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Features\MainMenu\MainMenuVM.cs" />
+    <Compile Include="UIEventsCoordinator.cs" />
     <Compile Include="Util\Command\IAsyncCommand.cs" />
     <Compile Include="Util\Command\NotifyTaskCompletion.cs" />
     <Compile Include="Util\Command\RelayAsyncCommandBase.cs" />

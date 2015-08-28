@@ -10,7 +10,7 @@
             <TextBox />
             <Label Content="Content"/>
             <TextBox MinLines="50"/>
-            <Button>Save</Button>
+            <Button Width="Auto" HorizontalAlignment="Right" Click="Save_OnClick">Save</Button>
         </StackPanel>
 
     </Grid>

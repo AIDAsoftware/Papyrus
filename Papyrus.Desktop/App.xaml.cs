@@ -11,5 +11,11 @@ namespace Papyrus.Desktop {
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
+       UIEventsCoordinator eventsCoordinator = new UIEventsCoordinator();
+
+        public App() {
+            eventsCoordinator.AddService(ServicesFactory.Document());
+            eventsCoordinator.SubscribeToDocumentEvents();
+        }
     }
 }
