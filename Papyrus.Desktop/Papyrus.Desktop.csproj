@@ -58,7 +58,6 @@
       <DependentUpon>DocumentsGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Documents\DocumentsGridVM.cs" />
-    <Compile Include="Features\Documents\Events.cs" />
     <Compile Include="Features\Documents\NewDocumentWindow.xaml.cs">
       <DependentUpon>NewDocumentWindow.xaml</DependentUpon>
     </Compile>
