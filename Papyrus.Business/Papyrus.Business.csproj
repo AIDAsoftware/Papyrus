@@ -49,9 +49,6 @@
     <Compile Include="Products\Product.cs" />
     <Compile Include="Products\ProductRepository.cs" />
     <Compile Include="Products\ProductService.cs" />
-    <Compile Include="Products\Exceptions\CanNotModifyProducttIdException.cs" />
-    <Compile Include="Products\Exceptions\ProductIdMustBeDefinedException.cs" />
-    <Compile Include="Products\Exceptions\ProductIdMustNotBeDefinedException.cs" />
     <Compile Include="Products\Exceptions\ProductNotFoundException.cs" />
     <Compile Include="Products\SqlProducttRepository.cs" />
     <Compile Include="Documents\Exceptions\CanNotModifyDocumentIdException.cs" />
