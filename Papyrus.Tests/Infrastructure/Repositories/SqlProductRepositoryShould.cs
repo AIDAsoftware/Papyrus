@@ -1,6 +1,4 @@
-﻿
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 using Papyrus.Business.Products;
@@ -18,16 +16,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         }
 
         [Test]
-        public async Task save_a_product() {
-            var product = new Product("AnyId", "AnyName");
-
-            await new SqlProductRepository(dbConnection).Save(product);
-
-            var requestedProducts = await LoadProductWithId("AnyId");
-            requestedProducts.ShouldBeEquivalentTo(product);
-        }
-
-        [Test]
         public async void load_a_product()
         {
             await InsertProductWith(
@@ -37,7 +25,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             var product = await new SqlProductRepository(dbConnection).GetProduct("AnyId");
 
             product.Id.Should().Be("AnyID");
-            product.Name.Should().Be("AnyName");
+
             product.Description.Should().Be("AnyDescription");
         }
 
@@ -47,33 +35,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             var product = await new SqlProductRepository(dbConnection).GetProduct("AnyId");
 
             product.Should().Be(null);
-        }
-
-        [Test]
-        public async Task update_a_product()
-        {
-            await dbConnection.Execute(@"INSERT Products(Id, Name) 
-                                VALUES (@id, @name);",
-                                new { id = "AnyId", name = "AnyName" });
-
-            var product = new Product("AnyId", "AnyName").WithDescription("AnyDescription");
-
-            await new SqlProductRepository(dbConnection).Update(product);
-            var updatedProduct = await LoadProductWithId("AnyId");
-
-            updatedProduct.ShouldBeEquivalentTo(product);
-        }
-
-        [Test]
-        public async void remove_a_product()
-        {
-            const string id = "AnyId";
-            await InsertProductWith(id: id, name: "AnyName");
-            await new SqlProductRepository(dbConnection).Delete(id);
-
-            var product = await LoadProductWithId(id);
-
-            product.Should().BeNull();
         }
 
         [Test]
@@ -99,15 +60,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories
                                     Name = name,
                                     Description = description
                                 });
-        }
-
-        private async Task<Product> LoadProductWithId(string id)
-        {
-            var result = await dbConnection
-                .Query<Product>(@"SELECT Id, Name, Description " +
-                                 "FROM [Products]" +
-                                 "WHERE Id = @Id;", new { Id = id });
-            return result.FirstOrDefault();
         }
     }
 }

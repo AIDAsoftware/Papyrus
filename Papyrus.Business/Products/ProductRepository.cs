@@ -5,10 +5,7 @@ namespace Papyrus.Business.Products
 
     public interface ProductRepository
     {
-        Task Save(Product product);
         Task<Product> GetProduct(string id);
-        Task Update(Product product);
-        Task Delete(string productId);
         Task<List<Product>> GetAllProducts();
     }
 }

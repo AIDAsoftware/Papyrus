@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Papyrus.Business.Products
 {
     using System;
@@ -5,20 +7,17 @@ namespace Papyrus.Business.Products
     public class Product
     {
         public string Id { get; private set; }
-        public string Name { get; private set; }
         public string Description { get; private set; }
 
-        private Product() {
+        public List<ProductVersion> Versions { get; private set; } 
+
+        public Product() {
             GenerateAutomaticId();
+            Versions = new List<ProductVersion>();
         }
 
-        public Product(string name): this() {
-            this.Name = name;
-        }
-
-        public Product(string id, string name) {
-            this.Id = id;
-            this.Name = name;
+        public Product(string id): this() {
+            Id = id;
         }
 
         public Product WithDescription(string description)
@@ -30,6 +29,18 @@ namespace Papyrus.Business.Products
         private void GenerateAutomaticId()
         {
             Id = Guid.NewGuid().ToString();
+        }
+    }
+
+    public class ProductVersion {
+        public string VersionId   { get; private set; }
+        public string VersionName { get; private set; }
+        public string ProductName { get; private set; }
+
+        public ProductVersion(string versionId, string versionName, string productName) {
+            VersionId = versionId;
+            VersionName = versionName;
+            ProductName = productName;
         }
     }
 }
