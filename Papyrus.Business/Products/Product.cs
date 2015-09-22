@@ -7,7 +7,6 @@ namespace Papyrus.Business.Products
     public class Product
     {
         public string Id { get; private set; }
-        public string Description { get; private set; }
 
         public List<ProductVersion> Versions { get; private set; } 
 
@@ -22,16 +21,9 @@ namespace Papyrus.Business.Products
             Versions = new List<ProductVersion>();
         }
 
-        public Product(string id, List<ProductVersion> productVersions, string description = "") {
+        public Product(string id, List<ProductVersion> productVersions) {
             Id = id;
             Versions = productVersions;
-            Description = description;
-        }
-
-        public Product WithDescription(string description)
-        {
-            Description = description;
-            return this;
         }
 
         private void GenerateAutomaticId()

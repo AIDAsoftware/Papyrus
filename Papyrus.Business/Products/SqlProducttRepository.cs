@@ -17,19 +17,18 @@ namespace Papyrus.Business.Products
 
         public async Task<Product> GetProduct(string productId)
         {
-            const string selectSqlQuery = @"SELECT ProductId, VersionId, ProductName, ProductId, Description
+            const string selectSqlQuery = @"SELECT ProductId, VersionId, ProductName, ProductId
                                             FROM [ProductVersion] WHERE ProductId = @ProductId;";
             var allVersionsForCurrentProduct = (await connection.Query<dynamic>(selectSqlQuery, new { ProductId = productId })).ToList();
 
             if (!allVersionsForCurrentProduct.Any()) return null;
 
-            var versions = extractOnlyVersionsFrom(allVersionsForCurrentProduct);
+            var versions = ExtractOnlyVersionsFrom(allVersionsForCurrentProduct);
 
-            var description = allVersionsForCurrentProduct.First().Description;
-            return new Product(productId, versions, description);
+            return new Product(productId, versions);
         }
 
-        private static List<ProductVersion> extractOnlyVersionsFrom(List<dynamic> allVersionsForCurrentProduct)
+        private static List<ProductVersion> ExtractOnlyVersionsFrom(List<dynamic> allVersionsForCurrentProduct)
         {
             var versions = new List<ProductVersion>();
 
@@ -42,7 +41,7 @@ namespace Papyrus.Business.Products
         //TODO: devolver IEnumerable ??
         public async Task<List<Product>> GetAllProducts()
         {
-            const string selectAllProductsSqlQuery = @"SELECT ProductId, VersionId, ProductName, ProductId, Description
+            const string selectAllProductsSqlQuery = @"SELECT ProductId, VersionId, ProductName, ProductId
                                                         FROM ProductVersion";
             var allProductVersions = (await connection.Query<dynamic>(selectAllProductsSqlQuery)).ToList();
                   
@@ -51,7 +50,7 @@ namespace Papyrus.Business.Products
             allProductVersions.ForEach((productVersion) =>
             {
                 var versions = new List<ProductVersion> { new ProductVersion(productVersion.VersionId, productVersion.VersionName, productVersion.ProductName) };
-                products.Add(new Product(productVersion.ProductId, versions, productVersion.Description));
+                products.Add(new Product(productVersion.ProductId, versions));
             });
 
             return products;

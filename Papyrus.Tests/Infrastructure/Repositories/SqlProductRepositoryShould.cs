@@ -20,7 +20,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         public async void load_a_product()
         {
             await InsertProductVersionWith(
-                productId: "AnyProductID", versionId:"1", productName: "AnyProductName", versionName:"AnyVersionName", description: "AnyDescription"
+                productId: "AnyProductID", versionId:"1", productName: "AnyProductName", versionName:"AnyVersionName"
             );
 
             var product = await new SqlProductRepository(dbConnection).GetProduct("AnyProductID");
@@ -28,8 +28,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             product.Id.Should().Be("AnyProductID");
             product.Versions.First().VersionId.Should().Be("1");
             product.Versions.Count.Should().Be(1);
-
-            product.Description.Should().Be("AnyDescription");
         }
 
         [Test]
@@ -72,16 +70,15 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         }
 
 
-        private async Task InsertProductVersionWith(string productId, string versionId, string productName, string versionName, string description = null)
+        private async Task InsertProductVersionWith(string productId, string versionId, string productName, string versionName)
         {
-            await dbConnection.Execute(@"INSERT ProductVersion(ProductId, VersionId, ProductName, VersionName, Description) 
-                                VALUES (@ProductId, @VersionId, @ProductName, @VersionName, @Description);",
+            await dbConnection.Execute(@"INSERT ProductVersion(ProductId, VersionId, ProductName, VersionName) 
+                                VALUES (@ProductId, @VersionId, @ProductName, @VersionName);",
                                 new {
                                     ProductId = productId,
                                     VersionId = versionId,
                                     ProductName = productName,
                                     VersionName = versionName,
-                                    Description = description
                                 });
         }
     }
