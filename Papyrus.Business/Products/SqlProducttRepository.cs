@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Papyrus.Business.Products
 {
     using System.Collections.Generic;
@@ -18,7 +20,9 @@ namespace Papyrus.Business.Products
             const string selectSqlQuery = @"SELECT ProductId, VersionId, ProductName, ProductId, Description
                                             FROM [ProductVersion] WHERE ProductId = @ProductId;";
             var queryResult = (await connection.Query<dynamic>(selectSqlQuery, new { ProductId = productId })).FirstOrDefault();
+
             if (queryResult == null) return null;
+
             var productVersions = new List<ProductVersion>
             {
                 new ProductVersion(queryResult.VersionId, queryResult.VersionName, queryResult.ProductName)
@@ -29,9 +33,19 @@ namespace Papyrus.Business.Products
         //TODO: devolver IEnumerable ??
         public async Task<List<Product>> GetAllProducts()
         {
-            const string selectAllProductsSqlQuery = @"SELECT Id, Name, Description
+            const string selectAllProductsSqlQuery = @"SELECT ProductId, VersionId, ProductName, ProductId, Description
                                                         FROM ProductVersion";
-            return (await connection.Query<Product>(selectAllProductsSqlQuery)).ToList();
+            var allProductVersions = (await connection.Query<dynamic>(selectAllProductsSqlQuery)).ToList();
+                  
+            var products = new List<Product>();
+                              
+            allProductVersions.ForEach((productVersion) =>
+            {
+                var versions = new List<ProductVersion> { new ProductVersion(productVersion.VersionId, productVersion.VersionName, productVersion.ProductName) };
+                products.Add(new Product(productVersion.ProductId, versions, productVersion.Description));
+            });
+
+            return products;
         }
     }
 }
