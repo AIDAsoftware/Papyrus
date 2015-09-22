@@ -61,22 +61,20 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         [Test]
         public async Task update_a_document()
         {
-            await dbConnection.Execute(@"INSERT Documents(Id, ProductVersionId, Language, Title) 
-                                VALUES (@id, @productVersionId, @language, @title);",
-                                new {   id = "AnyId", 
-                                        productVersionId = "AnyProductVersionId", 
-                                        language = "es-ES", 
-                                        title = "AnyTitle" });
+            await InsertDocumentWith(id: "AnyId", productId: "AnyProductId", productVersionId: "AnyProductVersionId",
+                language: "es-ES", title: "AnyTitle", description: "AnyDescription", content: "AnyContent");
 
             var document = new Document()
                 .WithId("AnyId")
+                .ForProduct("AnyProductId")
                 .ForLanguage("es-ES")
                 .ForProductVersion("AnyProductVersionId")
                 .WithTitle("NewTitle")
-                .WithDescription("AnyDescription");
+                .WithDescription("NewDescription")
+                .WithContent("NewContent");
 
             await new SqlDocumentRepository(dbConnection).Update(document);
-            var updatedDocument = await LoadDocumentWith("AnyId", "AnyProduct", "AnyProductVersionId", "es-ES");
+            var updatedDocument = await LoadDocumentWith("AnyId", "AnyProductId", "AnyProductVersionId", "es-ES");
 
             updatedDocument.ShouldBeEquivalentTo(document);
         }

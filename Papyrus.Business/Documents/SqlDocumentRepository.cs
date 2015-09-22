@@ -53,10 +53,13 @@ namespace Papyrus.Business.Documents
                                             "SET Title = @Title, " + 
                                             "Description = @Description, " + 
                                             "Content = @Content " + 
-                                            "WHERE Id = @Id AND ProductVersionId = @ProductVersionId AND Language = @Language;";
+                                            "WHERE Id = @Id AND ProductId = @ProductId " +
+                                                            "AND ProductVersionId = @ProductVersionId " +
+                                                            "AND Language = @Language;";
             var affectedRows = await connection.Execute(updateSqlQuery, new
             {
                 Id = document.DocumentIdentity.Id,
+                ProductId = document.DocumentIdentity.ProductId,
                 ProductVersionId = document.DocumentIdentity.VersionId,
                 Language = document.DocumentIdentity.Language,
                 Title = document.Title,
