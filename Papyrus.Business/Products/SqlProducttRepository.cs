@@ -34,8 +34,8 @@ namespace Papyrus.Business.Products
             var versions = new List<ProductVersion>();
 
             allVersionsForCurrentProduct.ForEach(version =>
-                versions.Add(new ProductVersion(version.VersionId, version.VersionName, version.ProductName))
-                );
+                versions.Add(new ProductVersion(version.VersionId, version.VersionName, version.ProductName)));
+
             return versions;
         }
 
