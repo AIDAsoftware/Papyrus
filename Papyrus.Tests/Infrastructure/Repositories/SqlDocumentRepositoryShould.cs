@@ -91,11 +91,11 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             document.Should().BeNull();
         }
 
-        [Test]
+        [Test]                       //TODO: Is this test complete?
         public async Task load_a_list_with_all_documents()
         {
-            await InsertDocumentWith(id: "1", productId: "AnyProduct", productVersionId: "AnyProductVersionId", language: "es-ES");
-            await InsertDocumentWith(id: "2", productId: "AnotherProduct", productVersionId: "AnyProductVersionId", language: "es-ES");
+            await InsertDocumentWith(id: "1", productId: "AnyProductId", productVersionId: "AnyProductVersionId", language: "es-ES");
+            await InsertDocumentWith(id: "2", productId: "AnotherProductId", productVersionId: "AnyProductVersionId", language: "es-ES");
 
             var documents = await new SqlDocumentRepository(dbConnection).GetAllDocuments();
 
