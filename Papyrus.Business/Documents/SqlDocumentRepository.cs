@@ -35,6 +35,8 @@ namespace Papyrus.Business.Documents
                                             FROM [Documents] WHERE Id = @Id;";
             var result = (await connection.Query<dynamic>(selectSqlQuery, new {Id = id})).FirstOrDefault();
 
+            if (result == null) return null;
+
             return new Document()
                 .WithId(result.Id)
                 .WithTitle(result.Title)
