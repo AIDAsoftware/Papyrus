@@ -26,9 +26,10 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             var product = await new SqlProductRepository(dbConnection).GetProduct("AnyProductID");
 
             product.Id.Should().Be("AnyProductID");
-            product.Versions.First().VersionId.Should().Be("1");
-            product.Versions.First().VersionName.Should().Be("AnyVersionName");
-            product.Versions.First().ProductName.Should().Be("AnyProductName");
+            var productVersion = product.Versions.First();
+            productVersion.VersionId.Should().Be("1");
+            productVersion.VersionName.Should().Be("AnyVersionName");
+            productVersion.ProductName.Should().Be("AnyProductName");
             product.Versions.Count.Should().Be(1);
         }
 
