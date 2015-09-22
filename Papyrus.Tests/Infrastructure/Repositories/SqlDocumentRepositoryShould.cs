@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -22,11 +21,14 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         public async Task save_a_document()
         {
             var document = new Document()
-                .WithId("AnyId").ForProductVersion("AnyProductVersion").ForLanguage("AnyLanguage");
+                .WithId("AnyId")
+                .ForProduct("AnyProduct")
+                .ForProductVersion("AnyProductVersion")
+                .ForLanguage("AnyLanguage");
 
             await new SqlDocumentRepository(dbConnection).Save(document);
 
-            var requestedDocuments = await LoadDocumentWith("AnyId", "AnyProductVersion", "AnyLanguage");
+            var requestedDocuments = await LoadDocumentWith("AnyId", "AnyProduct", "AnyProductVersion", "AnyLanguage");
             requestedDocuments.ShouldBeEquivalentTo(document);
         }
 
@@ -39,12 +41,12 @@ namespace Papyrus.Tests.Infrastructure.Repositories
 
             var document = await new SqlDocumentRepository(dbConnection).GetDocument("AnyId");
 
-            document.Id.Should().Be("AnyID");
+            document.DocumentIdentity.Id.Should().Be("AnyID");
             document.Title.Should().Be("AnyTitle");
-            document.ProductVersionId.Should().Be("AnyProductVersion");
+            document.DocumentIdentity.VersionId.Should().Be("AnyProductVersion");
             document.Description.Should().Be("AnyDescription");
             document.Content.Should().Be("AnyContent");
-            document.Language.Should().Be("es");
+            document.DocumentIdentity.Language.Should().Be("es");
         }
 
         [Test]
@@ -73,7 +75,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
                 .WithDescription("AnyDescription");
 
             await new SqlDocumentRepository(dbConnection).Update(document);
-            var updatedDocument = await LoadDocumentWith("AnyId", "AnyProductVersionId", "es-ES");
+            var updatedDocument = await LoadDocumentWith("AnyId", "AnyProduct", "AnyProductVersionId", "es-ES");
 
             updatedDocument.ShouldBeEquivalentTo(document);
         }
@@ -85,7 +87,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             await InsertDocumentWith(id: id, productVersionId: "AnyProductVersionId", language: "es-ES");
             await new SqlDocumentRepository(dbConnection).Delete(id);
 
-            var document = await LoadDocumentWith(id, "AnyProductVersionId", "es-ES");
+            var document = await LoadDocumentWith(id, "AnyProduct", "AnyProductVersionId", "es-ES");
 
             document.Should().BeNull();
         }
@@ -98,8 +100,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories
 
             var documents = await new SqlDocumentRepository(dbConnection).GetAllDocuments();
 
-            documents.Should().Contain(doc => doc.Id == "1");
-            documents.Should().Contain(doc => doc.Id == "2");
+            documents.Should().Contain(doc => doc.DocumentIdentity.Id == "1");
+            documents.Should().Contain(doc => doc.DocumentIdentity.Id == "2");
             documents.ToArray().Length.Should().Be(2);
         }
 
@@ -118,18 +120,29 @@ namespace Papyrus.Tests.Infrastructure.Repositories
                                 });
         }
 
-        private async Task<Document> LoadDocumentWith(string id, string productVersionId, string language)
+        private async Task<Document> LoadDocumentWith(string id, string productId, string productVersionId, string language)
         {
-            var result = await dbConnection
-                .Query<Document>(sql: @"SELECT Id, ProductVersionId, Language, Title, Content, Description " +
+            var result = (await dbConnection
+                .Query<dynamic>(sql: @"SELECT Id, ProductId, ProductVersionId, Language, Title, Content, Description " +
                                  "FROM [Documents] " +
-                                 "WHERE Id = @Id AND ProductVersionId = @ProductVersionId AND Language = @language;",
+                                 "WHERE Id = @Id AND ProductId = @ProductId " +
+                                                "AND ProductVersionId = @ProductVersionId " +
+                                                "AND Language = @Language;",
                                  param: new {
                                     Id = id,
+                                    ProductId = productId,
                                     ProductVersionId = productVersionId,
                                     Language = language
-                                 });
-            return result.FirstOrDefault();
+                                 })).FirstOrDefault();
+            return new Document()
+                .WithId(result.Id)
+                .WithTitle(result.Title)
+                .WithContent(result.Content)
+                .WithDescription(result.Description)
+                .ForLanguage(result.Language)
+                .ForProduct(result.ProductId)
+                .ForProductVersion(result.ProductVersionId);
+
         }
     }
 }

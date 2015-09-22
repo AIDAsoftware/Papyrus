@@ -82,11 +82,11 @@
         {
             return new DocumentDto()
             {
-                Id = document.Id,
+                Id = document.DocumentIdentity.Id,
                 Title = document.Title,
                 Description = document.Description,
                 Content = document.Content,
-                Language = document.Language
+                Language = document.DocumentIdentity.Language
             };
         }
     }

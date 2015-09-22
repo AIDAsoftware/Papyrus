@@ -5,15 +5,18 @@ namespace Papyrus.Business.Documents
 
     public class Document
     {
-        public string Id { get; private set; }
-        public string ProductVersionId { get; private set; }
+        public DocumentIdentity DocumentIdentity { get; private set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
         public string Content { get; private set; }
-        public string Language { get; private set; }
+
+        public Document()
+        {
+            DocumentIdentity = new DocumentIdentity();
+        }
 
         public Document ForProductVersion(string versionId) {
-            ProductVersionId = versionId;
+            DocumentIdentity.VersionId = versionId;
             return this;
         }
 
@@ -37,21 +40,35 @@ namespace Papyrus.Business.Documents
 
         public Document ForLanguage(string language)
         {
-            Language = language;
+            DocumentIdentity.Language = language;
             return this;
         }
 
         public Document WithId(string id)
         {
-            if (!string.IsNullOrWhiteSpace(Id))
+            if (!string.IsNullOrWhiteSpace(DocumentIdentity.Id))
                 throw new CannotModifyDocumentIdException();
-            Id = id;
+            DocumentIdentity.Id = id;
+            return this;
+        }
+
+        public Document ForProduct(string productId)
+        {
+            DocumentIdentity.ProductId = productId;
             return this;
         }
 
         public void GenerateAutomaticId()
         {
-            Id = Guid.NewGuid().ToString();
+            DocumentIdentity.Id = Guid.NewGuid().ToString();
         }
+    }
+
+    public class DocumentIdentity
+    {
+        public string Language { get; set; }
+        public string Id { get; set; }
+        public string ProductId { get; set; }
+        public string VersionId { get; set; }
     }
 }

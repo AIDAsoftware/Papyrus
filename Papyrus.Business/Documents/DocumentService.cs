@@ -14,13 +14,13 @@
 
         public virtual async Task Create(Document document)
         {
-            if (string.IsNullOrWhiteSpace(document.ProductVersionId))
+            if (string.IsNullOrWhiteSpace(document.DocumentIdentity.VersionId))
                 throw new DocumentMustBeAssignedToAProductVersionException();
 
-            if (string.IsNullOrWhiteSpace(document.Language))
+            if (string.IsNullOrWhiteSpace(document.DocumentIdentity.Language))
                 throw new DocumentMustHaveALanguageException();
 
-            if (!string.IsNullOrWhiteSpace(document.Id))
+            if (!string.IsNullOrWhiteSpace(document.DocumentIdentity.Id))
                 throw new DocumentIdMustNotBeDefinedException();
             document.GenerateAutomaticId();
             await repository.Save(document);
@@ -33,9 +33,9 @@
 
         public virtual async Task Update(Document document)
         {
-            if (string.IsNullOrWhiteSpace(document.Id))
+            if (string.IsNullOrWhiteSpace(document.DocumentIdentity.Id))
                 throw new DocumentIdMustBeDefinedException();
-            if (await GetDocumentById(document.Id) == null)
+            if (await GetDocumentById(document.DocumentIdentity.Id) == null)
                 throw new DocumentNotFoundException();
             await repository.Update(document);
         }

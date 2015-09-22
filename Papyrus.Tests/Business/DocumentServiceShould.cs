@@ -54,6 +54,7 @@
         public async Task save_a_document_when_it_is_created()
         {
             var document = new Document()
+                .ForProduct("anyProduct")
                 .ForProductVersion("anyProductVersion")
                 .WithTitle("Login en el sistema")
                 .WithDescription("Modos de acceso disponibles a SIMA 2")
@@ -63,7 +64,8 @@
             await service.Create(document);
 
             repository.Received().Save(document);
-            repository.Received().Save(Arg.Is<Document>(x => !string.IsNullOrWhiteSpace(x.Id)));
+            repository.Received()
+                .Save(Arg.Is<Document>(x => !string.IsNullOrWhiteSpace(x.DocumentIdentity.Id)));
         }
 
         [Test]
@@ -91,7 +93,7 @@
 
             var document = await service.GetDocumentById(id);
 
-            document.Id.Should().Be(id);
+            document.DocumentIdentity.Id.Should().Be(id);
         }
 
 
@@ -149,7 +151,7 @@
 
             var documents = await service.AllDocuments();
 
-            documents.Should().Contain(x => x.Id == anyId);
+            documents.Should().Contain(x => x.DocumentIdentity.Id == anyId);
             documents.Length.Should().Be(1);
         }
 
