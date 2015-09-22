@@ -5,7 +5,7 @@ namespace Papyrus.Business.Products
 
     public interface ProductRepository
     {
-        Task<Product> GetProduct(string id);
+        Task<Product> GetProduct(string productId);
         Task<List<Product>> GetAllProducts();
     }
 }

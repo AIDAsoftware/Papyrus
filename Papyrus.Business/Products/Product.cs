@@ -16,8 +16,16 @@ namespace Papyrus.Business.Products
             Versions = new List<ProductVersion>();
         }
 
-        public Product(string id): this() {
+        public Product(string id)
+        {
             Id = id;
+            Versions = new List<ProductVersion>();
+        }
+
+        public Product(string id, List<ProductVersion> productVersions, string description = "") {
+            Id = id;
+            Versions = productVersions;
+            Description = description;
         }
 
         public Product WithDescription(string description)
