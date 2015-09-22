@@ -27,6 +27,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories
 
             product.Id.Should().Be("AnyProductID");
             product.Versions.First().VersionId.Should().Be("1");
+            product.Versions.First().VersionName.Should().Be("AnyVersionName");
+            product.Versions.First().ProductName.Should().Be("AnyProductName");
             product.Versions.Count.Should().Be(1);
         }
 
@@ -68,7 +70,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             products.Should().Contain(prod => prod.Id == "2");
             products.ToArray().Length.Should().Be(2);
         }
-
 
         private async Task InsertProductVersionWith(string productId, string versionId, string productName, string versionName)
         {

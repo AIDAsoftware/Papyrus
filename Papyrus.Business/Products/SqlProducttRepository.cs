@@ -17,7 +17,7 @@ namespace Papyrus.Business.Products
 
         public async Task<Product> GetProduct(string productId)
         {
-            const string selectSqlQuery = @"SELECT ProductId, VersionId, ProductName, ProductId
+            const string selectSqlQuery = @"SELECT ProductId, VersionId, ProductName, VersionName
                                             FROM [ProductVersion] WHERE ProductId = @ProductId;";
             var allVersionsForCurrentProduct = (await connection.Query<dynamic>(selectSqlQuery, new { ProductId = productId })).ToList();
 
