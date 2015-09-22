@@ -31,9 +31,18 @@ namespace Papyrus.Business.Documents
 
         public async Task<Document> GetDocument(string id)
         {
-            const string selectSqlQuery = @"SELECT Id, ProductVersionId, Title, Content, Description, Language
+            const string selectSqlQuery = @"SELECT Id, ProductId, ProductVersionId, Title, Content, Description, Language
                                             FROM [Documents] WHERE Id = @Id;";
-            return (await connection.Query<Document>(selectSqlQuery, new {Id = id})).FirstOrDefault();
+            var result = (await connection.Query<dynamic>(selectSqlQuery, new {Id = id})).FirstOrDefault();
+
+            return new Document()
+                .WithId(result.Id)
+                .WithTitle(result.Title)
+                .WithContent(result.Content)
+                .WithDescription(result.Description)
+                .ForLanguage(result.Language)
+                .ForProduct(result.ProductId)
+                .ForProductVersion(result.ProductVersionId);
         }
 
         public async Task Update(Document document)

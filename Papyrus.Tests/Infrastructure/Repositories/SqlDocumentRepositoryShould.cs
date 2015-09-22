@@ -36,17 +36,18 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         public async void load_a_document()
         {
             await InsertDocumentWith(
-                id: "AnyID", productVersionId: "AnyProductVersion", title: "AnyTitle", content: "AnyContent", description: "AnyDescription", language: "es"
-            );
+                id: "AnyID", productId: "AnyProduct", productVersionId: "AnyProductVersion", 
+                language: "es", title: "AnyTitle", description: "AnyDescription", content: "AnyContent");
 
-            var document = await new SqlDocumentRepository(dbConnection).GetDocument("AnyId");
+            var document = await new SqlDocumentRepository(dbConnection).GetDocument("AnyID");
 
             document.DocumentIdentity.Id.Should().Be("AnyID");
-            document.Title.Should().Be("AnyTitle");
+            document.DocumentIdentity.ProductId.Should().Be("AnyProduct");
             document.DocumentIdentity.VersionId.Should().Be("AnyProductVersion");
+            document.DocumentIdentity.Language.Should().Be("es");
+            document.Title.Should().Be("AnyTitle");
             document.Description.Should().Be("AnyDescription");
             document.Content.Should().Be("AnyContent");
-            document.DocumentIdentity.Language.Should().Be("es");
         }
 
         [Test]
@@ -84,7 +85,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         public async void remove_a_document()
         {
             const string id = "AnyId";
-            await InsertDocumentWith(id: id, productVersionId: "AnyProductVersionId", language: "es-ES");
+            await InsertDocumentWith(id: id, productId: "AnyProduct", productVersionId: "AnyProductVersionId", language: "es-ES");
             await new SqlDocumentRepository(dbConnection).Delete(id);
 
             var document = await LoadDocumentWith(id, "AnyProduct", "AnyProductVersionId", "es-ES");
@@ -95,8 +96,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         [Test]
         public async Task load_a_list_with_all_documents()
         {
-            await InsertDocumentWith(id: "1", productVersionId: "AnyProductVersionId", language: "es-ES");
-            await InsertDocumentWith(id: "2", productVersionId: "AnyProductVersionId", language: "es-ES");
+            await InsertDocumentWith(id: "1", productId: "AnyProduct", productVersionId: "AnyProductVersionId", language: "es-ES");
+            await InsertDocumentWith(id: "2", productId: "AnotherProduct", productVersionId: "AnyProductVersionId", language: "es-ES");
 
             var documents = await new SqlDocumentRepository(dbConnection).GetAllDocuments();
 
@@ -106,12 +107,13 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         }
 
 
-        private async Task InsertDocumentWith(string id, string productVersionId, string language, string title = null, string description = null, string content = null)
+        private async Task InsertDocumentWith(string id, string productId, string productVersionId, string language, string title = null, string description = null, string content = null)
         {
-            await dbConnection.Execute(@"INSERT Documents(Id, ProductVersionId, Language, Title, Description, Content) 
-                                VALUES (@Id, @ProductVersionId, @Language, @Title, @Description, @Content);",
+            await dbConnection.Execute(@"INSERT Documents(Id, ProductId, ProductVersionId, Language, Title, Description, Content) 
+                                VALUES (@Id, @ProductId, @ProductVersionId, @Language, @Title, @Description, @Content);",
                                 new {
                                     Id = id,
+                                    ProductId = productId,
                                     ProductVersionId = productVersionId,
                                     Language = language,                    
                                     Title = title,
