@@ -51,6 +51,7 @@
     <Compile Include="Product\1 - CreateProductTable.cs" />
     <Compile Include="Product\2 - ConvertProductToProductVersion.cs" />
     <Compile Include="Product\3 - RemoveDescriptionColumns.cs" />
+    <Compile Include="Product\4 - SeparateProductVersionTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetDocumentRowsNullableMigration.cs" />
   </ItemGroup>

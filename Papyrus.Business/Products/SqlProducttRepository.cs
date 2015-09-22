@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Runtime.CompilerServices;
 
@@ -18,56 +19,40 @@ namespace Papyrus.Business.Products
 
         public async Task<Product> GetProduct(string productId)
         {
-            const string selectSqlQuery = @"SELECT ProductId, VersionId, ProductName, VersionName
-                                            FROM [ProductVersion] WHERE ProductId = @ProductId;";
-            var allVersionsForCurrentProduct = (await connection.Query<dynamic>(selectSqlQuery, new { ProductId = productId })).ToList();
+            const string selectProductSqlQuery = @"SELECT ProductName
+                                            FROM [Product] WHERE ProductId = @ProductId;";
+            var nameProductColumn = (await connection.Query<string>(selectProductSqlQuery, new { ProductId = productId })).FirstOrDefault();
+            var versions = await ProducVersionsForProduct(productId);
 
-            if (!allVersionsForCurrentProduct.Any()) return null;
-
-            var versions = ExtractOnlyVersionsFrom(allVersionsForCurrentProduct);
-
-            return new Product(productId, versions);
-        }
-
-        private static List<ProductVersion> ExtractOnlyVersionsFrom(List<dynamic> allVersionsForCurrentProduct)
-        {
-            var versions = new List<ProductVersion>();
-
-            allVersionsForCurrentProduct.ForEach(version =>
-                versions.Add(new ProductVersion(version.VersionId, version.VersionName, version.ProductName)));
-
-            return versions;
+            return String.IsNullOrEmpty(nameProductColumn) ? null : new Product(productId, nameProductColumn, versions);
         }
 
         //TODO: devolver IEnumerable ??
+
         public async Task<List<Product>> GetAllProducts()
         {
-            const string selectAllProductsSqlQuery = @"SELECT VersionId, ProductName, ProductId, VersionName
-                                                        FROM ProductVersion";
-            var allProductVersions = (await connection.Query<dynamic>(selectAllProductsSqlQuery)).ToList();
+            const string selectProductSqlQuery = @"SELECT ProductId, ProductName
+                                            FROM [Product];";
 
-            return ProductsFrom(allProductVersions).ToList();
-        }
+            var productsFromDataBase = (await connection.Query<dynamic>(selectProductSqlQuery)).ToList();
 
-        private static IEnumerable<Product> ProductsFrom(List<dynamic> allProductVersions)
-        {
             var products = new List<Product>();
-            var groupedProducts = allProductVersions.GroupBy(x => x.ProductId);
 
-            foreach (var productGroup in groupedProducts) {
-                var versions =
-                    productGroup.Select(pv => new ProductVersion(pv.VersionId, pv.VersionName, pv.ProductName));
-                products.Add(new Product(productGroup.Key, versions.ToList()));
-
+            foreach (var product in productsFromDataBase)
+            {
+                var versionsForProduct = await ProducVersionsForProduct(product.ProductId);
+                products.Add(new Product(product.ProductId, product.ProductName, versionsForProduct));
             }
+
             return products;
         }
 
-        private static List<dynamic> FilterToGetOnlyCurrentProductVersions(IEnumerable<dynamic> allProductVersions, dynamic productVersion)
+        private async Task<List<ProductVersion>> ProducVersionsForProduct(string productId)
         {
-            return allProductVersions
-                .Where((prod) => prod.ProductId.Equals(productVersion.ProductId))
-                .ToList();
+            const string selectVersionSqlQuery = @"Select VersionId, VersionName
+                                            FROM [ProductVersion] WHERE Product = @ProductId;";
+
+            return (await connection.Query<ProductVersion>(selectVersionSqlQuery, new {ProductId = productId})).ToList();
         }
     }
 }

@@ -7,8 +7,8 @@ namespace Papyrus.Business.Products
     public class Product
     {
         public string Id { get; private set; }
-
-        public List<ProductVersion> Versions { get; private set; } 
+        public string Name { get; private set; }
+        public List<ProductVersion> Versions { get; private set; }
 
         public Product() {
             GenerateAutomaticId();
@@ -21,8 +21,9 @@ namespace Papyrus.Business.Products
             Versions = new List<ProductVersion>();
         }
 
-        public Product(string id, List<ProductVersion> productVersions) {
+        public Product(string id, string name, List<ProductVersion> productVersions) {
             Id = id;
+            Name = name;
             Versions = productVersions;
         }
 
@@ -33,14 +34,13 @@ namespace Papyrus.Business.Products
     }
 
     public class ProductVersion {
+        //TODO: rename properties
         public string VersionId   { get; private set; }
         public string VersionName { get; private set; }
-        public string ProductName { get; private set; }
 
-        public ProductVersion(string versionId, string versionName, string productName) {
+        public ProductVersion(string versionId, string versionName) {
             VersionId = versionId;
             VersionName = versionName;
-            ProductName = productName;
         }
     }
 }
