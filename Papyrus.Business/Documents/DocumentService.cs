@@ -14,6 +14,9 @@
 
         public virtual async Task Create(Document document)
         {
+            if (string.IsNullOrWhiteSpace(document.DocumentIdentity.ProductId))
+                throw new DocumentMustBeAssignedToAProductException();
+
             if (string.IsNullOrWhiteSpace(document.DocumentIdentity.VersionId))
                 throw new DocumentMustBeAssignedToAProductVersionException();
 

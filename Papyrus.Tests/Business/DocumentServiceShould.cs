@@ -1,4 +1,6 @@
-﻿namespace Papyrus.Tests.Business
+﻿using Papyrus.Business;
+
+namespace Papyrus.Tests.Business
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -45,6 +47,19 @@
             var document = new Document()
                 .ForProduct("AnyProductId")
                 .ForProductVersion("anyProductVersion")
+                .WithTitle("Login en el sistema")
+                .WithDescription("Modos de acceso disponibles a SIMA 2")
+                .WithContent("El usuario podrá acceder al sistema indicando su usuario");
+
+            await service.Create(document);
+        }
+
+        [Test]
+        [ExpectedException(typeof(DocumentMustBeAssignedToAProductException))]
+        public async void fail_saving_document_without_product() {
+            var document = new Document()
+                .ForProductVersion("AnyProductVersionId")
+                .ForLanguage("es-ES")
                 .WithTitle("Login en el sistema")
                 .WithDescription("Modos de acceso disponibles a SIMA 2")
                 .WithContent("El usuario podrá acceder al sistema indicando su usuario");
