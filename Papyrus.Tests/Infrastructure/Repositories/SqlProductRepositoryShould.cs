@@ -72,6 +72,20 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             products.ToArray().Length.Should().Be(2);
         }
 
+        [Test]
+        public async Task load_a_list_with_all_products_containing_its_versions()
+        {
+            await InsertProductVersionWith(productId: "1a", versionId: "1", productName: "anyProductName", versionName: "anyVersionName");
+            await InsertProductVersionWith(productId: "1a", versionId: "2", productName: "anyProductName", versionName: "anotherVersionName");
+            await InsertProductVersionWith(productId: "2b", versionId: "1", productName: "anyProductName", versionName: "anyVersionName");
+
+            var products = await new SqlProductRepository(dbConnection).GetAllProducts();
+
+            products.First(prod => prod.Id == "1a").Versions.Count.Should().Be(2);
+            products.First(prod => prod.Id == "2b").Versions.Count.Should().Be(1);
+            products.ToArray().Length.Should().Be(2);
+        }
+
         private async Task InsertProductVersionWith(string productId, string versionId, string productName, string versionName)
         {
             await dbConnection.Execute(@"INSERT ProductVersion(ProductId, VersionId, ProductName, VersionName) 

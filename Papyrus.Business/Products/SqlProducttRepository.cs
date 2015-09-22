@@ -1,3 +1,4 @@
+using System.Net;
 using System.Runtime.CompilerServices;
 
 namespace Papyrus.Business.Products
@@ -41,19 +42,32 @@ namespace Papyrus.Business.Products
         //TODO: devolver IEnumerable ??
         public async Task<List<Product>> GetAllProducts()
         {
-            const string selectAllProductsSqlQuery = @"SELECT ProductId, VersionId, ProductName, ProductId
+            const string selectAllProductsSqlQuery = @"SELECT VersionId, ProductName, ProductId, VersionName
                                                         FROM ProductVersion";
             var allProductVersions = (await connection.Query<dynamic>(selectAllProductsSqlQuery)).ToList();
-                  
-            var products = new List<Product>();
-                              
-            allProductVersions.ForEach((productVersion) =>
-            {
-                var versions = new List<ProductVersion> { new ProductVersion(productVersion.VersionId, productVersion.VersionName, productVersion.ProductName) };
-                products.Add(new Product(productVersion.ProductId, versions));
-            });
 
+            return ProductsFrom(allProductVersions).ToList();
+        }
+
+        private static IEnumerable<Product> ProductsFrom(List<dynamic> allProductVersions)
+        {
+            var products = new List<Product>();
+            var groupedProducts = allProductVersions.GroupBy(x => x.ProductId);
+
+            foreach (var productGroup in groupedProducts) {
+                var versions =
+                    productGroup.Select(pv => new ProductVersion(pv.VersionId, pv.VersionName, pv.ProductName));
+                products.Add(new Product(productGroup.Key, versions.ToList()));
+
+            }
             return products;
+        }
+
+        private static List<dynamic> FilterToGetOnlyCurrentProductVersions(IEnumerable<dynamic> allProductVersions, dynamic productVersion)
+        {
+            return allProductVersions
+                .Where((prod) => prod.ProductId.Equals(productVersion.ProductId))
+                .ToList();
         }
     }
 }
