@@ -6,7 +6,7 @@ namespace Papyrus.Infrastructure.Migrations.Document
     public class AddProductVerstionToDocument : Migration
     {
         public override void Up() {
-            Alter.Table("Documents").AddColumn("ProductVersionId").AsString(50).NotNullable();
+            Alter.Table("Documents").AddColumn("ProductVersionId").AsString(50).NotNullable().SetExistingRowsTo("1");
             Alter.Table("Documents").AlterColumn("Language").AsString(15).NotNullable();
 
             Delete.PrimaryKey("PK_Documents").FromTable("Documents");
