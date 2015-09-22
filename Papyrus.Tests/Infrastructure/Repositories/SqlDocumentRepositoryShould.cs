@@ -83,10 +83,10 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         public async void remove_a_document()
         {
             const string id = "AnyId";
-            await InsertDocumentWith(id: id, productId: "AnyProduct", productVersionId: "AnyProductVersionId", language: "es-ES");
+            await InsertDocumentWith(id: id, productId: "AnyProductId", productVersionId: "AnyProductVersionId", language: "es-ES");
             await new SqlDocumentRepository(dbConnection).Delete(id);
 
-            var document = await LoadDocumentWith(id, "AnyProduct", "AnyProductVersionId", "es-ES");
+            var document = await LoadDocumentWith(id, "AnyProductId", "AnyProductVersionId", "es-ES");
 
             document.Should().BeNull();
         }
@@ -134,6 +134,9 @@ namespace Papyrus.Tests.Infrastructure.Repositories
                                     ProductVersionId = productVersionId,
                                     Language = language
                                  })).FirstOrDefault();
+
+            if (result == null) return null;
+
             return new Document()
                 .WithId(result.Id)
                 .WithTitle(result.Title)
