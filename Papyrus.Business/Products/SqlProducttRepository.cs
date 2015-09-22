@@ -18,6 +18,7 @@ namespace Papyrus.Business.Products
             const string selectSqlQuery = @"SELECT ProductId, VersionId, ProductName, ProductId, Description
                                             FROM [ProductVersion] WHERE ProductId = @ProductId;";
             var queryResult = (await connection.Query<dynamic>(selectSqlQuery, new { ProductId = productId })).FirstOrDefault();
+            if (queryResult == null) return null;
             var productVersions = new List<ProductVersion>
             {
                 new ProductVersion(queryResult.VersionId, queryResult.VersionName, queryResult.ProductName)
