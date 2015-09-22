@@ -19,7 +19,7 @@
         public void SetUp()
         {
             repository = Substitute.For<DocumentRepository>();
-            repository.GetDocument(AnyId).Returns(            //TODO extract field
+            repository.GetDocument(AnyId).Returns(
                 Task.FromResult(new Document().WithId(AnyId))
             );
             service = new DocumentService(repository);
@@ -29,10 +29,11 @@
         [ExpectedException(typeof(DocumentMustBeAssignedToAProductVersionException))]
         public async void fail_saving_document_without_productVersionId() {
             var document = new Document()
+                .ForProduct("AnyProductId")
+                .ForLanguage("es-Es")
                 .WithTitle("Login en el sistema")
                 .WithDescription("Modos de acceso disponibles a SIMA 2")
-                .WithContent("El usuario podrá acceder al sistema indicando su usuario")
-                .ForLanguage("es-Es");
+                .WithContent("El usuario podrá acceder al sistema indicando su usuario");
 
             await service.Create(document);
         }
@@ -42,6 +43,7 @@
         [ExpectedException(typeof(DocumentMustHaveALanguageException))]
         public async void fail_saving_document_without_language() {
             var document = new Document()
+                .ForProduct("AnyProductId")
                 .ForProductVersion("anyProductVersion")
                 .WithTitle("Login en el sistema")
                 .WithDescription("Modos de acceso disponibles a SIMA 2")
