@@ -19,15 +19,24 @@ namespace Papyrus.Business.Products
         {
             const string selectSqlQuery = @"SELECT ProductId, VersionId, ProductName, ProductId, Description
                                             FROM [ProductVersion] WHERE ProductId = @ProductId;";
-            var queryResult = (await connection.Query<dynamic>(selectSqlQuery, new { ProductId = productId })).FirstOrDefault();
+            var allVersionsForCurrentProduct = (await connection.Query<dynamic>(selectSqlQuery, new { ProductId = productId })).ToList();
 
-            if (queryResult == null) return null;
+            if (!allVersionsForCurrentProduct.Any()) return null;
 
-            var productVersions = new List<ProductVersion>
-            {
-                new ProductVersion(queryResult.VersionId, queryResult.VersionName, queryResult.ProductName)
-            };
-            return new Product(queryResult.ProductId, productVersions, queryResult.Description);
+            var versions = extractOnlyVersionsFrom(allVersionsForCurrentProduct);
+
+            var description = allVersionsForCurrentProduct.First().Description;
+            return new Product(productId, versions, description);
+        }
+
+        private static List<ProductVersion> extractOnlyVersionsFrom(List<dynamic> allVersionsForCurrentProduct)
+        {
+            var versions = new List<ProductVersion>();
+
+            allVersionsForCurrentProduct.ForEach(version =>
+                versions.Add(new ProductVersion(version.VersionId, version.VersionName, version.ProductName))
+                );
+            return versions;
         }
 
         //TODO: devolver IEnumerable ??

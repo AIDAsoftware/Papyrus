@@ -19,17 +19,35 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         [Test]
         public async void load_a_product()
         {
-            await InsertProductWith(
+            await InsertProductVersionWith(
                 productId: "AnyProductID", versionId:"1", productName: "AnyProductName", versionName:"AnyVersionName", description: "AnyDescription"
             );
 
-            var product = await new SqlProductRepository(dbConnection).GetProduct("AnyProductId");
+            var product = await new SqlProductRepository(dbConnection).GetProduct("AnyProductID");
 
             product.Id.Should().Be("AnyProductID");
             product.Versions.First().VersionId.Should().Be("1");
             product.Versions.Count.Should().Be(1);
 
             product.Description.Should().Be("AnyDescription");
+        }
+
+        [Test]
+        public async void load_a_product_with_its_versions()
+        {
+            await InsertProductVersionWith(
+                productId: "AnyProductID", versionId:"1", productName: "AnyProductName", versionName:"AnyVersionName"
+            );
+            await InsertProductVersionWith(
+                productId: "AnyProductID", versionId:"2", productName: "AnyProductName", versionName:"AnotherVersionName"
+            );
+
+            var product = await new SqlProductRepository(dbConnection).GetProduct("AnyProductID");
+
+            product.Id.Should().Be("AnyProductID");
+            product.Versions.Should().Contain((version) => version.VersionId.Equals("1"));
+            product.Versions.Should().Contain((version) => version.VersionId.Equals("2"));
+            product.Versions.Count.Should().Be(2);
         }
 
         [Test]
@@ -43,8 +61,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         [Test]
         public async Task load_a_list_with_all_products()
         {
-            await InsertProductWith(productId: "1", versionId: "1", productName: "anyProductName", versionName: "anyVersionName");
-            await InsertProductWith(productId: "2", versionId: "1", productName: "anyProductName", versionName: "anyVersionName");
+            await InsertProductVersionWith(productId: "1", versionId: "1", productName: "anyProductName", versionName: "anyVersionName");
+            await InsertProductVersionWith(productId: "2", versionId: "1", productName: "anyProductName", versionName: "anyVersionName");
 
             var products = await new SqlProductRepository(dbConnection).GetAllProducts();
 
@@ -54,7 +72,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         }
 
 
-        private async Task InsertProductWith(string productId, string versionId, string productName, string versionName, string description = null)
+        private async Task InsertProductVersionWith(string productId, string versionId, string productName, string versionName, string description = null)
         {
             await dbConnection.Execute(@"INSERT ProductVersion(ProductId, VersionId, ProductName, VersionName, Description) 
                                 VALUES (@ProductId, @VersionId, @ProductName, @VersionName, @Description);",
