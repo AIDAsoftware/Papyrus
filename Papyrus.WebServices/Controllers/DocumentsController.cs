@@ -55,19 +55,19 @@
             }
         }
 
-        [HttpDelete]
-        public async Task<HttpResponseMessage> Delete(string id)
-        {
-            try
-            {
-                await documentService.Remove(id);
-                return new HttpResponseMessage(HttpStatusCode.NoContent);
-            }
-            catch (DocumentNotFoundException)
-            {
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
-            }
-        }
+//        [HttpDelete]
+//        public async Task<HttpResponseMessage> Delete(string id)
+//        {
+//            try
+//            {
+//                await documentService.Remove(id);
+//                return new HttpResponseMessage(HttpStatusCode.NoContent);
+//            }
+//            catch (DocumentNotFoundException)
+//            {
+//                return new HttpResponseMessage(HttpStatusCode.NotFound);
+//            }
+//        }
 
         private static Document DocumentFrom(DocumentDto documentDto)
         {

@@ -33,13 +33,6 @@
             await repository.Update(document);
         }
 
-        public virtual async Task Remove(string documentId)
-        {
-            if (await GetDocumentById(documentId) == null)
-                throw new DocumentNotFoundException();
-            await repository.Delete(documentId);
-        }
-
         public virtual async Task<Document[]> AllDocuments()
         {
             return (await repository.GetAllDocuments()).ToArray();
