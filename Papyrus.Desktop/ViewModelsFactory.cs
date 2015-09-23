@@ -14,6 +14,11 @@ namespace Papyrus.Desktop {
         public static DocumentsGridVM DocumentsGrid() {
             return new DocumentsGridVM(ServicesFactory.Document(), RepositoriesFactory.Product());
         }
+
+        public static NewDocumentVM NewDocumentWindowVm()
+        {
+            return new NewDocumentVM(RepositoriesFactory.Product());
+        }
     }
 
     public static class ServicesFactory {

@@ -1,7 +1,11 @@
 ﻿<Window x:Class="Papyrus.Desktop.Features.Documents.NewDocumentWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="New document">
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="New document"
+        DataContext="{ Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -22,10 +26,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Content="Product" Grid.Row="0"></Label>
-                    <ComboBox SelectedValue="CA" Grid.Column="1">
-                        <ComboBoxItem Tag="CO">Colorado</ComboBoxItem>
-                        <ComboBoxItem Tag="CA">California</ComboBoxItem>
-                        <ComboBoxItem Tag="NM">New Mexico</ComboBoxItem>
+                    <ComboBox SelectedValue="CA" Grid.Column="1" ItemsSource="{ Binding Products }">
                     </ComboBox>
                 </Grid>
                 <Grid Grid.Row="1" Margin="10">
