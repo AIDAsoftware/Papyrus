@@ -80,7 +80,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         }
 
         [Test]
-        public async void remove_a_document()
+        public async void remove_a_document()    //TODO: remove a document by Document Identity instead of by document id?
         {
             const string id = "AnyId";
             await InsertDocumentWith(id: id, productId: "AnyProductId", productVersionId: "AnyProductVersionId", language: "es-ES");
