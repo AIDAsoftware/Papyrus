@@ -12,7 +12,7 @@ namespace Papyrus.Desktop {
         }
 
         public static DocumentsGridVM DocumentsGrid() {
-            return new DocumentsGridVM(ServicesFactory.Document());
+            return new DocumentsGridVM(ServicesFactory.Document(), RepositoriesFactory.Product());
         }
     }
 
