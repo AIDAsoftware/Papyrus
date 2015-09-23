@@ -62,6 +62,7 @@
     <Compile Include="Features\Documents\NewDocumentWindow.xaml.cs">
       <DependentUpon>NewDocumentWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\Documents\NewDocumentVM.cs" />
     <Compile Include="Features\MainMenu\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
