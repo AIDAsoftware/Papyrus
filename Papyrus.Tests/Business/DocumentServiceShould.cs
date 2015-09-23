@@ -176,7 +176,7 @@ namespace Papyrus.Tests.Business
 
         [Test]
         [ExpectedException(typeof(DocumentNotFoundException))]
-        public async Task throw_an_exception_when_try_to_update_a_non_existent_document()
+        public async Task throw_an_exception_when_try_to_update_a_no_existing_document()
         {
             var document = new Document()
                 .WithId("NoExistingId")
@@ -185,23 +185,6 @@ namespace Papyrus.Tests.Business
                 .ForLanguage("es-ES");
             await service.Update(document);
         }
-
-
-        [Test]
-        public async Task remove_a_given_document_when_it_is_deleted()
-        {
-            const string documentId = AnyId;
-            await service.Remove(documentId);
-            repository.Received().Delete(documentId);
-        }
-
-        [Test]
-        [ExpectedException(typeof(DocumentNotFoundException))]
-        public async Task throw_an_exception_when_try_to_delete_a_no_existing_document()
-        {
-            await service.Remove("NoExistingId");
-        }
-
 
         [Test]
         public async Task return_a_list_of_documents_when_user_want_to_see_all_documents()
