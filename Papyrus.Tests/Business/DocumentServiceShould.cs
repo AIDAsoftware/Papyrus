@@ -46,7 +46,7 @@ namespace Papyrus.Tests.Business
         public async void fail_saving_document_without_language() {
             var document = new Document()
                 .ForProduct("AnyProductId")
-                .ForProductVersion("anyProductVersion")
+                .ForProductVersion("AnyProductVersionId")
                 .WithTitle("Login en el sistema")
                 .WithDescription("Modos de acceso disponibles a SIMA 2")
                 .WithContent("El usuario podrá acceder al sistema indicando su usuario");
@@ -71,8 +71,8 @@ namespace Papyrus.Tests.Business
         public async Task save_a_document_when_it_is_created()
         {
             var document = new Document()
-                .ForProduct("anyProduct")
-                .ForProductVersion("anyProductVersion")
+                .ForProduct("AnyProductId")
+                .ForProductVersion("AnyProductVersionId")
                 .WithTitle("Login en el sistema")
                 .WithDescription("Modos de acceso disponibles a SIMA 2")
                 .WithContent("El usuario podrá acceder al sistema indicando su usuario")
@@ -92,7 +92,7 @@ namespace Papyrus.Tests.Business
             var document = new Document()
                 .WithId(AnyId)
                 .ForProduct("AnyProductId")
-                .ForProductVersion("anyProductVersion")
+                .ForProductVersion("anyProductVersionId")
                 .WithTitle("Login en el sistema")
                 .WithDescription("Modos de acceso disponibles a SIMA 2")
                 .WithContent("El usuario podrá acceder al sistema indicando su usuario")
@@ -102,7 +102,7 @@ namespace Papyrus.Tests.Business
 
 
         [Test]
-        public async void get_a_saved_document_when_it_is_requested()
+        public async void get_a_saved_document_when_it_is_requested_by_document_id()
         {
             var id = "1";
             repository.GetDocument(id).Returns(Task.FromResult(new Document()
@@ -118,7 +118,11 @@ namespace Papyrus.Tests.Business
         [Test]
         public async void update_a_given_document_when_it_is_modified()
         {
-            var document = new Document().WithId(AnyId);
+            var document = new Document()
+                .WithId(AnyId)
+                .ForProduct("AnyProductId")
+                .ForProductVersion("AnyProductVersionId")
+                .ForLanguage("es-ES");
 
             document.WithTitle("Login en el sistema");
             await service.Update(document);
@@ -130,7 +134,43 @@ namespace Papyrus.Tests.Business
         [ExpectedException(typeof(DocumentIdMustBeDefinedException))]
         public async Task throw_an_exception_when_try_to_update_a_document_without_id()
         {
-            var document = new Document();
+            var document = new Document()
+                .ForProduct("AnyProductId")
+                .ForProductVersion("AnyProductVersionId")
+                .ForLanguage("es-ES");
+            await service.Update(document);
+        }
+
+        [Test]
+        [ExpectedException(typeof(DocumentMustBeAssignedToAProductException))]
+        public async Task throw_an_exception_when_try_to_update_a_document_which_is_not_assigned_to_a_product()
+        {
+            var document = new Document()
+                .WithId(AnyId)
+                .ForProductVersion("AnyProductVersionId")
+                .ForLanguage("es-ES");
+            await service.Update(document);
+        }
+
+        [Test]
+        [ExpectedException(typeof(DocumentMustBeAssignedToAProductVersionException))]
+        public async Task throw_an_exception_when_try_to_update_a_document_which_is_not_assigned_to_a_product_version()
+        {
+            var document = new Document()
+                .WithId(AnyId)
+                .ForProduct("AnyProductId")
+                .ForLanguage("es-ES");
+            await service.Update(document);
+        }
+
+        [Test]
+        [ExpectedException(typeof(DocumentMustHaveALanguageException))]
+        public async Task throw_an_exception_when_try_to_update_a_document_which_has_not_language()
+        {
+            var document = new Document()
+                .WithId(AnyId)
+                .ForProduct("AnyProductId")
+                .ForProductVersion("AnyProductVersionId");
             await service.Update(document);
         }
 
@@ -138,7 +178,11 @@ namespace Papyrus.Tests.Business
         [ExpectedException(typeof(DocumentNotFoundException))]
         public async Task throw_an_exception_when_try_to_update_a_non_existent_document()
         {
-            var document = new Document().WithId("NoExistingId");
+            var document = new Document()
+                .WithId("NoExistingId")
+                .ForProduct("AnyProductId")
+                .ForProductVersion("AnyProductVersion")
+                .ForLanguage("es-ES");
             await service.Update(document);
         }
 
