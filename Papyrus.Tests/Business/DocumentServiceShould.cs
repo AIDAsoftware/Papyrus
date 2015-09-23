@@ -91,6 +91,7 @@ namespace Papyrus.Tests.Business
         {
             var document = new Document()
                 .WithId(AnyId)
+                .ForProduct("AnyProductId")
                 .ForProductVersion("anyProductVersion")
                 .WithTitle("Login en el sistema")
                 .WithDescription("Modos de acceso disponibles a SIMA 2")
