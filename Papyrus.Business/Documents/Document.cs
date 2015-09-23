@@ -44,11 +44,11 @@ namespace Papyrus.Business.Documents
             return this;
         }
 
-        public Document WithId(string id)
+        public Document WithTopicId(string id)
         {
-            if (!string.IsNullOrWhiteSpace(DocumentIdentity.Id))
+            if (!string.IsNullOrWhiteSpace(DocumentIdentity.TopicId))
                 throw new CannotModifyDocumentIdException();
-            DocumentIdentity.Id = id;
+            DocumentIdentity.TopicId = id;
             return this;
         }
 
@@ -60,14 +60,14 @@ namespace Papyrus.Business.Documents
 
         public void GenerateAutomaticId()
         {
-            DocumentIdentity.Id = Guid.NewGuid().ToString();
+            DocumentIdentity.TopicId = Guid.NewGuid().ToString();
         }
     }
 
     public class DocumentIdentity
     {
         public string Language { get; set; }
-        public string Id { get; set; }
+        public string TopicId { get; set; }
         public string ProductId { get; set; }
         public string VersionId { get; set; }
     }

@@ -16,10 +16,10 @@ namespace Papyrus.Business.Documents
 
         public async Task Save(Document document)
         {
-            const string insertSqlQuery = @"INSERT Documents(Id, ProductId, ProductVersionId, Language, Title, Description, Content) " +
-                                            "VALUES (@Id, @ProductId, @ProductVersionId, @Language, @Title, @Description, @Content);";
+            const string insertSqlQuery = @"INSERT Documents(TopicId, ProductId, ProductVersionId, Language, Title, Description, Content) " +
+                                            "VALUES (@TopicId, @ProductId, @ProductVersionId, @Language, @Title, @Description, @Content);";
             await connection.Execute(insertSqlQuery, new {
-                Id = document.DocumentIdentity.Id,
+                TopicId = document.DocumentIdentity.TopicId,
                 ProductId = document.DocumentIdentity.ProductId,
                 ProductVersionId = document.DocumentIdentity.VersionId,
                 Language = document.DocumentIdentity.Language,
@@ -29,16 +29,16 @@ namespace Papyrus.Business.Documents
             });
         }
 
-        public async Task<Document> GetDocument(string id)
+        public async Task<Document> GetDocument(string topicId)
         {
-            const string selectSqlQuery = @"SELECT Id, ProductId, ProductVersionId, Title, Content, Description, Language
-                                            FROM [Documents] WHERE Id = @Id;";
-            var result = (await connection.Query<dynamic>(selectSqlQuery, new {Id = id})).FirstOrDefault();
+            const string selectSqlQuery = @"SELECT TopicId, ProductId, ProductVersionId, Title, Content, Description, Language
+                                            FROM [Documents] WHERE TopicId = @TopicId;";
+            var result = (await connection.Query<dynamic>(selectSqlQuery, new {TopicId = topicId})).FirstOrDefault();
 
             if (result == null) return null;
 
             return new Document()
-                .WithId(result.Id)
+                .WithTopicId(result.TopicId)
                 .WithTitle(result.Title)
                 .WithContent(result.Content)
                 .WithDescription(result.Description)
@@ -53,12 +53,12 @@ namespace Papyrus.Business.Documents
                                             "SET Title = @Title, " + 
                                             "Description = @Description, " + 
                                             "Content = @Content " + 
-                                            "WHERE Id = @Id AND ProductId = @ProductId " +
+                                            "WHERE TopicId = @TopicId AND ProductId = @ProductId " +
                                                             "AND ProductVersionId = @ProductVersionId " +
                                                             "AND Language = @Language;";
             var affectedRows = await connection.Execute(updateSqlQuery, new
             {
-                Id = document.DocumentIdentity.Id,
+                TopicId = document.DocumentIdentity.TopicId,
                 ProductId = document.DocumentIdentity.ProductId,
                 ProductVersionId = document.DocumentIdentity.VersionId,
                 Language = document.DocumentIdentity.Language,
@@ -68,25 +68,25 @@ namespace Papyrus.Business.Documents
             });
         }
 
-        public async Task Delete(string documentId)
+        public async Task Delete(string topicId)
         {
-            const string deleteSqlQuery = @"DELETE FROM Documents WHERE Id = @Id";
+            const string deleteSqlQuery = @"DELETE FROM Documents WHERE TopicId = @TopicId";
             var affectedRows = await connection.Execute(deleteSqlQuery, new
             {
-                Id = documentId,
+                TopicId = topicId,
             });
         }
 
         //TODO: devolver IEnumerable ??
         public async Task<List<Document>> GetAllDocuments()
         {
-            const string selectAllDocumentsSqlQuery = @"SELECT Id, ProductId, ProductVersionId, Title, Content, Description, Language
+            const string selectAllDocumentsSqlQuery = @"SELECT TopicId, ProductId, ProductVersionId, Title, Content, Description, Language
                                                         FROM Documents;";
             var result = (await connection.Query<dynamic>(selectAllDocumentsSqlQuery)).ToList();
 
             var documents = new List<Document>();
             result.ForEach(document => 
-                documents.Add(new Document().WithId(document.Id)
+                documents.Add(new Document().WithTopicId(document.TopicId)
                                   .ForProduct(document.ProductId)
                                   .ForProductVersion(document.ProductVersionId)
                                   .ForLanguage(document.Language)

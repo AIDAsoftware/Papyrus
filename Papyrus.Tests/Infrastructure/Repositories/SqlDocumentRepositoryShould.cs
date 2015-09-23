@@ -21,7 +21,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         public async Task save_a_document()
         {
             var document = new Document()
-                .WithId("AnyId")
+                .WithTopicId("AnyId")
                 .ForProduct("AnyProduct")
                 .ForProductVersion("AnyProductVersion")
                 .ForLanguage("AnyLanguage");
@@ -36,12 +36,12 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         public async void load_a_document()
         {
             await InsertDocumentWith(
-                id: "AnyID", productId: "AnyProduct", productVersionId: "AnyProductVersion", 
+                topicId: "AnyID", productId: "AnyProduct", productVersionId: "AnyProductVersion", 
                 language: "es", title: "AnyTitle", description: "AnyDescription", content: "AnyContent");
 
             var document = await new SqlDocumentRepository(dbConnection).GetDocument("AnyID");
 
-            document.DocumentIdentity.Id.Should().Be("AnyID");
+            document.DocumentIdentity.TopicId.Should().Be("AnyID");
             document.DocumentIdentity.ProductId.Should().Be("AnyProduct");
             document.DocumentIdentity.VersionId.Should().Be("AnyProductVersion");
             document.DocumentIdentity.Language.Should().Be("es");
@@ -61,11 +61,11 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         [Test]
         public async Task update_a_document()
         {
-            await InsertDocumentWith(id: "AnyId", productId: "AnyProductId", productVersionId: "AnyProductVersionId",
+            await InsertDocumentWith(topicId: "AnyId", productId: "AnyProductId", productVersionId: "AnyProductVersionId",
                 language: "es-ES", title: "AnyTitle", description: "AnyDescription", content: "AnyContent");
 
             var document = new Document()
-                .WithId("AnyId")
+                .WithTopicId("AnyId")
                 .ForProduct("AnyProductId")
                 .ForLanguage("es-ES")
                 .ForProductVersion("AnyProductVersionId")
@@ -80,10 +80,10 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         }
 
         [Test]
-        public async void remove_a_document()    //TODO: remove a document by Document Identity instead of by document id?
+        public async void remove_a_document()    //TODO: remove a document by Document Identity instead of by document topicId?
         {
             const string id = "AnyId";
-            await InsertDocumentWith(id: id, productId: "AnyProductId", productVersionId: "AnyProductVersionId", language: "es-ES");
+            await InsertDocumentWith(topicId: id, productId: "AnyProductId", productVersionId: "AnyProductVersionId", language: "es-ES");
             await new SqlDocumentRepository(dbConnection).Delete(id);
 
             var document = await LoadDocumentWith(id, "AnyProductId", "AnyProductVersionId", "es-ES");
@@ -94,23 +94,23 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         [Test]                       //TODO: Is this test complete?
         public async Task load_a_list_with_all_documents()
         {
-            await InsertDocumentWith(id: "1", productId: "AnyProductId", productVersionId: "AnyProductVersionId", language: "es-ES");
-            await InsertDocumentWith(id: "2", productId: "AnotherProductId", productVersionId: "AnyProductVersionId", language: "es-ES");
+            await InsertDocumentWith(topicId: "1", productId: "AnyProductId", productVersionId: "AnyProductVersionId", language: "es-ES");
+            await InsertDocumentWith(topicId: "2", productId: "AnotherProductId", productVersionId: "AnyProductVersionId", language: "es-ES");
 
             var documents = await new SqlDocumentRepository(dbConnection).GetAllDocuments();
 
-            documents.Should().Contain(doc => doc.DocumentIdentity.Id == "1");
-            documents.Should().Contain(doc => doc.DocumentIdentity.Id == "2");
+            documents.Should().Contain(doc => doc.DocumentIdentity.TopicId == "1");
+            documents.Should().Contain(doc => doc.DocumentIdentity.TopicId == "2");
             documents.ToArray().Length.Should().Be(2);
         }
 
 
-        private async Task InsertDocumentWith(string id, string productId, string productVersionId, string language, string title = null, string description = null, string content = null)
+        private async Task InsertDocumentWith(string topicId, string productId, string productVersionId, string language, string title = null, string description = null, string content = null)
         {
-            await dbConnection.Execute(@"INSERT Documents(Id, ProductId, ProductVersionId, Language, Title, Description, Content) 
-                                VALUES (@Id, @ProductId, @ProductVersionId, @Language, @Title, @Description, @Content);",
+            await dbConnection.Execute(@"INSERT Documents(TopicId, ProductId, ProductVersionId, Language, Title, Description, Content) 
+                                VALUES (@TopicId, @ProductId, @ProductVersionId, @Language, @Title, @Description, @Content);",
                                 new {
-                                    Id = id,
+                                    TopicId = topicId,
                                     ProductId = productId,
                                     ProductVersionId = productVersionId,
                                     Language = language,                    
@@ -120,16 +120,16 @@ namespace Papyrus.Tests.Infrastructure.Repositories
                                 });
         }
 
-        private async Task<Document> LoadDocumentWith(string id, string productId, string productVersionId, string language)
+        private async Task<Document> LoadDocumentWith(string topicId, string productId, string productVersionId, string language)
         {
             var result = (await dbConnection
-                .Query<dynamic>(sql: @"SELECT Id, ProductId, ProductVersionId, Language, Title, Content, Description " +
+                .Query<dynamic>(sql: @"SELECT TopicId, ProductId, ProductVersionId, Language, Title, Content, Description " +
                                  "FROM [Documents] " +
-                                 "WHERE Id = @Id AND ProductId = @ProductId " +
+                                 "WHERE TopicId = @TopicId AND ProductId = @ProductId " +
                                                 "AND ProductVersionId = @ProductVersionId " +
                                                 "AND Language = @Language;",
                                  param: new {
-                                    Id = id,
+                                    TopicId = topicId,
                                     ProductId = productId,
                                     ProductVersionId = productVersionId,
                                     Language = language
@@ -138,7 +138,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             if (result == null) return null;
 
             return new Document()
-                .WithId(result.Id)
+                .WithTopicId(result.TopicId)
                 .WithTitle(result.Title)
                 .WithContent(result.Content)
                 .WithDescription(result.Description)

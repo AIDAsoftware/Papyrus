@@ -22,7 +22,7 @@ namespace Papyrus.Tests.Business
         {
             repository = Substitute.For<DocumentRepository>();
             repository.GetDocument(AnyId).Returns(
-                Task.FromResult(new Document().WithId(AnyId))
+                Task.FromResult(new Document().WithTopicId(AnyId))
             );
             service = new DocumentService(repository);
         }
@@ -82,7 +82,7 @@ namespace Papyrus.Tests.Business
 
             repository.Received().Save(document);
             repository.Received()
-                .Save(Arg.Is<Document>(x => !string.IsNullOrWhiteSpace(x.DocumentIdentity.Id)));
+                .Save(Arg.Is<Document>(x => !string.IsNullOrWhiteSpace(x.DocumentIdentity.TopicId)));
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace Papyrus.Tests.Business
         public async Task throw_an_exception_when_try_to_create_a_document_with_an_id()
         {
             var document = new Document()
-                .WithId(AnyId)
+                .WithTopicId(AnyId)
                 .ForProduct("AnyProductId")
                 .ForProductVersion("anyProductVersionId")
                 .WithTitle("Login en el sistema")
@@ -106,12 +106,12 @@ namespace Papyrus.Tests.Business
         {
             var id = "1";
             repository.GetDocument(id).Returns(Task.FromResult(new Document()
-                .WithId(id))
+                .WithTopicId(id))
             );
 
-            var document = await service.GetDocumentById(id);
+            var document = await service.GetDocumentByTopicId(id);
 
-            document.DocumentIdentity.Id.Should().Be(id);
+            document.DocumentIdentity.TopicId.Should().Be(id);
         }
 
 
@@ -119,7 +119,7 @@ namespace Papyrus.Tests.Business
         public async void update_a_given_document_when_it_is_modified()
         {
             var document = new Document()
-                .WithId(AnyId)
+                .WithTopicId(AnyId)
                 .ForProduct("AnyProductId")
                 .ForProductVersion("AnyProductVersionId")
                 .ForLanguage("es-ES");
@@ -146,7 +146,7 @@ namespace Papyrus.Tests.Business
         public async Task throw_an_exception_when_try_to_update_a_document_which_is_not_assigned_to_a_product()
         {
             var document = new Document()
-                .WithId(AnyId)
+                .WithTopicId(AnyId)
                 .ForProductVersion("AnyProductVersionId")
                 .ForLanguage("es-ES");
             await service.Update(document);
@@ -157,7 +157,7 @@ namespace Papyrus.Tests.Business
         public async Task throw_an_exception_when_try_to_update_a_document_which_is_not_assigned_to_a_product_version()
         {
             var document = new Document()
-                .WithId(AnyId)
+                .WithTopicId(AnyId)
                 .ForProduct("AnyProductId")
                 .ForLanguage("es-ES");
             await service.Update(document);
@@ -168,7 +168,7 @@ namespace Papyrus.Tests.Business
         public async Task throw_an_exception_when_try_to_update_a_document_which_has_not_language()
         {
             var document = new Document()
-                .WithId(AnyId)
+                .WithTopicId(AnyId)
                 .ForProduct("AnyProductId")
                 .ForProductVersion("AnyProductVersionId");
             await service.Update(document);
@@ -179,7 +179,7 @@ namespace Papyrus.Tests.Business
         public async Task throw_an_exception_when_try_to_update_a_no_existing_document()
         {
             var document = new Document()
-                .WithId("NoExistingId")
+                .WithTopicId("NoExistingId")
                 .ForProduct("AnyProductId")
                 .ForProductVersion("AnyProductVersion")
                 .ForLanguage("es-ES");
@@ -191,12 +191,12 @@ namespace Papyrus.Tests.Business
         {
             var anyId = AnyId;
             repository.GetAllDocuments().Returns(Task.FromResult(new List<Document> {
-                new Document().WithId(anyId),
+                new Document().WithTopicId(anyId),
             }));
 
             var documents = await service.AllDocuments();
 
-            documents.Should().Contain(x => x.DocumentIdentity.Id == anyId);
+            documents.Should().Contain(x => x.DocumentIdentity.TopicId == anyId);
             documents.Length.Should().Be(1);
         }
 

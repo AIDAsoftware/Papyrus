@@ -18,7 +18,7 @@
 
         public async Task<DocumentDto> Get(string id)
         {
-            var document = await documentService.GetDocumentById(id);
+            var document = await documentService.GetDocumentByTopicId(id);
             if (document == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
@@ -43,7 +43,7 @@
         [HttpPut]
         public async Task<HttpResponseMessage> Update(string id, [FromBody] DocumentDto documentDto)
         {
-            var document = DocumentFrom(documentDto).WithId(id);
+            var document = DocumentFrom(documentDto).WithTopicId(id);
             try
             {
                 await documentService.Update(document);
@@ -82,7 +82,7 @@
         {
             return new DocumentDto()
             {
-                Id = document.DocumentIdentity.Id,
+                Id = document.DocumentIdentity.TopicId,
                 Title = document.Title,
                 Description = document.Description,
                 Content = document.Content,

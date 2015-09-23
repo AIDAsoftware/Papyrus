@@ -19,16 +19,16 @@
             await repository.Save(document);
         }
 
-        public virtual async Task<Document> GetDocumentById(string id)   //TODO: get Document By DocumentIdentity?
+        public virtual async Task<Document> GetDocumentByTopicId(string topicId)   //TODO: get Document By DocumentIdentity?
         {
-            return await repository.GetDocument(id);
+            return await repository.GetDocument(topicId);
         }
 
         public virtual async Task Update(Document document)
         {
             ValidateDocumentToUpdate(document);
 
-            if (await GetDocumentById(document.DocumentIdentity.Id) == null)
+            if (await GetDocumentByTopicId(document.DocumentIdentity.TopicId) == null)
                 throw new DocumentNotFoundException();
             await repository.Update(document);
         }
@@ -42,7 +42,7 @@
         {
             generalValidation(document);
 
-            if (!string.IsNullOrWhiteSpace(document.DocumentIdentity.Id))
+            if (!string.IsNullOrWhiteSpace(document.DocumentIdentity.TopicId))
                 throw new DocumentIdMustNotBeDefinedException();
         }
 
@@ -50,7 +50,7 @@
         {
             generalValidation(document);
 
-            if (string.IsNullOrWhiteSpace(document.DocumentIdentity.Id))
+            if (string.IsNullOrWhiteSpace(document.DocumentIdentity.TopicId))
                 throw new DocumentIdMustBeDefinedException();
         }
 

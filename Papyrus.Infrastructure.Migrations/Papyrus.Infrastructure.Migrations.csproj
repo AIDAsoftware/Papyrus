@@ -49,6 +49,7 @@
     <Compile Include="Document\2 - AddProductVersionToDocument.cs" />
     <Compile Include="Document\1 - CreateDocumentTable.cs" />
     <Compile Include="Document\3 - AddProductIdColumn.cs" />
+    <Compile Include="Document\4 - RenameIdColumnToTopicId.cs" />
     <Compile Include="Product\1 - CreateProductTable.cs" />
     <Compile Include="Product\2 - ConvertProductToProductVersion.cs" />
     <Compile Include="Product\3 - RemoveDescriptionColumns.cs" />
