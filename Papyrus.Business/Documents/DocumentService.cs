@@ -14,6 +14,13 @@
 
         public virtual async Task Create(Document document)
         {
+            validateDocument(document);
+            document.GenerateAutomaticId();
+            await repository.Save(document);
+        }
+
+        private static void validateDocument(Document document)
+        {
             if (string.IsNullOrWhiteSpace(document.DocumentIdentity.ProductId))
                 throw new DocumentMustBeAssignedToAProductException();
 
@@ -25,8 +32,6 @@
 
             if (!string.IsNullOrWhiteSpace(document.DocumentIdentity.Id))
                 throw new DocumentIdMustNotBeDefinedException();
-            document.GenerateAutomaticId();
-            await repository.Save(document);
         }
 
         public virtual async Task<Document> GetDocumentById(string id)
