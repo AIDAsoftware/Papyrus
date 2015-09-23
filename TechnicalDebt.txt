@@ -1,2 +1,4 @@
-Dont return nulls from repositories
-Adapt Query<Document, DocumentIdentity> to simplify repositories write methods.
+- Dont return nulls from repositories.
+- Adapt Query<Document, DocumentIdentity> to simplify repositories write methods.
+- Change the way in which we get product version and product for grid view or test methods 
+  (if it don't change).

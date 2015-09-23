@@ -25,6 +25,7 @@ namespace Papyrus.Desktop.Features.Documents {
                 Documents.Add(new DocumentView
                 {
                     Product = (await productRepository.GetProduct(document.DocumentIdentity.ProductId)).Name,
+                    Version = await productRepository.GetVersion(document.DocumentIdentity.VersionId),
                     Language = document.DocumentIdentity.Language,
                     Title = document.Title,
                     Description = document.Description
@@ -36,6 +37,7 @@ namespace Papyrus.Desktop.Features.Documents {
     public class DocumentView
     {
         public string Product { get; set; }
+        public string Version { get; set; }
         public string Language { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -44,8 +46,8 @@ namespace Papyrus.Desktop.Features.Documents {
     public class DesignModeDocumentsGridVM : DocumentsGridVM {
         public DesignModeDocumentsGridVM()
         {
-            Documents.Add(new DocumentView {Product = "Papyrus", Description = "Describe how to use Papyrus", Title = "First Step", Language = "en-EN"});
-            Documents.Add(new DocumentView {Product = "Opportunity", Description = "Describe how to use Opportunity", Title = "How to call", Language = "en-EN"});
+            Documents.Add(new DocumentView {Product = "Papyrus", Description = "Describe how to use Papyrus", Title = "First Step", Version = "2.0", Language = "en-EN"});
+            Documents.Add(new DocumentView {Product = "Opportunity", Description = "Describe how to use Opportunity", Title = "How to call", Version = "1.0", Language = "en-EN"});
         }
     }
 
