@@ -26,7 +26,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Content="Product" Grid.Row="0"></Label>
-                    <ComboBox SelectedValue="CA" Grid.Column="1" ItemsSource="{ Binding Products }">
+                    <ComboBox SelectedValue="CA" Grid.Column="1" ItemsSource="{ Binding Products }" DisplayMemberPath="Name">
                     </ComboBox>
                 </Grid>
                 <Grid Grid.Row="1" Margin="10">
@@ -35,10 +35,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Content="Version" Grid.Row="0"></Label>
-                    <ComboBox SelectedValue="CA" Grid.Column="1">
-                        <ComboBoxItem Tag="CO">Colorado</ComboBoxItem>
-                        <ComboBoxItem Tag="CA">California</ComboBoxItem>
-                        <ComboBoxItem Tag="NM">New Mexico</ComboBoxItem>
+                    <ComboBox SelectedValue="CA" Grid.Column="1" ItemsSource="{ Binding Versions }">
                     </ComboBox>
                 </Grid>
                 <Grid Grid.Row="2" Margin="10">
@@ -47,10 +44,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Content="Description" Grid.Column="0"></Label>
-                    <ComboBox SelectedValue="CA" Grid.Column="1">
-                        <ComboBoxItem Tag="CO">Colorado</ComboBoxItem>
-                        <ComboBoxItem Tag="CA">California</ComboBoxItem>
-                        <ComboBoxItem Tag="NM">New Mexico</ComboBoxItem>
+                    <ComboBox SelectedValue="CA" Grid.Column="1" ItemsSource="{ Binding Languages }">
                     </ComboBox>
                 </Grid>
             </Grid>
