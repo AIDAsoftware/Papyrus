@@ -12,13 +12,13 @@ namespace Papyrus.Desktop.Features.Documents
     {
         private readonly ProductRepository productRepository;
         public ObservableCollection<Product> Products { get; private set; }
-        public ObservableCollection<string> Versions { get; private set; }
+        public ObservableCollection<ProductVersion> Versions { get; private set; }
         public ObservableCollection<string> Languages { get; private set; }
 
         public NewDocumentVM()
         {
             Products = new ObservableCollection<Product>();
-            Versions = new ObservableCollection<string>();
+            Versions = new ObservableCollection<ProductVersion>();
             Languages = new ObservableCollection<string>();
         }
 

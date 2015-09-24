@@ -36,7 +36,7 @@ namespace Papyrus.Desktop.Features.Documents {
         {
             var product = (Product)((ComboBox) sender).SelectedValue;
             ViewModel.Versions.Clear();
-            product.Versions.ForEach(v => ViewModel.Versions.Add(v.VersionName));
+            product.Versions.ForEach(v => ViewModel.Versions.Add(v));
         }
     }
 }
