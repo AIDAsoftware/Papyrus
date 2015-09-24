@@ -26,7 +26,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Content="Product" Grid.Row="0"></Label>
-                    <ComboBox Grid.Column="1" ItemsSource="{ Binding Products }" DisplayMemberPath="Name" SelectionChanged="Product_OnSelectionChange">
+                    <ComboBox Grid.Column="1" ItemsSource="{ Binding Products }" SelectedValue="{ Binding SelectedProduct }" DisplayMemberPath="Name" SelectionChanged="Product_OnSelectionChange" x:Name="ProductsComboBox">
                     </ComboBox>
                 </Grid>
                 <Grid Grid.Row="1" Margin="10">
@@ -35,7 +35,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Content="Version" Grid.Row="0"></Label>
-                    <ComboBox Grid.Column="1" ItemsSource="{ Binding Versions }" DisplayMemberPath="VersionName">
+                    <ComboBox Grid.Column="1" ItemsSource="{ Binding Versions }" SelectedValue="{Binding SelectedProductVersion}" DisplayMemberPath="VersionName" x:Name="VersionsComboBox">
                     </ComboBox>
                 </Grid>
                 <Grid Grid.Row="2" Margin="10">
@@ -44,18 +44,18 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Content="Language" Grid.Column="0"></Label>
-                    <ComboBox Grid.Column="1" ItemsSource="{ Binding Languages }">
+                    <ComboBox Grid.Column="1" ItemsSource="{ Binding Languages }" SelectedValue="{Binding SelectedLanguage}" x:Name="LanguagesComboBox">
                     </ComboBox>
                 </Grid>
             </Grid>
         </StackPanel>
         <StackPanel Grid.Row="1">
             <Label Content="Title"/>
-            <TextBox />
+            <TextBox x:Name="TitleTextBox" Text="{Binding Title}"/>
             <Label Content="Description"/>
-            <TextBox />
+            <TextBox x:Name="DescriptionTextBox" Text="{Binding Description}"/>
             <Label Content="Content"/>
-            <TextBox MinLines="50"/>
+            <TextBox MinLines="5" x:Name="ContentTextBox" Text="{Binding Content}"/>
             <Button Width="Auto" HorizontalAlignment="Right" Click="Save_OnClick">Save</Button>
         </StackPanel>
 

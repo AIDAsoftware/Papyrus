@@ -1,10 +1,7 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
-using Papyrus.Desktop.Features.Documents.Events;
-using Papyrus.Infrastructure.Core.DomainEvents;
 
 namespace Papyrus.Desktop.Features.Documents {
     /// <summary>
@@ -27,9 +24,9 @@ namespace Papyrus.Desktop.Features.Documents {
             await ViewModel.Initialize();
         }
 
-        private void Save_OnClick(object sender, RoutedEventArgs e) {
-            var document = new Document().WithTitle("Test title");
-            EventBus.Raise(new CreateNewDocument(document));
+        private void Save_OnClick(object sender, RoutedEventArgs e)
+        {
+            ViewModel.SaveDocument();
         }
 
         private void Product_OnSelectionChange(object sender, SelectionChangedEventArgs e)
