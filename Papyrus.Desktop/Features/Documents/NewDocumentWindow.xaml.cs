@@ -16,7 +16,8 @@ namespace Papyrus.Desktop.Features.Documents {
         public NewDocumentWindow(DocumentDetails document)
         {
             InitializeComponent();
-            ViewModelsFactory.UpdateDocumentWindowVm(document);
+            DataContext = ViewModelsFactory.UpdateDocumentWindowVm(document);
+            this.Loaded += DocumentsGrid_Loaded;
         }
 
         public NewDocumentWindow() {
@@ -32,6 +33,10 @@ namespace Papyrus.Desktop.Features.Documents {
 
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
+            if (ViewModel.Document.TopicId != null)
+            {
+                ViewModel.UpdateDocument();
+            }
             ViewModel.SaveDocument();
         }
 

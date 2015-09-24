@@ -32,7 +32,8 @@ namespace Papyrus.Desktop.Features.Documents {
                     Version = await productRepository.GetVersion(document.DocumentIdentity.VersionId),
                     Language = document.DocumentIdentity.Language,
                     Title = document.Title,
-                    Description = document.Description
+                    Description = document.Description,
+                    Content = document.Content
                 });
             }
         }
@@ -51,6 +52,7 @@ namespace Papyrus.Desktop.Features.Documents {
         public string Language { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public string Content { get; set; }
     }
 
     public class DesignModeDocumentsGridVM : DocumentsGridVM {
