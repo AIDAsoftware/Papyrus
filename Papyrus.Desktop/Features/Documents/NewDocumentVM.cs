@@ -76,17 +76,18 @@ namespace Papyrus.Desktop.Features.Documents
             AddPossibleLanguages();
         }
 
-        public void SaveDocument()
+        public async void SaveDocument()
         {
             var document = DocumentFromForm();
-            documentService.Create(document);
+
+            if (string.IsNullOrEmpty(Document.TopicId)) {
+                await documentService.Create(document);
+            }
+
+            document.WithTopicId(Document.TopicId);
+            await documentService.Update(document);
         }
 
-        public void UpdateDocument()
-        {
-            var document = DocumentFromForm().WithTopicId(Document.TopicId);
-            documentService.Update(document);
-        }
 
         private void AddPossibleLanguages()
         {

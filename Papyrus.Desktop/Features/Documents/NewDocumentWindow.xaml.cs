@@ -33,10 +33,6 @@ namespace Papyrus.Desktop.Features.Documents {
 
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
-            if (ViewModel.Document.TopicId != null)
-            {
-                ViewModel.UpdateDocument();
-            }
             ViewModel.SaveDocument();
         }
 
