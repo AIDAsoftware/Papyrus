@@ -29,7 +29,7 @@ namespace Papyrus.Desktop.Features.MainMenu {
             await ViewModel.Initialize();
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e) {
+        private void NewDocument_OnClick(object sender, RoutedEventArgs e) {
             new NewDocumentWindow().Show();
         }
     }

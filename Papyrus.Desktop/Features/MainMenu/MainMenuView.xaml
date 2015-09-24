@@ -9,7 +9,7 @@
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Grid>
         <StackPanel Margin="8" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Click="ButtonBase_OnClick">New documents</Button>
+            <Button Click="NewDocument_OnClick">New documents</Button>
             <Label>Products</Label>
             <ComboBox MinWidth="100" 
                       ItemsSource="{Binding Products, Mode=OneWay}"
