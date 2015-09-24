@@ -17,6 +17,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         [SetUp]
         public async void TruncateDataBase()
         {
+            await dbConnection.Execute("TRUNCATE TABLE Product");
             await dbConnection.Execute("TRUNCATE TABLE ProductVersion");
         }
 
