@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -8,6 +6,7 @@ using System.Threading.Tasks;
 using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
 using Papyrus.Desktop.Annotations;
+using Papyrus.Infrastructure.Core.DomainEvents;
 
 namespace Papyrus.Desktop.Features.Documents
 {
@@ -79,13 +78,18 @@ namespace Papyrus.Desktop.Features.Documents
         public async void SaveDocument()
         {
             var document = DocumentFromForm();
+            string message;
 
             if (string.IsNullOrEmpty(Document.TopicId)) {
                 await documentService.Create(document);
+                message = "Document created";
             }
-
-            document.WithTopicId(Document.TopicId);
-            await documentService.Update(document);
+            else {
+                document.WithTopicId(Document.TopicId);
+                await documentService.Update(document);
+                message = "Document updated";
+            }
+            EventBus.Raise(new OnApplicationNotification(message));
         }
 
 
