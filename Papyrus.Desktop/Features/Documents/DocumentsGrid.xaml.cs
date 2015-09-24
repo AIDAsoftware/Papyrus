@@ -32,7 +32,7 @@ namespace Papyrus.Desktop.Features.Documents {
         private async void DocumentRow_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var topicId = ViewModel.SelectedDocument.TopicId;
-            new NewDocumentWindow(ViewModel.SelectedDocument).Show();
+            new DocumentWindow(ViewModel.SelectedDocument).Show();
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e) {

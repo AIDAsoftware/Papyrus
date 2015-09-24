@@ -59,8 +59,8 @@
       <DependentUpon>DocumentsGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Documents\DocumentsGridVM.cs" />
-    <Compile Include="Features\Documents\NewDocumentWindow.xaml.cs">
-      <DependentUpon>NewDocumentWindow.xaml</DependentUpon>
+    <Compile Include="Features\Documents\DocumentWindow.xaml.cs">
+      <DependentUpon>DocumentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Documents\NewDocumentVM.cs" />
     <Compile Include="Features\MainMenu\MainMenuView.xaml.cs">
@@ -70,7 +70,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Documents\NewDocumentWindow.xaml">
+    <Page Include="Features\Documents\DocumentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

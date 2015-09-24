@@ -30,7 +30,7 @@ namespace Papyrus.Desktop.Features.MainMenu {
         }
 
         private void NewDocument_OnClick(object sender, RoutedEventArgs e) {
-            new NewDocumentWindow().Show();
+            new DocumentWindow().Show();
         }
     }
 }

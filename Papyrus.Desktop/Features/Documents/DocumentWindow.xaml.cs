@@ -5,22 +5,23 @@ using Papyrus.Business.Products;
 
 namespace Papyrus.Desktop.Features.Documents {
     /// <summary>
-    /// Interaction logic for NewDocumentWindow.xaml
+    /// Interaction logic for DocumentWindow.xaml
     /// </summary>
-    public partial class NewDocumentWindow : Window {
+    public partial class DocumentWindow : Window {
+        
         public NewDocumentVM ViewModel
         {
             get { return (NewDocumentVM)DataContext; }
         }
 
-        public NewDocumentWindow(DocumentDetails document)
+        public DocumentWindow(DocumentDetails document)
         {
             InitializeComponent();
             DataContext = ViewModelsFactory.UpdateDocumentWindowVm(document);
             this.Loaded += DocumentsGrid_Loaded;
         }
 
-        public NewDocumentWindow() {
+        public DocumentWindow() {
             InitializeComponent();
             DataContext = ViewModelsFactory.NewDocumentWindowVm();
             this.Loaded += DocumentsGrid_Loaded;
