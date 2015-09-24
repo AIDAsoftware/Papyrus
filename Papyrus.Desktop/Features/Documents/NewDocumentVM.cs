@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -17,6 +18,8 @@ namespace Papyrus.Desktop.Features.Documents
         public NewDocumentVM()
         {
             Products = new ObservableCollection<Product>();
+            Versions = new ObservableCollection<string>();
+            Languages = new ObservableCollection<string>();
         }
 
         public NewDocumentVM(ProductRepository productRepository) : this()
@@ -28,8 +31,13 @@ namespace Papyrus.Desktop.Features.Documents
         {
             var products = (await productRepository.GetAllProducts()).ToList();
             products.ForEach(product => Products.Add(product));
-            Versions = new ObservableCollection<string> {};
-            Languages = new ObservableCollection<string> {"es-ES", "en-GB"};
+            AddPossibleLanguages();
+        }
+
+        private void AddPossibleLanguages()
+        {
+            Languages.Add("es-ES");
+            Languages.Add("en-GB");
         }
     }
 }
