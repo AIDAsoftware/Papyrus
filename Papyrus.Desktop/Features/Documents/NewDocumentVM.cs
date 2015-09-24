@@ -28,8 +28,8 @@ namespace Papyrus.Desktop.Features.Documents
         {
             var products = (await productRepository.GetAllProducts()).ToList();
             products.ForEach(product => Products.Add(product));
-            Versions = new ObservableCollection<string> {"1.0", "2.0", "3.0"};
-            Languages = new ObservableCollection<string> {"es-ES", "en-EN"};
+            Versions = new ObservableCollection<string> {};
+            Languages = new ObservableCollection<string> {"es-ES", "en-GB"};
         }
     }
 }
