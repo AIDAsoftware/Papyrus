@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Papyrus.Desktop.Features.Documents {
     /// <summary>
@@ -27,5 +29,10 @@ namespace Papyrus.Desktop.Features.Documents {
             await ViewModel.Initialize();
         }
 
+        private async void DocumentRow_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var topicId = ViewModel.SelectedDocument.TopicId;
+            new NewDocumentWindow(ViewModel.SelectedDocument).Show();
+        }
     }
 }

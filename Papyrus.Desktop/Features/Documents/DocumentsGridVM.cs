@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
 
@@ -7,10 +9,11 @@ namespace Papyrus.Desktop.Features.Documents {
     public class DocumentsGridVM {
         private readonly DocumentService documentService;
         private readonly ProductRepository productRepository;
-        public ObservableCollection<DocumentView> Documents { get; private set; }
+        public ObservableCollection<DocumentDetails> Documents { get; private set; }
+        public DocumentDetails SelectedDocument { get; set; }
 
         public DocumentsGridVM() {
-            Documents = new ObservableCollection<DocumentView>();
+            Documents = new ObservableCollection<DocumentDetails>();
         }
 
         public DocumentsGridVM(DocumentService documentService, ProductRepository productRepository) : this() {
@@ -22,9 +25,10 @@ namespace Papyrus.Desktop.Features.Documents {
             var documents = await documentService.AllDocuments();
             Documents.Clear();
             foreach (var document in documents) {
-                Documents.Add(new DocumentView
+                Documents.Add(new DocumentDetails
                 {
-                    Product = (await productRepository.GetProduct(document.DocumentIdentity.ProductId)).Name,
+                    TopicId = document.DocumentIdentity.TopicId,
+                    Product = (await productRepository.GetProduct(document.DocumentIdentity.ProductId)),
                     Version = await productRepository.GetVersion(document.DocumentIdentity.VersionId),
                     Language = document.DocumentIdentity.Language,
                     Title = document.Title,
@@ -32,12 +36,18 @@ namespace Papyrus.Desktop.Features.Documents {
                 });
             }
         }
+
+        public async Task<Document> GetDocumentByTopicId(string topicId)
+        {
+            return await documentService.GetDocumentByTopicId(topicId);
+        }
     }
 
-    public class DocumentView
+    public class DocumentDetails
     {
-        public string Product { get; set; }
-        public string Version { get; set; }
+        public string TopicId { get; set; }
+        public Product Product { get; set; }
+        public ProductVersion Version { get; set; }
         public string Language { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -46,8 +56,12 @@ namespace Papyrus.Desktop.Features.Documents {
     public class DesignModeDocumentsGridVM : DocumentsGridVM {
         public DesignModeDocumentsGridVM()
         {
-            Documents.Add(new DocumentView {Product = "Papyrus", Description = "Describe how to use Papyrus", Title = "First Step", Version = "2.0", Language = "en-EN"});
-            Documents.Add(new DocumentView {Product = "Opportunity", Description = "Describe how to use Opportunity", Title = "How to call", Version = "1.0", Language = "en-EN"});
+            var product1 = new Product("anyId", "Papyrus", new List<ProductVersion>());
+            var product2 = new Product("anyId", "Opportunity", new List<ProductVersion>());
+            var version1 = new ProductVersion("anyId", "1.0");
+            var version2 = new ProductVersion("anyId", "2.0");
+            Documents.Add(new DocumentDetails {Product = product1, Description = "Describe how to use Papyrus", Title = "First Step", Version = version1, Language = "en-EN"});
+            Documents.Add(new DocumentDetails {Product = product2, Description = "Describe how to use Opportunity", Title = "How to call", Version = version2, Language = "en-EN"});
         }
     }
 

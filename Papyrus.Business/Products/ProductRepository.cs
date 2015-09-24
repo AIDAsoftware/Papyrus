@@ -7,6 +7,6 @@ namespace Papyrus.Business.Products
     {
         Task<Product> GetProduct(string productId);
         Task<List<Product>> GetAllProducts();
-        Task<string> GetVersion(string versionId);
+        Task<ProductVersion> GetVersion(string versionId);
     }
 }

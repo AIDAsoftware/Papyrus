@@ -47,11 +47,11 @@ namespace Papyrus.Business.Products
             return products;
         }
 
-        public async Task<string> GetVersion(string versionId)  // TODO: It is not tested. It is only a try
+        public async Task<ProductVersion> GetVersion(string versionId)  // TODO: It is not tested. It is only a try
         {
-            const string selectVersionSqlQuery = @"SELECT VersionName FROM ProductVersion WHERE VersionId = @VersionId;";
+            const string selectVersionSqlQuery = @"SELECT VersionId, VersionName FROM ProductVersion WHERE VersionId = @VersionId;";
 
-            return (await connection.Query<string>(selectVersionSqlQuery, new { VersionId = versionId })).FirstOrDefault();
+            return (await connection.Query<ProductVersion>(selectVersionSqlQuery, new { VersionId = versionId })).FirstOrDefault();
         }
 
         private async Task<List<ProductVersion>> ProducVersionsForProduct(string productId)

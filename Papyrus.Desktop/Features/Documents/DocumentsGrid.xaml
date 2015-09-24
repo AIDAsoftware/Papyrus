@@ -8,7 +8,8 @@
              d:DataContext="{d:DesignInstance Type=documents1:DesignModeDocumentsGridVM, IsDesignTimeCreatable=True}"
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Grid>
-        <DataGrid ItemsSource="{Binding Documents}" AutoGenerateColumns="False">
+        <DataGrid ItemsSource="{Binding Documents}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+                  MouseDoubleClick="DocumentRow_OnMouseDoubleClick" SelectedValue="{ Binding SelectedDocument }" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Title" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=Title }"></DataGridTextColumn>
                 <DataGridTextColumn Header="Description" MaxWidth="250" MinWidth="120" Binding="{ Binding Path=Description }"></DataGridTextColumn>

@@ -19,6 +19,11 @@ namespace Papyrus.Desktop {
         {
             return new NewDocumentVM(RepositoriesFactory.Product(), ServicesFactory.Document());
         }
+
+        public static NewDocumentVM UpdateDocumentWindowVm(DocumentDetails document)
+        {
+            return new NewDocumentVM(RepositoriesFactory.Product(), ServicesFactory.Document(), document);
+        }
     }
 
     public static class ServicesFactory {

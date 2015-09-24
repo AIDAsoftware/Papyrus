@@ -16,6 +16,7 @@ namespace Papyrus.Desktop.Features.Documents
         public ObservableCollection<Product> Products { get; private set; }
         public ObservableCollection<ProductVersion> Versions { get; private set; }
         public ObservableCollection<string> Languages { get; private set; }
+        public DocumentDetails Document { get; set; }
         public Product SelectedProduct { get; set; }
         public ProductVersion SelectedProductVersion { get; set; }
         public string SelectedLanguage { get; set; }
@@ -28,6 +29,12 @@ namespace Papyrus.Desktop.Features.Documents
             Products = new ObservableCollection<Product>();
             Versions = new ObservableCollection<ProductVersion>();
             Languages = new ObservableCollection<string>();
+        }
+
+        public NewDocumentVM(ProductRepository productRepository, DocumentService documentService, DocumentDetails document) : this(productRepository, documentService)
+        {
+            Document = document;
+            Console.WriteLine(document.Title);
         }
 
         public NewDocumentVM(ProductRepository productRepository, DocumentService documentService) : this()

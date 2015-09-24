@@ -13,6 +13,12 @@ namespace Papyrus.Desktop.Features.Documents {
             get { return (NewDocumentVM)DataContext; }
         }
 
+        public NewDocumentWindow(DocumentDetails document)
+        {
+            InitializeComponent();
+            ViewModelsFactory.UpdateDocumentWindowVm(document);
+        }
+
         public NewDocumentWindow() {
             InitializeComponent();
             DataContext = ViewModelsFactory.NewDocumentWindowVm();
