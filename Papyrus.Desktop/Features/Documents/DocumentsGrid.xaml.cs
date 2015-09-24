@@ -34,5 +34,9 @@ namespace Papyrus.Desktop.Features.Documents {
             var topicId = ViewModel.SelectedDocument.TopicId;
             new NewDocumentWindow(ViewModel.SelectedDocument).Show();
         }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e) {
+            ViewModel.RefreshDocuments();
+        }
     }
 }

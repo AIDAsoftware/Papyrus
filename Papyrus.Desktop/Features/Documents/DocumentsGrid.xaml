@@ -8,15 +8,23 @@
              d:DataContext="{d:DesignInstance Type=documents1:DesignModeDocumentsGridVM, IsDesignTimeCreatable=True}"
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
         <DataGrid ItemsSource="{Binding Documents}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                  MouseDoubleClick="DocumentRow_OnMouseDoubleClick" SelectedValue="{ Binding SelectedDocument }" IsReadOnly="True">
+                  MouseDoubleClick="DocumentRow_OnMouseDoubleClick" SelectedValue="{ Binding SelectedDocument }" IsReadOnly="True"
+                  Grid.Row="0">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Title" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=TopicId }"></DataGridTextColumn>
                 <DataGridTextColumn Header="Title" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=Title }"></DataGridTextColumn>
                 <DataGridTextColumn Header="Description" MaxWidth="250" MinWidth="120" Binding="{ Binding Path=Description }"></DataGridTextColumn>
-                <DataGridTextColumn Header="Product" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=Product }"></DataGridTextColumn>
-                <DataGridTextColumn Header="Version" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=Version }"></DataGridTextColumn>
+                <DataGridTextColumn Header="Product" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=Product.Name }"></DataGridTextColumn>
+                <DataGridTextColumn Header="Version" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=Version.VersionName }"></DataGridTextColumn>
                 <DataGridTextColumn Header="Language" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=Language }"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Button Click="ButtonBase_OnClick" MaxWidth="150" Grid.Row="1">Refresh grid</Button>
     </Grid>
 </UserControl>

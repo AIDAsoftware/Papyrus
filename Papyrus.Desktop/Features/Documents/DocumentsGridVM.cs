@@ -22,11 +22,14 @@ namespace Papyrus.Desktop.Features.Documents {
         }
 
         public async Task Initialize() {
+            await LoadAllDocuments();
+        }
+
+        private async Task LoadAllDocuments() {
             var documents = await documentService.AllDocuments();
             Documents.Clear();
             foreach (var document in documents) {
-                Documents.Add(new DocumentDetails
-                {
+                Documents.Add(new DocumentDetails {
                     TopicId = document.DocumentIdentity.TopicId,
                     Product = (await productRepository.GetProduct(document.DocumentIdentity.ProductId)),
                     Version = await productRepository.GetVersion(document.DocumentIdentity.VersionId),
@@ -41,6 +44,10 @@ namespace Papyrus.Desktop.Features.Documents {
         public async Task<Document> GetDocumentByTopicId(string topicId)
         {
             return await documentService.GetDocumentByTopicId(topicId);
+        }
+
+        public async void RefreshDocuments() {
+            await LoadAllDocuments();
         }
     }
 
