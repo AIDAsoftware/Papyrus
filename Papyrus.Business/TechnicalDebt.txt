@@ -1,0 +1,4 @@
+- Dont return nulls from repositories.
+- Adapt Query<Document, DocumentIdentity> to simplify repositories read methods.
+- Implement CQS (DocumentToList).
+- Rename Product column name by ProductId in Version table.

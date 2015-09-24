@@ -1,3 +1,0 @@
-- Dont return nulls from repositories.
-- Adapt Query<Document, DocumentIdentity> to simplify repositories write methods.
-- Implement CQRS (DocumentToList)
