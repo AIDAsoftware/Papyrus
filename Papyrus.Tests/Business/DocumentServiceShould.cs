@@ -1,4 +1,7 @@
-﻿using Papyrus.Business;
+﻿using System.IO;
+using System.Linq;
+using System.Security.AccessControl;
+using Papyrus.Business;
 
 namespace Papyrus.Tests.Business
 {
@@ -200,6 +203,38 @@ namespace Papyrus.Tests.Business
             documents.Length.Should().Be(1);
         }
 
+        [Test]
+        public async Task export_documents_to_a_folder() {
+            var targetDirectory = new DirectoryInfo(@"c:\exportDirectory\docs");
+            repository.GetAllDocuments().Returns(Task.FromResult(CreateSampleDocumentsList()));
+
+            await service.ExportDocumentsToFolder(targetDirectory);
+
+            var file = targetDirectory.GetFiles().FirstOrDefault();
+            file.Name.Should().Be("Login en el sistema.md");
+            File.ReadAllText(file.FullName).Should().Be("El usuario podrá acceder al sistema indicando su usuario");
+        }
+
+        private List<Document> CreateSampleDocumentsList() {
+            var anyDocument = new Document()
+                .WithTopicId(AnyId)
+                .ForProduct("AnyProductId")
+                .ForProductVersion("anyProductVersionId")
+                .WithTitle("Login en el sistema")
+                .WithDescription("Modos de acceso disponibles a SIMA 2")
+                .WithContent("El usuario podrá acceder al sistema indicando su usuario")
+                .ForLanguage("es-Es");
+            //var anyOtherDocument = new Document()
+            //     .WithTopicId(AnyId + "b")
+            //     .ForProduct("AnyProductId")
+            //     .ForProductVersion("anyProductVersionId")
+            //     .WithTitle("Creación de usuario")
+            //     .WithDescription("Descripción de cómo registrarse en el sistema")
+            //     .WithContent("El usuario podrá acceder crear una cuenta")
+            //     .ForLanguage("es-Es");
+  
+            return new List<Document> { anyDocument };
+        }
     }
 }
  

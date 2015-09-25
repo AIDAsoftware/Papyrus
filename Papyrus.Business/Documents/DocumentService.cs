@@ -1,4 +1,7 @@
-﻿namespace Papyrus.Business.Documents
+﻿using System.IO;
+using System.Text;
+
+namespace Papyrus.Business.Documents
 {
     using System.Threading.Tasks;
     using Exceptions;
@@ -64,6 +67,30 @@
 
             if (string.IsNullOrWhiteSpace(document.DocumentIdentity.Language))
                 throw new DocumentMustHaveALanguageException();
+        }
+
+        public async Task ExportDocumentsToFolder(DirectoryInfo targetDirectory) {
+            if (!targetDirectory.Exists) targetDirectory.Create();
+            var documents = await repository.GetAllDocuments();
+            foreach (var document in documents) {
+                await ExportDocument(document, targetDirectory);
+            }
+        }
+
+        private async Task ExportDocument(Document document, DirectoryInfo targetDirectory) {
+            var fileName = document.Title + ".md";
+            var filePath = Path.Combine(targetDirectory.FullName, fileName);
+            await WriteTextAsync(filePath, document.Content);
+        }
+
+        private async Task WriteTextAsync(string filePath, string text) {
+            byte[] encodedText = Encoding.UTF8.GetBytes(text);
+
+            using (FileStream sourceStream = new FileStream(filePath,
+                FileMode.Append, FileAccess.Write, FileShare.None,
+                bufferSize: 4096, useAsync: true)) {
+                await sourceStream.WriteAsync(encodedText, 0, encodedText.Length);
+            };
         }
     }
 }
