@@ -25,6 +25,9 @@
                 <DataGridTextColumn Header="Language" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=Language }"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Click="ButtonBase_OnClick" MaxWidth="150" Grid.Row="1">Refresh grid</Button>
+        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Row="1">
+            <Button Click="ButtonBase_OnClick" MaxWidth="150">Refresh grid</Button>
+            <Button Click="ButtonBase2_OnClick"  MaxWidth="150">Export to folder</Button>
+        </StackPanel>
     </Grid>
 </UserControl>

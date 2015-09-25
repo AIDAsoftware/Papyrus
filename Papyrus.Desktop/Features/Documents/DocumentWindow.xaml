@@ -59,7 +59,7 @@
             <Label Content="Description"/>
             <TextBox x:Name="DescriptionTextBox" Text="{Binding Document.Description}"/>
             <Label Content="Content"/>
-            <TextBox MinLines="5" x:Name="ContentTextBox" Text="{Binding Document.Content}"/>
+            <TextBox AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" MinLines="5" x:Name="ContentTextBox" Text="{Binding Document.Content}"/>
             <Button Width="Auto" HorizontalAlignment="Right" Click="Save_OnClick">Save</Button>
         </StackPanel>
 

@@ -38,5 +38,9 @@ namespace Papyrus.Desktop.Features.Documents {
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e) {
             ViewModel.RefreshDocuments();
         }
+
+        private void ButtonBase2_OnClick(object sender, RoutedEventArgs e) {
+            ViewModel.ExportDocumentsToFolder();
+        }
     }
 }

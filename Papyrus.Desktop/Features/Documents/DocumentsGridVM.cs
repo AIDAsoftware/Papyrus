@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using Papyrus.Business.Documents;
@@ -48,6 +49,10 @@ namespace Papyrus.Desktop.Features.Documents {
 
         public async void RefreshDocuments() {
             await LoadAllDocuments();
+        }
+
+        public async void ExportDocumentsToFolder() {
+            await documentService.ExportDocumentsToFolder(new DirectoryInfo(@"C:\exportDirectory\docs"));
         }
     }
 
