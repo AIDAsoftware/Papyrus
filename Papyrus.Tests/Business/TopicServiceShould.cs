@@ -29,5 +29,21 @@ namespace Papyrus.Tests.Business
 
             topicRepo.Received().Save(topic);
         }
+
+        [Test]
+        public void update_a_topic_of_the_library()
+        {
+            var topicRepo = Substitute.For<TopicRepository>();
+            var service = new TopicService(topicRepo);
+            var topic = new Topic()
+                .WithId("AnyTopicId")
+                .ForProduct("AnyProductId");
+            var anyVersionRange = new VersionRange(fromVersion: "AnyVersionId", toVersion: "AnotherVersionId");
+            topic.AddVersionRange(anyVersionRange);
+
+            service.Update(topic);
+
+            topicRepo.Received().Update(topic);
+        }
     }
 }

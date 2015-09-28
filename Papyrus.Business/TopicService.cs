@@ -13,5 +13,10 @@
         {
             TopicRepository.Save(topic);
         }
+
+        public void Update(Topic topic)
+        {
+            TopicRepository.Update(topic);
+        }
     }
 }

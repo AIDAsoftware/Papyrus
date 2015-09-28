@@ -13,6 +13,11 @@ namespace Papyrus.Business
             VersionRanges = new List<VersionRange>();
         }
 
+        public Topic WithId(string topicid)
+        {
+            return this;
+        }
+
         public Topic ForProduct(string productId)
         {
             ProductId = productId;
