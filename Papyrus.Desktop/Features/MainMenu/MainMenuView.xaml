@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="Papyrus.Desktop.Features.MainMenu.MainMenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mainMenu1="clr-namespace:Papyrus.Desktop.Features.MainMenu"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=mainMenu1:DesignModeMainMenuVM, IsDesignTimeCreatable=True}"
+             DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
+    <Grid>
+        <StackPanel Margin="8" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Click="NewDocument_OnClick">New documents</Button>
+            <Label>Products</Label>
+            <ComboBox MinWidth="100" 
+                      ItemsSource="{Binding Products, Mode=OneWay}"
+                      DisplayMemberPath="Name" 
+                      SelectedValuePath="Id">
+            </ComboBox>
+        </StackPanel>
+    </Grid>
+</UserControl>

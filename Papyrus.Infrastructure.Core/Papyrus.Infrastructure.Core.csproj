@@ -53,7 +53,14 @@
     <Compile Include="Database\DatabaseException.cs" />
     <Compile Include="Database\SqlTest.cs" />
     <Compile Include="Database\TransactionScope.cs" />
+    <Compile Include="DomainEvents\EventBus.cs" />
+    <Compile Include="DomainEvents\ListenerException.cs" />
+    <Compile Include="DomainEvents\Subscriber.cs" />
+    <Compile Include="EventExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SharedDomain\Validation\ValidationError.cs" />
+    <Compile Include="SharedDomain\Validation\ValidationException.cs" />
+    <Compile Include="ValidationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

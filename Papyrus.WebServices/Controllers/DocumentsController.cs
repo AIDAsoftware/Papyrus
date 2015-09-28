@@ -18,7 +18,7 @@
 
         public async Task<DocumentDto> Get(string id)
         {
-            var document = await documentService.GetDocumentById(id);
+            var document = await documentService.GetDocumentByTopicId(id);
             if (document == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
@@ -43,7 +43,7 @@
         [HttpPut]
         public async Task<HttpResponseMessage> Update(string id, [FromBody] DocumentDto documentDto)
         {
-            var document = DocumentFrom(documentDto).WithId(id);
+            var document = DocumentFrom(documentDto).WithTopicId(id);
             try
             {
                 await documentService.Update(document);
@@ -55,19 +55,19 @@
             }
         }
 
-        [HttpDelete]
-        public async Task<HttpResponseMessage> Delete(string id)
-        {
-            try
-            {
-                await documentService.Remove(id);
-                return new HttpResponseMessage(HttpStatusCode.NoContent);
-            }
-            catch (DocumentNotFoundException)
-            {
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
-            }
-        }
+//        [HttpDelete]
+//        public async Task<HttpResponseMessage> Delete(string id)
+//        {
+//            try
+//            {
+//                await documentService.Remove(id);
+//                return new HttpResponseMessage(HttpStatusCode.NoContent);
+//            }
+//            catch (DocumentNotFoundException)
+//            {
+//                return new HttpResponseMessage(HttpStatusCode.NotFound);
+//            }
+//        }
 
         private static Document DocumentFrom(DocumentDto documentDto)
         {
@@ -82,11 +82,11 @@
         {
             return new DocumentDto()
             {
-                Id = document.Id,
+                Id = document.DocumentIdentity.TopicId,
                 Title = document.Title,
                 Description = document.Description,
                 Content = document.Content,
-                Language = document.Language
+                Language = document.DocumentIdentity.Language
             };
         }
     }

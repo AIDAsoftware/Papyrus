@@ -6,9 +6,9 @@ namespace Papyrus.Business.Documents
     public interface DocumentRepository
     {
         Task Save(Document document);
-        Task<Document> GetDocument(string id);
+        Task<Document> GetDocument(string topicId);
         Task Update(Document document);
-        Task Delete(string documentId);
+        Task Delete(string topicId);
         Task<List<Document>> GetAllDocuments();
     }
 }
