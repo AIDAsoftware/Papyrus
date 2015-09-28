@@ -14,17 +14,26 @@ namespace Papyrus.Tests.Business
         //   topic with id cannot be saved 
         //   topic with no version ranges cannot be updated
 
+        private TopicRepository topicRepo;
+        private TopicService topicService;
+        private VersionRange anyVersionRange;
+
+        [SetUp]
+        public void SetUp()
+        {
+            topicRepo = Substitute.For<TopicRepository>();
+            topicService = new TopicService(topicRepo);
+            anyVersionRange = new VersionRange(fromVersion: "AnyVersionId", toVersion: "AnotherVersionId");
+        }
+
         [Test]
         public void save_a_topic_when_it_is_created()
         {
-            var topicRepo = Substitute.For<TopicRepository>();
-            var service = new TopicService(topicRepo);
             var topic = new Topic()
                 .ForProduct("AnyProductId");
-            var anyVersionRange = new VersionRange(fromVersion: "AnyVersionId", toVersion: "AnotherVersionId");
             topic.AddVersionRange(anyVersionRange);
 
-            service.Create(topic);
+            topicService.Create(topic);
 
             topicRepo.Received().Save(topic);
         }
@@ -33,28 +42,22 @@ namespace Papyrus.Tests.Business
         [ExpectedException(typeof(CannotUpdateWithoutTopicIdDeclaredException))]
         public void throw_an_exception_when_trying_to_update_a_topic_without_id()
         {
-            var topicRepo = Substitute.For<TopicRepository>();
-            var service = new TopicService(topicRepo);
             var topic = new Topic()
                 .ForProduct("AnyProductId");
-            var anyVersionRange = new VersionRange(fromVersion: "AnyVersionId", toVersion: "AnotherVersionId");
             topic.AddVersionRange(anyVersionRange);
 
-            service.Update(topic);
+            topicService.Update(topic);
         }
 
         [Test]
         public void update_a_topic_of_the_library()
         {
-            var topicRepo = Substitute.For<TopicRepository>();
-            var service = new TopicService(topicRepo);
             var topic = new Topic()
                 .WithId("AnyTopicId")
                 .ForProduct("AnyProductId");
-            var anyVersionRange = new VersionRange(fromVersion: "AnyVersionId", toVersion: "AnotherVersionId");
             topic.AddVersionRange(anyVersionRange);
 
-            service.Update(topic);
+            topicService.Update(topic);
 
             topicRepo.Received().Update(topic);
         }
