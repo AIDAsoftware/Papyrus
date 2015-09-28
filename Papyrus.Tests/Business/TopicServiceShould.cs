@@ -1,6 +1,7 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
-using Papyrus.Business;
+using Papyrus.Business.Topics;
+using Papyrus.Business.Topics.Exceptions;
 
 namespace Papyrus.Tests.Business
 {

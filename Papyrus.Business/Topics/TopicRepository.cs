@@ -1,4 +1,4 @@
-﻿namespace Papyrus.Business
+﻿namespace Papyrus.Business.Topics
 {
     public interface TopicRepository
     {

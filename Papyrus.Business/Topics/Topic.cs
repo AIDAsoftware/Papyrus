@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 
-namespace Papyrus.Business
+namespace Papyrus.Business.Topics
 {
     public class Topic
     {

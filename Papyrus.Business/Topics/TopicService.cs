@@ -1,6 +1,7 @@
 ﻿using System;
+using Papyrus.Business.Topics.Exceptions;
 
-namespace Papyrus.Business
+namespace Papyrus.Business.Topics
 {
     public class TopicService
     {
