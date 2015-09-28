@@ -9,12 +9,10 @@ namespace Papyrus.Tests.Business
     public class TopicServiceShould
     {
         // TODO:
-        //   update topic
         //   topic which is not related to a product cannot be saved
         //   topic without ranges cannot be saved 
         //   topic with id cannot be saved 
-        //   topic without id cannot be updated
-
+        //   topic with no version ranges cannot be updated
 
         [Test]
         public void save_a_topic_when_it_is_created()
