@@ -4,7 +4,6 @@ namespace Papyrus.Business
     {
         public VersionRange(string fromVersion, string toVersion)
         {
-            throw new System.NotImplementedException();
         }
     }
 }

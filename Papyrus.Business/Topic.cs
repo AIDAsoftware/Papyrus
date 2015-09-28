@@ -1,15 +1,27 @@
+using System.Collections;
+using System.Collections.Generic;
+
 namespace Papyrus.Business
 {
     public class Topic
     {
+        public string ProductId { get; set; }
+        public List<VersionRange> VersionRanges { get; set; }
+
+        public Topic()
+        {
+            VersionRanges = new List<VersionRange>();
+        }
+
         public Topic ForProduct(string productId)
         {
-            throw new System.NotImplementedException();
+            ProductId = productId;
+            return this;
         }
 
         public void AddVersionRange(VersionRange versionRange)
         {
-            throw new System.NotImplementedException();
+            VersionRanges.Add(versionRange);
         }
     }
 }

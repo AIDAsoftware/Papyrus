@@ -2,14 +2,16 @@
 {
     public class TopicService
     {
+        public TopicRepository TopicRepository { get; set; }
+
         public TopicService(TopicRepository topicRepo)
         {
-            throw new System.NotImplementedException();
+            TopicRepository = topicRepo;
         }
 
         public void Create(Topic topic)
         {
-            throw new System.NotImplementedException();
+            TopicRepository.Save(topic);
         }
     }
 }
