@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CannotUpdateWithoutTopicIdDeclaredException.cs" />
     <Compile Include="Documents\Exceptions\DocumentMustBeAssignedToAProductException.cs" />
     <Compile Include="Documents\Exceptions\DocumentMustBeAssignedToAProductVersionException.cs" />
     <Compile Include="Documents\Exceptions\DocumentMustHaveALanguageException.cs" />

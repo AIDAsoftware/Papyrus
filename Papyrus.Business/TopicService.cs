@@ -1,4 +1,6 @@
-﻿namespace Papyrus.Business
+﻿using System;
+
+namespace Papyrus.Business
 {
     public class TopicService
     {
@@ -16,6 +18,8 @@
 
         public void Update(Topic topic)
         {
+            if (String.IsNullOrEmpty(topic.TopicId))
+                throw new CannotUpdateWithoutTopicIdDeclaredException();
             TopicRepository.Update(topic);
         }
     }

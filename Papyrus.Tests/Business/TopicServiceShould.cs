@@ -45,5 +45,19 @@ namespace Papyrus.Tests.Business
 
             topicRepo.Received().Update(topic);
         }
+
+        [Test]
+        [ExpectedException(typeof(CannotUpdateWithoutTopicIdDeclaredException))]
+        public void throw_an_exception_when_trying_to_update_a_topic_without_id()
+        {
+            var topicRepo = Substitute.For<TopicRepository>();
+            var service = new TopicService(topicRepo);
+            var topic = new Topic()
+                .ForProduct("AnyProductId");
+            var anyVersionRange = new VersionRange(fromVersion: "AnyVersionId", toVersion: "AnotherVersionId");
+            topic.AddVersionRange(anyVersionRange);
+
+            service.Update(topic);
+        }
     }
 }

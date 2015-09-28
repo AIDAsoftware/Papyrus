@@ -7,6 +7,7 @@ namespace Papyrus.Business
     {
         public string ProductId { get; set; }
         public List<VersionRange> VersionRanges { get; set; }
+        public string TopicId { get; set; }
 
         public Topic()
         {
@@ -15,6 +16,7 @@ namespace Papyrus.Business
 
         public Topic WithId(string topicid)
         {
+            TopicId = topicid;
             return this;
         }
 
