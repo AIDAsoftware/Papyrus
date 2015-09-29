@@ -10,7 +10,6 @@ namespace Papyrus.Tests.Business
     public class TopicServiceShould
     {
         // TODO:
-        //   topic with id cannot be saved 
         //   topic with no version ranges cannot be updated
 
         private TopicRepository topicRepo;
@@ -42,6 +41,18 @@ namespace Papyrus.Tests.Business
         public void fail_when_trying_to_save_topics_with_no_ranges()
         {
             var topic = new Topic().ForProduct(anyProductId);
+
+            topicService.Create(topic);
+        }
+
+        [Test]
+        [ExpectedException(typeof(CannotSaveTopicsWithDefinedTopicIdException))]
+        public void fail_when_trying_to_save_topics_with_id()
+        {                                      
+            var topic = new Topic()
+                        .WithId("AnyTopicId")
+                        .ForProduct(anyProductId);
+            topic.AddVersionRange(anyVersionRange);
 
             topicService.Create(topic);
         }

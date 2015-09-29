@@ -15,6 +15,8 @@ namespace Papyrus.Business.Topics
 
         public void Create(Topic topic)
         {
+            if (!String.IsNullOrEmpty(topic.TopicId))
+                throw new CannotSaveTopicsWithDefinedTopicIdException();
             if (String.IsNullOrEmpty(topic.ProductId))
                 throw new CannotSaveTopicsWithNoRelatedProductException();
             if (!topic.VersionRanges.Any())
