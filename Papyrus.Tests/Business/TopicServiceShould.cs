@@ -16,6 +16,7 @@ namespace Papyrus.Tests.Business
         private TopicRepository topicRepo;
         private TopicService topicService;
         private VersionRange anyVersionRange;
+        private string anyProductId;
 
         [SetUp]
         public void SetUp()
@@ -23,6 +24,7 @@ namespace Papyrus.Tests.Business
             topicRepo = Substitute.For<TopicRepository>();
             topicService = new TopicService(topicRepo);
             anyVersionRange = new VersionRange(fromVersion: "AnyVersionId", toVersion: "AnotherVersionId");
+            anyProductId = "AnyProductId";
         }
 
         [Test]
@@ -39,7 +41,7 @@ namespace Papyrus.Tests.Business
         [ExpectedException(typeof(CannotSaveTopicsWithNoVersionRangesException))]
         public void fail_when_trying_to_save_topics_with_no_ranges()
         {
-            var topic = new Topic().ForProduct("AnyProductId");
+            var topic = new Topic().ForProduct(anyProductId);
 
             topicService.Create(topic);
         }
@@ -48,7 +50,7 @@ namespace Papyrus.Tests.Business
         public void save_a_topic_when_it_is_created()
         {
             var topic = new Topic()
-                .ForProduct("AnyProductId");
+                .ForProduct(anyProductId);
             topic.AddVersionRange(anyVersionRange);
 
             topicService.Create(topic);
@@ -61,7 +63,7 @@ namespace Papyrus.Tests.Business
         public void fail_when_trying_to_update_a_topic_without_id()
         {
             var topic = new Topic()
-                .ForProduct("AnyProductId");
+                .ForProduct(anyProductId);
             topic.AddVersionRange(anyVersionRange);
 
             topicService.Update(topic);
@@ -72,7 +74,7 @@ namespace Papyrus.Tests.Business
         {
             var topic = new Topic()
                 .WithId("AnyTopicId")
-                .ForProduct("AnyProductId");
+                .ForProduct(anyProductId);
             topic.AddVersionRange(anyVersionRange);
 
             topicService.Update(topic);
