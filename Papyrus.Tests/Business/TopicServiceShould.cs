@@ -1,5 +1,6 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
+using Papyrus.Business;
 using Papyrus.Business.Topics;
 using Papyrus.Business.Topics.Exceptions;
 
@@ -24,6 +25,16 @@ namespace Papyrus.Tests.Business
             topicRepo = Substitute.For<TopicRepository>();
             topicService = new TopicService(topicRepo);
             anyVersionRange = new VersionRange(fromVersion: "AnyVersionId", toVersion: "AnotherVersionId");
+        }
+
+        [Test]
+        [ExpectedException(typeof(CannotSaveTopicsWithNoRelatedProductException))]
+        public void throw_an_exception_when_trying_to_save_topics_with_no_related_product()
+        {
+            var topic = new Topic();
+            topic.AddVersionRange(anyVersionRange);
+
+            topicService.Create(topic);
         }
 
         [Test]

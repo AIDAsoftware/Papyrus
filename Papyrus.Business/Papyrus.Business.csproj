@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Topics\Exceptions\CannotSaveTopicsWithNoRelatedProductException.cs" />
     <Compile Include="Topics\Exceptions\CannotUpdateWithoutTopicIdDeclaredException.cs" />
     <Compile Include="Documents\Exceptions\DocumentMustBeAssignedToAProductException.cs" />
     <Compile Include="Documents\Exceptions\DocumentMustBeAssignedToAProductVersionException.cs" />
