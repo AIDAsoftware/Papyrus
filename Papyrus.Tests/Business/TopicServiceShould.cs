@@ -70,7 +70,7 @@ namespace Papyrus.Tests.Business
         }
 
         [Test]
-        [ExpectedException(typeof(CannotUpdateWithoutTopicIdDeclaredException))]
+        [ExpectedException(typeof(CannotUpdateTopicsWithoutTopicIdDeclaredException))]
         public void fail_when_trying_to_update_a_topic_without_id()
         {
             var topic = new Topic()

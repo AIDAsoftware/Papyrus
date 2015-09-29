@@ -29,7 +29,7 @@ namespace Papyrus.Business.Topics
         private static void ValidateToUpdate(Topic topic)
         {
             if (IsNotDefined(topic.TopicId))
-                throw new CannotUpdateWithoutTopicIdDeclaredException();
+                throw new CannotUpdateTopicsWithoutTopicIdDeclaredException();
             if (HasNotAnyVersionRange(topic))
                 throw new CannotUpdateTopicsWithNoVersionRangesException();
         }

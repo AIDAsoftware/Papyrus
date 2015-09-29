@@ -2,7 +2,7 @@
 
 namespace Papyrus.Business.Topics.Exceptions
 {
-    public class CannotUpdateWithoutTopicIdDeclaredException : Exception
+    public class CannotUpdateTopicsWithoutTopicIdDeclaredException : Exception
     {
     }
 }

@@ -48,7 +48,7 @@
     <Compile Include="Topics\Exceptions\CannotSaveTopicsWithDefinedTopicIdException.cs" />
     <Compile Include="Topics\Exceptions\CannotSaveTopicsWithNoVersionRangesException.cs" />
     <Compile Include="Topics\Exceptions\CannotSaveTopicsWithNoRelatedProductException.cs" />
-    <Compile Include="Topics\Exceptions\CannotUpdateWithoutTopicIdDeclaredException.cs" />
+    <Compile Include="Topics\Exceptions\CannotUpdateTopicsWithoutTopicIdDeclaredException.cs" />
     <Compile Include="Documents\Exceptions\DocumentMustBeAssignedToAProductException.cs" />
     <Compile Include="Documents\Exceptions\DocumentMustBeAssignedToAProductVersionException.cs" />
     <Compile Include="Documents\Exceptions\DocumentMustHaveALanguageException.cs" />
