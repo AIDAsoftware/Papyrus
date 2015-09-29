@@ -1,8 +1,6 @@
 ﻿using System;
 using NSubstitute;
-using NSubstitute.Core.Arguments;
 using NUnit.Framework;
-using Papyrus.Business;
 using Papyrus.Business.Topics;
 using Papyrus.Business.Topics.Exceptions;
 
@@ -14,6 +12,8 @@ namespace Papyrus.Tests.Business
         private TopicRepository topicRepo;
         private TopicService topicService;
         private VersionRange anyVersionRange;
+        private ProductVersion2 anyProductVersion;
+        private ProductVersion2 anotherProductVersion;
         private string anyProductId;
 
         [SetUp]
@@ -21,7 +21,7 @@ namespace Papyrus.Tests.Business
         {
             topicRepo = Substitute.For<TopicRepository>();
             topicService = new TopicService(topicRepo);
-            anyVersionRange = new VersionRange(fromVersion: "AnyVersionId", toVersion: "AnotherVersionId");
+            anyVersionRange = new VersionRange(fromVersion: null, toVersion: null);
             anyProductId = "AnyProductId";
         }
 
