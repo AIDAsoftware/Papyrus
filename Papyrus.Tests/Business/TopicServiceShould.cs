@@ -29,7 +29,7 @@ namespace Papyrus.Tests.Business
 
         [Test]
         [ExpectedException(typeof(CannotSaveTopicsWithNoRelatedProductException))]
-        public void throw_an_exception_when_trying_to_save_topics_with_no_related_product()
+        public void fail_when_trying_to_save_topics_with_no_related_product()
         {
             var topic = new Topic();
             topic.AddVersionRange(anyVersionRange);
@@ -51,7 +51,7 @@ namespace Papyrus.Tests.Business
 
         [Test]
         [ExpectedException(typeof(CannotUpdateWithoutTopicIdDeclaredException))]
-        public void throw_an_exception_when_trying_to_update_a_topic_without_id()
+        public void fail_when_trying_to_update_a_topic_without_id()
         {
             var topic = new Topic()
                 .ForProduct("AnyProductId");
