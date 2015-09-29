@@ -106,6 +106,7 @@
     <Compile Include="Business\DocumentServiceShould.cs" />
     <Compile Include="Business\DocumentShould.cs" />
     <Compile Include="Business\TopicServiceShould.cs" />
+    <Compile Include="Business\VersionRangeShould.cs" />
     <Compile Include="Infrastructure\Database\DatabaseConnectionShould.cs" />
     <Compile Include="Infrastructure\EventBusShould.cs" />
     <Compile Include="Infrastructure\Repositories\SqlProductRepositoryShould.cs" />
