@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Papyrus.Business.Topics.Exceptions;
 
 namespace Papyrus.Business.Topics
@@ -16,6 +17,8 @@ namespace Papyrus.Business.Topics
         {
             if (String.IsNullOrEmpty(topic.ProductId))
                 throw new CannotSaveTopicsWithNoRelatedProductException();
+            if (!topic.VersionRanges.Any())
+                throw new CannotSaveTopicsWithNoVersionRangesException();
             TopicRepository.Save(topic);
         }
 

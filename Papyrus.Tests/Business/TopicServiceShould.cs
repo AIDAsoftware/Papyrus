@@ -10,8 +10,6 @@ namespace Papyrus.Tests.Business
     public class TopicServiceShould
     {
         // TODO:
-        //   topic which is not related to a product cannot be saved
-        //   topic without ranges cannot be saved 
         //   topic with id cannot be saved 
         //   topic with no version ranges cannot be updated
 
@@ -33,6 +31,15 @@ namespace Papyrus.Tests.Business
         {
             var topic = new Topic();
             topic.AddVersionRange(anyVersionRange);
+
+            topicService.Create(topic);
+        }
+
+        [Test]
+        [ExpectedException(typeof(CannotSaveTopicsWithNoVersionRangesException))]
+        public void fail_when_trying_to_save_topics_with_no_ranges()
+        {
+            var topic = new Topic().ForProduct("AnyProductId");
 
             topicService.Create(topic);
         }
