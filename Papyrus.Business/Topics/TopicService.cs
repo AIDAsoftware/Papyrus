@@ -23,6 +23,8 @@ namespace Papyrus.Business.Topics
         {
             if (String.IsNullOrEmpty(topic.TopicId))
                 throw new CannotUpdateWithoutTopicIdDeclaredException();
+            if (!topic.VersionRanges.Any())
+                throw new CannotUpdateTopicsWithNoVersionRangesException();
             TopicRepository.Update(topic);
         }
 

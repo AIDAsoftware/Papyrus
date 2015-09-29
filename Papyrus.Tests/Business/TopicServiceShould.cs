@@ -9,9 +9,6 @@ namespace Papyrus.Tests.Business
     [TestFixture]
     public class TopicServiceShould
     {
-        // TODO:
-        //   topic with no version ranges cannot be updated
-
         private TopicRepository topicRepo;
         private TopicService topicService;
         private VersionRange anyVersionRange;
@@ -76,6 +73,17 @@ namespace Papyrus.Tests.Business
             var topic = new Topic()
                 .ForProduct(anyProductId);
             topic.AddVersionRange(anyVersionRange);
+
+            topicService.Update(topic);
+        }
+
+        [Test]
+        [ExpectedException(typeof(CannotUpdateTopicsWithNoVersionRangesException))]
+        public void fail_when_trying_to_update_a_topic_with_no_ranges()
+        {
+            var topic = new Topic()
+                .WithId("AnyTopicId")
+                .ForProduct(anyProductId);
 
             topicService.Update(topic);
         }
