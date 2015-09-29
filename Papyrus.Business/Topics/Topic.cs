@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Papyrus.Business.Topics
 {
@@ -36,20 +34,10 @@ namespace Papyrus.Business.Topics
         {
             TopicId = Guid.NewGuid().ToString();
         }
-    }
 
-    public class VersionRanges
-    {
-        IList<VersionRange> versions = new List<VersionRange>();  
-
-        public void Add(VersionRange versionRange)
+        public bool HasNotAnyVersionRange()
         {
-            versions.Add(versionRange);
-        }
-
-        public bool Any()
-        {
-            return versions.Any();
+            return !VersionRanges.HasAnyRange();
         }
     }
 }

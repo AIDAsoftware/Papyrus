@@ -12,7 +12,7 @@ namespace Papyrus.Business.Topics
             versions.Add(versionRange);
         }
 
-        public bool Any()
+        public bool HasAnyRange()
         {
             return versions.Any();
         }

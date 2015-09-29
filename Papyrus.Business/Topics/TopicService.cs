@@ -46,7 +46,7 @@ namespace Papyrus.Business.Topics
 
         private static bool HasNotAnyVersionRange(Topic topic)
         {
-            return !topic.VersionRanges.Any();
+            return topic.HasNotAnyVersionRange();
         }
 
         private static bool IsNotDefined(string property)
