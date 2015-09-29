@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Topics\Document2.cs" />
+    <Compile Include="Topics\ProductVersion2.cs" />
     <Compile Include="Topics\Exceptions\CannotUpdateTopicsWithNoVersionRangesException.cs" />
     <Compile Include="Topics\Exceptions\CannotSaveTopicsWithDefinedTopicIdException.cs" />
     <Compile Include="Topics\Exceptions\CannotSaveTopicsWithNoVersionRangesException.cs" />
