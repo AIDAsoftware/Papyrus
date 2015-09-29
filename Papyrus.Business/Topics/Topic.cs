@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Papyrus.Business.Topics
@@ -28,6 +29,11 @@ namespace Papyrus.Business.Topics
         public void AddVersionRange(VersionRange versionRange)
         {
             VersionRanges.Add(versionRange);
+        }
+
+        public void GenerateAutomaticId()
+        {
+            TopicId = Guid.NewGuid().ToString();
         }
     }
 }

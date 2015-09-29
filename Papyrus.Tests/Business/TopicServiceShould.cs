@@ -1,4 +1,6 @@
-﻿using NSubstitute;
+﻿using System;
+using NSubstitute;
+using NSubstitute.Core.Arguments;
 using NUnit.Framework;
 using Papyrus.Business;
 using Papyrus.Business.Topics;
@@ -64,6 +66,7 @@ namespace Papyrus.Tests.Business
             topicService.Create(topic);
 
             topicRepo.Received().Save(topic);
+            topicRepo.Received().Save(Arg.Is<Topic>(t => !String.IsNullOrEmpty(t.TopicId)));
         }
 
         [Test]

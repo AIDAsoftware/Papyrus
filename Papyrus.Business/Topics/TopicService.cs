@@ -16,6 +16,7 @@ namespace Papyrus.Business.Topics
         public void Create(Topic topic)
         {
             ValidateToSave(topic);
+            topic.GenerateAutomaticId();
             TopicRepository.Save(topic);
         }
 
