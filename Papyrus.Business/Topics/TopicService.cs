@@ -15,9 +15,9 @@ namespace Papyrus.Business.Topics
 
         public void Create(Topic topic)
         {
-            if (!String.IsNullOrEmpty(topic.TopicId))
+            if (!IsNotDefined(topic.TopicId))
                 throw new CannotSaveTopicsWithDefinedTopicIdException();
-            if (String.IsNullOrEmpty(topic.ProductId))
+            if (IsNotDefined(topic.ProductId))
                 throw new CannotSaveTopicsWithNoRelatedProductException();
             if (!topic.VersionRanges.Any())
                 throw new CannotSaveTopicsWithNoVersionRangesException();
@@ -29,6 +29,11 @@ namespace Papyrus.Business.Topics
             if (String.IsNullOrEmpty(topic.TopicId))
                 throw new CannotUpdateWithoutTopicIdDeclaredException();
             TopicRepository.Update(topic);
+        }
+
+        private static bool IsNotDefined(string property)
+        {
+            return String.IsNullOrEmpty(property);
         }
     }
 }
