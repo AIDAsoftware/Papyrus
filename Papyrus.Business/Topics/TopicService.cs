@@ -15,12 +15,7 @@ namespace Papyrus.Business.Topics
 
         public void Create(Topic topic)
         {
-            if (!IsNotDefined(topic.TopicId))
-                throw new CannotSaveTopicsWithDefinedTopicIdException();
-            if (IsNotDefined(topic.ProductId))
-                throw new CannotSaveTopicsWithNoRelatedProductException();
-            if (!topic.VersionRanges.Any())
-                throw new CannotSaveTopicsWithNoVersionRangesException();
+            ValidateToSave(topic);
             TopicRepository.Save(topic);
         }
 
@@ -29,6 +24,16 @@ namespace Papyrus.Business.Topics
             if (String.IsNullOrEmpty(topic.TopicId))
                 throw new CannotUpdateWithoutTopicIdDeclaredException();
             TopicRepository.Update(topic);
+        }
+
+        private static void ValidateToSave(Topic topic)
+        {
+            if (!IsNotDefined(topic.TopicId))
+                throw new CannotSaveTopicsWithDefinedTopicIdException();
+            if (IsNotDefined(topic.ProductId))
+                throw new CannotSaveTopicsWithNoRelatedProductException();
+            if (!topic.VersionRanges.Any())
+                throw new CannotSaveTopicsWithNoVersionRangesException();
         }
 
         private static bool IsNotDefined(string property)
