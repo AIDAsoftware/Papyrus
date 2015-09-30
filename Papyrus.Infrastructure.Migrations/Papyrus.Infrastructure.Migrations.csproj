@@ -61,6 +61,7 @@
     <Compile Include="Topic\1 - CreateTopicTable.cs" />
     <Compile Include="VersionRange\1 - CreateVersionRangeTable.cs" />
     <Compile Include="ProductVersion\1 - RenameProductColToProductId.cs" />
+    <Compile Include="VersionRange\2 - AddTopicIdColumn.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
