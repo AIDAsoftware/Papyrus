@@ -14,10 +14,15 @@ namespace Papyrus.Tests.Business
         private Document2 englishDocument;
 
         [SetUp]
-        public void SetUp()
+        public void InitializeVersions()
         {
             secondVersion = new ProductVersion2("AnyProductVersionId", "AnyVersionName", DateTime.Now.AddDays(-2.0d));
             fourthVersion = new ProductVersion2("AnotherProductVersionId", "AnyVersionName", DateTime.Now);
+        }
+
+        [SetUp]
+        public void InitializeDocuments()
+        {
             spanishDocument = new Document2(
                 title: "Título",
                 description: "Descripción",
