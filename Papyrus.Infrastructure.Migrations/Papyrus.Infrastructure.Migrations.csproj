@@ -58,6 +58,7 @@
     <Compile Include="SetDocumentRowsNullableMigration.cs" />
     <Compile Include="Topic\1 - CreateTopicTable.cs" />
     <Compile Include="VersionRange\CreateVersionRangeTable.cs" />
+    <Compile Include="ProductVersion\1 - RenameProductColToProductId.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
