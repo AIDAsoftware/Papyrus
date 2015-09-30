@@ -1,6 +1,6 @@
 ﻿using FluentMigrator;
 
-namespace Papyrus.Infrastructure.Migrations.Version
+namespace Papyrus.Infrastructure.Migrations.ProductVersion
 {
     [TimestampedMigration(2015, 09, 30, 12, 53)]
     public class AddReleaseColumn : Migration
