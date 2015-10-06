@@ -203,6 +203,7 @@ namespace Papyrus.Tests.Business
             documents.Length.Should().Be(1);
         }
 
+        [Ignore]
         [Test]
         public async Task export_documents_to_a_folder() {
             var targetDirectory = new DirectoryInfo(@"c:\exportDirectory\docs");
