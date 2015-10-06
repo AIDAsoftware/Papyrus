@@ -27,7 +27,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         }
 
         [Test]
-        public async void get_a_list_with_all_topics_distincting_by_topic_and_showing_infomation_of_its_last_version()
+        public async void get_a_list_with_all_topics_distincting_by_topic_with_infomation_of_its_last_version()
         {
             await InsertTopic("AnyTopicId", "AnyProductId");
             await InsertProduct("AnyProductId", "Opportunity");
