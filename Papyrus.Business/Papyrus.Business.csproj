@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Topics\SqlTopicRepository.cs" />
     <Compile Include="Topics\Document2.cs" />
     <Compile Include="Topics\ProductVersion2.cs" />
     <Compile Include="Topics\Exceptions\CannotUpdateTopicsWithNoVersionRangesException.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Topics\TopicService.cs" />
     <Compile Include="Topics\VersionRange.cs" />
     <Compile Include="Topics\VersionRanges.cs" />
+    <Compile Include="Topics\TopicToShow.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Papyrus.Infrastructure.Core\Papyrus.Infrastructure.Core.csproj">
