@@ -27,27 +27,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         }
 
         [Test]
-        public async void get_a_list_with_all_topics_to_show()
-        {
-            await InsertTopic("AnyTopicId", "AnyProductId");
-            await InsertProduct("AnyProductId", "Opportunity");
-            await InsertProductVersion("FirstVersionOpportunity", "1.0", "20150801", "AnyProductId");
-            await InsertVersionRange("AnyRangeId", "FirstVersionOpportunity", "FirstVersionOpportunity", "AnyTopicId");
-            await InsertDocument("PrimerMantenimientoOpportunity", "Primer Mantenimiento", "Explicación",
-                                "Puedes llamar a los clientes que necesitan...", "es-ES", "AnyRangeId");
-
-            var topicRepository = new SqlTopicRepository(dbConnection);
-
-            var topicsToShow = await topicRepository.GetAllTopicsToShow();
-
-            topicsToShow.Should().HaveCount(1);
-            topicsToShow.Should().Contain(t => t.TopicId == "AnyTopicId" && 
-                                                t.ProductName == "Opportunity" && 
-                                                t.LastDocumentTitle == "Primer Mantenimiento" &&
-                                                t.LastDocumentDescription == "Explicación");
-        }
-
-        [Test]
         public async void filter_the_loaded_list_to_show_only_one_row_for_a_topic_showing_its_last_document()
         {
             await InsertTopic("AnyTopicId", "AnyProductId");
@@ -72,17 +51,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories
                                                t.VersionName == "2.0" &&
                                                t.LastDocumentTitle == "Llamadas Primer mantenimiento" &&
                                                t.LastDocumentDescription == "Explicación");
-        }
-
-        [Test]
-        public void xxx()
-        {
-            var dates = new List<DateTime>();
-            dates.Add(DateTime.Today.AddDays(-30));
-            dates.Add(DateTime.Today);
-            dates.Add(DateTime.Today.AddDays(-20));
-            var orderedDates = dates.OrderByDescending(d => d);
-            orderedDates.First().ShouldBeEquivalentTo(DateTime.Today);
         }
 
         private async Task InsertDocument(string documentId, string title, string description, string content, string language, string rangeId)
