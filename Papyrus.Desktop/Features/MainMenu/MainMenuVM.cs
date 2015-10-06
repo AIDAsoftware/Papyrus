@@ -16,11 +16,7 @@ namespace Papyrus.Desktop.Features.MainMenu {
         }
 
         public async Task Initialize() {
-            var products = await productService.AllProducts();
-            Products.Clear(); 
-            foreach (var product in products) {
-                Products.Add(product);
-            }
+            
         }
     }
 
