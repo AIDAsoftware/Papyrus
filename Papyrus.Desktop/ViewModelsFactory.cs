@@ -1,8 +1,10 @@
 ﻿using System.Configuration;
 using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
+using Papyrus.Business.Topics;
 using Papyrus.Desktop.Features.Documents;
 using Papyrus.Desktop.Features.MainMenu;
+using Papyrus.Desktop.Features.Topics;
 using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Desktop {
@@ -23,6 +25,11 @@ namespace Papyrus.Desktop {
         public static NewDocumentVM UpdateDocumentWindowVm(DocumentDetails document)
         {
             return new NewDocumentVM(RepositoriesFactory.Product(), ServicesFactory.Document(), document);
+        }
+
+        public static TopicsGridVM TopicsGrid()
+        {
+            return new TopicsGridVM(RepositoriesFactory.Topic());
         }
     }
 
@@ -48,6 +55,11 @@ namespace Papyrus.Desktop {
 
         public static DocumentRepository Document() {
             return new SqlDocumentRepository(CreateConnection());
+        }
+
+        public static TopicRepository Topic()
+        {
+            return new SqlTopicRepository(CreateConnection());
         }
     }
 
