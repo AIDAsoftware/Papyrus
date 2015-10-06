@@ -8,17 +8,10 @@ namespace Papyrus.Tests.Business
     [TestFixture]
     public class VersionRangeShould
     {
-        private ProductVersion2 secondVersion;
-        private ProductVersion2 fourthVersion;
+        private string secondVersion;
+        private string fourthVersion;
         private Document2 spanishDocument;
         private Document2 englishDocument;
-
-        [SetUp]
-        public void InitializeVersions()
-        {
-            secondVersion = new ProductVersion2("AnyProductVersionId", "AnyVersionName", DateTime.Now.AddDays(-2.0d));
-            fourthVersion = new ProductVersion2("AnotherProductVersionId", "AnyVersionName", DateTime.Now);
-        }
 
         [SetUp]
         public void InitializeDocuments()
@@ -39,8 +32,8 @@ namespace Papyrus.Tests.Business
         public void get_corresponding_document_for_a_given_language()
         {
             var versionRange = new VersionRange(
-                fromVersion: secondVersion,
-                toVersion: fourthVersion
+                fromVersion: "SecondVersionId",
+                toVersion: "FourthVersionId"
             );
             versionRange.AddDocument("es-ES", spanishDocument);
             versionRange.AddDocument("en-GB", englishDocument);

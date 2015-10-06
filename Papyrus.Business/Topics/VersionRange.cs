@@ -6,7 +6,7 @@ namespace Papyrus.Business.Topics
     {
         private Dictionary<string, Document2> documents;
 
-        public VersionRange(ProductVersion2 fromVersion, ProductVersion2 toVersion)
+        public VersionRange(string fromVersion, string toVersion)
         {
             documents = new Dictionary<string, Document2>();
         }
