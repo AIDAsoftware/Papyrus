@@ -68,9 +68,10 @@ namespace Papyrus.Tests.Infrastructure.Repositories
 
             topicsToShow.Should().HaveCount(1);
             topicsToShow.Should().Contain(t => t.TopicId == "AnyTopicId" && 
-                                                t.ProductName == "Opportunity" && 
-                                                t.LastDocumentTitle == "Llamadas Primer mantenimiento" &&
-                                                t.LastDocumentDescription == "Explicación");
+                                               t.ProductName == "Opportunity" &&
+                                               t.VersionName == "2.0" &&
+                                               t.LastDocumentTitle == "Llamadas Primer mantenimiento" &&
+                                               t.LastDocumentDescription == "Explicación");
         }
 
         [Test]

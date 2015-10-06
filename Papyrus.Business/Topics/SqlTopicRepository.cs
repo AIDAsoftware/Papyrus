@@ -28,7 +28,7 @@ namespace Papyrus.Business.Topics
         public async Task<List<TopicToShow>> GetAllTopicsToShow()
         {
             var resultset = (await connection.Query<dynamic>(
-                @"SELECT Topic.TopicId, Product.ProductName, Document.Title, Document.Description
+                @"SELECT Topic.TopicId, Product.ProductName, ProductVersion.VersionName, Document.Title, Document.Description
                     FROM Topic
                     JOIN Product ON Product.ProductId = Topic.ProductId
                     JOIN VersionRange ON VersionRange.TopicId = Topic.TopicId
@@ -49,6 +49,7 @@ namespace Papyrus.Business.Topics
             {
                 TopicId = topic.TopicId,
                 ProductName = topic.ProductName,
+                VersionName = topic.VersionName,
                 LastDocumentTitle = topic.Title,
                 LastDocumentDescription = topic.Description,
             };
