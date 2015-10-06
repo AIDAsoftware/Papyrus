@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,15 +33,25 @@ namespace Papyrus.Business.Topics
                     JOIN Product ON Product.ProductId = Topic.ProductId
                     JOIN VersionRange ON VersionRange.TopicId = Topic.TopicId
                     JOIN ProductVersion ON VersionRange.ToVersionId = ProductVersion.VersionId
-                    JOIN Document ON Document.VersionRangeId = VersionRange.VersionRangeId"
-                )).ToList();
-            return resultset.Select(topic => new TopicToShow
+                    JOIN Document ON Document.VersionRangeId = VersionRange.VersionRangeId
+                    ORDER BY ProductVersion.Release DESC"
+                ));
+            var topicsToShow = resultset.GroupBy(topic => topic.TopicId)
+                                        .Select(topics => topics.First())
+                                        .Select(TopicToShowFromDynamic)
+                                        .ToList();
+            return topicsToShow;
+        }
+
+        private static TopicToShow TopicToShowFromDynamic(dynamic topic)
+        {
+            return new TopicToShow
             {
                 TopicId = topic.TopicId,
                 ProductName = topic.ProductName,
                 LastDocumentTitle = topic.Title,
-                LastDocumentDescription = topic.Description
-            }).ToList();
+                LastDocumentDescription = topic.Description,
+            };
         }
     }
 }
