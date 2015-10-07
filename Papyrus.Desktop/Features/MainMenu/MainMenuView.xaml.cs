@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Papyrus.Desktop.Features.Documents;
+using Papyrus.Desktop.Features.Topics;
 
 namespace Papyrus.Desktop.Features.MainMenu {
     /// <summary>
@@ -30,7 +30,7 @@ namespace Papyrus.Desktop.Features.MainMenu {
         }
 
         private void NewDocument_OnClick(object sender, RoutedEventArgs e) {
-            new DocumentWindow().Show();
+            new TopicWindow().Show();
         }
     }
 }

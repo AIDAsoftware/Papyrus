@@ -31,6 +31,11 @@ namespace Papyrus.Desktop {
         {
             return new TopicsGridVM(RepositoriesFactory.Topic());
         }
+
+        public static TopicVM Topic()
+        {
+            return new TopicVM();
+        }
     }
 
     public static class ServicesFactory {
