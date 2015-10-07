@@ -20,10 +20,10 @@ namespace Papyrus.Desktop.Features.Topics
             InitializeComponent();
 
             DataContext = ViewModelsFactory.TopicsGrid();
-            this.Loaded += DocumentsGrid_Loaded;
+            this.Loaded += TopicGrid_Loaded;
         }
 
-        private async void DocumentsGrid_Loaded(object sender, RoutedEventArgs e)
+        private async void TopicGrid_Loaded(object sender, RoutedEventArgs e)
         {
             await ViewModel.Initialize();
         }
