@@ -7,6 +7,7 @@ namespace Papyrus.Desktop.Features.Topics
 {
     public class TopicVM
     {
+        private readonly ProductRepository productRepository;
         public ObservableCollection<Product> Products { get; set; }
         public ObservableCollection<string> Languages { get; set; }
         public string Title { get; set; }
@@ -19,17 +20,20 @@ namespace Papyrus.Desktop.Features.Topics
             Products = new ObservableCollection<Product>();
         }
 
+        public TopicVM(ProductRepository productRepository) : this()
+        {
+            this.productRepository = productRepository;
+        }
+
         public async Task Initialize()
         {
             Languages.Add("es-ES");
             Languages.Add("en-GB");
-            var productVersions = new List<ProductVersion>
+            var allProductsAvailable = await productRepository.GetAllProducts();
+            foreach (var product in allProductsAvailable)
             {
-                new ProductVersion("1.0", "1.0")    
-            };
-            Products.Add(new Product("AnyId", "Opportunity", productVersions));
-            Products.Add(new Product("AnotherId", "Papyrus", productVersions));
-            Products.Add(new Product("AnotherOneId", "SIMA", productVersions));
+                Products.Add(product);
+            }
         }                                       
     }
 }

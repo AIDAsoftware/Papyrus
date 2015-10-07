@@ -57,7 +57,7 @@ namespace Papyrus.Business.Products
         private async Task<List<ProductVersion>> ProducVersionsForProduct(string productId)
         {
             const string selectVersionSqlQuery = @"Select VersionId, VersionName
-                                            FROM [ProductVersion] WHERE Product = @ProductId;";
+                                            FROM [ProductVersion] WHERE ProductId = @ProductId;";
 
             return (await connection.Query<ProductVersion>(selectVersionSqlQuery, new {ProductId = productId})).ToList();
         }
