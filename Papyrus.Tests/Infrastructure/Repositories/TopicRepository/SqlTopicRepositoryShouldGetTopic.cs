@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 using Papyrus.Business.Topics;
@@ -11,13 +12,16 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
     public class SqlTopicRepositoryShouldGetTopic : SqlTest
     {
         private const string ProductId = "OpportunityId";
-        private const string FirstVersionId = "FirstVersionId";
+        private const string FirstVersionId = "FirstVersionOpportunity";
+        private const string SecondVersionId = "SecondVersionOpportunity";
 
         [SetUp]
         public async void InitializeDataBase()
         {
             await TruncateDataBase();
-            await InsertOpportunityAsProductAndItsFirstVersion();
+            await InsertProduct(ProductId, "Opportunity");
+            await InsertProductVersion(FirstVersionId, "1.0", "20150710", ProductId);
+            await InsertProductVersion(SecondVersionId, "2.0", "20150810", ProductId);
         }
 
         private async Task TruncateDataBase()
@@ -28,14 +32,14 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [Test]
         public async void list_to_show_distincting_by_topic_with_infomation_of_its_last_version()
         {
-            await InsertProductVersion("SecondVersionOpportunity", "2.0", "20150810", ProductId);
-            await InsertTopic("AnyTopicId", ProductId);
-            await InsertVersionRange("AnyRangeId", "FirstVersionOpportunity", "FirstVersionOpportunity", "AnyTopicId");
-            await InsertVersionRange("AnotherRangeId", "SecondVersionOpportunity", "SecondVersionOpportunity", "AnyTopicId");
-            await InsertDocument("PrimerMantenimientoOpportunity", "Primer Mantenimiento", "Explicación",
-                                "Puedes llamar a los clientes que necesitan...", "es-ES", "AnyRangeId");
-            await InsertDocument("PrimerMantenimientoOpportunityVersion2", "Llamadas Primer mantenimiento", "Explicación",
-                                "Puedes llamar a los clientes que necesitan...", "es-ES", "AnotherRangeId");
+            var topic = new Topic().WithId("AnyTopicId").ForProduct(ProductId);
+            var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("AnyRangeId");
+            var secondVersionRange = new VersionRange(SecondVersionId, SecondVersionId).WithId("AnotherRangeId");
+            firstVersionRange.AddDocument("es-ES", new Document2("AnyTitle", "AnyDescription", "AnyContent").WithId("AnyDocumentId"));
+            secondVersionRange.AddDocument("es-ES", new Document2("Llamadas Primer mantenimiento", "Explicación", "AnyContent").WithId("AnotherDocumentId"));
+            topic.AddVersionRange(firstVersionRange);
+            topic.AddVersionRange(secondVersionRange);
+            await Insert(topic);
 
 
             var topicRepository = new SqlTopicRepository(dbConnection);
@@ -50,38 +54,52 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                                                t.LastDocumentDescription == "Explicación");
         }
 
-        private async Task InsertOpportunityAsProductAndItsFirstVersion()
+        private async Task Insert(Topic topic)
         {
-            await InsertProduct(ProductId, "Opportunity");
-            await InsertProductVersion(FirstVersionId, "1.0", "20150710", ProductId);
+            await dbConnection.Execute("INSERT INTO Topic(TopicId, ProductId) VALUES (@TopicId, @ProductId)",
+                new
+                {
+                    TopicId = topic.TopicId,
+                    ProductId = topic.ProductId
+                });
+            foreach (var versionRange in topic.VersionRanges)
+            {
+                await InsertVersionRangeForTopic(versionRange, topic);
+            }
         }
 
-        private async Task InsertDocument(string documentId, string title, string description, string content, string language, string rangeId)
-        {
-            await dbConnection.Execute(@"INSERT INTO Document(DocumentId, Title, Description, Content, Language, VersionRangeId)
-                                            VALUES(@DocumentId, @Title, @Description, @Content, @Language, @RangeId);",
-                                            new
-                                            {
-                                                DocumentId = documentId,
-                                                Title = title,
-                                                Description = description,
-                                                Content = content,
-                                                Language = language,
-                                                RangeId = rangeId
-                                            });
-        }
-
-        private async Task InsertVersionRange(string rangeId, string fromVersionId, string toVersionId, string topicId)
+        private async Task InsertVersionRangeForTopic(VersionRange versionRange, Topic topic)
         {
             await dbConnection.Execute(@"INSERT INTO VersionRange(VersionRangeId, FromVersionId, ToVersionId, TopicId)
-                                            VALUES(@VersionRangeId, @FromVersionId, @ToVersionId, @TopicId);",
-                                            new
-                                            {
-                                                VersionRangeId = rangeId,
-                                                FromVersionId = fromVersionId,
-                                                ToVersionId = toVersionId,
-                                                TopicId = topicId
-                                            });
+                                                VALUES (@VersionRangeId, @FromVersionId, @ToVersionId, @TopicId)",
+                new
+                {
+                    VersionRangeId = versionRange.VersionRangeId,
+                    FromVersionId = versionRange.FromVersionId,
+                    ToVersionId = versionRange.ToVersionId,
+                    TopicId = topic.TopicId
+                });
+            foreach (KeyValuePair<string, Document2> document in versionRange.documents)
+            {
+                await InsertDocumentForVersionRange(document, versionRange);
+            }
+        }
+
+        private async Task InsertDocumentForVersionRange(KeyValuePair<string, Document2> document, VersionRange versionRange)
+        {
+            await
+                dbConnection.Execute(
+                    @"INSERT INTO Document(DocumentId, Title, Description, Content, Language, VersionRangeId)
+                                                    VALUES(@DocumentId, @Title, @Description, @Content, @Language, @VersionRangeId);",
+                    new
+                    {
+                        DocumentId = document.Value.DocumentId,
+                        Title = document.Value.Title,
+                        Description = document.Value.Description,
+                        Content = document.Value.Content,
+                        Language = document.Key,
+                        VersionRangeId = versionRange.VersionRangeId
+                    });
         }
 
         protected async Task InsertProductVersion(string versionId, string versionName, string release, string productId)
@@ -104,16 +122,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                                         {
                                             ProductId = productId, 
                                             ProductName = productName
-                                        });
-        }
-
-        private async Task InsertTopic(string topicId, string productId)
-        {
-            await dbConnection.Execute(@"INSERT INTO Topic (TopicId, ProductId) VALUES (@TopicId, @ProductId);", 
-                                        new
-                                        {
-                                            TopicId = topicId,
-                                            ProductId = productId
                                         });
         }
     }
