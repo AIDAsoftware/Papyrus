@@ -32,8 +32,8 @@ namespace Papyrus.Tests.Business
         public void get_corresponding_document_for_a_given_language()
         {
             var versionRange = new VersionRange(
-                fromVersion: "SecondVersionId",
-                toVersion: "FourthVersionId"
+                fromVersionId: "SecondVersionId",
+                toVersionId: "FourthVersionId"
             );
             versionRange.AddDocument("es-ES", spanishDocument);
             versionRange.AddDocument("en-GB", englishDocument);

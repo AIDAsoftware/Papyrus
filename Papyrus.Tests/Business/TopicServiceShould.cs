@@ -21,7 +21,7 @@ namespace Papyrus.Tests.Business
         {
             topicRepo = Substitute.For<TopicRepository>();
             topicService = new TopicService(topicRepo);
-            anyVersionRange = new VersionRange(fromVersion: null, toVersion: null);
+            anyVersionRange = new VersionRange(fromVersionId: null, toVersionId: null);
             anyProductId = "AnyProductId";
         }
 
