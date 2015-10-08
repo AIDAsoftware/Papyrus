@@ -15,9 +15,22 @@ namespace Papyrus.Business.Topics
             this.connection = connection;
         }
 
-        public void Save(Topic topic)
+        public async Task Save(Topic topic)
         {
-            throw new System.NotImplementedException();
+            await connection.Execute("INSERT INTO Topic(TopicId, ProductId) VALUES (@TopicId, @ProductId)",
+                new
+                {
+                    TopicId = topic.TopicId,
+                    ProductId = topic.ProductId
+                });
+            topic.VersionRanges.ForEach(async versionRange =>
+                await connection.Execute(@"INSERT INTO VersionRange(VersionRangeId, FromVersionId, ToVersionId, TopicId)
+                                                VALUES (@VersionRangeId, @FromVersionId, @ToVersionId, @TopicId)",
+                                                new
+                                                {
+                                                    VersionRangeId = topic.VersionRanges
+                                                })
+            );
         }
 
         public void Update(Topic topic)
