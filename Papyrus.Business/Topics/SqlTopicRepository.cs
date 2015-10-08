@@ -24,13 +24,32 @@ namespace Papyrus.Business.Topics
                     ProductId = topic.ProductId
                 });
             topic.VersionRanges.ForEach(async versionRange =>
+            {
                 await connection.Execute(@"INSERT INTO VersionRange(VersionRangeId, FromVersionId, ToVersionId, TopicId)
                                                 VALUES (@VersionRangeId, @FromVersionId, @ToVersionId, @TopicId)",
-                                                new
-                                                {
-                                                    VersionRangeId = topic.VersionRanges
-                                                })
-            );
+                    new
+                    {
+                        VersionRangeId = versionRange.VersionRangeId,
+                        FromVersionId = versionRange.FromVersionId,
+                        ToVersionId = versionRange.ToVersionId,
+                        TopicId = topic.TopicId
+                    });
+                foreach (KeyValuePair<string, Document2> document in versionRange.documents)
+                {
+                    await connection.Execute(@"INSERT INTO Document(DocumentId, Title, Description, Content, Language, VersionRangeId)
+                                                    VALUES(@DocumentId, @Title, @Description, @Content, @Language, @VersionRangeId);",
+                                                    new
+                                                    {
+                                                        DocumentId = document.Value.DocumentId,
+                                                        Title = document.Value.Title,
+                                                        Description = document.Value.Description,
+                                                        Content = document.Value.Content,
+                                                        Language = document.Key,
+                                                        VersionRangeId = versionRange.VersionRangeId    
+                                                    });
+                }
+            });
+
         }
 
         public void Update(Topic topic)

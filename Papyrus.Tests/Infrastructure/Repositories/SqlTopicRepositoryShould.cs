@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
@@ -14,7 +16,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
     public class SqlTopicRepositoryShould : SqlTest
     {
         // TODO:
-        //   it should disctinct by topic Id showing the title and description for the last document added to a Topic
+        //   save a document with all of its version ranges
 
         [SetUp]
         public async void TruncateDataBase()
@@ -52,6 +54,63 @@ namespace Papyrus.Tests.Infrastructure.Repositories
                                                t.LastDocumentTitle == "Llamadas Primer mantenimiento" &&
                                                t.LastDocumentDescription == "Explicación");
         }
+
+        [Test]
+        public async void save_a_topic()
+        {
+            var productId = "OpportunityId";
+            await InsertProduct(productId, "Opportunity");
+            var versionId = "FirstVersionId";
+            await InsertProductVersion(versionId, "1.0", "20150710", productId);
+            var topic = new Topic().WithId("AnyTopicId").ForProduct(productId);
+            var versionRange = new VersionRange(fromVersionId: versionId, toVersionId: versionId).WithId("AnyVersionRangeId");
+            topic.AddVersionRange(versionRange);
+            versionRange.AddDocument("es-ES", 
+                new Document2("AnyTitle", "AnyDescription", "AnyContent").WithId("AnyDocumentId")
+            );
+            
+            var topicRepository = new SqlTopicRepository(dbConnection);
+            await topicRepository.Save(topic);
+
+            var topicFromRepo = await GetTopicById("AnyTopicId");
+            Assert.That(topicFromRepo.ProductId, Is.EqualTo(productId));
+            var versionRangeFromRepo = await GetVersionRangeById("AnyVersionRangeId");
+            Assert.That(versionRangeFromRepo.FromVersionId, Is.EqualTo("FirstVersionId"));
+            Assert.That(versionRangeFromRepo.ToVersionId, Is.EqualTo("FirstVersionId"));
+            Assert.That(versionRangeFromRepo.TopicId, Is.EqualTo("AnyTopicId"));
+            var documentFromRepo = await GetDocumentById("AnyDocumentId");
+            Assert.That(documentFromRepo.Title, Is.EqualTo("AnyTitle"));
+            Assert.That(documentFromRepo.Description, Is.EqualTo("AnyDescription"));
+            Assert.That(documentFromRepo.Content, Is.EqualTo("AnyContent"));
+            Assert.That(documentFromRepo.Language, Is.EqualTo("es-ES"));
+            Assert.That(documentFromRepo.VersionRangeId, Is.EqualTo("AnyVersionRangeId"));
+        }
+
+        private async Task<dynamic> GetDocumentById(string id)
+        {
+            return (await dbConnection.Query<dynamic>(@"SELECT Title, Description, Content, Language, VersionRangeId 
+                                                        FROM Document 
+                                                        WHERE DocumentId = @DocumentId;",
+                                                        new { DocumentId = id }))
+                                                        .FirstOrDefault();
+        }
+
+        private async Task<dynamic> GetTopicById(string topicId)
+        {
+            return (await dbConnection.Query<dynamic>(@"SELECT TopicId, ProductId FROM Topic
+                                                        WHERE TopicId = @TopicId;",
+                                                        new {TopicId = topicId})).FirstOrDefault();
+        }
+
+        private async Task<dynamic> GetVersionRangeById(string id)
+        {
+            return (await dbConnection.Query<dynamic>(@"SELECT FromVersionId, ToVersionId, TopicId FROM VersionRange
+                                                        WHERE VersionRangeId = @VersionRangeId;",
+                                                        new {VersionRangeId = id}))
+                                                        .FirstOrDefault();
+        }
+
+
 
         private async Task InsertDocument(string documentId, string title, string description, string content, string language, string rangeId)
         {

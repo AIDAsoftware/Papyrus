@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,6 +16,14 @@ namespace Papyrus.Business.Topics
         public bool HasAnyRange()
         {
             return versions.Any();
+        }
+
+        public void ForEach(Action<VersionRange> func)
+        {
+            foreach (var versionRange in versions)
+            {
+                func.Invoke(versionRange);   
+            }
         }
     }
 }
