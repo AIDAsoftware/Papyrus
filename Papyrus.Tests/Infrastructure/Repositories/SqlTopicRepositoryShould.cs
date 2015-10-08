@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.ExceptionServices;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
-using Papyrus.Business;
 using Papyrus.Business.Topics;
 using Papyrus.Infrastructure.Core.Database;
 
@@ -17,28 +12,17 @@ namespace Papyrus.Tests.Infrastructure.Repositories
     {
         private const string ProductId = "OpportunityId";
         private const string FirstVersionId = "FirstVersionId";
-        private Topic anyTopic;
-
-        public SqlTopicRepositoryShould()
-        {
-            anyTopic = new Topic().WithId("AnyTopicId").ForProduct(ProductId);
-        }
 
         [SetUp]
         public async void InitializeDataBase()
         {
             await TruncateDataBase();
             await InsertOpportunityAsProductAndItsFirstVersion();
-            anyTopic = new Topic().WithId("AnyTopicId").ForProduct(ProductId);
         }
 
         private async Task TruncateDataBase()
         {
-            await dbConnection.Execute("TRUNCATE TABLE Topic;");
-            await dbConnection.Execute("TRUNCATE TABLE Product;");
-            await dbConnection.Execute("TRUNCATE TABLE ProductVersion;");
-            await dbConnection.Execute("TRUNCATE TABLE VersionRange;");
-            await dbConnection.Execute("TRUNCATE TABLE Document;");
+            await new DataBaseTruncator(dbConnection).TruncateDataBase();
         }
 
         [Test]
@@ -66,49 +50,105 @@ namespace Papyrus.Tests.Infrastructure.Repositories
                                                t.LastDocumentDescription == "Explicación");
         }
 
-        [Test]
-        public async void save_a_topic()
+        public class DataBaseTruncator
         {
-            var topicRepository = new SqlTopicRepository(dbConnection);
-            await topicRepository.Save(anyTopic);
+            private readonly DatabaseConnection dbConnection;
 
-            var topicFromRepo = await GetTopicById("AnyTopicId");
-            Assert.That(topicFromRepo.ProductId, Is.EqualTo(ProductId));
+            public DataBaseTruncator(DatabaseConnection dbConnection)
+            {
+                this.dbConnection = dbConnection;
+            }
+
+            public async Task TruncateDataBase()
+            {
+                await dbConnection.Execute("TRUNCATE TABLE Topic;");
+                await dbConnection.Execute("TRUNCATE TABLE Product;");
+                await dbConnection.Execute("TRUNCATE TABLE ProductVersion;");
+                await dbConnection.Execute("TRUNCATE TABLE VersionRange;");
+                await dbConnection.Execute("TRUNCATE TABLE Document;");
+            }
         }
 
-        [Test]
-        public async void save_version_ranges_of_a_topic()
+        [TestFixture]
+        private class SqlTopicShouldWhenSaveATopic : SqlTest
         {
-            var versionRange = new VersionRange(fromVersionId: FirstVersionId, toVersionId: FirstVersionId).WithId("FirstVersionRangeId");
-            anyTopic.AddVersionRange(versionRange);
+            private Topic anyTopic;
+            private SqlTopicRepository topicRepository;
 
-            var topicRepository = new SqlTopicRepository(dbConnection);
-            await topicRepository.Save(anyTopic);
+            [SetUp]
+            public async void Initialize()
+            {
+                anyTopic = new Topic().WithId("AnyTopicId").ForProduct(ProductId);
+                topicRepository = new SqlTopicRepository(dbConnection);
+                await new DataBaseTruncator(dbConnection).TruncateDataBase();
+            }
 
-            var versionRangeFromRepo = await GetVersionRangeById("FirstVersionRangeId");
-            Assert.That(versionRangeFromRepo.FromVersionId, Is.EqualTo(FirstVersionId));
-            Assert.That(versionRangeFromRepo.ToVersionId, Is.EqualTo(FirstVersionId));
-            Assert.That(versionRangeFromRepo.TopicId, Is.EqualTo("AnyTopicId"));
-        }
+            [Test]
+            public async void save_a_topic()
+            {
+                await topicRepository.Save(anyTopic);
 
-        [Test]
-        public async void save_documents_foreach_version_range_in_a_topic()
-        {
-            var versionRange = new VersionRange(fromVersionId: FirstVersionId, toVersionId: FirstVersionId).WithId("AnyVersionRangeId");
-            anyTopic.AddVersionRange(versionRange);
-            versionRange.AddDocument("es-ES",
-                new Document2("AnyTitle", "AnyDescription", "AnyContent").WithId("AnyDocumentId")
-            );
+                var topicFromRepo = await GetTopicById("AnyTopicId");
+                Assert.That(topicFromRepo.ProductId, Is.EqualTo(ProductId));
+            }
 
-            var topicRepository = new SqlTopicRepository(dbConnection);
-            await topicRepository.Save(anyTopic);
+            [Test]
+            public async void save_version_ranges_of_a_topic()
+            {
+                var versionRange = new VersionRange(fromVersionId: FirstVersionId, toVersionId: FirstVersionId).WithId("FirstVersionRangeId");
+                anyTopic.AddVersionRange(versionRange);
 
-            var documentFromRepo = await GetDocumentById("AnyDocumentId");
-            Assert.That(documentFromRepo.Title, Is.EqualTo("AnyTitle"));
-            Assert.That(documentFromRepo.Description, Is.EqualTo("AnyDescription"));
-            Assert.That(documentFromRepo.Content, Is.EqualTo("AnyContent"));
-            Assert.That(documentFromRepo.Language, Is.EqualTo("es-ES"));
-            Assert.That(documentFromRepo.VersionRangeId, Is.EqualTo("AnyVersionRangeId"));
+                await topicRepository.Save(anyTopic);
+
+                var versionRangeFromRepo = await GetVersionRangeById("FirstVersionRangeId");
+                Assert.That(versionRangeFromRepo.FromVersionId, Is.EqualTo(FirstVersionId));
+                Assert.That(versionRangeFromRepo.ToVersionId, Is.EqualTo(FirstVersionId));
+                Assert.That(versionRangeFromRepo.TopicId, Is.EqualTo("AnyTopicId"));
+            }
+
+            [Test]
+            public async void save_documents_foreach_version_range_in_a_topic()
+            {
+                var versionRange = new VersionRange(fromVersionId: FirstVersionId, toVersionId: FirstVersionId).WithId("AnyVersionRangeId");
+                anyTopic.AddVersionRange(versionRange);
+                versionRange.AddDocument("es-ES",
+                    new Document2("AnyTitle", "AnyDescription", "AnyContent").WithId("AnyDocumentId")
+                );
+
+                await topicRepository.Save(anyTopic);
+
+                var documentFromRepo = await GetDocumentById("AnyDocumentId");
+                Assert.That(documentFromRepo.Title, Is.EqualTo("AnyTitle"));
+                Assert.That(documentFromRepo.Description, Is.EqualTo("AnyDescription"));
+                Assert.That(documentFromRepo.Content, Is.EqualTo("AnyContent"));
+                Assert.That(documentFromRepo.Language, Is.EqualTo("es-ES"));
+                Assert.That(documentFromRepo.VersionRangeId, Is.EqualTo("AnyVersionRangeId"));
+            }
+
+            private async Task<dynamic> GetDocumentById(string id)
+            {
+                return (await dbConnection.Query<dynamic>(@"SELECT Title, Description, Content, Language, VersionRangeId 
+                                                        FROM Document 
+                                                        WHERE DocumentId = @DocumentId",
+                                                            new { DocumentId = id }))
+                                                            .FirstOrDefault();
+            }
+
+            private async Task<dynamic> GetTopicById(string topicId)
+            {
+                return (await dbConnection.Query<dynamic>(@"SELECT TopicId, ProductId FROM Topic
+                                                        WHERE TopicId = @TopicId;",
+                                                            new { TopicId = topicId }))
+                                                            .FirstOrDefault();
+            }
+
+            private async Task<dynamic> GetVersionRangeById(string id)
+            {
+                return (await dbConnection.Query<dynamic>(@"SELECT FromVersionId, ToVersionId, TopicId FROM VersionRange
+                                                        WHERE VersionRangeId = @VersionRangeId;",
+                                                            new { VersionRangeId = id }))
+                                                            .FirstOrDefault();
+            }
         }
 
         private async Task InsertOpportunityAsProductAndItsFirstVersion()
@@ -116,34 +156,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             await InsertProduct(ProductId, "Opportunity");
             await InsertProductVersion(FirstVersionId, "1.0", "20150710", ProductId);
         }
-
-
-        private async Task<dynamic> GetDocumentById(string id)
-        {
-            return (await dbConnection.Query<dynamic>(@"SELECT Title, Description, Content, Language, VersionRangeId 
-                                                        FROM Document 
-                                                        WHERE DocumentId = @DocumentId",
-                                                        new { DocumentId = id }))
-                                                        .FirstOrDefault();
-        }
-
-        private async Task<dynamic> GetTopicById(string topicId)
-        {
-            return (await dbConnection.Query<dynamic>(@"SELECT TopicId, ProductId FROM Topic
-                                                        WHERE TopicId = @TopicId;",
-                                                        new {TopicId = topicId}))
-                                                        .FirstOrDefault();
-        }
-
-        private async Task<dynamic> GetVersionRangeById(string id)
-        {
-            return (await dbConnection.Query<dynamic>(@"SELECT FromVersionId, ToVersionId, TopicId FROM VersionRange
-                                                        WHERE VersionRangeId = @VersionRangeId;",
-                                                        new {VersionRangeId = id}))
-                                                        .FirstOrDefault();
-        }
-
-
 
         private async Task InsertDocument(string documentId, string title, string description, string content, string language, string rangeId)
         {
@@ -173,7 +185,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
                                             });
         }
 
-        private async Task InsertProductVersion(string versionId, string versionName, string release, string productId)
+        protected async Task InsertProductVersion(string versionId, string versionName, string release, string productId)
         {
             await dbConnection.Execute(@"INSERT INTO ProductVersion(VersionId, VersionName, Release, ProductId)
                                             VALUES(@VersionId, @VersionName, @Release, @ProductId);", 
@@ -186,7 +198,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
                                             });
         }
 
-        private async Task InsertProduct(string productId, string productName)
+        protected async Task InsertProduct(string productId, string productName)
         {
             await dbConnection.Execute(@"INSERT INTO Product(ProductId, ProductName) VALUES(@ProductId, @ProductName);",
                                         new
