@@ -15,8 +15,24 @@ namespace Papyrus.Tests.Infrastructure.Repositories
     [TestFixture]
     public class SqlTopicRepositoryShould : SqlTest
     {
+        private const string ProductId = "OpportunityId";
+        private const string FirstVersionId = "FirstVersionId";
+        private Topic anyTopic;
+
+        public SqlTopicRepositoryShould()
+        {
+            anyTopic = new Topic().WithId("AnyTopicId").ForProduct(ProductId);
+        }
+
         [SetUp]
-        public async void TruncateDataBase()
+        public async void InitializeDataBase()
+        {
+            await TruncateDataBase();
+            await InsertOpportunityAsProductAndItsFirstVersion();
+            anyTopic = new Topic().WithId("AnyTopicId").ForProduct(ProductId);
+        }
+
+        private async Task TruncateDataBase()
         {
             await dbConnection.Execute("TRUNCATE TABLE Topic;");
             await dbConnection.Execute("TRUNCATE TABLE Product;");
@@ -28,10 +44,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         [Test]
         public async void get_a_list_with_all_topics_distincting_by_topic_with_infomation_of_its_last_version()
         {
-            await InsertTopic("AnyTopicId", "AnyProductId");
-            await InsertProduct("AnyProductId", "Opportunity");
-            await InsertProductVersion("FirstVersionOpportunity", "1.0", "20150801", "AnyProductId");
-            await InsertProductVersion("SecondVersionOpportunity", "2.0", "20150810", "AnyProductId");
+            await InsertProductVersion("SecondVersionOpportunity", "2.0", "20150810", ProductId);
+            await InsertTopic("AnyTopicId", ProductId);
             await InsertVersionRange("AnyRangeId", "FirstVersionOpportunity", "FirstVersionOpportunity", "AnyTopicId");
             await InsertVersionRange("AnotherRangeId", "SecondVersionOpportunity", "SecondVersionOpportunity", "AnyTopicId");
             await InsertDocument("PrimerMantenimientoOpportunity", "Primer Mantenimiento", "Explicación",
@@ -55,55 +69,39 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         [Test]
         public async void save_a_topic()
         {
-            var productId = "OpportunityId";
-            await InsertProduct(productId, "Opportunity");
-            var versionId = "FirstVersionId";
-            await InsertProductVersion(versionId, "1.0", "20150710", productId);
-            var topic = new Topic().WithId("AnyTopicId").ForProduct(productId);
-            
             var topicRepository = new SqlTopicRepository(dbConnection);
-            await topicRepository.Save(topic);
+            await topicRepository.Save(anyTopic);
 
             var topicFromRepo = await GetTopicById("AnyTopicId");
-            Assert.That(topicFromRepo.ProductId, Is.EqualTo(productId));
+            Assert.That(topicFromRepo.ProductId, Is.EqualTo(ProductId));
         }
 
         [Test]
         public async void save_version_ranges_of_a_topic()
         {
-            var productId = "OpportunityId";
-            await InsertProduct(productId, "Opportunity");
-            var versionId = "FirstVersionId";
-            await InsertProductVersion(versionId, "1.0", "20150710", productId);
-            var topic = new Topic().WithId("AnyTopicId").ForProduct(productId);
-            var versionRange = new VersionRange(fromVersionId: versionId, toVersionId: versionId).WithId("FirstVersionRangeId");
-            topic.AddVersionRange(versionRange);
+            var versionRange = new VersionRange(fromVersionId: FirstVersionId, toVersionId: FirstVersionId).WithId("FirstVersionRangeId");
+            anyTopic.AddVersionRange(versionRange);
 
             var topicRepository = new SqlTopicRepository(dbConnection);
-            await topicRepository.Save(topic);
+            await topicRepository.Save(anyTopic);
 
             var versionRangeFromRepo = await GetVersionRangeById("FirstVersionRangeId");
-            Assert.That(versionRangeFromRepo.FromVersionId, Is.EqualTo("FirstVersionId"));
-            Assert.That(versionRangeFromRepo.ToVersionId, Is.EqualTo("FirstVersionId"));
+            Assert.That(versionRangeFromRepo.FromVersionId, Is.EqualTo(FirstVersionId));
+            Assert.That(versionRangeFromRepo.ToVersionId, Is.EqualTo(FirstVersionId));
             Assert.That(versionRangeFromRepo.TopicId, Is.EqualTo("AnyTopicId"));
         }
 
         [Test]
         public async void save_documents_foreach_version_range_in_a_topic()
         {
-            var productId = "OpportunityId";
-            await InsertProduct(productId, "Opportunity");
-            var versionId = "FirstVersionId";
-            await InsertProductVersion(versionId, "1.0", "20150710", productId);
-            var topic = new Topic().WithId("AnyTopicId").ForProduct(productId);
-            var versionRange = new VersionRange(fromVersionId: versionId, toVersionId: versionId).WithId("AnyVersionRangeId");
-            topic.AddVersionRange(versionRange);
+            var versionRange = new VersionRange(fromVersionId: FirstVersionId, toVersionId: FirstVersionId).WithId("AnyVersionRangeId");
+            anyTopic.AddVersionRange(versionRange);
             versionRange.AddDocument("es-ES",
                 new Document2("AnyTitle", "AnyDescription", "AnyContent").WithId("AnyDocumentId")
             );
 
             var topicRepository = new SqlTopicRepository(dbConnection);
-            await topicRepository.Save(topic);
+            await topicRepository.Save(anyTopic);
 
             var documentFromRepo = await GetDocumentById("AnyDocumentId");
             Assert.That(documentFromRepo.Title, Is.EqualTo("AnyTitle"));
@@ -113,6 +111,11 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             Assert.That(documentFromRepo.VersionRangeId, Is.EqualTo("AnyVersionRangeId"));
         }
 
+        private async Task InsertOpportunityAsProductAndItsFirstVersion()
+        {
+            await InsertProduct(ProductId, "Opportunity");
+            await InsertProductVersion(FirstVersionId, "1.0", "20150710", ProductId);
+        }
 
 
         private async Task<dynamic> GetDocumentById(string id)
