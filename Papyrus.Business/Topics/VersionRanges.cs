@@ -1,10 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Papyrus.Business.Topics
 {
-    public class VersionRanges
+    public class VersionRanges : IEnumerable<VersionRange>
     {
         IList<VersionRange> versions = new List<VersionRange>();  
 
@@ -18,12 +19,14 @@ namespace Papyrus.Business.Topics
             return versions.Any();
         }
 
-        public void ForEach(Action<VersionRange> func)
+        public IEnumerator<VersionRange> GetEnumerator()
         {
-            foreach (var versionRange in versions)
-            {
-                func.Invoke(versionRange);   
-            }
+            return versions.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Papyrus.Business.Topics
                     TopicId = topic.TopicId,
                     ProductId = topic.ProductId
                 });
-            topic.VersionRanges.ForEach(async versionRange =>
+            foreach(var versionRange in topic.VersionRanges)
             {
                 await connection.Execute(@"INSERT INTO VersionRange(VersionRangeId, FromVersionId, ToVersionId, TopicId)
                                                 VALUES (@VersionRangeId, @FromVersionId, @ToVersionId, @TopicId)",
@@ -48,7 +48,7 @@ namespace Papyrus.Business.Topics
                                                         VersionRangeId = versionRange.VersionRangeId    
                                                     });
                 }
-            });
+            };
 
         }
 
