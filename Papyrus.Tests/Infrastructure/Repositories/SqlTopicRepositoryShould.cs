@@ -74,16 +74,33 @@ namespace Papyrus.Tests.Infrastructure.Repositories
 
             var topicFromRepo = await GetTopicById("AnyTopicId");
             Assert.That(topicFromRepo.ProductId, Is.EqualTo(productId));
-            var versionRangeFromRepo = await GetVersionRangeById("AnyVersionRangeId");
-            Assert.That(versionRangeFromRepo.FromVersionId, Is.EqualTo("FirstVersionId"));
-            Assert.That(versionRangeFromRepo.ToVersionId, Is.EqualTo("FirstVersionId"));
-            Assert.That(versionRangeFromRepo.TopicId, Is.EqualTo("AnyTopicId"));
+            
             var documentFromRepo = await GetDocumentById("AnyDocumentId");
             Assert.That(documentFromRepo.Title, Is.EqualTo("AnyTitle"));
             Assert.That(documentFromRepo.Description, Is.EqualTo("AnyDescription"));
             Assert.That(documentFromRepo.Content, Is.EqualTo("AnyContent"));
             Assert.That(documentFromRepo.Language, Is.EqualTo("es-ES"));
             Assert.That(documentFromRepo.VersionRangeId, Is.EqualTo("AnyVersionRangeId"));
+        }
+
+        [Test]
+        public async void save_version_ranges_of_a_topic()
+        {
+            var productId = "OpportunityId";
+            await InsertProduct(productId, "Opportunity");
+            var versionId = "FirstVersionId";
+            await InsertProductVersion(versionId, "1.0", "20150710", productId);
+            var topic = new Topic().WithId("AnyTopicId").ForProduct(productId);
+            var versionRange = new VersionRange(fromVersionId: versionId, toVersionId: versionId).WithId("FirstVersionRangeId");
+            topic.AddVersionRange(versionRange);
+
+            var topicRepository = new SqlTopicRepository(dbConnection);
+            await topicRepository.Save(topic);
+
+            var versionRangeFromRepo = await GetVersionRangeById("FirstVersionRangeId");
+            Assert.That(versionRangeFromRepo.FromVersionId, Is.EqualTo("FirstVersionId"));
+            Assert.That(versionRangeFromRepo.ToVersionId, Is.EqualTo("FirstVersionId"));
+            Assert.That(versionRangeFromRepo.TopicId, Is.EqualTo("AnyTopicId"));
         }
 
         private async Task<dynamic> GetDocumentById(string id)
