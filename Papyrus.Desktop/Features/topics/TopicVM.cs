@@ -67,7 +67,7 @@ namespace Papyrus.Desktop.Features.Topics
         public async Task SaveTopic()
         {
             var topic = new Topic(SelectedProduct.Id);
-            var VersionIds = await productRepository.GetFullVersionRange();
+            var VersionIds = await productRepository.GetFullVersionRangeForProduct(SelectedProduct.Id);
             var fullVersionRange = new VersionRange(VersionIds.FirstVersionId, VersionIds.LatestVersionId);
             fullVersionRange.AddDocument(SelectedLanguage, new Document2(Title, Description, Content));
             topic.AddVersionRange(fullVersionRange);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
@@ -72,8 +73,8 @@ namespace Papyrus.Desktop.Features.Documents {
         {
             var product1 = new Product("anyId", "Papyrus", new List<ProductVersion>());
             var product2 = new Product("anyId", "Opportunity", new List<ProductVersion>());
-            var version1 = new ProductVersion("anyId", "1.0");
-            var version2 = new ProductVersion("anyId", "2.0");
+            var version1 = new ProductVersion("anyId", "1.0", DateTime.Today);
+            var version2 = new ProductVersion("anyId", "2.0", DateTime.Today);
             Documents.Add(new DocumentDetails {Product = product1, Description = "Describe how to use Papyrus", Title = "First Step", Version = version1, Language = "en-EN"});
             Documents.Add(new DocumentDetails {Product = product2, Description = "Describe how to use Opportunity", Title = "How to call", Version = version2, Language = "en-EN"});
         }

@@ -1,3 +1,5 @@
+using System;
+
 namespace Papyrus.Business.Products
 {
     using System.Collections.Generic;
@@ -8,6 +10,6 @@ namespace Papyrus.Business.Products
         Task<Product> GetProduct(string productId);
         Task<List<Product>> GetAllProducts();
         Task<ProductVersion> GetVersion(string versionId);
-        Task<FullVersionRange> GetFullVersionRange();
+        Task<FullVersionRange> GetFullVersionRangeForProduct(string productId);
     }
 }

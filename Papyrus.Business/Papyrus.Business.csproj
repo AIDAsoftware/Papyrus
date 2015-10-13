@@ -62,7 +62,7 @@
     <Compile Include="Products\ProductRepository.cs" />
     <Compile Include="Products\ProductService.cs" />
     <Compile Include="Products\Exceptions\ProductNotFoundException.cs" />
-    <Compile Include="Products\SqlProducttRepository.cs" />
+    <Compile Include="Products\SqlProductRepository.cs" />
     <Compile Include="Documents\Exceptions\CanNotModifyDocumentIdException.cs" />
     <Compile Include="Documents\Document.cs" />
     <Compile Include="Documents\Exceptions\DocumentIdMustBeDefinedException.cs" />

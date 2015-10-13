@@ -27,7 +27,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         {
             const string anyVersionId = "AnyVersionId";
             const string anyVersionName = "AnyVersionName";
-            var versions = new List<ProductVersion> { new ProductVersion(anyVersionId, anyVersionName) };
+            var versions = new List<ProductVersion> { new ProductVersion(anyVersionId, anyVersionName, DateTime.Today) };
             await InsertProduct(new Product(anyProductId, anyProductName, versions));
 
             var product = await new SqlProductRepository(dbConnection).GetProduct(anyProductId);
@@ -45,8 +45,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         {
             var versions = new List<ProductVersion>
             {
-                new ProductVersion("versionId1", "version1"),
-                new ProductVersion("versionId2", "version2")
+                new ProductVersion("versionId1", "version1", DateTime.Today.AddDays(-1)),
+                new ProductVersion("versionId2", "version2", DateTime.Today)
             };
             await InsertProduct(new Product(anyProductId, anyProductName, versions));
 
@@ -71,12 +71,12 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         {
             var versionsForPapyrus = new List<ProductVersion>
             {
-                new ProductVersion("AnyIdForPapyrus", "AnyVersion"),
-                new ProductVersion("AnotherIdForPapyrus", "AnyVersion")
+                new ProductVersion("AnyIdForPapyrus", "AnyVersion", DateTime.Today.AddDays(-1)),
+                new ProductVersion("AnotherIdForPapyrus", "AnyVersion", DateTime.Today)
             };
             var versionsForOpportunity = new List<ProductVersion>
             {
-                new ProductVersion("AnyIdForOpportunity", "AnyVersion")
+                new ProductVersion("AnyIdForOpportunity", "AnyVersion", DateTime.Today)
             };
             var papyrusId = "PapyrusId";
             await InsertProduct(new Product(papyrusId, "Papyrus", versionsForPapyrus));
@@ -89,6 +89,24 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             products.First(prod => prod.Id == opportunityId).Versions.Count.Should().Be(1);
             products.ToArray().Length.Should().Be(2);
         }
+
+        [Test]
+        public async Task gets_range_that_goes_from_first_version_to_the_latest_one()
+        {
+            var versions = new List<ProductVersion>
+            {
+                new ProductVersion("FirstVersionId", "1.0", DateTime.Today.AddDays(-3)),
+                new ProductVersion("SecondVersionId", "2.0", DateTime.Today.AddDays(-2)),
+                new ProductVersion("ThirdVersionId", "3.0", DateTime.Today.AddDays(-1)),
+            };
+            var product = new Product("PapyrusId", "Papyrus", versions);
+            await InsertProduct(product);
+
+            var fullRange = await new SqlProductRepository(dbConnection).GetFullVersionRangeForProduct(product.Id);
+
+            fullRange.FirstVersionId.Should().Be("FirstVersionId");
+            fullRange.LatestVersionId.Should().Be("ThirdVersionId");
+        } 
 
         private async Task InsertProduct(Product product)
         {
@@ -105,15 +123,14 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         {
             foreach (var productVersion in product.Versions)
             {
-                var irrelevantRelease = DateTime.Today;
                 await dbConnection.Execute(@"INSERT INTO ProductVersion(VersionId, VersionName, ProductId, Release) 
-                                VALUES (@VersionId, @VersionName, @Product, @Release);",
+                                VALUES (@VersionId, @VersionName, @ProductId, @Release);",
                     new
                     {
                         VersionId = productVersion.VersionId,
                         VersionName = productVersion.VersionName,
-                        Product = product.Id,
-                        Release = irrelevantRelease
+                        ProductId = product.Id,
+                        Release = productVersion.Release
                     });
             }
         }
