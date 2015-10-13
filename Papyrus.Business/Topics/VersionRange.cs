@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Papyrus.Business.Topics
 {
     public class VersionRange
@@ -8,23 +6,23 @@ namespace Papyrus.Business.Topics
         public string ToVersionId { get; }
         public string VersionRangeId { get; private set; }
 
-        public Dictionary<string, Document2> documents { get; }
+        public Documents Documents { get; }
 
         public VersionRange(string fromVersionId, string toVersionId)
         {
             FromVersionId = fromVersionId;
             ToVersionId = toVersionId;
-            documents = new Dictionary<string, Document2>();
+            Documents = new Documents();
         }
 
         public void AddDocument(string language, Document2 document)
         {
-            documents.Add(language, document);
+            Documents.Add(language, document);
         }
 
         public Document2 GetDocumentIn(string language)
         {
-            return documents[language];
+            return Documents[language];
         }
 
         public VersionRange WithId(string id)

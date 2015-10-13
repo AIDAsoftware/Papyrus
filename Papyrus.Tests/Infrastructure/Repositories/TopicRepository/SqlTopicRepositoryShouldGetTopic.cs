@@ -79,13 +79,13 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                     ToVersionId = versionRange.ToVersionId,
                     TopicId = topic.TopicId
                 });
-            foreach (var document in versionRange.documents)
+            foreach (var document in versionRange.Documents)
             {
                 await InsertDocumentForVersionRange(document, versionRange);
             }
         }
 
-        private async Task InsertDocumentForVersionRange(KeyValuePair<string, Document2> document, VersionRange versionRange)
+        private async Task InsertDocumentForVersionRange(LanguageDocumentPair languageDocumentPair, VersionRange versionRange)
         {
             await
                 dbConnection.Execute(
@@ -93,11 +93,11 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                                                     VALUES(@DocumentId, @Title, @Description, @Content, @Language, @VersionRangeId);",
                     new
                     {
-                        DocumentId = document.Value.DocumentId,
-                        Title = document.Value.Title,
-                        Description = document.Value.Description,
-                        Content = document.Value.Content,
-                        Language = document.Key,
+                        DocumentId = languageDocumentPair.Document.DocumentId,
+                        Title = languageDocumentPair.Document.Title,
+                        Description = languageDocumentPair.Document.Description,
+                        Content = languageDocumentPair.Document.Content,
+                        Language = languageDocumentPair.Language,
                         VersionRangeId = versionRange.VersionRangeId
                     });
         }
