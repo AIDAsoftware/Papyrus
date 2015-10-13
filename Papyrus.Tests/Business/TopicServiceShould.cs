@@ -25,7 +25,6 @@ namespace Papyrus.Tests.Business
             anyProductId = "AnyProductId";
         }
 
-        [Ignore]
         [Test]
         [ExpectedException(typeof(CannotSaveTopicsWithNoRelatedProductException))]
         public void fail_when_trying_to_save_topics_with_no_related_product()
