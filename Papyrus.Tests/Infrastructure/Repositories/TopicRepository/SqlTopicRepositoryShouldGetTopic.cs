@@ -32,7 +32,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [Test]
         public async void list_to_show_distincting_by_topic_with_infomation_of_its_last_version()
         {
-            var topic = new Topic().WithId("AnyTopicId").ForProduct(ProductId);
+            var topic = new Topic(ProductId).WithId("AnyTopicId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("AnyRangeId");
             var secondVersionRange = new VersionRange(SecondVersionId, SecondVersionId).WithId("AnotherRangeId");
             firstVersionRange.AddDocument("es-ES", new Document2("AnyTitle", "AnyDescription", "AnyContent").WithId("AnyDocumentId"));
@@ -79,7 +79,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                     ToVersionId = versionRange.ToVersionId,
                     TopicId = topic.TopicId
                 });
-            foreach (KeyValuePair<string, Document2> document in versionRange.documents)
+            foreach (var document in versionRange.documents)
             {
                 await InsertDocumentForVersionRange(document, versionRange);
             }

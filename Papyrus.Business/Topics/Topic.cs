@@ -8,9 +8,14 @@ namespace Papyrus.Business.Topics
         public string ProductId { get; set; }
         public VersionRanges VersionRanges { get; set; }
 
-        public Topic()
+        private Topic()
         {
             VersionRanges = new VersionRanges();
+        }
+
+        public Topic(string productId) : this()
+        {
+            ProductId = productId;
         }
 
         public Topic WithId(string topicid)

@@ -25,11 +25,12 @@ namespace Papyrus.Tests.Business
             anyProductId = "AnyProductId";
         }
 
+        [Ignore]
         [Test]
         [ExpectedException(typeof(CannotSaveTopicsWithNoRelatedProductException))]
         public void fail_when_trying_to_save_topics_with_no_related_product()
         {
-            var topic = new Topic();
+            var topic = new Topic(null);
             topic.AddVersionRange(anyVersionRange);
 
             topicService.Create(topic);
@@ -39,7 +40,7 @@ namespace Papyrus.Tests.Business
         [ExpectedException(typeof(CannotSaveTopicsWithNoVersionRangesException))]
         public void fail_when_trying_to_save_topics_with_no_ranges()
         {
-            var topic = new Topic().ForProduct(anyProductId);
+            var topic = new Topic(anyProductId);
 
             topicService.Create(topic);
         }
@@ -47,10 +48,9 @@ namespace Papyrus.Tests.Business
         [Test]
         [ExpectedException(typeof(CannotSaveTopicsWithDefinedTopicIdException))]
         public void fail_when_trying_to_save_topics_with_id()
-        {                                      
-            var topic = new Topic()
-                        .WithId("AnyTopicId")
-                        .ForProduct(anyProductId);
+        {
+            var topic = new Topic(anyProductId)
+                            .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
 
             topicService.Create(topic);
@@ -59,8 +59,7 @@ namespace Papyrus.Tests.Business
         [Test]
         public void save_a_topic_when_it_is_created()
         {
-            var topic = new Topic()
-                .ForProduct(anyProductId);
+            var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
 
             topicService.Create(topic);
@@ -73,8 +72,7 @@ namespace Papyrus.Tests.Business
         [ExpectedException(typeof(CannotUpdateTopicsWithoutTopicIdDeclaredException))]
         public void fail_when_trying_to_update_a_topic_without_id()
         {
-            var topic = new Topic()
-                .ForProduct(anyProductId);
+            var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
 
             topicService.Update(topic);
@@ -84,9 +82,8 @@ namespace Papyrus.Tests.Business
         [ExpectedException(typeof(CannotUpdateTopicsWithNoVersionRangesException))]
         public void fail_when_trying_to_update_a_topic_with_no_ranges()
         {
-            var topic = new Topic()
-                .WithId("AnyTopicId")
-                .ForProduct(anyProductId);
+            var topic = new Topic(anyProductId)
+                .WithId("AnyTopicId");
 
             topicService.Update(topic);
         }
@@ -94,9 +91,8 @@ namespace Papyrus.Tests.Business
         [Test]
         public void update_a_topic_of_the_library()
         {
-            var topic = new Topic()
-                .WithId("AnyTopicId")
-                .ForProduct(anyProductId);
+            var topic = new Topic(anyProductId)
+                .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
 
             topicService.Update(topic);

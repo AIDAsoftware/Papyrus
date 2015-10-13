@@ -18,7 +18,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [SetUp]
         public async void Initialize()
         {
-            anyTopic = new Topic().WithId("AnyTopicId").ForProduct(ProductId);
+            anyTopic = new Topic(ProductId).WithId("AnyTopicId");
             topicRepository = new SqlTopicRepository(dbConnection);
             await new DataBaseTruncator(dbConnection).TruncateDataBase();
         }
