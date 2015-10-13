@@ -15,48 +15,6 @@ namespace Papyrus.Business.Topics
             this.connection = connection;
         }
 
-        public async Task Save(Topic topic)
-        {
-            await connection.Execute("INSERT INTO Topic(TopicId, ProductId) VALUES (@TopicId, @ProductId)",
-                new
-                {
-                    TopicId = topic.TopicId,
-                    ProductId = topic.ProductId
-                });
-            foreach(var versionRange in topic.VersionRanges)
-            {
-                await connection.Execute(@"INSERT INTO VersionRange(VersionRangeId, FromVersionId, ToVersionId, TopicId)
-                                                VALUES (@VersionRangeId, @FromVersionId, @ToVersionId, @TopicId)",
-                    new
-                    {
-                        VersionRangeId = versionRange.VersionRangeId,
-                        FromVersionId = versionRange.FromVersionId,
-                        ToVersionId = versionRange.ToVersionId,
-                        TopicId = topic.TopicId
-                    });
-                foreach (KeyValuePair<string, Document2> document in versionRange.documents)
-                {
-                    await connection.Execute(@"INSERT INTO Document(DocumentId, Title, Description, Content, Language, VersionRangeId)
-                                                    VALUES(@DocumentId, @Title, @Description, @Content, @Language, @VersionRangeId);",
-                                                    new
-                                                    {
-                                                        DocumentId = document.Value.DocumentId,
-                                                        Title = document.Value.Title,
-                                                        Description = document.Value.Description,
-                                                        Content = document.Value.Content,
-                                                        Language = document.Key,
-                                                        VersionRangeId = versionRange.VersionRangeId    
-                                                    });
-                }
-            };
-
-        }
-
-        public void Update(Topic topic)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public async Task<List<TopicToShow>> GetAllTopicsToShow()
         {
             var resultset = (await connection.Query<dynamic>(
@@ -69,10 +27,71 @@ namespace Papyrus.Business.Topics
                     ORDER BY ProductVersion.Release DESC"
                 ));
             var topicsToShow = resultset.GroupBy(topic => topic.TopicId)
-                                        .Select(topics => topics.First())
-                                        .Select(TopicToShowFromDynamic)
-                                        .ToList();
+                .Select(topics => topics.First())
+                .Select(TopicToShowFromDynamic)
+                .ToList();
             return topicsToShow;
+        }
+
+        public void Update(Topic topic)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task Save(Topic topic)
+        {
+            await connection.Execute("INSERT INTO Topic(TopicId, ProductId) VALUES (@TopicId, @ProductId)",
+                new
+                {
+                    TopicId = topic.TopicId,
+                    ProductId = topic.ProductId
+                });
+            await InsertVersionRangesOf(topic);
+        }
+
+        private async Task InsertVersionRangesOf(Topic topic)
+        {
+            foreach (var versionRange in topic.VersionRanges)
+            {
+                await InsertVersionRangeForTopic(versionRange, topic);
+                await InsertDocumentsOf(versionRange);
+            }
+        }
+
+        private async Task InsertDocumentsOf(VersionRange versionRange)
+        {
+            foreach (var document in versionRange.documents)
+            {
+                await InsertDocumentForVersionRange(document, versionRange);
+            }
+        }
+
+        private async Task InsertDocumentForVersionRange(KeyValuePair<string, Document2> document, VersionRange versionRange)
+        {
+            await connection.Execute(@"INSERT INTO Document(DocumentId, Title, Description, Content, Language, VersionRangeId)
+                                                    VALUES(@DocumentId, @Title, @Description, @Content, @Language, @VersionRangeId);",
+                new
+                {
+                    DocumentId = document.Value.DocumentId,
+                    Title = document.Value.Title,
+                    Description = document.Value.Description,
+                    Content = document.Value.Content,
+                    Language = document.Key,
+                    VersionRangeId = versionRange.VersionRangeId
+                });
+        }
+
+        private async Task InsertVersionRangeForTopic(VersionRange versionRange, Topic topic)
+        {
+            await connection.Execute(@"INSERT INTO VersionRange(VersionRangeId, FromVersionId, ToVersionId, TopicId)
+                                                VALUES (@VersionRangeId, @FromVersionId, @ToVersionId, @TopicId)",
+                new
+                {
+                    VersionRangeId = versionRange.VersionRangeId,
+                    FromVersionId = versionRange.FromVersionId,
+                    ToVersionId = versionRange.ToVersionId,
+                    TopicId = topic.TopicId
+                });
         }
 
         private static TopicToShow TopicToShowFromDynamic(dynamic topic)
