@@ -27,41 +27,41 @@ namespace Papyrus.Tests.Business
 
         [Test]
         [ExpectedException(typeof(CannotSaveTopicsWithNoRelatedProductException))]
-        public void fail_when_trying_to_save_topics_with_no_related_product()
+        public async void fail_when_trying_to_save_topics_with_no_related_product()
         {
             var topic = new Topic(null);
             topic.AddVersionRange(anyVersionRange);
 
-            topicService.Create(topic);
+            await topicService.Create(topic);
         }
 
         [Test]
         [ExpectedException(typeof(CannotSaveTopicsWithNoVersionRangesException))]
-        public void fail_when_trying_to_save_topics_with_no_ranges()
+        public async void fail_when_trying_to_save_topics_with_no_ranges()
         {
             var topic = new Topic(anyProductId);
 
-            topicService.Create(topic);
+            await topicService.Create(topic);
         }
 
         [Test]
         [ExpectedException(typeof(CannotSaveTopicsWithDefinedTopicIdException))]
-        public void fail_when_trying_to_save_topics_with_id()
+        public async void fail_when_trying_to_save_topics_with_id()
         {
             var topic = new Topic(anyProductId)
                             .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
 
-            topicService.Create(topic);
+            await topicService.Create(topic);
         }
 
         [Test]
-        public void save_a_topic_when_it_is_created()
+        public async void save_a_topic_when_it_is_created()
         {
             var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
 
-            topicService.Create(topic);
+            await topicService.Create(topic);
 
             topicRepo.Received().Save(topic);
             topicRepo.Received().Save(Arg.Is<Topic>(t => !String.IsNullOrEmpty(t.TopicId)));

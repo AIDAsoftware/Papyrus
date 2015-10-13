@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -91,7 +92,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
 
         private async Task InsertProduct(Product product)
         {
-            await dbConnection.Execute(@"INSERT Product(ProductId, ProductName) 
+            await dbConnection.Execute(@"INSERT INTO Product(ProductId, ProductName) 
                                 VALUES (@ProductId, @ProductName);",
                                 new {
                                     ProductId = product.Id,
@@ -104,13 +105,15 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         {
             foreach (var productVersion in product.Versions)
             {
-                await dbConnection.Execute(@"INSERT ProductVersion(VersionId, VersionName, Product) 
-                                VALUES (@VersionId, @VersionName, @Product);",
+                var irrelevantRelease = DateTime.Today;
+                await dbConnection.Execute(@"INSERT INTO ProductVersion(VersionId, VersionName, ProductId, Release) 
+                                VALUES (@VersionId, @VersionName, @Product, @Release);",
                     new
                     {
                         VersionId = productVersion.VersionId,
                         VersionName = productVersion.VersionName,
-                        Product = product.Id
+                        Product = product.Id,
+                        Release = irrelevantRelease
                     });
             }
         }
