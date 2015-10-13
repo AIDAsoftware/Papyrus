@@ -34,7 +34,7 @@ namespace Papyrus.Desktop {
 
         public static TopicVM Topic()
         {
-            return new TopicVM(RepositoriesFactory.Product());
+            return new TopicVM(RepositoriesFactory.Product(), ServicesFactory.Topic());
         }
     }
 
@@ -45,6 +45,11 @@ namespace Papyrus.Desktop {
 
         public static DocumentService Document() {
             return new DocumentService(RepositoriesFactory.Document());
+        }
+
+        public static TopicService Topic()
+        {
+            return new TopicService(RepositoriesFactory.Topic());
         }
     }
 

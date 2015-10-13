@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Products\FullVersionRange.cs" />
     <Compile Include="Topics\Documents.cs" />
     <Compile Include="Topics\LanguageDocumentPair.cs" />
     <Compile Include="Topics\SqlTopicRepository.cs" />

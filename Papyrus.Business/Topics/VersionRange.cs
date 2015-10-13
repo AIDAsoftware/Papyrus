@@ -1,3 +1,5 @@
+using System;
+
 namespace Papyrus.Business.Topics
 {
     public class VersionRange
@@ -29,6 +31,15 @@ namespace Papyrus.Business.Topics
         {
             VersionRangeId = id;
             return this;
+        }
+
+        public void GenerateAutomaticId()
+        {
+            VersionRangeId = Guid.NewGuid().ToString();
+            foreach (var languageDocumentPair in Documents)
+            {
+                languageDocumentPair.Document.GenerateAutomaticId();
+            }
         }
     }
 }

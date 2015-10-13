@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Papyrus.Business.Topics.Exceptions;
 
 namespace Papyrus.Business.Topics
@@ -13,11 +14,11 @@ namespace Papyrus.Business.Topics
             TopicRepository = topicRepo;
         }
 
-        public void Create(Topic topic)
+        public async Task Create(Topic topic)
         {
             ValidateToSave(topic);
             topic.GenerateAutomaticId();
-            TopicRepository.Save(topic);
+            await TopicRepository.Save(topic);
         }
 
         public void Update(Topic topic)

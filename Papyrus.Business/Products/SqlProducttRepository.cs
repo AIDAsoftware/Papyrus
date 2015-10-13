@@ -54,6 +54,11 @@ namespace Papyrus.Business.Products
             return (await connection.Query<ProductVersion>(selectVersionSqlQuery, new { VersionId = versionId })).FirstOrDefault();
         }
 
+        public async Task<FullVersionRange> GetFullVersionRange()
+        {
+            return new FullVersionRange("1", "7");
+        }
+
         private async Task<List<ProductVersion>> ProducVersionsForProduct(string productId)
         {
             const string selectVersionSqlQuery = @"Select VersionId, VersionName

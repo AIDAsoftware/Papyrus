@@ -37,9 +37,9 @@ namespace Papyrus.Desktop.Features.Topics
             await ViewModel.Initialize();
         }
 
-        private void Save_OnClick(object sender, RoutedEventArgs e)
+        private async void Save_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            await ViewModel.SaveTopic();
         }
     }
 }

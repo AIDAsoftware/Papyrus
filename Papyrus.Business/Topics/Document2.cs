@@ -1,3 +1,4 @@
+using System;
 using System.Dynamic;
 
 namespace Papyrus.Business.Topics
@@ -20,6 +21,11 @@ namespace Papyrus.Business.Topics
         {
             DocumentId = id;
             return this;
+        }
+
+        public void GenerateAutomaticId()
+        {
+            DocumentId = Guid.NewGuid().ToString();
         }
     }
 }

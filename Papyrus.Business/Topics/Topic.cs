@@ -38,6 +38,10 @@ namespace Papyrus.Business.Topics
         public void GenerateAutomaticId()
         {
             TopicId = Guid.NewGuid().ToString();
+            foreach (var versionRange in VersionRanges)
+            {
+                versionRange.GenerateAutomaticId();
+            }
         }
 
         public bool HasNotAnyVersionRange()
