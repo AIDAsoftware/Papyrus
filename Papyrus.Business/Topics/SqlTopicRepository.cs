@@ -26,11 +26,16 @@ namespace Papyrus.Business.Topics
                     JOIN Document ON Document.VersionRangeId = VersionRange.VersionRangeId
                     ORDER BY ProductVersion.Release DESC"
                 ));
-            var topicsToShow = resultset.GroupBy(topic => topic.TopicId)
+            var topicsToShow = DistinctByTopicChoosingTheRowWithLatestDocumentAdded(resultset);
+            return topicsToShow;
+        }
+
+        private static List<TopicToShow> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics)
+        {
+            return dynamicTopics.GroupBy(topic => topic.TopicId)
                 .Select(topics => topics.First())
                 .Select(TopicToShowFromDynamic)
                 .ToList();
-            return topicsToShow;
         }
 
         public void Update(Topic topic)
