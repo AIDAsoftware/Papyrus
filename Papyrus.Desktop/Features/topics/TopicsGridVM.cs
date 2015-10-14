@@ -10,12 +10,12 @@ namespace Papyrus.Desktop.Features.Topics {
     {
         private readonly TopicRepository topicRepository;
 
-        public ObservableCollection<TopicToShow> TopicsToShow { get; }
-        public TopicToShow SelectedTopic { get; set; }
+        public ObservableCollection<TopicToList> TopicsToShow { get; }
+        public TopicToList SelectedTopic { get; set; }
 
         public TopicsGridVM()
         {
-            TopicsToShow = new ObservableCollection<TopicToShow>();
+            TopicsToShow = new ObservableCollection<TopicToList>();
         }
 
         public TopicsGridVM(TopicRepository topicRepository) : this()

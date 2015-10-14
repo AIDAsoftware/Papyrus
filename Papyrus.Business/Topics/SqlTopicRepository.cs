@@ -15,7 +15,7 @@ namespace Papyrus.Business.Topics
             this.connection = connection;
         }
 
-        public async Task<List<TopicToShow>> GetAllTopicsToShow()
+        public async Task<List<TopicToList>> GetAllTopicsToShow()
         {
             var resultset = (await connection.Query<dynamic>(
                 @"SELECT Topic.TopicId, Product.ProductName, ProductVersion.VersionName, Document.Title, Document.Description
@@ -30,7 +30,7 @@ namespace Papyrus.Business.Topics
             return topicsToShow;
         }
 
-        private static List<TopicToShow> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics)
+        private static List<TopicToList> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics)
         {
             return dynamicTopics.GroupBy(topic => topic.TopicId)
                 .Select(topics => topics.First())
@@ -99,9 +99,9 @@ namespace Papyrus.Business.Topics
                 });
         }
 
-        private static TopicToShow TopicToShowFromDynamic(dynamic topic)
+        private static TopicToList TopicToShowFromDynamic(dynamic topic)
         {
-            return new TopicToShow
+            return new TopicToList
             {
                 TopicId = topic.TopicId,
                 ProductName = topic.ProductName,

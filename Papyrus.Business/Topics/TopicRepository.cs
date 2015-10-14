@@ -7,6 +7,6 @@ namespace Papyrus.Business.Topics
     {
         Task Save(Topic topic);
         void Update(Topic topic);
-        Task<List<TopicToShow>> GetAllTopicsToShow();
+        Task<List<TopicToList>> GetAllTopicsToShow();
     }
 }

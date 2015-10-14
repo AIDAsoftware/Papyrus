@@ -1,6 +1,6 @@
 ﻿namespace Papyrus.Business.Topics
 {
-    public class TopicToShow
+    public class TopicToList
     {
         public string TopicId { get; set; }
         public string ProductName { get; set; }
