@@ -44,7 +44,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             var topicRepository = new SqlTopicRepository(dbConnection);
 
-            var topicsToList = await topicRepository.GetAllTopicsToShow();
+            var topicsToList = await topicRepository.GetAllTopicsToList();
 
             topicsToList.Should().HaveCount(1);
             topicsToList.Should().Contain(t => t.TopicId == "AnyTopicId" && 

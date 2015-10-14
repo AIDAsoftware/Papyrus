@@ -15,7 +15,7 @@ namespace Papyrus.Business.Topics
             this.connection = connection;
         }
 
-        public async Task<List<TopicToList>> GetAllTopicsToShow()
+        public async Task<List<TopicToList>> GetAllTopicsToList()
         {
             var resultset = (await connection.Query<dynamic>(
                 @"SELECT Topic.TopicId, Product.ProductName, ProductVersion.VersionName, Document.Title, Document.Description

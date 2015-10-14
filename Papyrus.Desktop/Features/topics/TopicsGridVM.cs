@@ -31,7 +31,7 @@ namespace Papyrus.Desktop.Features.Topics {
         private async Task LoadAllTopics()
         {
             TopicsToList.Clear();
-            (await topicRepository.GetAllTopicsToShow()).ForEach(topic => TopicsToList.Add(topic));
+            (await topicRepository.GetAllTopicsToList()).ForEach(topic => TopicsToList.Add(topic));
         }
 
         public async void RefreshDocuments()
