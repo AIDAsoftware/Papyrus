@@ -10,12 +10,12 @@ namespace Papyrus.Desktop.Features.Topics {
     {
         private readonly TopicRepository topicRepository;
 
-        public ObservableCollection<TopicToList> TopicsToShow { get; }
+        public ObservableCollection<TopicToList> TopicsToList { get; }
         public TopicToList SelectedTopic { get; set; }
 
         public TopicsGridVM()
         {
-            TopicsToShow = new ObservableCollection<TopicToList>();
+            TopicsToList = new ObservableCollection<TopicToList>();
         }
 
         public TopicsGridVM(TopicRepository topicRepository) : this()
@@ -30,8 +30,8 @@ namespace Papyrus.Desktop.Features.Topics {
 
         private async Task LoadAllTopics()
         {
-            TopicsToShow.Clear();
-            (await topicRepository.GetAllTopicsToShow()).ForEach(topic => TopicsToShow.Add(topic));
+            TopicsToList.Clear();
+            (await topicRepository.GetAllTopicsToShow()).ForEach(topic => TopicsToList.Add(topic));
         }
 
         public async void RefreshDocuments()

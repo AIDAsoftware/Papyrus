@@ -44,10 +44,10 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             var topicRepository = new SqlTopicRepository(dbConnection);
 
-            var topicsToShow = await topicRepository.GetAllTopicsToShow();
+            var topicsToList = await topicRepository.GetAllTopicsToShow();
 
-            topicsToShow.Should().HaveCount(1);
-            topicsToShow.Should().Contain(t => t.TopicId == "AnyTopicId" && 
+            topicsToList.Should().HaveCount(1);
+            topicsToList.Should().Contain(t => t.TopicId == "AnyTopicId" && 
                                                t.ProductName == "Opportunity" &&
                                                t.VersionName == "2.0" &&
                                                t.LastDocumentTitle == "Llamadas Primer mantenimiento" &&

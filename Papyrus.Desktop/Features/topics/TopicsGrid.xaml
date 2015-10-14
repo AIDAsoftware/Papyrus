@@ -12,7 +12,7 @@
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
 
-        <DataGrid ItemsSource="{Binding TopicsToShow}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+        <DataGrid ItemsSource="{Binding TopicsToList}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                   MouseDoubleClick="TopicRow_OnMouseDoubleClick" IsReadOnly="True" SelectedValue="{ Binding SelectedTopic }"
                   Grid.Row="0">
             <DataGrid.Columns>
