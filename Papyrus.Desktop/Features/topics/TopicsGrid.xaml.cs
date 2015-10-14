@@ -38,9 +38,10 @@ namespace Papyrus.Desktop.Features.Topics
             throw new NotImplementedException();
         }
 
-        private void DocumentRow_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void TopicRow_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            var topicId = ViewModel.SelectedTopic.TopicId;
+            new TopicWindow(topicId).Show();
         }
     }
 }

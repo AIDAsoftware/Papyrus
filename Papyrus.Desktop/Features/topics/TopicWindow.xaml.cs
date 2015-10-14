@@ -32,6 +32,14 @@ namespace Papyrus.Desktop.Features.Topics
             this.Loaded += TopicWindow_Loaded;
         }
 
+        public TopicWindow(string topicId)
+        {
+            InitializeComponent();
+
+            DataContext = ViewModelsFactory.UpdateTopic(topicId);
+            this.Loaded += TopicWindow_Loaded;
+        }
+
         private async void TopicWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await ViewModel.Initialize();

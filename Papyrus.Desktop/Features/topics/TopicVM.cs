@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -51,6 +52,11 @@ namespace Papyrus.Desktop.Features.Topics
         {
             this.productRepository = productRepository;
             this.topicService = topicService;
+        }
+
+        public TopicVM(ProductRepository productRepository, TopicService topicService, string topicId) : this(productRepository, topicService)
+        {
+            Console.WriteLine(topicId);
         }
 
         public async Task Initialize()

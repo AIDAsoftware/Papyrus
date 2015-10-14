@@ -11,6 +11,7 @@ namespace Papyrus.Desktop.Features.Topics {
         private readonly TopicRepository topicRepository;
 
         public ObservableCollection<TopicToShow> TopicsToShow { get; }
+        public TopicToShow SelectedTopic { get; set; }
 
         public TopicsGridVM()
         {
