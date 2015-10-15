@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
@@ -53,6 +54,11 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                                                t.LastDocumentTitle == "Llamadas Primer mantenimiento" &&
                                                t.LastDocumentDescription == "Explicación");
         }
+
+        // TODO
+        //   get a topic with its product
+        //   get a topic with its VersionRanges
+        //   get a topic with Documents for its VersionRanges
 
         private async Task Insert(Topic topic)
         {
