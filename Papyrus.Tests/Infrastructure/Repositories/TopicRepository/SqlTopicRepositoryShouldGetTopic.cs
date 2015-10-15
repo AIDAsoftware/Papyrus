@@ -60,6 +60,21 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         //   get a topic with its VersionRanges
         //   get a topic with Documents for its VersionRanges
 
+        [Test]
+        public async Task with_its_product()
+        {
+            var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
+            var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
+            firstVersionRange.AddDocument("es-ES", new Document2("Title", "Description", "Content").WithId("DocumentId"));
+            topic.AddVersionRange(firstVersionRange);
+            await Insert(topic);
+
+            var editableTopic = await new SqlTopicRepository(dbConnection).GetEditableTopicById("FirstTopicPapyrusId");
+
+            editableTopic.Product.ProductId.Should().Be(ProductId);
+            editableTopic.Product.ProductName.Should().Be("Opportunity");
+        }
+
         private async Task Insert(Topic topic)
         {
             await dbConnection.Execute("INSERT INTO Topic(TopicId, ProductId) VALUES (@TopicId, @ProductId)",

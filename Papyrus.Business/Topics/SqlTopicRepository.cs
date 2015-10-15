@@ -34,26 +34,12 @@ namespace Papyrus.Business.Topics
 
         public async Task<EditableTopic> GetEditableTopicById(string topicId)
         {
-            var documents = new Dictionary<string, EditableDocument>
-            {
-                {
-                    "es-ES", new EditableDocument
-                            {
-                                Title = "Título",
-                                Description = "Descripción",
-                                Content = "Contenido"
-                            }
-                }
-            };
-            var versionRange = new EditableVersionRange("4", "6", documents);
-            var versionRanges = new ObservableCollection<EditableVersionRange> {versionRange};
-            var topic = new EditableTopic
-            {
-                TopicId = "TopicId",
-                Product = new DisplayableProduct("2", "Papyrus"),
-                VersionRanges = versionRanges
-            };
-            return topic;
+            var product = (await connection.Query<DisplayableProduct>(@"SELECT Product.ProductId, Product.ProductName FROM Topic
+                                                                        JOIN Product ON Topic.TopicId = @TopicId AND
+                                                                                        Topic.ProductId = Product.ProductId",
+                                                                        new { TopicId = topicId }))
+                                                                        .FirstOrDefault();
+            return new EditableTopic {Product = product};
         }
 
         private static List<TopicToList> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics)
