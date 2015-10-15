@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
 using Papyrus.Business.Topics;
@@ -69,32 +70,32 @@ namespace Papyrus.Tests.Business
 
         [Test]
         [ExpectedException(typeof(CannotUpdateTopicsWithoutTopicIdDeclaredException))]
-        public void fail_when_trying_to_update_a_topic_without_id()
+        public async Task fail_when_trying_to_update_a_topic_without_id()
         {
             var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
 
-            topicService.Update(topic);
+            await topicService.Update(topic);
         }
 
         [Test]
         [ExpectedException(typeof(CannotUpdateTopicsWithNoVersionRangesException))]
-        public void fail_when_trying_to_update_a_topic_with_no_ranges()
+        public async Task fail_when_trying_to_update_a_topic_with_no_ranges()
         {
             var topic = new Topic(anyProductId)
                 .WithId("AnyTopicId");
 
-            topicService.Update(topic);
+            await topicService.Update(topic);
         }
 
         [Test]
-        public void update_a_topic_of_the_library()
+        public async Task update_a_topic_of_the_library()
         {
             var topic = new Topic(anyProductId)
                 .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
 
-            topicService.Update(topic);
+            await topicService.Update(topic);
 
             topicRepo.Received().Update(topic);
         }
