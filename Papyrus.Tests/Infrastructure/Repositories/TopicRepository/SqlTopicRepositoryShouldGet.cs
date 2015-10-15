@@ -10,7 +10,7 @@ using Papyrus.Tests.Infrastructure.Repositories.helpers;
 namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 {
     [TestFixture]
-    public class SqlTopicRepositoryShouldGetTopic : SqlTest
+    public class SqlTopicRepositoryShouldGet : SqlTest
     {
         private const string ProductId = "OpportunityId";
         private const string FirstVersionId = "FirstVersionOpportunity";
@@ -31,7 +31,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async void list_to_show_distincting_by_topic_with_infomation_of_its_last_version()
+        public async void a_topics_list_to_show_distincting_by_topic_with_infomation_of_its_last_version()
         {
             var topic = new Topic(ProductId).WithId("AnyTopicId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("AnyRangeId");
@@ -61,7 +61,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         //   get a topic with Documents for its VersionRanges
 
         [Test]
-        public async Task with_its_product()
+        public async Task a_displayable_topic_with_its_product()
         {
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
