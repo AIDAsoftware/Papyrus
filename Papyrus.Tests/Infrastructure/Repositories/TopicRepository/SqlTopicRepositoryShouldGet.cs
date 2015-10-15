@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -69,6 +70,23 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             editableTopic.Product.ProductId.Should().Be(ProductId);
             editableTopic.Product.ProductName.Should().Be("Opportunity");
+        }
+
+        [Test]
+        public async Task a_displayable_topic_with_its_versionRanges()
+        {
+            var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
+            var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
+            firstVersionRange.AddDocument("es-ES", new Document2("Title", "Description", "Content").WithId("DocumentId"));
+            topic.AddVersionRange(firstVersionRange);
+            await Insert(topic);
+
+            var editableTopic = await new SqlTopicRepository(dbConnection).GetEditableTopicById("FirstTopicPapyrusId");
+
+            var editableVersionRanges = editableTopic.VersionRanges;
+            editableVersionRanges.Should().HaveCount(1);
+            editableVersionRanges.FirstOrDefault().FromVersionId.Should().Be(FirstVersionId);
+            editableVersionRanges.FirstOrDefault().ToVersionId.Should().Be(FirstVersionId);
         }
 
 

@@ -39,7 +39,25 @@ namespace Papyrus.Business.Topics
                                                                                         Topic.ProductId = Product.ProductId",
                                                                         new { TopicId = topicId }))
                                                                         .FirstOrDefault();
-            return new EditableTopic {Product = product};
+            var versionRanges = (await connection
+                .Query<dynamic>(@"SELECT FromVersionId, ToVersionId 
+                                                    FROM VersionRange
+                                                    WHERE TopicId = @TopicId", new { TopicId = topicId })).ToList();
+            var observableVersionRanges = new ObservableCollection<EditableVersionRange>();
+            foreach (var versionRange in versionRanges)
+            {
+                observableVersionRanges.Add(new EditableVersionRange(
+                    fromVersionId: versionRange.FromVersionId,
+                    toVersionId: versionRange.ToVersionId,
+                    documents: new Dictionary<string, EditableDocument>()
+                ));
+            }
+            return new EditableTopic
+            {
+                TopicId = topicId,
+                Product = product,
+                VersionRanges = observableVersionRanges
+            };
         }
 
         private static List<TopicToList> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics)
