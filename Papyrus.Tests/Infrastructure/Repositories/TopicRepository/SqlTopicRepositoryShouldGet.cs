@@ -56,7 +56,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         // TODO
-        //   get a topic with its product
         //   get a topic with its VersionRanges
         //   get a topic with Documents for its VersionRanges
 
@@ -64,9 +63,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         public async Task a_displayable_topic_with_its_product()
         {
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
-            var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
-            firstVersionRange.AddDocument("es-ES", new Document2("Title", "Description", "Content").WithId("DocumentId"));
-            topic.AddVersionRange(firstVersionRange);
             await Insert(topic);
 
             var editableTopic = await new SqlTopicRepository(dbConnection).GetEditableTopicById("FirstTopicPapyrusId");
@@ -74,6 +70,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             editableTopic.Product.ProductId.Should().Be(ProductId);
             editableTopic.Product.ProductName.Should().Be("Opportunity");
         }
+
 
         private async Task Insert(Topic topic)
         {
