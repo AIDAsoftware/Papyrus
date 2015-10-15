@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
@@ -12,23 +11,33 @@ namespace Papyrus.Desktop.Features.Topics
 {
     public class TopicVM : INotifyPropertyChanged
     {
+        private readonly TopicRepository topicRepository;
+        private readonly string topicId;
         private readonly ProductRepository productRepository;
         private readonly TopicService topicService;
-        public ObservableCollection<Product> Products { get; set; }
+        public ObservableCollection<DisplayableProduct> Products { get; set; }
         public ObservableCollection<string> Languages { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Content { get; set; }
 
-        private Product selectedProduct;
+        private EditableTopic editableTopic;
 
-        public Product SelectedProduct
+        public EditableTopic EditableTopic
         {
-            get { return selectedProduct; }
+            get { return editableTopic; }
             set
             {
-                selectedProduct = value;
-                OnPropertyChanged("SelectedProduct");
+                editableTopic = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private EditableDocument currentDocument;
+        public EditableDocument CurrentDocument
+        {
+            get { return currentDocument; }
+            set
+            {
+                currentDocument = value;
+                OnPropertyChanged("CurrentDocument");
             }
         }
 
@@ -45,7 +54,7 @@ namespace Papyrus.Desktop.Features.Topics
         public TopicVM()
         {
             Languages = new ObservableCollection<string>();
-            Products = new ObservableCollection<Product>();
+            Products = new ObservableCollection<DisplayableProduct>();
         }
 
         public TopicVM(ProductRepository productRepository, TopicService topicService) : this()
@@ -54,30 +63,58 @@ namespace Papyrus.Desktop.Features.Topics
             this.topicService = topicService;
         }
 
-        public TopicVM(ProductRepository productRepository, TopicService topicService, string topicId) : this(productRepository, topicService)
+        public TopicVM(ProductRepository productRepository, TopicService topicService, TopicRepository topicRepository, string topicId) : this(productRepository, topicService)
         {
-            Console.WriteLine(topicId);
+            this.topicRepository = topicRepository;
+            this.topicId = topicId;
         }
 
         public async Task Initialize()
         {
+            EditableTopic = new EditableTopic
+            {
+                Product = new DisplayableProduct("", "")
+            };
+            CurrentDocument = new EditableDocument();
+            await LoadProductsAndLanguages();
+            if (topicId != null)
+            {
+                await LoadTopicToEdit();
+            }
+        }
+
+        private async Task LoadTopicToEdit()
+        {
+            EditableTopic = await topicRepository.GetEditableTopicById(topicId);
+            EditableTopic.Product = Products.First(p => p.ProductId == EditableTopic.Product.ProductId);
+            SelectedLanguage = "es-ES";
+            CurrentDocument = EditableTopic.VersionRanges.First().Documents["es-ES"];
+        }
+
+        private async Task LoadProductsAndLanguages()
+        {
             Languages.Add("es-ES");
             Languages.Add("en-GB");
-            var allProductsAvailable = await productRepository.GetAllProducts();
-            foreach (var product in allProductsAvailable)
-            {
-                Products.Add(product);
-            }
+            var allProductsAvailable = await productRepository.GetAllDisplayableProducts();
+            allProductsAvailable.ForEach(p => Products.Add(p));
         }
 
         public async Task SaveTopic()
         {
-            var topic = new Topic(SelectedProduct.Id);
-            var VersionIds = await productRepository.GetFullVersionRangeForProduct(SelectedProduct.Id);
-            var fullVersionRange = new VersionRange(VersionIds.FirstVersionId, VersionIds.LatestVersionId);
-            fullVersionRange.AddDocument(SelectedLanguage, new Document2(Title, Description, Content));
-            topic.AddVersionRange(fullVersionRange);
-            await topicService.Create(topic);
+            var topic = new Topic(EditableTopic.Product.ProductId);
+            var VersionIds = await productRepository
+                .GetFullVersionRangeForProduct(EditableTopic.Product.ProductId);
+            var versionRange = new VersionRange(VersionIds.FirstVersionId, VersionIds.LatestVersionId);
+            versionRange.AddDocument("es-ES", new Document2(CurrentDocument.Title, CurrentDocument.Description, CurrentDocument.Content));
+            topic.AddVersionRange(versionRange);
+            if (string.IsNullOrEmpty(topicId))
+            {
+                await topicService.Create(topic);
+            }
+            else
+            {
+                await topicService.Update(topic.WithId(topicId));
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

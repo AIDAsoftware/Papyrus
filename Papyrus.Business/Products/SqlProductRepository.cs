@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Runtime.CompilerServices;
+using Papyrus.Business.Topics;
 
 namespace Papyrus.Business.Products
 {
@@ -29,22 +30,14 @@ namespace Papyrus.Business.Products
 
         //TODO: devolver IEnumerable ??
 
-        public async Task<List<Product>> GetAllProducts()
+        public async Task<List<DisplayableProduct>> GetAllDisplayableProducts()
         {
             const string selectProductSqlQuery = @"SELECT ProductId, ProductName
                                             FROM [Product];";
 
-            var productsFromDataBase = (await connection.Query<dynamic>(selectProductSqlQuery)).ToList();
+            var productsFromDataBase = (await connection.Query<DisplayableProduct>(selectProductSqlQuery)).ToList();
 
-            var products = new List<Product>();
-
-            foreach (var product in productsFromDataBase)
-            {
-                var versionsForProduct = await ProducVersionsForProduct(product.ProductId);
-                products.Add(new Product(product.ProductId, product.ProductName, versionsForProduct));
-            }
-
-            return products;
+            return productsFromDataBase;
         }
 
         public async Task<ProductVersion> GetVersion(string versionId)  // TODO: It is not tested. It is only a try

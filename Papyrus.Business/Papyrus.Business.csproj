@@ -46,6 +46,10 @@
   <ItemGroup>
     <Compile Include="Products\FullVersionRange.cs" />
     <Compile Include="Topics\Documents.cs" />
+    <Compile Include="Topics\EditableDocument.cs" />
+    <Compile Include="Topics\DisplayableProduct.cs" />
+    <Compile Include="Topics\EditableTopic.cs" />
+    <Compile Include="Topics\EditableVersionRange.cs" />
     <Compile Include="Topics\LanguageDocumentPair.cs" />
     <Compile Include="Topics\SqlTopicRepository.cs" />
     <Compile Include="Topics\Document2.cs" />

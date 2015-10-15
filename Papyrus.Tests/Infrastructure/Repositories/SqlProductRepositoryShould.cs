@@ -83,10 +83,10 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             var opportunityId = "OpportunityId";
             await InsertProduct(new Product(opportunityId, "Opportunity", versionsForOpportunity));
 
-            var products = await new SqlProductRepository(dbConnection).GetAllProducts();
+            var products = await new SqlProductRepository(dbConnection).GetAllDisplayableProducts();
 
-            products.First(prod => prod.Id == papyrusId).Versions.Count.Should().Be(2);
-            products.First(prod => prod.Id == opportunityId).Versions.Count.Should().Be(1);
+            products.Should().Contain(prod => prod.ProductId == "PapyrusId");
+            products.Should().Contain(prod => prod.ProductId == "OpportunityId");
             products.ToArray().Length.Should().Be(2);
         }
 

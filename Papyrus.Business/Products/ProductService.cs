@@ -16,10 +16,5 @@
         {
             return await repository.GetProduct(id);
         }
-
-        public virtual async Task<Product[]> AllProducts()
-        {
-            return (await repository.GetAllProducts()).ToArray();
-        }
     }
 }

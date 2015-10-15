@@ -14,9 +14,9 @@ namespace Papyrus.Desktop.Features.Documents
     {
         private readonly ProductRepository productRepository;
         private readonly DocumentService documentService;
-        public ObservableCollection<Product> Products { get; private set; }
+        public ObservableCollection<Product> Products { get; }
         public ObservableCollection<ProductVersion> Versions { get; private set; }
-        public ObservableCollection<string> Languages { get; private set; }
+        public ObservableCollection<string> Languages { get; }
         public DocumentDetails Document { get; set; }
 
         public Product SelectedProduct
@@ -65,8 +65,8 @@ namespace Papyrus.Desktop.Features.Documents
 
         public async Task Initialize()
         {
-            var products = (await productRepository.GetAllProducts()).ToList();
-            products.ForEach(product => Products.Add(product));
+            var products = (await productRepository.GetAllDisplayableProducts()).ToList();
+//            products.ForEach(product => Products.Add(product));
             if (Document.TopicId != null)
             {
                 SelectedProduct = Products.First((p) => p.Id == Document.Product.Id);

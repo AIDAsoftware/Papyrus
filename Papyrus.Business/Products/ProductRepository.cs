@@ -1,4 +1,5 @@
 using System;
+using Papyrus.Business.Topics;
 
 namespace Papyrus.Business.Products
 {
@@ -8,7 +9,7 @@ namespace Papyrus.Business.Products
     public interface ProductRepository
     {
         Task<Product> GetProduct(string productId);
-        Task<List<Product>> GetAllProducts();
+        Task<List<DisplayableProduct>> GetAllDisplayableProducts();
         Task<ProductVersion> GetVersion(string versionId);
         Task<FullVersionRange> GetFullVersionRangeForProduct(string productId);
     }

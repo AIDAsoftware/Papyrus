@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Papyrus.Business.Products;
 using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Business.Topics
@@ -28,6 +30,30 @@ namespace Papyrus.Business.Topics
                 ));
             var topicsToShow = DistinctByTopicChoosingTheRowWithLatestDocumentAdded(resultset);
             return topicsToShow;
+        }
+
+        public async Task<EditableTopic> GetEditableTopicById(string topicId)
+        {
+            var documents = new Dictionary<string, EditableDocument>
+            {
+                {
+                    "es-ES", new EditableDocument
+                            {
+                                Title = "Título",
+                                Description = "Descripción",
+                                Content = "Contenido"
+                            }
+                }
+            };
+            var versionRange = new EditableVersionRange("4", "6", documents);
+            var versionRanges = new ObservableCollection<EditableVersionRange> {versionRange};
+            var topic = new EditableTopic
+            {
+                TopicId = "TopicId",
+                Product = new DisplayableProduct("2", "Papyrus"),
+                VersionRanges = versionRanges
+            };
+            return topic;
         }
 
         private static List<TopicToList> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics)

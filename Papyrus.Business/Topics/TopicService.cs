@@ -21,7 +21,7 @@ namespace Papyrus.Business.Topics
             await TopicRepository.Save(topic);
         }
 
-        public void Update(Topic topic)
+        public async Task Update(Topic topic)
         {
             ValidateToUpdate(topic);
             TopicRepository.Update(topic);
