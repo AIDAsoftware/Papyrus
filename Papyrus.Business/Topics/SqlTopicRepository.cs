@@ -84,6 +84,11 @@ namespace Papyrus.Business.Topics
                 .Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
                                                     FROM VersionRange
                                                     WHERE TopicId = @TopicId", new {TopicId = topicId})).ToList();
+            return await ParseToObservableCollection(versionRanges);
+        }
+
+        private async Task<ObservableCollection<EditableVersionRange>> ParseToObservableCollection(IReadOnlyList<dynamic> versionRanges)
+        {
             var observableVersionRanges = new ObservableCollection<EditableVersionRange>();
             foreach (var versionRange in versionRanges)
             {
@@ -91,7 +96,7 @@ namespace Papyrus.Business.Topics
                     fromVersionId: versionRange.FromVersionId,
                     toVersionId: versionRange.ToVersionId,
                     documents: await GetDocumentsOf(versionRange)
-                    ));
+                ));
             }
             return observableVersionRanges;
         }
