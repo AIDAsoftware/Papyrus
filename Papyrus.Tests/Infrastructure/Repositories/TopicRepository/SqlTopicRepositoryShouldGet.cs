@@ -13,6 +13,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
     [TestFixture]
     public class SqlTopicRepositoryShouldGet : SqlTest
     {
+        private SqlTopicRepository topicRepository;
         private const string ProductId = "OpportunityId";
         private const string FirstVersionId = "FirstVersionOpportunity";
         private const string SecondVersionId = "SecondVersionOpportunity";
@@ -20,6 +21,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [SetUp]
         public async void InitializeDataBase()
         {
+            topicRepository = new SqlTopicRepository(dbConnection);
             await TruncateDataBase();
             await InsertProduct(ProductId, "Opportunity");
             await InsertProductVersion(FirstVersionId, "1.0", "20150710", ProductId);
@@ -43,9 +45,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             topic.AddVersionRange(secondVersionRange);
             await Insert(topic);
 
-
-            var topicRepository = new SqlTopicRepository(dbConnection);
-
             var topicsToList = await topicRepository.GetAllTopicsToList();
 
             topicsToList.Should().HaveCount(1);
@@ -57,7 +56,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         // TODO
-        //   get a topic with its VersionRanges
         //   get a topic with Documents for its VersionRanges
 
         [Test]
@@ -66,7 +64,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             await Insert(topic);
 
-            var editableTopic = await new SqlTopicRepository(dbConnection).GetEditableTopicById("FirstTopicPapyrusId");
+            var editableTopic = await topicRepository.GetEditableTopicById("FirstTopicPapyrusId");
 
             editableTopic.Product.ProductId.Should().Be(ProductId);
             editableTopic.Product.ProductName.Should().Be("Opportunity");
@@ -77,11 +75,10 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         {
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
-            firstVersionRange.AddDocument("es-ES", new Document2("Title", "Description", "Content").WithId("DocumentId"));
             topic.AddVersionRange(firstVersionRange);
             await Insert(topic);
 
-            var editableTopic = await new SqlTopicRepository(dbConnection).GetEditableTopicById("FirstTopicPapyrusId");
+            var editableTopic = await topicRepository.GetEditableTopicById("FirstTopicPapyrusId");
 
             var editableVersionRanges = editableTopic.VersionRanges;
             editableVersionRanges.Should().HaveCount(1);
