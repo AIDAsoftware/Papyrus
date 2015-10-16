@@ -34,48 +34,14 @@ namespace Papyrus.Business.Topics
 
         public async Task<EditableTopic> GetEditableTopicById(string topicId)
         {
-            var product = (await connection.Query<DisplayableProduct>(@"SELECT Product.ProductId, Product.ProductName FROM Topic
-                                                                        JOIN Product ON Topic.TopicId = @TopicId AND
-                                                                                        Topic.ProductId = Product.ProductId",
-                                                                        new { TopicId = topicId }))
-                                                                        .FirstOrDefault();
-            var versionRanges = (await connection
-                .Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
-                                                    FROM VersionRange
-                                                    WHERE TopicId = @TopicId", new { TopicId = topicId })).ToList();
-            var observableVersionRanges = new ObservableCollection<EditableVersionRange>();
-            foreach (var versionRange in versionRanges)
-            {
-                var documents = (await connection.Query<EditableDocument>(@"SELECT Title, Description, Content, Language
-                                                                            FROM Document
-                                                                            WHERE VersionRangeId = @VersionRangeId",
-                                                                            new {VersionRangeId = versionRange.VersionRangeId}))
-                                                                            .ToList();
-                observableVersionRanges.Add(new EditableVersionRange(
-                    fromVersionId: versionRange.FromVersionId,
-                    toVersionId: versionRange.ToVersionId,
-                    documents: documents
-                ));
-            }
+            var product = await GetRelatedProductFor(topicId);
+            var observableVersionRanges = await GetVersionRangesOf(topicId);
             return new EditableTopic
             {
                 TopicId = topicId,
                 Product = product,
                 VersionRanges = observableVersionRanges
             };
-        }
-
-        private static List<TopicToList> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics)
-        {
-            return dynamicTopics.GroupBy(topic => topic.TopicId)
-                .Select(topics => topics.First())
-                .Select(TopicToShowFromDynamic)
-                .ToList();
-        }
-
-        public void Update(Topic topic)
-        {
-            throw new System.NotImplementedException();
         }
 
         public async Task Save(Topic topic)
@@ -87,6 +53,57 @@ namespace Papyrus.Business.Topics
                     ProductId = topic.ProductId
                 });
             await InsertVersionRangesOf(topic);
+        }
+
+        public void Update(Topic topic)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private static List<TopicToList> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics)
+        {
+            return dynamicTopics.GroupBy(topic => topic.TopicId)
+                .Select(topics => topics.First())
+                .Select(TopicToShowFromDynamic)
+                .ToList();
+        }
+
+        private async Task<DisplayableProduct> GetRelatedProductFor(string topicId)
+        {
+            var product = (await connection.Query<DisplayableProduct>(@"SELECT Product.ProductId, Product.ProductName FROM Topic
+                                                                        JOIN Product ON Topic.TopicId = @TopicId AND
+                                                                                        Topic.ProductId = Product.ProductId",
+                new {TopicId = topicId}))
+                .FirstOrDefault();
+            return product;
+        }
+
+        private async Task<ObservableCollection<EditableVersionRange>> GetVersionRangesOf(string topicId)
+        {
+            var versionRanges = (await connection
+                .Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
+                                                    FROM VersionRange
+                                                    WHERE TopicId = @TopicId", new {TopicId = topicId})).ToList();
+            var observableVersionRanges = new ObservableCollection<EditableVersionRange>();
+            foreach (var versionRange in versionRanges)
+            {
+                observableVersionRanges.Add(new EditableVersionRange(
+                    fromVersionId: versionRange.FromVersionId,
+                    toVersionId: versionRange.ToVersionId,
+                    documents: await GetDocumentsOf(versionRange)
+                    ));
+            }
+            return observableVersionRanges;
+        }
+
+        private async Task<List<EditableDocument>> GetDocumentsOf(dynamic versionRange)
+        {
+            var documents = (await connection.Query<EditableDocument>(@"SELECT Title, Description, Content, Language
+                                                                            FROM Document
+                                                                            WHERE VersionRangeId = @VersionRangeId",
+                new {VersionRangeId = versionRange.VersionRangeId}))
+                .ToList();
+            return documents;
         }
 
         private async Task InsertVersionRangesOf(Topic topic)
