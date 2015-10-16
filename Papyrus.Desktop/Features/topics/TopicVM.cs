@@ -88,7 +88,7 @@ namespace Papyrus.Desktop.Features.Topics
             EditableTopic = await topicRepository.GetEditableTopicById(topicId);
             EditableTopic.Product = Products.First(p => p.ProductId == EditableTopic.Product.ProductId);
             SelectedLanguage = "es-ES";
-            CurrentDocument = EditableTopic.VersionRanges.First().Documents["es-ES"];
+            CurrentDocument = EditableTopic.VersionRanges.First().Documents.First();
         }
 
         private async Task LoadProductsAndLanguages()

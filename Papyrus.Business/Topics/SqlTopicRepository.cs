@@ -40,16 +40,21 @@ namespace Papyrus.Business.Topics
                                                                         new { TopicId = topicId }))
                                                                         .FirstOrDefault();
             var versionRanges = (await connection
-                .Query<dynamic>(@"SELECT FromVersionId, ToVersionId 
+                .Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
                                                     FROM VersionRange
                                                     WHERE TopicId = @TopicId", new { TopicId = topicId })).ToList();
             var observableVersionRanges = new ObservableCollection<EditableVersionRange>();
             foreach (var versionRange in versionRanges)
             {
+                var documents = (await connection.Query<EditableDocument>(@"SELECT Title, Description, Content, Language
+                                                                            FROM Document
+                                                                            WHERE VersionRangeId = @VersionRangeId",
+                                                                            new {VersionRangeId = versionRange.VersionRangeId}))
+                                                                            .ToList();
                 observableVersionRanges.Add(new EditableVersionRange(
                     fromVersionId: versionRange.FromVersionId,
                     toVersionId: versionRange.ToVersionId,
-                    documents: new Dictionary<string, EditableDocument>()
+                    documents: documents
                 ));
             }
             return new EditableTopic

@@ -6,9 +6,9 @@ namespace Papyrus.Business.Topics
     {
         public string FromVersionId { get; set; }
         public string ToVersionId { get; set; }
-        public Dictionary<string, EditableDocument> Documents { get; set; }
+        public List<EditableDocument> Documents { get; set; }
 
-        public EditableVersionRange(string fromVersionId, string toVersionId, Dictionary<string, EditableDocument> documents)
+        public EditableVersionRange(string fromVersionId, string toVersionId, List<EditableDocument> documents)
         {
             FromVersionId = fromVersionId;
             ToVersionId = toVersionId;

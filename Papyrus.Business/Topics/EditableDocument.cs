@@ -5,6 +5,8 @@ namespace Papyrus.Business.Topics
 {
     public class EditableDocument : INotifyPropertyChanged
     {
+        public string Language { get; set; }
+
         private string title;
 
         public string Title
