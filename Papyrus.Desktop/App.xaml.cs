@@ -7,15 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 
 namespace Papyrus.Desktop {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application {
-       UIEventsCoordinator eventsCoordinator = new UIEventsCoordinator();
-
         public App() {
-            eventsCoordinator.AddService(ServicesFactory.Document());
-            eventsCoordinator.SubscribeToDocumentEvents();
         }
     }
 }

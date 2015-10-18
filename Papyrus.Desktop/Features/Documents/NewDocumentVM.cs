@@ -89,7 +89,6 @@ namespace Papyrus.Desktop.Features.Documents
                 await documentService.Update(document);
                 message = "Document updated";
             }
-            EventBus.Raise(new OnApplicationNotification(message));
         }
 
 

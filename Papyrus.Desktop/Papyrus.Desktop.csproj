@@ -110,7 +110,6 @@
   <ItemGroup>
     <Compile Include="Features\MainMenu\MainMenuVM.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="UIEventsCoordinator.cs" />
     <Compile Include="Util\Command\IAsyncCommand.cs" />
     <Compile Include="Util\Command\NotifyTaskCompletion.cs" />
     <Compile Include="Util\Command\RelayAsyncCommandBase.cs" />

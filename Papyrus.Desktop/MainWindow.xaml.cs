@@ -15,28 +15,9 @@ using System.Windows.Shapes;
 using Papyrus.Infrastructure.Core.DomainEvents;
 
 namespace Papyrus.Desktop {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window, Subscriber<ApplicationErrorOcurred>, Subscriber<OnApplicationNotification> {
+    public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
-            EventBus.Subscribe(this);
         }
-
-        public void Handle(ApplicationErrorOcurred domainEvent) {
-            MessageBox.Show(domainEvent.Exception.Message);
-        }
-
-        public void Handle(OnApplicationNotification notification) {
-            MessageBox.Show(notification.Message);
-        }
-    }
-
-    public class OnApplicationNotification {
-        public OnApplicationNotification(string message) {
-            Message = message;
-        }
-        public string Message { get; set; }
     }
 }
