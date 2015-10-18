@@ -57,8 +57,16 @@ namespace Papyrus.Business.Topics
 
         public async Task Update(Topic topic)
         {
+            var versionRangeIds = await connection.Query<string>(@"SELECT VersionRangeId FROM VersionRange
+                                                                    WHERE TopicId = @TopicId",
+                                                                    new {TopicId = topic.TopicId});
             await connection.Execute(@"DELETE FROM VersionRange WHERE TopicId = @TopicId",
                                         new {TopicId = topic.TopicId});
+            foreach (var versionRangeId in versionRangeIds)
+            {
+                await connection.Execute(@"DELETE FROM Document WHERE VersionRangeId = @VersionRangeId",
+                    new {VersionRangeId = versionRangeId});
+            }
         }
 
         private static List<TopicToList> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics)

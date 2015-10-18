@@ -8,7 +8,7 @@ using Papyrus.Infrastructure.Core.Database;
 namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 {
     [TestFixture]
-    public class SqlTopicRepositoryShouldWhenUpdateATopic : SqlTest
+    public class SqlTopicRepositoryWhenUpdateATopicShould : SqlTest
     {
         // TODO:
         //  - removes old related versionRanges for given topic
@@ -33,6 +33,27 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                                             WHERE VersionRangeId = @VersionRangeId",
                                             new {VersionRangeId = "VersionRangeId"})).FirstOrDefault();
             oldVersionRange.Should().BeNull();
+        }
+
+        [Test]
+        public async Task removes_old_documents_for_given_topic()
+        {
+            var topic = new Topic("PapyrusId").WithId("TopicId");
+            var versionRange = new VersionRange("FirstPapyrusVersionId", "SecondPapyrusVersionId")
+                                                .WithId("VersionRangeId");
+            var document = new Document2("Título", "Descripción", "Contenido").WithId("DocumentId");
+            versionRange.AddDocument("es-ES", document);
+            topic.AddVersionRange(versionRange);
+            await Insert(topic);
+
+            var topicToUpdate = new Topic("PapyrusId").WithId("TopicId");
+            await new SqlTopicRepository(dbConnection).Update(topicToUpdate);
+
+            var oldDocument = (await dbConnection.Query<Document2>(@"SELECT Title, Description, Content  
+                                            FROM Document 
+                                            WHERE DocumentId = @DocumentId",
+                                            new { DocumentId = "DocumentId" })).FirstOrDefault();
+            oldDocument.Should().BeNull();
         }
 
         private async Task Insert(Topic topic)
