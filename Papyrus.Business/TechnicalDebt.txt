@@ -6,3 +6,7 @@
 - Extract DocumentService.ExportDocumentsToFolder to another specialized class 
 - Add Language Property to Documents
 - Make Document and VersionRange value objects.
+- GetAllTopicsToList -> GetAllTopicsSummary
+- TopicToList -> TopicSummary
+- Divide Repositories
+- Divide private Parse method (SRP)
