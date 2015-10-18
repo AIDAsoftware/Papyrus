@@ -8,7 +8,7 @@ using Papyrus.Tests.Infrastructure.Repositories.helpers;
 namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 {
     [TestFixture]
-    public class SqlTopicShouldWhenSaveATopic : SqlTest
+    public class SqlTopicWhenSaveATopicShould : SqlTest
     {
         private Topic anyTopic;
         private SqlTopicRepository topicRepository;
