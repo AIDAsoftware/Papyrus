@@ -25,7 +25,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             TruncateDataBase().GetAwaiter().GetResult();
         }
 
-        private async Task InitialInserts()
+        private async Task InsertProductWithItsVersions()
         {
             await InsertProduct(ProductId, "Opportunity");
             await InsertProductVersion(FirstVersionId, "1.0", "20150710", ProductId);
@@ -40,7 +40,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [Test]
         public async void a_topics_list_to_show_distincting_by_topic_with_infomation_of_its_last_version()
         {
-            await InitialInserts();
+            await InsertProductWithItsVersions();
             var topic = new Topic(ProductId).WithId("AnyTopicId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("AnyRangeId");
             var secondVersionRange = new VersionRange(SecondVersionId, SecondVersionId).WithId("AnotherRangeId");
@@ -63,7 +63,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [Test]
         public async Task a_displayable_topic_with_its_product()
         {
-            await InitialInserts(); // TODO: It should be in the SetUp but it produces errors
+            await InsertProductWithItsVersions(); // TODO: It should be in the SetUp but it produces errors
 
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             await Insert(topic);
