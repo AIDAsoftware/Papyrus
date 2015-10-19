@@ -131,23 +131,23 @@ namespace Papyrus.Business.Topics
 
         private async Task InsertDocumentsOf(VersionRange versionRange)
         {
-            foreach (var documentLanguagePair in versionRange.Documents)
+            foreach (var document in versionRange.Documents)
             {
-                await InsertDocumentForVersionRange(documentLanguagePair, versionRange);
+                await InsertDocumentForVersionRange(document, versionRange);
             }
         }
 
-        private async Task InsertDocumentForVersionRange(LanguageDocumentPair languageDocumentPair, VersionRange versionRange)
+        private async Task InsertDocumentForVersionRange(Document2 document, VersionRange versionRange)
         {
             await connection.Execute(@"INSERT INTO Document(DocumentId, Title, Description, Content, Language, VersionRangeId)
                                                     VALUES(@DocumentId, @Title, @Description, @Content, @Language, @VersionRangeId);",
                 new
                 {
-                    DocumentId = languageDocumentPair.Document.DocumentId,
-                    Title = languageDocumentPair.Document.Title,
-                    Description = languageDocumentPair.Document.Description,
-                    Content = languageDocumentPair.Document.Content,
-                    Language = languageDocumentPair.Language,
+                    DocumentId = document.DocumentId,
+                    Title = document.Title,
+                    Description = document.Description,
+                    Content = document.Content,
+                    Language = document.Language,
                     VersionRangeId = versionRange.VersionRangeId
                 });
         }

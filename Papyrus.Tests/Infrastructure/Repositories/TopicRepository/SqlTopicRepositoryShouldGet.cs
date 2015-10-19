@@ -44,8 +44,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topic = new Topic(ProductId).WithId("AnyTopicId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("AnyRangeId");
             var secondVersionRange = new VersionRange(SecondVersionId, SecondVersionId).WithId("AnotherRangeId");
-            firstVersionRange.AddDocument("es-ES", new Document2("AnyTitle", "AnyDescription", "AnyContent").WithId("AnyDocumentId"));
-            secondVersionRange.AddDocument("es-ES", new Document2("Llamadas Primer mantenimiento", "Explicación", "AnyContent").WithId("AnotherDocumentId"));
+            firstVersionRange.AddDocument("es-ES", new Document2("AnyTitle", "AnyDescription", "AnyContent", "es-ES").WithId("AnyDocumentId"));
+            secondVersionRange.AddDocument("es-ES", new Document2("Llamadas Primer mantenimiento", "Explicación", "AnyContent", "es-ES").WithId("AnotherDocumentId"));
             topic.AddVersionRange(firstVersionRange);
             topic.AddVersionRange(secondVersionRange);
             await Insert(topic);
@@ -95,7 +95,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         {
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
-            var document = new Document2("Título", "Descripción", "Contenido").WithId("DocumentId");
+            var document = new Document2("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId");
             firstVersionRange.AddDocument("es-ES", document);
             topic.AddVersionRange(firstVersionRange);
             await Insert(topic);
@@ -143,7 +143,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             }
         }
 
-        private async Task InsertDocumentForVersionRange(LanguageDocumentPair languageDocumentPair, VersionRange versionRange)
+        private async Task InsertDocumentForVersionRange(Document2 document, VersionRange versionRange)
         {
             await
                 dbConnection.Execute(
@@ -151,11 +151,11 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                                                     VALUES(@DocumentId, @Title, @Description, @Content, @Language, @VersionRangeId);",
                     new
                     {
-                        DocumentId = languageDocumentPair.Document.DocumentId,
-                        Title = languageDocumentPair.Document.Title,
-                        Description = languageDocumentPair.Document.Description,
-                        Content = languageDocumentPair.Document.Content,
-                        Language = languageDocumentPair.Language,
+                        DocumentId = document.DocumentId,
+                        Title = document.Title,
+                        Description = document.Description,
+                        Content = document.Content,
+                        Language = document.Language,
                         VersionRangeId = versionRange.VersionRangeId
                     });
         }

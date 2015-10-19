@@ -41,7 +41,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topic = new Topic("PapyrusId").WithId("TopicId");
             var versionRange = new VersionRange("FirstPapyrusVersionId", "SecondPapyrusVersionId")
                                                 .WithId("VersionRangeId");
-            var document = new Document2("Título", "Descripción", "Contenido").WithId("DocumentId");
+            var document = new Document2("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId");
             versionRange.AddDocument("es-ES", document);
             topic.AddVersionRange(versionRange);
             await Insert(topic);
@@ -87,7 +87,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             }
         }
 
-        private async Task InsertDocumentForVersionRange(LanguageDocumentPair languageDocumentPair, VersionRange versionRange)
+        private async Task InsertDocumentForVersionRange(Document2 document, VersionRange versionRange)
         {
             await
                 dbConnection.Execute(
@@ -95,11 +95,11 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                                                     VALUES(@DocumentId, @Title, @Description, @Content, @Language, @VersionRangeId);",
                     new
                     {
-                        DocumentId = languageDocumentPair.Document.DocumentId,
-                        Title = languageDocumentPair.Document.Title,
-                        Description = languageDocumentPair.Document.Description,
-                        Content = languageDocumentPair.Document.Content,
-                        Language = languageDocumentPair.Language,
+                        DocumentId = document.DocumentId,
+                        Title = document.Title,
+                        Description = document.Description,
+                        Content = document.Content,
+                        Language = document.Language,
                         VersionRangeId = versionRange.VersionRangeId
                     });
         }

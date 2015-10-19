@@ -19,12 +19,14 @@ namespace Papyrus.Tests.Business
             spanishDocument = new Document2(
                 title: "Título",
                 description: "Descripción",
-                content: "Contenido"
+                content: "Contenido",
+                language: "es-ES"
             );
             englishDocument = new Document2(
                 title: "Title",
                 description: "Description",
-                content: "Content"
+                content: "Content",
+                language: "en-GB"
             );
         }
 

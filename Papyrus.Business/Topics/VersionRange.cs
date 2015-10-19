@@ -19,7 +19,7 @@ namespace Papyrus.Business.Topics
 
         public void AddDocument(string language, Document2 document)
         {
-            Documents.Add(language, document);
+            Documents.Add(document);
         }
 
         public Document2 GetDocumentIn(string language)
@@ -36,9 +36,9 @@ namespace Papyrus.Business.Topics
         public void GenerateAutomaticId()
         {
             VersionRangeId = Guid.NewGuid().ToString();
-            foreach (var languageDocumentPair in Documents)
+            foreach (var document2 in Documents)
             {
-                languageDocumentPair.Document.GenerateAutomaticId();
+                document2.GenerateAutomaticId();
             }
         }
     }
