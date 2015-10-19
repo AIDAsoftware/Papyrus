@@ -49,7 +49,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topicToUpdate = new Topic("PapyrusId").WithId("TopicId");
             await new SqlTopicRepository(dbConnection).Update(topicToUpdate);
 
-            var oldDocument = (await dbConnection.Query<Document2>(@"SELECT Title, Description, Content  
+            var oldDocument = (await dbConnection.Query<Document2>(@"SELECT Title, Description, Content, Language  
                                             FROM Document 
                                             WHERE DocumentId = @DocumentId",
                                             new { DocumentId = "DocumentId" })).FirstOrDefault();
