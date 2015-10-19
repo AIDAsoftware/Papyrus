@@ -13,8 +13,6 @@ namespace Papyrus.Tests.Business
         private TopicRepository topicRepo;
         private TopicService topicService;
         private VersionRange anyVersionRange;
-        private ProductVersion2 anyProductVersion;
-        private ProductVersion2 anotherProductVersion;
         private string anyProductId;
 
         [SetUp]
