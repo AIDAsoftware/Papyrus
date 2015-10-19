@@ -6,13 +6,11 @@ namespace Papyrus.Business.Topics
     {
         public string FromVersionId { get; set; }
         public string ToVersionId { get; set; }
-        public List<EditableDocument> Documents { get; set; }
+        public List<EditableDocument> Documents { get; private set; }
 
-        public EditableVersionRange(string fromVersionId, string toVersionId, List<EditableDocument> documents)
+        public EditableVersionRange()
         {
-            FromVersionId = fromVersionId;
-            ToVersionId = toVersionId;
-            Documents = documents;
+            Documents = new List<EditableDocument>();
         }
     }
 }
