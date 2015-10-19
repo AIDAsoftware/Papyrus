@@ -37,8 +37,8 @@ namespace Papyrus.Tests.Business
                 fromVersionId: "SecondVersionId",
                 toVersionId: "FourthVersionId"
             );
-            versionRange.AddDocument("es-ES", spanishDocument);
-            versionRange.AddDocument("en-GB", englishDocument);
+            versionRange.AddDocument(spanishDocument);
+            versionRange.AddDocument(englishDocument);
 
             var document = versionRange.GetDocumentIn("es-ES");
 
