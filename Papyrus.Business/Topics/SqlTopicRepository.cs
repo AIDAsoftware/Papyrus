@@ -67,6 +67,8 @@ namespace Papyrus.Business.Topics
                 await connection.Execute(@"DELETE FROM Document WHERE VersionRangeId = @VersionRangeId",
                     new {VersionRangeId = versionRangeId});
             }
+
+            await InsertVersionRangesOf(topic);
         }
 
         private static List<TopicSummary> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics)

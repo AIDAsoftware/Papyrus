@@ -111,7 +111,7 @@
     <Compile Include="Infrastructure\EventBusShould.cs" />
     <Compile Include="Infrastructure\Repositories\helpers\DataBaseTruncator.cs" />
     <Compile Include="Infrastructure\Repositories\SqlProductRepositoryShould.cs" />
-    <Compile Include="Infrastructure\Repositories\TopicRepository\SqlInserter.cs" />
+    <Compile Include="Infrastructure\Repositories\helpers\SqlInserter.cs" />
     <Compile Include="Infrastructure\Repositories\TopicRepository\SqlTopicRepositoryShouldGet.cs" />
     <Compile Include="Infrastructure\Repositories\TopicRepository\SqlTopicRepositoryWhenSaveATopicShould.cs" />
     <Compile Include="Infrastructure\Repositories\TopicRepository\SqlTopicRepositoryWhenUpdateATopicShould.cs" />

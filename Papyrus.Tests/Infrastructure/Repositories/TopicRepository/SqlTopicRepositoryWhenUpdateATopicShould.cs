@@ -61,5 +61,22 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                                             new { DocumentId = "DocumentId" })).FirstOrDefault();
             oldDocument.Should().BeNull();
         }
+
+        [Test]
+        public async Task save_its_new_version_ranges()
+        {
+            var topic = new Topic("PapyrusId").WithId("TopicId");
+            await sqlInserter.Insert(topic);
+
+            topic.AddVersionRange(new VersionRange("FirstVersion", "SecondVersion").WithId("VersionRangeId"));
+            await new SqlTopicRepository(dbConnection).Update(topic);
+
+            var newVersionRange = (await dbConnection.Query<VersionRange>(@"SELECT FromVersionId, ToVersionId  
+                                            FROM VersionRange 
+                                            WHERE TopicId = @TopicId",
+                                            new { TopicId = "TopicId" })).FirstOrDefault();
+            newVersionRange.FromVersionId.Should().Be("FirstVersion");
+            newVersionRange.ToVersionId.Should().Be("SecondVersion");
+        }
     }
 }
