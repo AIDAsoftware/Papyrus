@@ -78,5 +78,26 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             newVersionRange.FromVersionId.Should().Be("FirstVersion");
             newVersionRange.ToVersionId.Should().Be("SecondVersion");
         }
+
+        [Test]
+        public async Task save_documents_for_each_of_its_version_ranges()
+        {
+            var topic = new Topic("PapyrusId").WithId("TopicId");
+            await sqlInserter.Insert(topic);
+
+            var versionRange = new VersionRange("FirstVersion", "SecondVersion").WithId("VersionRangeId");
+            versionRange.AddDocument(new Document2("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId"));
+            topic.AddVersionRange(versionRange);
+            await new SqlTopicRepository(dbConnection).Update(topic);
+
+            var newVersionRange = (await dbConnection.Query<Document2>(@"SELECT Title, Description, Content, Language  
+                                                    FROM Document 
+                                                    WHERE VersionRangeId = @VersionRangeId",
+                                                    new { VersionRangeId = "VersionRangeId" })).FirstOrDefault();
+            newVersionRange.Title.Should().Be("Título");
+            newVersionRange.Description.Should().Be("Descripción");
+            newVersionRange.Content.Should().Be("Contenido");
+            newVersionRange.Language.Should().Be("es-ES");
+        }
     }
 }
