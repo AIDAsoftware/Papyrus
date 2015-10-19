@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
@@ -13,6 +11,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
     [TestFixture]
     public class SqlTopicRepositoryShouldGet : SqlTest
     {
+        private SqlInserter sqlInserter;
         private SqlTopicRepository topicRepository;
         private const string ProductId = "OpportunityId";
         private const string FirstVersionId = "FirstVersionOpportunity";
@@ -21,6 +20,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [SetUp]
         public void Initialize()
         {
+            sqlInserter = new SqlInserter(dbConnection);
             topicRepository = new SqlTopicRepository(dbConnection);
             TruncateDataBase().GetAwaiter().GetResult();
         }
@@ -48,7 +48,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             secondVersionRange.AddDocument(new Document2("Llamadas Primer mantenimiento", "Explicación", "AnyContent", "es-ES").WithId("AnotherDocumentId"));
             topic.AddVersionRange(firstVersionRange);
             topic.AddVersionRange(secondVersionRange);
-            await Insert(topic);
+            await sqlInserter.Insert(topic);
 
             var topicSummaries = await topicRepository.GetAllTopicsSummaries();
 
@@ -66,7 +66,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             await InsertProductWithItsVersions(); // TODO: It should be in the SetUp but it produces errors
 
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
-            await Insert(topic);
+            await sqlInserter.Insert(topic);
 
             var editableTopic = await topicRepository.GetEditableTopicById("FirstTopicPapyrusId");
 
@@ -80,7 +80,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
             topic.AddVersionRange(firstVersionRange);
-            await Insert(topic);
+            await sqlInserter.Insert(topic);
 
             var editableTopic = await topicRepository.GetEditableTopicById("FirstTopicPapyrusId");
 
@@ -98,7 +98,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var document = new Document2("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId");
             firstVersionRange.AddDocument(document);
             topic.AddVersionRange(firstVersionRange);
-            await Insert(topic);
+            await sqlInserter.Insert(topic);
 
             var editableTopic = await topicRepository.GetEditableTopicById("FirstTopicPapyrusId");
 
@@ -109,55 +109,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             editableDocument.Description.Should().Be("Descripción");
             editableDocument.Content.Should().Be("Contenido");
             editableDocument.Language.Should().Be("es-ES");
-        }
-
-
-        private async Task Insert(Topic topic)
-        {
-            await dbConnection.Execute("INSERT INTO Topic(TopicId, ProductId) VALUES (@TopicId, @ProductId)",
-                new
-                {
-                    TopicId = topic.TopicId,
-                    ProductId = topic.ProductId
-                });
-            foreach (var versionRange in topic.VersionRanges)
-            {
-                await InsertVersionRangeForTopic(versionRange, topic);
-            }
-        }
-
-        private async Task InsertVersionRangeForTopic(VersionRange versionRange, Topic topic)
-        {
-            await dbConnection.Execute(@"INSERT INTO VersionRange(VersionRangeId, FromVersionId, ToVersionId, TopicId)
-                                                VALUES (@VersionRangeId, @FromVersionId, @ToVersionId, @TopicId)",
-                new
-                {
-                    VersionRangeId = versionRange.VersionRangeId,
-                    FromVersionId = versionRange.FromVersionId,
-                    ToVersionId = versionRange.ToVersionId,
-                    TopicId = topic.TopicId
-                });
-            foreach (var document in versionRange.Documents)
-            {
-                await InsertDocumentForVersionRange(document, versionRange);
-            }
-        }
-
-        private async Task InsertDocumentForVersionRange(Document2 document, VersionRange versionRange)
-        {
-            await
-                dbConnection.Execute(
-                    @"INSERT INTO Document(DocumentId, Title, Description, Content, Language, VersionRangeId)
-                                                    VALUES(@DocumentId, @Title, @Description, @Content, @Language, @VersionRangeId);",
-                    new
-                    {
-                        DocumentId = document.DocumentId,
-                        Title = document.Title,
-                        Description = document.Description,
-                        Content = document.Content,
-                        Language = document.Language,
-                        VersionRangeId = versionRange.VersionRangeId
-                    });
         }
 
         protected async Task InsertProductVersion(string versionId, string versionName, string release, string productId)
