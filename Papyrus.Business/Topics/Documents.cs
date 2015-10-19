@@ -6,27 +6,26 @@ namespace Papyrus.Business.Topics
 {
     public class Documents : IEnumerable
     {
-        private Dictionary<string, Document2> documents;
-        private List<Document2> documents2;
+        private List<Document2> documents;
 
         public Documents()
         {
-            documents2 = new List<Document2>();
+            documents = new List<Document2>();
         }
 
         public void Add(Document2 document)
         {
-            documents2.Add(document);
+            documents.Add(document);
         }
 
         public Document2 this[string language]
         {
-            get { return documents2.FirstOrDefault(d => d.Language == language); }
+            get { return documents.FirstOrDefault(d => d.Language == language); }
         }
 
         public IEnumerator<Document2> GetEnumerator()
         {
-            return documents2.GetEnumerator();
+            return documents.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
