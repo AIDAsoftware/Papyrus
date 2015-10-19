@@ -4,9 +4,6 @@
 - Rename Product column name by ProductId in Version table.
 - Change codebehind logic and move to ViewModel replacing code behind event methods by commands.
 - Extract DocumentService.ExportDocumentsToFolder to another specialized class 
-- Add Language Property to Documents
 - Make Document and VersionRange value objects.
-- GetAllTopicsToList -> GetAllTopicsSummary
-- TopicToList -> TopicSummary
 - Divide Repositories
 - Divide private Parse method (SRP)
