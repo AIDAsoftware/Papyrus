@@ -51,7 +51,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         {
             var versionRange = new VersionRange(fromVersionId: FirstVersionId, toVersionId: FirstVersionId).WithId("AnyVersionRangeId");
             anyTopic.AddVersionRange(versionRange);
-            versionRange.AddDocument("es-ES",
+            versionRange.AddDocument(
                 new Document2("AnyTitle", "AnyDescription", "AnyContent", "es-ES").WithId("AnyDocumentId")
             );
 

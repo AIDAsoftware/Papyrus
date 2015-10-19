@@ -42,7 +42,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var versionRange = new VersionRange("FirstPapyrusVersionId", "SecondPapyrusVersionId")
                                                 .WithId("VersionRangeId");
             var document = new Document2("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId");
-            versionRange.AddDocument("es-ES", document);
+            versionRange.AddDocument(document);
             topic.AddVersionRange(versionRange);
             await Insert(topic);
 
