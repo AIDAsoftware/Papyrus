@@ -54,26 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Features\Documents\Events.cs" />
-    <Compile Include="Features\Documents\DocumentsGrid.xaml.cs">
-      <DependentUpon>DocumentsGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Features\Documents\DocumentsGridVM.cs" />
-    <Compile Include="Features\Documents\DocumentWindow.xaml.cs">
-      <DependentUpon>DocumentWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Features\Documents\NewDocumentVM.cs" />
     <Compile Include="Features\MainMenu\MainMenuView.xaml.cs">
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Features\Documents\DocumentsGrid.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Features\Documents\DocumentWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Features\Topics\TopicsGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Tests", "Papyrus.Tests\Papyrus.Tests.csproj", "{DE4059F0-5988-4F42-95AB-C8E8899347A8}"
 EndProject
@@ -15,10 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B9B731
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.WebServices", "Papyrus.WebServices\Papyrus.WebServices.csproj", "{DBD8CF65-ADE3-4F15-947F-1C6DEFF7F9C6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Web", "Papyrus.Web\Papyrus.Web.csproj", "{5CDB50C0-478B-45DF-9139-AEFAC278C3BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Infrastructure.Core", "Papyrus.Infrastructure.Core\Papyrus.Infrastructure.Core.csproj", "{EFA054E5-3390-41F7-A683-C74EF1B0F384}"
 EndProject
@@ -42,14 +38,6 @@ Global
 		{72C8FCFC-7BA4-4D3D-8A83-6523653B6AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72C8FCFC-7BA4-4D3D-8A83-6523653B6AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72C8FCFC-7BA4-4D3D-8A83-6523653B6AF6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DBD8CF65-ADE3-4F15-947F-1C6DEFF7F9C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBD8CF65-ADE3-4F15-947F-1C6DEFF7F9C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DBD8CF65-ADE3-4F15-947F-1C6DEFF7F9C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DBD8CF65-ADE3-4F15-947F-1C6DEFF7F9C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5CDB50C0-478B-45DF-9139-AEFAC278C3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5CDB50C0-478B-45DF-9139-AEFAC278C3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5CDB50C0-478B-45DF-9139-AEFAC278C3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5CDB50C0-478B-45DF-9139-AEFAC278C3BB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EFA054E5-3390-41F7-A683-C74EF1B0F384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EFA054E5-3390-41F7-A683-C74EF1B0F384}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFA054E5-3390-41F7-A683-C74EF1B0F384}.Release|Any CPU.ActiveCfg = Release|Any CPU

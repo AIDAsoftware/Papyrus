@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using Papyrus.Business.Topics;
-using Papyrus.Desktop.Features.Documents;
 
 namespace Papyrus.Desktop.Features.Topics {
     public class TopicsGridVM
@@ -39,11 +38,4 @@ namespace Papyrus.Desktop.Features.Topics {
             await LoadAllTopics();
         }
     }
-
-    public class DesignModeDocumentsGridVM : DocumentsGridVM {
-        public DesignModeDocumentsGridVM()
-        {
-        }
-    }
-
 }
