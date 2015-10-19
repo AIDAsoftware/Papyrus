@@ -22,6 +22,11 @@ namespace Papyrus.Business.Topics
             Documents.Add(document);
         }
 
+        public void AddDocument(Document2 document)
+        {
+            Documents.Add(document);
+        }
+
         public Document2 GetDocumentIn(string language)
         {
             return Documents[language];
