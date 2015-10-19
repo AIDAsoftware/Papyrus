@@ -81,7 +81,7 @@
     <Compile Include="Topics\TopicService.cs" />
     <Compile Include="Topics\VersionRange.cs" />
     <Compile Include="Topics\VersionRanges.cs" />
-    <Compile Include="Topics\TopicToList.cs" />
+    <Compile Include="Topics\TopicSummary.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Papyrus.Infrastructure.Core\Papyrus.Infrastructure.Core.csproj">

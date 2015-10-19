@@ -50,10 +50,10 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             topic.AddVersionRange(secondVersionRange);
             await Insert(topic);
 
-            var topicsToList = await topicRepository.GetAllTopicsToList();
+            var topicSummaries = await topicRepository.GetAllTopicsSummaries();
 
-            topicsToList.Should().HaveCount(1);
-            topicsToList.Should().Contain(t => t.TopicId == "AnyTopicId" && 
+            topicSummaries.Should().HaveCount(1);
+            topicSummaries.Should().Contain(t => t.TopicId == "AnyTopicId" && 
                                                t.ProductName == "Opportunity" &&
                                                t.VersionName == "2.0" &&
                                                t.LastDocumentTitle == "Llamadas Primer mantenimiento" &&

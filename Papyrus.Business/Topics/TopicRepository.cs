@@ -8,7 +8,7 @@ namespace Papyrus.Business.Topics
     {
         Task Save(Topic topic);
         Task Update(Topic topic);
-        Task<List<TopicToList>> GetAllTopicsToList();
+        Task<List<TopicSummary>> GetAllTopicsSummaries();
         Task<EditableTopic> GetEditableTopicById(string topicId);
     }
 }
