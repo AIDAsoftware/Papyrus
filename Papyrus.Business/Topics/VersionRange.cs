@@ -17,11 +17,6 @@ namespace Papyrus.Business.Topics
             Documents = new Documents();
         }
 
-        public void AddDocument(string language, Document2 document)
-        {
-            Documents.Add(document);
-        }
-
         public void AddDocument(Document2 document)
         {
             Documents.Add(document);
