@@ -23,7 +23,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Row="1">
-            <Button Click="RefreshButton_OnClick" MaxWidth="150">Refresh grid</Button>
+            <Button Command="{Binding RefreshTopics}" MaxWidth="150">Refresh grid</Button>
             <Button Click="ExportToFolderButton_OnClick"  MaxWidth="150">Export to folder</Button>
         </StackPanel>
     </Grid>
