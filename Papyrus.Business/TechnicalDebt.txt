@@ -1,9 +1,8 @@
 - Dont return nulls from repositories.
 - Adapt Query<Document, DocumentIdentity> to simplify repositories read methods.
 - Implement CQS (DocumentToList).
-- Rename Product column name by ProductId in Version table.
 - Change codebehind logic and move to ViewModel replacing code behind event methods by commands.
 - Extract DocumentService.ExportDocumentsToFolder to another specialized class 
 - Make Document and VersionRange value objects.
 - Divide Repositories
-- Divide private Parse method (SRP)
+- Remove Product Reference from TopicRepository
