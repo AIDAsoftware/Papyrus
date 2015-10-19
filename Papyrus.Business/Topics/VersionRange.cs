@@ -17,12 +17,12 @@ namespace Papyrus.Business.Topics
             Documents = new Documents();
         }
 
-        public void AddDocument(Document2 document)
+        public void AddDocument(Document document)
         {
             Documents.Add(document);
         }
 
-        public Document2 GetDocumentIn(string language)
+        public Document GetDocumentIn(string language)
         {
             return Documents[language];
         }

@@ -105,7 +105,7 @@ namespace Papyrus.Desktop.Features.Topics
             var VersionIds = await productRepository
                 .GetFullVersionRangeForProduct(EditableTopic.Product.ProductId);
             var versionRange = new VersionRange(VersionIds.FirstVersionId, VersionIds.LatestVersionId);
-            versionRange.AddDocument(new Document2(CurrentDocument.Title, CurrentDocument.Description, CurrentDocument.Content, "es-ES"));
+            versionRange.AddDocument(new Document(CurrentDocument.Title, CurrentDocument.Description, CurrentDocument.Content, "es-ES"));
             topic.AddVersionRange(versionRange);
             if (string.IsNullOrEmpty(topicId))
             {

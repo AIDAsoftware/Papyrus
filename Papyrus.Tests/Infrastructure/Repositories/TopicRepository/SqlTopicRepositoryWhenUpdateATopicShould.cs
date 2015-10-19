@@ -47,7 +47,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topic = new Topic("PapyrusId").WithId("TopicId");
             var versionRange = new VersionRange("FirstPapyrusVersionId", "SecondPapyrusVersionId")
                                                 .WithId("VersionRangeId");
-            var document = new Document2("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId");
+            var document = new Document("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId");
             versionRange.AddDocument(document);
             topic.AddVersionRange(versionRange);
             await sqlInserter.Insert(topic);
@@ -55,7 +55,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topicToUpdate = new Topic("PapyrusId").WithId("TopicId");
             await new SqlTopicRepository(dbConnection).Update(topicToUpdate);
 
-            var oldDocument = (await dbConnection.Query<Document2>(@"SELECT Title, Description, Content, Language  
+            var oldDocument = (await dbConnection.Query<Document>(@"SELECT Title, Description, Content, Language  
                                             FROM Document 
                                             WHERE DocumentId = @DocumentId",
                                             new { DocumentId = "DocumentId" })).FirstOrDefault();
@@ -86,11 +86,11 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             await sqlInserter.Insert(topic);
 
             var versionRange = new VersionRange("FirstVersion", "SecondVersion").WithId("VersionRangeId");
-            versionRange.AddDocument(new Document2("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId"));
+            versionRange.AddDocument(new Document("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId"));
             topic.AddVersionRange(versionRange);
             await new SqlTopicRepository(dbConnection).Update(topic);
 
-            var newVersionRange = (await dbConnection.Query<Document2>(@"SELECT Title, Description, Content, Language  
+            var newVersionRange = (await dbConnection.Query<Document>(@"SELECT Title, Description, Content, Language  
                                                     FROM Document 
                                                     WHERE VersionRangeId = @VersionRangeId",
                                                     new { VersionRangeId = "VersionRangeId" })).FirstOrDefault();

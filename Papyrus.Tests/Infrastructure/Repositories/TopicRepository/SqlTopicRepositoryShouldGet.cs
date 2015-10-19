@@ -44,8 +44,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topic = new Topic(ProductId).WithId("AnyTopicId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("AnyRangeId");
             var secondVersionRange = new VersionRange(SecondVersionId, SecondVersionId).WithId("AnotherRangeId");
-            firstVersionRange.AddDocument(new Document2("AnyTitle", "AnyDescription", "AnyContent", "es-ES").WithId("AnyDocumentId"));
-            secondVersionRange.AddDocument(new Document2("Llamadas Primer mantenimiento", "Explicación", "AnyContent", "es-ES").WithId("AnotherDocumentId"));
+            firstVersionRange.AddDocument(new Document("AnyTitle", "AnyDescription", "AnyContent", "es-ES").WithId("AnyDocumentId"));
+            secondVersionRange.AddDocument(new Document("Llamadas Primer mantenimiento", "Explicación", "AnyContent", "es-ES").WithId("AnotherDocumentId"));
             topic.AddVersionRange(firstVersionRange);
             topic.AddVersionRange(secondVersionRange);
             await sqlInserter.Insert(topic);
@@ -95,7 +95,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         {
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
-            var document = new Document2("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId");
+            var document = new Document("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId");
             firstVersionRange.AddDocument(document);
             topic.AddVersionRange(firstVersionRange);
             await sqlInserter.Insert(topic);

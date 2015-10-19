@@ -44,7 +44,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             }
         }
 
-        private async Task InsertDocumentForVersionRange(Document2 document, VersionRange versionRange)
+        private async Task InsertDocumentForVersionRange(Document document, VersionRange versionRange)
         {
             await dbConnection.Execute(
                 @"INSERT INTO Document(DocumentId, Title, Description, Content, Language, VersionRangeId)

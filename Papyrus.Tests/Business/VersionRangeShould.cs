@@ -10,19 +10,19 @@ namespace Papyrus.Tests.Business
     {
         private string secondVersion;
         private string fourthVersion;
-        private Document2 spanishDocument;
-        private Document2 englishDocument;
+        private Document spanishDocument;
+        private Document englishDocument;
 
         [SetUp]
         public void InitializeDocuments()
         {
-            spanishDocument = new Document2(
+            spanishDocument = new Document(
                 title: "Título",
                 description: "Descripción",
                 content: "Contenido",
                 language: "es-ES"
             );
-            englishDocument = new Document2(
+            englishDocument = new Document(
                 title: "Title",
                 description: "Description",
                 content: "Content",

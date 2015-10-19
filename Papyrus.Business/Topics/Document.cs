@@ -3,7 +3,7 @@ using System.Dynamic;
 
 namespace Papyrus.Business.Topics
 {
-    public class Document2
+    public class Document
     {
         public string Title { get; }
         public string Description { get; }
@@ -11,7 +11,7 @@ namespace Papyrus.Business.Topics
         public string DocumentId { get; private set; }
         public string Language { get; }
 
-        public Document2(string title, string description, string content, string language)
+        public Document(string title, string description, string content, string language)
         {
             Title = title;
             Description = description;
@@ -19,7 +19,7 @@ namespace Papyrus.Business.Topics
             Language = language;
         }
 
-        public Document2 WithId(string id)
+        public Document WithId(string id)
         {
             DocumentId = id;
             return this;
