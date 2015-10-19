@@ -105,10 +105,11 @@ namespace Papyrus.Business.Topics
                                                     FROM VersionRange
                                                     WHERE TopicId = @TopicId", new {TopicId = topicId})).ToList();
             await AddDocumentsForEachVersionRangeIn(versionRanges);
-            return new ObservableCollection<EditableVersionRange>(MapToEditableVersionRange(versionRanges));
+            return new ObservableCollection<EditableVersionRange>(
+                MapToEditableVersionRange(versionRanges));
         }
 
-        private async Task AddDocumentsForEachVersionRangeIn(List<dynamic> versionRanges)
+        private async Task AddDocumentsForEachVersionRangeIn(IEnumerable<dynamic> versionRanges)
         {
             foreach (var versionRange in versionRanges)
             {
@@ -116,7 +117,7 @@ namespace Papyrus.Business.Topics
             }
         }
 
-        private IList<EditableVersionRange> MapToEditableVersionRange(IEnumerable<dynamic> versionRanges)
+        private IEnumerable<EditableVersionRange> MapToEditableVersionRange(IEnumerable<dynamic> versionRanges)
         {
             return versionRanges.Select(versionRange => 
                 new EditableVersionRange(
