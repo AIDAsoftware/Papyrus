@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="Papyrus.Desktop.Features.Topics.VersionRangesUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:topics="clr-namespace:Papyrus.Desktop.Features.Topics"
+             mc:Ignorable="d" 
+             DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}"
+             >
+    <Grid>
+        <TabControl HorizontalAlignment="Left"
+            TabStripPlacement = "Left"
+		    Height="600"
+		    Margin="0,0,0,0"
+		    VerticalAlignment="Top"
+            ItemsSource="{Binding VersionRanges}"
+		    Width="1400">
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <topics:VersionRangeUserControl/>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <Run Text="{Binding FromVersionId}"/>
+                        <Run Text=" -- "/>
+                        <Run Text="{Binding ToVersionId}"/>
+                    </TextBlock>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+        </TabControl>
+    </Grid>
+</UserControl>

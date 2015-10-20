@@ -73,7 +73,7 @@ namespace Papyrus.Desktop.Features.Topics
         {
             EditableTopic = new EditableTopic
             {
-                Product = new DisplayableProduct("", "")
+                Product = new DisplayableProduct()
             };
             CurrentDocument = new EditableDocument();
             await LoadProductsAndLanguages();

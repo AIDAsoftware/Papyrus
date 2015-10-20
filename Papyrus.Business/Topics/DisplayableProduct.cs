@@ -9,12 +9,6 @@ namespace Papyrus.Business.Topics
         public string ProductId { get; set; }
         public string ProductName { get; set; }
 
-        public DisplayableProduct(string productId, string productName)
-        {
-            ProductId = productId;
-            ProductName = productName;
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

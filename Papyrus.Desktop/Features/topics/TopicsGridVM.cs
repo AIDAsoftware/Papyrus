@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Util.Command;
@@ -12,11 +13,13 @@ namespace Papyrus.Desktop.Features.Topics {
 
         public ObservableCollection<TopicSummary> TopicsToList { get; }
         public TopicSummary SelectedTopic { get; set; }
+        public DisplayableProduct SelectedProduct { get; set; }
 
         public TopicsGridVM()
         {
             TopicsToList = new ObservableCollection<TopicSummary>();
             RefreshTopics = RelayAsyncSimpleCommand.Create(LoadAllTopics, CanLoadAllTopics);
+            SelectedProduct = new DisplayableProduct {ProductName = "Opportunity", ProductId = "OpportunityId" };
         }
 
         private bool canLoad;
@@ -39,7 +42,7 @@ namespace Papyrus.Desktop.Features.Topics {
         {
             canLoad = false;
             TopicsToList.Clear();
-            (await topicRepository.GetAllTopicsSummaries()).ForEach(topic => TopicsToList.Add(topic));
+            (await topicRepository.GetAllTopicsSummaries()).Where(t => t.ProductName == SelectedProduct.ProductName).ToList().ForEach(topic => TopicsToList.Add(topic));
             canLoad = true;
         }
 

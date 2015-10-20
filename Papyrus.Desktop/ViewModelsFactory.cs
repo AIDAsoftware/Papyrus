@@ -8,7 +8,7 @@ using Papyrus.Infrastructure.Core.Database;
 namespace Papyrus.Desktop {
     public static class ViewModelsFactory {
         public static MainMenuVM MainMenu() {
-            return new MainMenuVM(ServicesFactory.Product());
+            return new MainMenuVM(RepositoriesFactory.Product());
         }
 
         public static TopicsGridVM TopicsGrid()

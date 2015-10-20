@@ -65,6 +65,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Features\Topics\VersionRangesUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Topics\VersionRangeUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -80,6 +88,13 @@
     <Compile Include="Features\Topics\TopicVM.cs" />
     <Compile Include="Features\Topics\TopicWindow.xaml.cs">
       <DependentUpon>TopicWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Topics\VersionRangesUserControl.xaml.cs">
+      <DependentUpon>VersionRangesUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Topics\VersionRangesVM.cs" />
+    <Compile Include="Features\Topics\VersionRangeUserControl.xaml.cs">
+      <DependentUpon>VersionRangeUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

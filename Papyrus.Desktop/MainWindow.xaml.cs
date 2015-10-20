@@ -1,23 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Papyrus.Infrastructure.Core.DomainEvents;
 
-namespace Papyrus.Desktop {
-    public partial class MainWindow : Window {
-        public MainWindow() {
+using Papyrus.Business.Topics;
+using Papyrus.Desktop.Features.MainMenu;
+using Papyrus.Desktop.Features.Topics;
+
+namespace Papyrus.Desktop
+{
+    public partial class MainWindow : Window
+    {
+        private ObservableCollection<DisplayableProduct> Products;
+
+        public MainWindow()
+        {
             InitializeComponent();
+            ViewModel = new MainWindowVM()
+            {
+                MainMenuVM = ViewModelsFactory.MainMenu(),
+                TopicsGridVM = ViewModelsFactory.TopicsGrid()
+            };
         }
+
+        public MainWindowVM ViewModel { get; set; }
+    }
+
+    public class MainWindowVM
+    {
+        public MainMenuVM MainMenuVM { get; set; }
+
+        public TopicsGridVM TopicsGridVM { get; set; }
     }
 }

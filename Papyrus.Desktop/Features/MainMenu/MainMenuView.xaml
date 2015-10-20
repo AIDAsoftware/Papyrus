@@ -13,8 +13,8 @@
             <Label>Products</Label>
             <ComboBox MinWidth="100" 
                       ItemsSource="{Binding Products, Mode=OneWay}"
-                      DisplayMemberPath="Name" 
-                      SelectedValuePath="Id">
+                      DisplayMemberPath="ProductName" 
+                      SelectedValuePath="ProductId">
             </ComboBox>
         </StackPanel>
     </Grid>
