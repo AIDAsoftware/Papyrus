@@ -1,8 +1,8 @@
-- Dont return nulls from repositories.
-- Adapt Query<Document, DocumentIdentity> to simplify repositories read methods.
 - Implement CQS (DocumentToList).
 - Change codebehind logic and move to ViewModel replacing code behind event methods by commands.
+- Adapt Query<Document, DocumentIdentity> to simplify repositories read methods.
 - Extract DocumentService.ExportDocumentsToFolder to another specialized class 
 - Make Document and VersionRange value objects.
 - Divide Repositories
 - Remove Product Reference from TopicRepository
+- Dont return nulls from repositories.
