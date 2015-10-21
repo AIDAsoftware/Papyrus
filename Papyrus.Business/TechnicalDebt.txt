@@ -6,3 +6,5 @@
 - Divide Repositories
 - Remove Product Reference from TopicRepository
 - Dont return nulls from repositories.
+- Rethink about data model (Data base)
+- Organize namespaces
