@@ -6,7 +6,7 @@ using Papyrus.Business.Topics;
 
 namespace Papyrus.Desktop.Features.Topics
 {
-    public class EditableTopicToVmConverter : IValueConverter
+    public class VersionRangesToVmConverter : IValueConverter
     {
         public object Convert(object value, Type targetType,
             object parameter, CultureInfo culture)

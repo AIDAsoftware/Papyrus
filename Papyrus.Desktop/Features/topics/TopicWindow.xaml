@@ -8,7 +8,7 @@
         Title="TopicWindow"
         DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Window.Resources>
-        <local:EditableTopicToVmConverter x:Key="EditableTopicToVmConverter" />
+        <local:VersionRangesToVmConverter x:Key="VersionRangesToVmConverter" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -53,7 +53,7 @@
             <Button Width="Auto" HorizontalAlignment="Right" Click="Save_OnClick" Content="Save"/>
         </StackPanel>
 
-        <local:VersionRangesUserControl HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Height="NaN" Width="NaN" Grid.RowSpan="2" DataContext="{Binding EditableTopic.VersionRanges,Converter={StaticResource EditableTopicToVmConverter}}"/>
+        <local:VersionRangesUserControl HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Height="NaN" Width="NaN" Grid.RowSpan="2" DataContext="{Binding EditableTopic.VersionRanges,Converter={StaticResource VersionRangesToVmConverter}}"/>
 
     </Grid>
 </Window>
