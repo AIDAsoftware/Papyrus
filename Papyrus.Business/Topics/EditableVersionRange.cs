@@ -12,5 +12,15 @@ namespace Papyrus.Business.Topics
         {
             Documents = new ObservableCollection<EditableDocument>();
         }
+
+        public void ToVersionRange(Topic topic)
+        {
+            var versionRange = new VersionRange(FromVersionId, ToVersionId);
+            topic.AddVersionRange(versionRange);
+            foreach (var editableDocument in Documents)
+            {
+                editableDocument.ToDocument(versionRange);
+            }
+        }
     }
 }

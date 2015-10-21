@@ -103,6 +103,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\EditableTopicShould.cs" />
     <Compile Include="Business\TopicServiceShould.cs" />
     <Compile Include="Business\VersionRangeShould.cs" />
     <Compile Include="Infrastructure\Database\DatabaseConnectionShould.cs" />
