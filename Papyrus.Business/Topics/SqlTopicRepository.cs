@@ -124,7 +124,11 @@ namespace Papyrus.Business.Topics
                 FromVersionId = versionRange.FromVersionId,
                 ToVersionId = versionRange.ToVersionId,
             };
-            editableVersionRange.Documents.AddRange(versionRange.Documents);
+
+            foreach (var editableDocument in versionRange.Documents)
+            {
+                editableVersionRange.Documents.Add(editableDocument);
+            }
             return editableVersionRange;
         }
 

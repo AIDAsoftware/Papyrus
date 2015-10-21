@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Papyrus.Business.Topics
 {
@@ -6,11 +6,11 @@ namespace Papyrus.Business.Topics
     {
         public string FromVersionId { get; set; }
         public string ToVersionId { get; set; }
-        public List<EditableDocument> Documents { get; private set; }
+        public ObservableCollection<EditableDocument> Documents { get; private set; }
 
         public EditableVersionRange()
         {
-            Documents = new List<EditableDocument>();
+            Documents = new ObservableCollection<EditableDocument>();
         }
     }
 }
