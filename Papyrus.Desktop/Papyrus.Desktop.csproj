@@ -94,9 +94,11 @@
       <DependentUpon>VersionRangesUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Topics\VersionRangesVM.cs" />
+    <Compile Include="Features\Topics\VersionRangeToVmConverter.cs" />
     <Compile Include="Features\Topics\VersionRangeUserControl.xaml.cs">
       <DependentUpon>VersionRangeUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\Topics\VersionRangeVM.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

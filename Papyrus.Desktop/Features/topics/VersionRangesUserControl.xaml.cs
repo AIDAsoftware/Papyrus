@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using Papyrus.Business.Topics;
 
 namespace Papyrus.Desktop.Features.Topics
 {
@@ -14,14 +15,6 @@ namespace Papyrus.Desktop.Features.Topics
         public VersionRangesUserControl()
         {
             InitializeComponent();
-
-            DataContext = new VersionRangesVM();
-            this.Loaded += VersionRangesUserControl_Loaded;
-        }
-
-        private void VersionRangesUserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Initialize();
         }
     }
 }

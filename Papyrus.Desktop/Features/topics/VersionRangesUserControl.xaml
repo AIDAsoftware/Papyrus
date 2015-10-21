@@ -4,22 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:topics="clr-namespace:Papyrus.Desktop.Features.Topics"
-             mc:Ignorable="d" 
-             DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}"
-             >
+             xmlns:topics1="clr-namespace:Papyrus.Business.Topics;assembly=Papyrus.Business"
+             mc:Ignorable="d" d:DataContext="{d:DesignData SampleVM}">
+    <UserControl.Resources>
+        <topics:VersionRangeToVmConverter x:Key="VersionRangeToVmConverter" />
+    </UserControl.Resources>
     <Grid>
         <TabControl HorizontalAlignment="Left"
-            TabStripPlacement = "Left"
-		    Height="600"
-		    Margin="0,0,0,0"
-		    VerticalAlignment="Top"
-            ItemsSource="{Binding VersionRanges}"
-		    Width="1400">
-            <TabControl.ContentTemplate>
-                <DataTemplate>
-                    <topics:VersionRangeUserControl/>
-                </DataTemplate>
-            </TabControl.ContentTemplate>
+                TabStripPlacement = "Left"
+		        Margin="0,0,0,0"
+		        VerticalAlignment="Top"
+                ItemsSource="{Binding VersionRanges}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>
@@ -29,6 +24,12 @@
                     </TextBlock>
                 </DataTemplate>
             </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate DataType="topics1:EditableVersionRange">
+                    <topics:VersionRangeUserControl Background="Purple" Height="300" Width="300" DataContext="{Binding Converter={StaticResource VersionRangeToVmConverter}}"/>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
         </TabControl>
     </Grid>
 </UserControl>
+                                                                          
