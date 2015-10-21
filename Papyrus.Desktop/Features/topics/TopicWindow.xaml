@@ -11,49 +11,6 @@
         <local:VersionRangesToVmConverter x:Key="VersionRangesToVmConverter" />
     </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <StackPanel Margin="20" Grid.Row="0">
-            <Label  Height="25" Content="Document Creation" Background="LightSkyBlue" />
-            <Separator Height="5"/>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Margin="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Content="Product" Grid.Row="0"/>
-                    <ComboBox Grid.Column="1" ItemsSource="{Binding Products}" DisplayMemberPath="ProductName" 
-						SelectedValue="{Binding EditableTopic.Product}"/>
-                </Grid>
-                <Grid Grid.Row="1" Margin="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Content="Language" Grid.Column="0"/>
-                    <ComboBox Grid.Column="1" ItemsSource="{Binding Languages}" SelectedValue="{Binding SelectedLanguage}"/>
-                </Grid>
-            </Grid>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Margin="40">
-            <Label Content="Title"/>
-            <TextBox x:Name="TitleTextBox" Text="{Binding CurrentDocument.Title}"/>
-            <Label Content="Description"/>
-            <TextBox x:Name="DescriptionTextBox" Text="{Binding CurrentDocument.Description}"/>
-            <Label Content="Content"/>
-            <TextBox AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" MinLines="5" x:Name="ContentTextBox" 
-				Text="{Binding CurrentDocument.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Width="Auto" HorizontalAlignment="Right" Click="Save_OnClick" Content="Save"/>
-        </StackPanel>
-
         <local:VersionRangesUserControl HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Height="NaN" Width="NaN" Grid.RowSpan="2" DataContext="{Binding EditableTopic.VersionRanges,Converter={StaticResource VersionRangesToVmConverter}}"/>
-
     </Grid>
 </Window>
