@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using Papyrus.Business.Topics;
 
 namespace Papyrus.Desktop.Features.Topics
@@ -10,12 +9,12 @@ namespace Papyrus.Desktop.Features.Topics
 
         public VersionRangesVM()
         {
-            VersionRanges = new ObservableCollection<EditableVersionRange>
-            {
-                new EditableVersionRange {FromVersionId = "1", ToVersionId = "2"},
-                new EditableVersionRange {FromVersionId = "3", ToVersionId = "3"},
-                new EditableVersionRange {FromVersionId = "4", ToVersionId = "7"}
-            };
+            VersionRanges = new ObservableCollection<EditableVersionRange>();
+        }
+
+        public VersionRangesVM(ObservableCollection<EditableVersionRange> versionRanges)
+        {
+            VersionRanges = versionRanges;
         }
 
         public void Initialize()

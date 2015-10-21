@@ -81,6 +81,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Features\Topics\EditableTopicToVmConverter.cs" />
     <Compile Include="Features\Topics\TopicsGrid.xaml.cs">
       <DependentUpon>TopicsGrid.xaml</DependentUpon>
     </Compile>
