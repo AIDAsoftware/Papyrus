@@ -36,9 +36,8 @@ namespace Papyrus.Desktop
 
         public async Task<EditableTopic> PrepareNewDocument()
         {
-            var fullVersionRange = await productRepository.GetFullVersionRangeForProduct(SelectedProduct.ProductId);
-            var editableVersionRange = await DefaultVersionRange(fullVersionRange);
-            var versionRanges = new ObservableCollection<EditableVersionRange> {editableVersionRange};
+            var fullVersionRange = await DefaultVersionRange();
+            var versionRanges = new ObservableCollection<EditableVersionRange> {fullVersionRange};
             return new EditableTopic
             {
                 Product = SelectedProduct,
@@ -46,16 +45,22 @@ namespace Papyrus.Desktop
             };
         }
 
-        private async Task<EditableVersionRange> DefaultVersionRange(FullVersionRange fullVersionRange)
+        private async Task<EditableVersionRange> DefaultVersionRange()
         {
+            var fullVersionRange = await productRepository.GetFullVersionRangeForProduct(SelectedProduct.ProductId);
             var editableVersionRange = new EditableVersionRange
             {
                 FromVersion = await productRepository.GetVersion(fullVersionRange.FirstVersionId),
                 ToVersion = await productRepository.GetVersion(fullVersionRange.LatestVersionId)
             };
+            AddDefaultLanguages(editableVersionRange);
+            return editableVersionRange;
+        }
+
+        private static void AddDefaultLanguages(EditableVersionRange editableVersionRange)
+        {
             editableVersionRange.Documents.Add(new EditableDocument {Language = "es-ES"});
             editableVersionRange.Documents.Add(new EditableDocument {Language = "en-GB"});
-            return editableVersionRange;
         }
     }
 }
