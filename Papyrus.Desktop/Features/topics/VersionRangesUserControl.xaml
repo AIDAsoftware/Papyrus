@@ -11,22 +11,24 @@
     </UserControl.Resources>
     <Grid>
         <TabControl HorizontalAlignment="Left"
-                TabStripPlacement = "Left"
-		        Margin="0,0,0,0"
-		        VerticalAlignment="Top"
-                ItemsSource="{Binding VersionRanges}">
+                    TabStripPlacement = "Left"
+		            Margin="0,0,0,0"
+		            VerticalAlignment="Top"
+                    ItemsSource="{Binding VersionRanges}"
+                    MinWidth="360"
+                    MinHeight="300">
             <TabControl.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="topics1:EditableVersionRange">
                     <TextBlock>
-                        <Run Text="{Binding FromVersionId}"/>
+                        <Run Text="{Binding FromVersion.VersionName}"/>
                         <Run Text=" -- "/>
-                        <Run Text="{Binding ToVersionId}"/>
+                        <Run Text="{Binding ToVersion.VersionName}"/>
                     </TextBlock>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate DataType="topics1:EditableVersionRange">
-                    <topics:VersionRangeUserControl Background="Purple" Height="300" Width="300" DataContext="{Binding Converter={StaticResource VersionRangeToVmConverter}}"/>
+                    <topics:VersionRangeUserControl Height="300" Width="300" DataContext="{Binding Converter={StaticResource VersionRangeToVmConverter}}"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>

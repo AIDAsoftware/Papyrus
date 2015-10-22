@@ -6,15 +6,14 @@
              xmlns:topics="clr-namespace:Papyrus.Business.Topics;assembly=Papyrus.Business"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignData VersionRangeVM}">
-    <Grid Background="Blue" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
         <TabControl HorizontalAlignment="Left"
-                            Background="Chartreuse"
                             TabStripPlacement = "Top"
-		                    Height="300"
+		                    MinHeight="300"
 		                    Margin="0,0,0,0"
 		                    VerticalAlignment="Top"
                             ItemsSource="{Binding VersionRange.Documents}"
-		                    Width="300">
+		                    MinWidth="300">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Language}"></TextBlock>
