@@ -101,19 +101,15 @@ namespace Papyrus.Business.Topics
         private async Task<ObservableCollection<EditableVersionRange>> GetVersionRangesOf(string topicId)
         {
             var versionRanges = (await connection
-                .Query<dynamic>(@"SELECT VR.FromVersionId, FromVersions.VersionName FromVersionName, FromVersions.Release FromRelease,
-                                         VR.ToVersionId, ToVersions.VersionName ToVersionName, ToVersions.Release ToRelease, VR.VersionRangeId 
+                .Query<dynamic>(@"SELECT VR.FromVersionId, ProductVersion.VersionName FromVersionName, ProductVersion.Release FromRelease,
+                                        VR.ToVersionId, ToVersions.VersionName ToVersionName, ToVersions.Release ToRelease, VR.VersionRangeId 
                                     from VersionRange VR
-                                    join (
-	                                    select VersionRangeId, FromVersionId, ProductVersion.VersionName, ProductVersion.Release
-	                                    from VersionRange
-	                                    join ProductVersion on FromVersionId = ProductVersion.VersionId) FromVersions
-                                    on VR.FromVersionId = FromVersions.FromVersionId
+                                    join ProductVersion on VR.FromVersionId = ProductVersion.VersionId
                                     join (
 	                                    select VersionRangeId, ToVersionId, ProductVersion.VersionName, ProductVersion.Release
 	                                    from VersionRange
 	                                    join ProductVersion on ToVersionId = ProductVersion.VersionId) ToVersions
-                                    on VR.ToVersionId = ToVersions.ToVersionId AND ToVersions.VersionRangeId = FromVersions.VersionRangeId
+                                    on VR.ToVersionId = ToVersions.ToVersionId AND ToVersions.VersionRangeId = VR.VersionRangeId
                                     where VR.TopicId = @TopicId", 
                                 new {TopicId = topicId})).ToList();
             await AddDocumentsForEachVersionRangeIn(versionRanges);
