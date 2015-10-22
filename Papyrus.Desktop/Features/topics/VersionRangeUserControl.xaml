@@ -15,7 +15,7 @@
                             ItemsSource="{Binding VersionRange.Documents}"
 		                    MinWidth="300">
             <TabControl.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="topics:EditableDocument">
                     <TextBlock Text="{Binding Language}"></TextBlock>
                 </DataTemplate>
             </TabControl.ItemTemplate>
