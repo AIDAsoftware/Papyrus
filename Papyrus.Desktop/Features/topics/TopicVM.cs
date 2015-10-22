@@ -101,12 +101,7 @@ namespace Papyrus.Desktop.Features.Topics
 
         public async Task SaveTopic()
         {
-            var topic = new Topic(EditableTopic.Product.ProductId);
-            var VersionIds = await productRepository
-                .GetFullVersionRangeForProduct(EditableTopic.Product.ProductId);
-            var versionRange = new VersionRange(VersionIds.FirstVersionId, VersionIds.LatestVersionId);
-            versionRange.AddDocument(new Document(CurrentDocument.Title, CurrentDocument.Description, CurrentDocument.Content, "es-ES"));
-            topic.AddVersionRange(versionRange);
+            var topic = EditableTopic.ToTopic();
             if (string.IsNullOrEmpty(topicId))
             {
                 await topicService.Create(topic);

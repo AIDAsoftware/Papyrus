@@ -17,14 +17,15 @@ namespace Papyrus.Business.Topics
         public async Task Create(Topic topic)
         {
             ValidateToSave(topic);
-            topic.GenerateAutomaticId();
+            topic.GenerateRecursiveAutomaticIdIfNeeded();
             await TopicRepository.Save(topic);
         }
 
         public async Task Update(Topic topic)
         {
             ValidateToUpdate(topic);
-            TopicRepository.Update(topic);
+            topic.GenerateRecursiveAutomaticIdIfNeeded();
+            await TopicRepository.Update(topic);
         }
 
         private static void ValidateToUpdate(Topic topic)

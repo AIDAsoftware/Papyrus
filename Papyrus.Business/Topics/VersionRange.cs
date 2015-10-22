@@ -33,12 +33,12 @@ namespace Papyrus.Business.Topics
             return this;
         }
 
-        public void GenerateAutomaticId()
+        public void GenerateRecursiveAutomaticId()
         {
             VersionRangeId = Guid.NewGuid().ToString();
-            foreach (var document2 in Documents)
+            foreach (var document in Documents)
             {
-                document2.GenerateAutomaticId();
+                document.GenerateAutomaticId();
             }
         }
     }

@@ -35,12 +35,15 @@ namespace Papyrus.Business.Topics
             VersionRanges.Add(versionRange);
         }
 
-        public void GenerateAutomaticId()
+        public void GenerateRecursiveAutomaticIdIfNeeded()
         {
-            TopicId = Guid.NewGuid().ToString();
+            if (string.IsNullOrWhiteSpace(TopicId))
+            {
+                TopicId = Guid.NewGuid().ToString();
+            }
             foreach (var versionRange in VersionRanges)
             {
-                versionRange.GenerateAutomaticId();
+                versionRange.GenerateRecursiveAutomaticId();
             }
         }
 
