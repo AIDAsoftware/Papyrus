@@ -1,16 +1,11 @@
 ﻿using System.Configuration;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
-using Papyrus.Desktop.Features.MainMenu;
 using Papyrus.Desktop.Features.Topics;
 using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Desktop {
     public static class ViewModelsFactory {
-        public static MainMenuVM MainMenu() {
-            return new MainMenuVM(RepositoriesFactory.Product());
-        }
-
         public static TopicsGridVM TopicsGrid()
         {
             return new TopicsGridVM(RepositoriesFactory.Topic());
@@ -24,6 +19,11 @@ namespace Papyrus.Desktop {
         public static TopicVM UpdateTopic(string topicId)
         {
             return new TopicVM(RepositoriesFactory.Product(), ServicesFactory.Topic(), RepositoriesFactory.Topic(), topicId);
+        }
+
+        public static MainWindowVM MainWindow()
+        {
+            return new MainWindowVM(RepositoriesFactory.Product());
         }
     }
 

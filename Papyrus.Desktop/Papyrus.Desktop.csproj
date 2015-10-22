@@ -54,9 +54,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Features\MainMenu\MainMenuView.xaml.cs">
-      <DependentUpon>MainMenuView.xaml</DependentUpon>
-    </Compile>
     <Page Include="Features\Topics\TopicsGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -103,13 +100,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Features\MainMenu\MainMenuView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Features\MainMenu\MainMenuVM.cs" />
+    <Compile Include="MainWindowVM.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Util\Command\IAsyncCommand.cs" />
     <Compile Include="Util\Command\NotifyTaskCompletion.cs" />
