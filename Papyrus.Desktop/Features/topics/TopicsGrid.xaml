@@ -18,7 +18,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Title" MaxWidth="250" MinWidth="120" Binding="{ Binding Path=LastDocumentTitle }"></DataGridTextColumn>
                 <DataGridTextColumn Header="Description" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=LastDocumentDescription }"></DataGridTextColumn>
-                <DataGridTextColumn Header="Product" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=ProductName }"></DataGridTextColumn>
+                <DataGridTextColumn Header="Product" MaxWidth="140" MinWidth="80" Binding="{ Binding Product.ProductName }"></DataGridTextColumn>
                 <DataGridTextColumn Header="Version" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=VersionName }"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
