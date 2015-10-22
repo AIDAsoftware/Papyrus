@@ -33,5 +33,29 @@ namespace Papyrus.Desktop
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public async Task<EditableTopic> PrepareNewDocument()
+        {
+            var fullVersionRange = await productRepository.GetFullVersionRangeForProduct(SelectedProduct.ProductId);
+            var editableVersionRange = await DefaultVersionRange(fullVersionRange);
+            var versionRanges = new ObservableCollection<EditableVersionRange> {editableVersionRange};
+            return new EditableTopic
+            {
+                Product = SelectedProduct,
+                VersionRanges = versionRanges
+            };
+        }
+
+        private async Task<EditableVersionRange> DefaultVersionRange(FullVersionRange fullVersionRange)
+        {
+            var editableVersionRange = new EditableVersionRange
+            {
+                FromVersion = await productRepository.GetVersion(fullVersionRange.FirstVersionId),
+                ToVersion = await productRepository.GetVersion(fullVersionRange.LatestVersionId)
+            };
+            editableVersionRange.Documents.Add(new EditableDocument {Language = "es-ES"});
+            editableVersionRange.Documents.Add(new EditableDocument {Language = "en-GB"});
+            return editableVersionRange;
+        }
     }
 }

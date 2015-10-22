@@ -22,7 +22,7 @@ namespace Papyrus.Desktop.Features.Topics
             SaveTopic = RelayAsyncSimpleCommand.Create(SaveCurrentTopic, CanSaveTopic);
         }
 
-        public TopicVM(TopicService topicService) : this()
+        private TopicVM(TopicService topicService) : this()
         {
             this.topicService = topicService;
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using Papyrus.Desktop.Features.Topics;
 
 namespace Papyrus.Desktop
 {
@@ -23,8 +24,10 @@ namespace Papyrus.Desktop
             ViewModel.Initialize();
         }
 
-        private void NewTopic_OnClick(object sender, RoutedEventArgs e)
+        private async void NewTopic_OnClick(object sender, RoutedEventArgs e)
         {
+            var topic = await ViewModel.PrepareNewDocument();
+            new TopicWindow(topic).Show();
         }
     }
 }
