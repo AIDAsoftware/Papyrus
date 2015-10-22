@@ -28,11 +28,6 @@ namespace Papyrus.Desktop.Features.Topics
             await ViewModel.Initialize();
         }
 
-        private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            ViewModel.RefreshDocuments();
-        }
-
         private void ExportToFolderButton_OnClick(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
