@@ -11,14 +11,9 @@ namespace Papyrus.Desktop {
             return new TopicsGridVM(RepositoriesFactory.Topic());
         }
 
-        public static TopicVM Topic()
+        public static TopicVM Topic(EditableTopic topic)
         {
-            return new TopicVM(RepositoriesFactory.Product(), ServicesFactory.Topic());
-        }
-
-        public static TopicVM UpdateTopic(string topicId)
-        {
-            return new TopicVM(RepositoriesFactory.Product(), ServicesFactory.Topic(), RepositoriesFactory.Topic(), topicId);
+            return new TopicVM(ServicesFactory.Topic(), topic);
         }
 
         public static MainWindowVM MainWindow()

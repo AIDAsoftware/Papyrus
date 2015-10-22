@@ -55,5 +55,10 @@ namespace Papyrus.Desktop.Features.Topics {
         {
             await LoadAllTopics();
         }
+
+        public async Task<EditableTopic> GetEditableTopicById(string topicId)
+        {
+            return await topicRepository.GetEditableTopicById(topicId);
+        }
     }
 }

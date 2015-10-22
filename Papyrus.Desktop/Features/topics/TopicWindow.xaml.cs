@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using Papyrus.Business.Topics;
 
 namespace Papyrus.Desktop.Features.Topics
 {
@@ -9,25 +11,11 @@ namespace Papyrus.Desktop.Features.Topics
             get { return (TopicVM)DataContext; }
         }
 
-        public TopicWindow()
+        public TopicWindow(EditableTopic topic)
         {
             InitializeComponent();
-
-            DataContext = ViewModelsFactory.Topic();
-            this.Loaded += TopicWindow_Loaded;
-        }
-
-        public TopicWindow(string topicId)
-        {
-            InitializeComponent();
-
-            DataContext = ViewModelsFactory.UpdateTopic(topicId);
-            this.Loaded += TopicWindow_Loaded;
-        }
-
-        private async void TopicWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            await ViewModel.Initialize();
+            
+            DataContext = ViewModelsFactory.Topic(topic);
         }
     }
 }

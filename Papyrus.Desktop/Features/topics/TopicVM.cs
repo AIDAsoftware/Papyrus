@@ -12,21 +12,8 @@ namespace Papyrus.Desktop.Features.Topics
 {
     public class TopicVM : INotifyPropertyChanged
     {
-        private readonly TopicRepository topicRepository;
-        private readonly string topicId;
-        private readonly ProductRepository productRepository;
         private readonly TopicService topicService;
-        private EditableTopic editableTopic;
-
-        public EditableTopic EditableTopic
-        {
-            get { return editableTopic; }
-            set
-            {
-                editableTopic = value;
-                OnPropertyChanged();
-            }
-        }
+        public EditableTopic EditableTopic { get; }
 
         public IAsyncCommand SaveTopic { get; set; }
 
@@ -35,40 +22,26 @@ namespace Papyrus.Desktop.Features.Topics
             SaveTopic = RelayAsyncSimpleCommand.Create(SaveCurrentTopic, CanSaveTopic);
         }
 
-        public TopicVM(ProductRepository productRepository, TopicService topicService) : this()
+        public TopicVM(TopicService topicService) : this()
         {
-            this.productRepository = productRepository;
             this.topicService = topicService;
         }
 
-        public TopicVM(ProductRepository productRepository, TopicService topicService, TopicRepository topicRepository, string topicId) : this(productRepository, topicService)
+        public TopicVM(TopicService topicService, EditableTopic topic) : this(topicService)
         {
-            this.topicRepository = topicRepository;
-            this.topicId = topicId;
-        }
-
-        public async Task Initialize()
-        {
-            EditableTopic = new EditableTopic
-            {
-                Product = new DisplayableProduct()
-            };
-            if (topicId != null)
-            {
-                EditableTopic = await topicRepository.GetEditableTopicById(topicId);
-            }
+            EditableTopic = topic;
         }
 
         private async Task SaveCurrentTopic()
         {
             var topic = EditableTopic.ToTopic();
-            if (string.IsNullOrEmpty(topicId))
+            if (string.IsNullOrEmpty(topic.TopicId))
             {
                 await topicService.Create(topic);
             }
             else
             {
-                await topicService.Update(topic.WithId(topicId));
+                await topicService.Update(topic);
             }
         }
 

@@ -16,7 +16,7 @@
                         SelectedValue="{Binding SelectedProduct}">       
                 </ComboBox>
             </StackPanel>
-            <topics:TopicsGrid DockPanel.Dock="Bottom" />
+            <topics:TopicsGrid SelectedProduct="{Binding SelectedProduct}"  DockPanel.Dock="Bottom" />
         </DockPanel>
     </Grid>
 </Window>
