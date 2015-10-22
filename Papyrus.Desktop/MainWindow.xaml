@@ -13,7 +13,7 @@
                 <ComboBox MinWidth="100" 
                         ItemsSource="{Binding Products, Mode=TwoWay}"
                         DisplayMemberPath="ProductName" 
-                        SelectedValue="{Binding SelectedProduct}">       
+                        SelectedItem="{Binding SelectedProduct}">       
                 </ComboBox>
             </StackPanel>
             <topics:TopicsGrid SelectedProduct="{Binding SelectedProduct}"  DockPanel.Dock="Bottom" />
