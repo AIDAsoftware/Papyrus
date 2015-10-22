@@ -16,9 +16,6 @@ namespace Papyrus.Desktop.Features.Topics
         private readonly string topicId;
         private readonly ProductRepository productRepository;
         private readonly TopicService topicService;
-        public ObservableCollection<DisplayableProduct> Products { get; set; }
-        public ObservableCollection<string> Languages { get; set; }
-
         private EditableTopic editableTopic;
 
         public EditableTopic EditableTopic
@@ -31,34 +28,10 @@ namespace Papyrus.Desktop.Features.Topics
             }
         }
 
-        private EditableDocument currentDocument;
-        public EditableDocument CurrentDocument
-        {
-            get { return currentDocument; }
-            set
-            {
-                currentDocument = value;
-                OnPropertyChanged("CurrentDocument");
-            }
-        }
-
-        private string selectedLanguage;
-
-        public string SelectedLanguage {
-            get { return selectedLanguage; }
-            set
-            {
-                selectedLanguage = value;
-                OnPropertyChanged("SelectedLanguage");
-            }
-        }
-
         public IAsyncCommand SaveTopic { get; set; }
 
         public TopicVM()
         {
-            Languages = new ObservableCollection<string>();
-            Products = new ObservableCollection<DisplayableProduct>();
             SaveTopic = RelayAsyncSimpleCommand.Create(SaveCurrentTopic, CanSaveTopic);
         }
 
@@ -80,28 +53,10 @@ namespace Papyrus.Desktop.Features.Topics
             {
                 Product = new DisplayableProduct()
             };
-            CurrentDocument = new EditableDocument();
-            await LoadProductsAndLanguages();
             if (topicId != null)
             {
-                await LoadTopicToEdit();
+                EditableTopic = await topicRepository.GetEditableTopicById(topicId);
             }
-        }
-
-        private async Task LoadTopicToEdit()
-        {
-            EditableTopic = await topicRepository.GetEditableTopicById(topicId);
-            EditableTopic.Product = Products.First(p => p.ProductId == EditableTopic.Product.ProductId);
-            SelectedLanguage = "es-ES";
-            CurrentDocument = EditableTopic.VersionRanges.First().Documents.First();
-        }
-
-        private async Task LoadProductsAndLanguages()
-        {
-            Languages.Add("es-ES");
-            Languages.Add("en-GB");
-            var allProductsAvailable = await productRepository.GetAllDisplayableProducts();
-            allProductsAvailable.ForEach(p => Products.Add(p));
         }
 
         private async Task SaveCurrentTopic()
