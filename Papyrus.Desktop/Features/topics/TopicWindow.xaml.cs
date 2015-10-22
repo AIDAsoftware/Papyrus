@@ -44,10 +44,5 @@ namespace Papyrus.Desktop.Features.Topics
         {
             await ViewModel.Initialize();
         }
-
-        private async void Save_OnClick(object sender, RoutedEventArgs e)
-        {
-            await ViewModel.SaveTopic();
-        }
     }
 }

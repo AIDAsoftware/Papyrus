@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Annotations;
+using Papyrus.Desktop.Util.Command;
 
 namespace Papyrus.Desktop.Features.Topics
 {
@@ -42,6 +43,7 @@ namespace Papyrus.Desktop.Features.Topics
         }
 
         private string selectedLanguage;
+
         public string SelectedLanguage {
             get { return selectedLanguage; }
             set
@@ -51,10 +53,13 @@ namespace Papyrus.Desktop.Features.Topics
             }
         }
 
+        public IAsyncCommand SaveTopic { get; set; }
+
         public TopicVM()
         {
             Languages = new ObservableCollection<string>();
             Products = new ObservableCollection<DisplayableProduct>();
+            SaveTopic = RelayAsyncSimpleCommand.Create(SaveCurrentTopic, CanSaveTopic);
         }
 
         public TopicVM(ProductRepository productRepository, TopicService topicService) : this()
@@ -99,7 +104,7 @@ namespace Papyrus.Desktop.Features.Topics
             allProductsAvailable.ForEach(p => Products.Add(p));
         }
 
-        public async Task SaveTopic()
+        private async Task SaveCurrentTopic()
         {
             var topic = EditableTopic.ToTopic();
             if (string.IsNullOrEmpty(topicId))
@@ -110,6 +115,11 @@ namespace Papyrus.Desktop.Features.Topics
             {
                 await topicService.Update(topic.WithId(topicId));
             }
+        }
+
+        private bool CanSaveTopic()
+        {
+            return true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
