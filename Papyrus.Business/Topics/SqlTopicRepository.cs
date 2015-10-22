@@ -20,7 +20,7 @@ namespace Papyrus.Business.Topics
         public async Task<List<TopicSummary>> GetAllTopicsSummaries()
         {
             var resultset = (await connection.Query<dynamic>(
-                @"SELECT Topic.TopicId, Product.ProductName, ProductVersion.VersionName, Document.Title, Document.Description
+                @"SELECT Topic.TopicId, Product.ProductName, Product.ProductId, ProductVersion.VersionName, Document.Title, Document.Description
                     FROM Topic
                     JOIN Product ON Product.ProductId = Topic.ProductId
                     JOIN VersionRange ON VersionRange.TopicId = Topic.TopicId
@@ -84,7 +84,7 @@ namespace Papyrus.Business.Topics
         {
             return dynamicTopics.GroupBy(topic => topic.TopicId)
                 .Select(topics => topics.First())
-                .Select(TopicToShowFromDynamic)
+                .Select(TopicSummaryFromDynamic)
                 .ToList();
         }
 
@@ -187,12 +187,12 @@ namespace Papyrus.Business.Topics
                 });
         }
 
-        private static TopicSummary TopicToShowFromDynamic(dynamic topic)
+        private static TopicSummary TopicSummaryFromDynamic(dynamic topic)
         {
             return new TopicSummary
             {
                 TopicId = topic.TopicId,
-                ProductName = topic.ProductName,
+                Product = new DisplayableProduct { ProductId = topic.ProductId, ProductName = topic.ProductName },
                 VersionName = topic.VersionName,
                 LastDocumentTitle = topic.Title,
                 LastDocumentDescription = topic.Description,

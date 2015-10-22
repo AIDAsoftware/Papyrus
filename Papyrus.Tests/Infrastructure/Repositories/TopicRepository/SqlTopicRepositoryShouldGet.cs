@@ -54,7 +54,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             topicSummaries.Should().HaveCount(1);
             topicSummaries.Should().Contain(t => t.TopicId == "AnyTopicId" && 
-                                               t.ProductName == "Opportunity" &&
+                                               t.Product.ProductName == "Opportunity" &&
+                                               t.Product.ProductId == ProductId &&
                                                t.VersionName == "2.0" &&
                                                t.LastDocumentTitle == "Llamadas Primer mantenimiento" &&
                                                t.LastDocumentDescription == "Explicación");
@@ -63,7 +64,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [Test]
         public async Task a_displayable_topic_with_its_product()
         {
-            await InsertProductWithItsVersions(); // TODO: It should be in the SetUp but it produces errors
+            await InsertProductWithItsVersions();
 
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             await sqlInserter.Insert(topic);

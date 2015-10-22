@@ -42,7 +42,10 @@ namespace Papyrus.Desktop.Features.Topics {
         {
             canLoad = false;
             TopicsToList.Clear();
-            (await topicRepository.GetAllTopicsSummaries()).Where(t => t.ProductName == SelectedProduct.ProductName).ToList().ForEach(topic => TopicsToList.Add(topic));
+            (await topicRepository.GetAllTopicsSummaries())
+                .Where(t => t.Product.ProductName == SelectedProduct.ProductName)
+                .ToList()
+                .ForEach(topic => TopicsToList.Add(topic));
             canLoad = true;
         }
 
