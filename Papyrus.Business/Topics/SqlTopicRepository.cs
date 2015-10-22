@@ -133,8 +133,8 @@ namespace Papyrus.Business.Topics
         {
             var editableVersionRange = new EditableVersionRange()
             {
-                FromVersion = new ProductVersion(versionRange.FromVersionId, versionRange.FromVersionId, versionRange.FromRelease),
-                ToVersion = new ProductVersion(versionRange.ToVersionId, versionRange.ToVersionId, versionRange.ToRelease),
+                FromVersion = new ProductVersion(versionRange.FromVersionId, versionRange.FromVersionName, versionRange.FromRelease),
+                ToVersion = new ProductVersion(versionRange.ToVersionId, versionRange.ToVersionName, versionRange.ToRelease),
             };
 
             foreach (var editableDocument in versionRange.Documents)

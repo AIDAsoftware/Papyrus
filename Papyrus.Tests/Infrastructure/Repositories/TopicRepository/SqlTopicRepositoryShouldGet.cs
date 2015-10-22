@@ -15,7 +15,9 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         private SqlTopicRepository topicRepository;
         private const string ProductId = "OpportunityId";
         private const string FirstVersionId = "FirstVersionOpportunity";
+        private string FirstVersionName = "1.0";
         private const string SecondVersionId = "SecondVersionOpportunity";
+        private const string SecondVersionName = "2.0";
 
         [SetUp]
         public void Initialize()
@@ -28,13 +30,13 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         private async Task InsertProductWithItsVersions()
         {
             await InsertProductWithAVersion();
-            await InsertProductVersion(SecondVersionId, "2.0", "20150810", ProductId);
+            await InsertProductVersion(SecondVersionId, SecondVersionName, "20150810", ProductId);
         }
 
         private async Task InsertProductWithAVersion()
         {
             await InsertProduct(ProductId, "Opportunity");
-            await InsertProductVersion(FirstVersionId, "1.0", "20150710", ProductId);
+            await InsertProductVersion(FirstVersionId, FirstVersionName, "20150710", ProductId);
         }
 
         private async Task TruncateDataBase()
@@ -61,7 +63,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             topicSummaries.Should().Contain(t => t.TopicId == "AnyTopicId" && 
                                                t.Product.ProductName == "Opportunity" &&
                                                t.Product.ProductId == ProductId &&
-                                               t.VersionName == "2.0" &&
+                                               t.VersionName == SecondVersionName &&
                                                t.LastDocumentTitle == "Llamadas Primer mantenimiento" &&
                                                t.LastDocumentDescription == "Explicación");
         }
@@ -91,11 +93,12 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             var editableTopic = await topicRepository.GetEditableTopicById("FirstTopicPapyrusId");
 
-            //TODO: complete test
             var editableVersionRanges = editableTopic.VersionRanges;
             editableVersionRanges.Should().HaveCount(1);
             editableVersionRanges.FirstOrDefault().FromVersion.VersionId.Should().Be(FirstVersionId);
+            editableVersionRanges.FirstOrDefault().FromVersion.VersionName.Should().Be(FirstVersionName);
             editableVersionRanges.FirstOrDefault().ToVersion.VersionId.Should().Be(FirstVersionId);
+            editableVersionRanges.FirstOrDefault().ToVersion.VersionName.Should().Be(FirstVersionName);
         }
 
         [Test]
