@@ -101,9 +101,21 @@ namespace Papyrus.Business.Topics
         private async Task<ObservableCollection<EditableVersionRange>> GetVersionRangesOf(string topicId)
         {
             var versionRanges = (await connection
-                .Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
-                                                    FROM VersionRange
-                                                    WHERE TopicId = @TopicId", new {TopicId = topicId})).ToList();
+                .Query<dynamic>(@"SELECT VR.FromVersionId, FromVersions.VersionName FromVersionName, FromVersions.Release FromRelease,
+                                         VR.ToVersionId, ToVersions.VersionName ToVersionName, ToVersions.Release ToRelease, VR.VersionRangeId 
+                                    from VersionRange VR
+                                    join (
+	                                    select VersionRangeId, FromVersionId, ProductVersion.VersionName, ProductVersion.Release
+	                                    from VersionRange
+	                                    join ProductVersion on FromVersionId = ProductVersion.VersionId) FromVersions
+                                    on VR.FromVersionId = FromVersions.FromVersionId
+                                    join (
+	                                    select VersionRangeId, ToVersionId, ProductVersion.VersionName, ProductVersion.Release
+	                                    from VersionRange
+	                                    join ProductVersion on ToVersionId = ProductVersion.VersionId) ToVersions
+                                    on VR.ToVersionId = ToVersions.ToVersionId AND ToVersions.VersionRangeId = FromVersions.VersionRangeId
+                                    where VR.TopicId = @TopicId", 
+                                new {TopicId = topicId})).ToList();
             await AddDocumentsForEachVersionRangeIn(versionRanges);
             var editableVersionRanges = versionRanges.Select(MapToEditableVersionRange);
             return new ObservableCollection<EditableVersionRange>(editableVersionRanges);
@@ -121,8 +133,8 @@ namespace Papyrus.Business.Topics
         {
             var editableVersionRange = new EditableVersionRange()
             {
-                FromVersionId = versionRange.FromVersionId,
-                ToVersionId = versionRange.ToVersionId,
+                FromVersion = new ProductVersion(versionRange.FromVersionId, versionRange.FromVersionId, versionRange.FromRelease),
+                ToVersion = new ProductVersion(versionRange.ToVersionId, versionRange.ToVersionId, versionRange.ToRelease),
             };
 
             foreach (var editableDocument in versionRange.Documents)

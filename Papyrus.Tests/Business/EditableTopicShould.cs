@@ -1,7 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 
 namespace Papyrus.Tests.Business
@@ -19,8 +21,8 @@ namespace Papyrus.Tests.Business
             };
             var editableVersionRange = new EditableVersionRange
             {
-                FromVersionId = "FirstVersionId",
-                ToVersionId = "SecondVersionId"
+                FromVersion = new ProductVersion("FirstVersionId", "1.0", DateTime.Today.AddDays(-2)),
+                ToVersion = new ProductVersion("SecondVersionId", "2.0", DateTime.Today),
             };
             var editableDocument = new EditableDocument
             {
@@ -47,7 +49,8 @@ namespace Papyrus.Tests.Business
             topic.TopicId.Should().Be("TopicId");
             topic.VersionRanges.Should().HaveCount(1);
             var versionRange = topic.VersionRanges.First();
-            versionRange.ShouldBeEquivalentTo(editableVersionRange, options => options.Excluding(vr => vr.VersionRangeId));
+            versionRange.FromVersionId.Should().Be(editableVersionRange.FromVersion.VersionId);
+            versionRange.ToVersionId.Should().Be(editableVersionRange.ToVersion.VersionId);
             versionRange.Documents.Should().HaveCount(1);
             versionRange.Documents["es-ES"].ShouldBeEquivalentTo(editableDocument, options => options.Excluding(d => d.DocumentId));
         }

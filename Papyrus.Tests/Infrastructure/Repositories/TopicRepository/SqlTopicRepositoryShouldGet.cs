@@ -27,9 +27,14 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
         private async Task InsertProductWithItsVersions()
         {
+            await InsertProductWithAVersion();
+            await InsertProductVersion(SecondVersionId, "2.0", "20150810", ProductId);
+        }
+
+        private async Task InsertProductWithAVersion()
+        {
             await InsertProduct(ProductId, "Opportunity");
             await InsertProductVersion(FirstVersionId, "1.0", "20150710", ProductId);
-            await InsertProductVersion(SecondVersionId, "2.0", "20150810", ProductId);
         }
 
         private async Task TruncateDataBase()
@@ -64,7 +69,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [Test]
         public async Task a_displayable_topic_with_its_product()
         {
-            await InsertProductWithItsVersions();
+            await InsertProduct(ProductId, "Opportunity");
 
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             await sqlInserter.Insert(topic);
@@ -78,6 +83,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [Test]
         public async Task a_displayable_topic_with_its_versionRanges()
         {
+            await InsertProductWithAVersion();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
             topic.AddVersionRange(firstVersionRange);
@@ -85,15 +91,17 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             var editableTopic = await topicRepository.GetEditableTopicById("FirstTopicPapyrusId");
 
+            //TODO: complete test
             var editableVersionRanges = editableTopic.VersionRanges;
             editableVersionRanges.Should().HaveCount(1);
-            editableVersionRanges.FirstOrDefault().FromVersionId.Should().Be(FirstVersionId);
-            editableVersionRanges.FirstOrDefault().ToVersionId.Should().Be(FirstVersionId);
+            editableVersionRanges.FirstOrDefault().FromVersion.VersionId.Should().Be(FirstVersionId);
+            editableVersionRanges.FirstOrDefault().ToVersion.VersionId.Should().Be(FirstVersionId);
         }
 
         [Test]
         public async Task a_displayable_topic_with_documents_for_each_of_its_version_ranges()
         {
+            await InsertProductWithAVersion();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
             var document = new Document("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId");
