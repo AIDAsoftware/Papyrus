@@ -4,12 +4,22 @@ using FluentAssertions;
 using NUnit.Framework;
 using Papyrus.Business.Topics;
 using Papyrus.Infrastructure.Core.Database;
+using Papyrus.Tests.Infrastructure.Repositories.helpers;
 
 namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 {        
     [TestFixture]
     public class SqlTopicRepositoryWhenDeleteATopicShould : SqlTest
     {
+        private SqlTopicRepository topicRepository;
+
+        [SetUp]
+        public void Initialize()
+        {
+            topicRepository = new SqlTopicRepository(dbConnection);
+            new DataBaseTruncator(dbConnection).TruncateDataBase().GetAwaiter().GetResult();
+        }
+
         // TODO: 
         //   - delete documents for each of its productVersions from database  
 
@@ -20,7 +30,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topic = new Topic("OpportunityId").WithId(topicId);
             await new SqlInserter(dbConnection).Insert(topic);
             
-            var topicRepository = new SqlTopicRepository(dbConnection);
             await topicRepository.Delete(topic);
 
             var topicFromDataBase = (await dbConnection.Query<object>(@"SELECT * FROM Topic 
@@ -40,7 +49,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             topic.AddVersionRange(versionRange);
             await new SqlInserter(dbConnection).Insert(topic);
             
-            var topicRepository = new SqlTopicRepository(dbConnection);
             await topicRepository.Delete(topic);
 
             var versionFromDataBase = (await dbConnection.Query<object>(@"SELECT * FROM VersionRange 
@@ -62,7 +70,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             topic.AddVersionRange(versionRange);
             await new SqlInserter(dbConnection).Insert(topic);
             
-            var topicRepository = new SqlTopicRepository(dbConnection);
             await topicRepository.Delete(topic);
 
             var documentFromDataBase = (await dbConnection.Query<object>(@"SELECT * FROM Document 
