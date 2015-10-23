@@ -49,5 +49,27 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                                                                         .FirstOrDefault();
             versionFromDataBase.Should().BeNull();
         }
+
+        [Test]
+        public async Task delete_all_documents_for_each_of_its_product_versions_from_database()
+        {
+            var documentId = "DocumentId";
+            var document = new Document("Título", "Descripción", "Contenido", "es-ES").WithId(documentId);
+            var versionRange = new VersionRange("AnyProductVersionId", "AnotherProductVersionId")
+                                .WithId("VersionRangeId");
+            versionRange.AddDocument(document);
+            var topic = new Topic("OpportunityId").WithId("TopicId");
+            topic.AddVersionRange(versionRange);
+            await new SqlInserter(dbConnection).Insert(topic);
+            
+            var topicRepository = new SqlTopicRepository(dbConnection);
+            await topicRepository.Delete(topic);
+
+            var documentFromDataBase = (await dbConnection.Query<object>(@"SELECT * FROM Document 
+                                                                        WHERE DocumentId = @DocumentId",
+                                                                        new {DocumentId = documentId}))
+                                                                        .FirstOrDefault();
+            documentFromDataBase.Should().BeNull();
+        }
     }
 }

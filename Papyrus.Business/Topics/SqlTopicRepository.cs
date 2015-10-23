@@ -210,7 +210,12 @@ namespace Papyrus.Business.Topics
         public async Task Delete(Topic topic)
         {
             await connection.Execute(@"DELETE FROM Topic WHERE TopicId=@TopicId", new {TopicId = topic.TopicId});
+            var versionRangeIds = await connection.Query<string>(@"SELECT VersionRangeId 
+                                                                    FROM VersionRange
+                                                                    WHERE TopicId = @TopicId",
+                                                                    new {TopicId = topic.TopicId});
             await DeleteVersionRangesOf(topic);
+            await DeleteDocumentsForEachVersionRangeIn(versionRangeIds);
         }
     }
 }
