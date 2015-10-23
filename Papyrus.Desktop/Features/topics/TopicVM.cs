@@ -7,6 +7,7 @@ using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
+using Papyrus.Infrastructure.Core.DomainEvents;
 
 namespace Papyrus.Desktop.Features.Topics
 {
@@ -42,7 +43,9 @@ namespace Papyrus.Desktop.Features.Topics
             else
             {
                 await topicService.Update(topic);
-            }
+            }  
+
+            EventBus.Raise(new OnUserMessageRequest("Topic Saved!"));
         }
 
         private bool CanSaveTopic()
@@ -56,6 +59,11 @@ namespace Papyrus.Desktop.Features.Topics
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void Handle(OnUserMessageRequest domainEvent)
+        {
+            EventBus.Raise(domainEvent);
         }
     }
 }
