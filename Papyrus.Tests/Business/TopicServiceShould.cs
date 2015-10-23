@@ -106,6 +106,14 @@ namespace Papyrus.Tests.Business
             await topicService.Delete(topic);
 
             topicRepo.Received().Delete(topic);
+        }
+
+        [Test]
+        [ExpectedException(typeof(CannotDeleteTopicsWithoutTopicIdAssignedException))]
+        public async Task fail_when_try_to_delete_a_topic_without_topic_id_assigned()
+        {
+            var topic = new Topic(anyProductId);
+            await topicService.Delete(topic);
         } 
     }
 }

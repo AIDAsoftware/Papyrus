@@ -38,6 +38,10 @@ namespace Papyrus.Business.Topics
 
         public async Task Delete(Topic topic)
         {
+            if (string.IsNullOrWhiteSpace(topic.TopicId))
+            {
+                throw new CannotDeleteTopicsWithoutTopicIdAssignedException();
+            }
             await TopicRepository.Delete(topic);
         }
 
