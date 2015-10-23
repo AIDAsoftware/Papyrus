@@ -13,7 +13,10 @@
     <Grid>
         <DockPanel LastChildFill="True">
             <local:VersionRangesUserControl DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Height="Auto" Width="Auto" DataContext="{Binding EditableTopic.VersionRanges,Converter={StaticResource VersionRangesToVmConverter}}"/>
-            <Button Command="{Binding SaveTopic}" DockPanel.Dock="Bottom" MaxHeight="50" MaxWidth="100">Save</Button>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 20, 0">
+                <Button Command="{Binding DeleteTopic}" MinWidth="100" Margin="10" DockPanel.Dock="Bottom" MaxHeight="50" MaxWidth="100">Delete</Button>
+                <Button Command="{Binding SaveTopic}" MinWidth="100" DockPanel.Dock="Bottom" MaxHeight="50" MaxWidth="100">Save</Button>
+            </StackPanel>
         </DockPanel>
     </Grid>
 </Window>

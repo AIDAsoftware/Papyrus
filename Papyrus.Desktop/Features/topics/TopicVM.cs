@@ -18,9 +18,12 @@ namespace Papyrus.Desktop.Features.Topics
 
         public IAsyncCommand SaveTopic { get; set; }
 
+        public IAsyncCommand DeleteTopic { get; set; }
+
         public TopicVM()
         {
             SaveTopic = RelayAsyncSimpleCommand.Create(SaveCurrentTopic, CanSaveTopic);
+            DeleteTopic = RelayAsyncSimpleCommand.Create(DeleteCurrentTopic, () => true);
         }
 
         private TopicVM(TopicService topicService) : this()
@@ -46,6 +49,12 @@ namespace Papyrus.Desktop.Features.Topics
             }  
 
             EventBus.Raise(new OnUserMessageRequest("Topic Saved!"));
+        }
+
+        private async Task DeleteCurrentTopic()
+        {
+            var topic = EditableTopic.ToTopic();
+            await topicService.Delete(topic);
         }
 
         private bool CanSaveTopic()
