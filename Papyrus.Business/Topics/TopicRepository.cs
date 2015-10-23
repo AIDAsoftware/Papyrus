@@ -10,6 +10,6 @@ namespace Papyrus.Business.Topics
         Task Update(Topic topic);
         Task<List<TopicSummary>> GetAllTopicsSummaries();
         Task<EditableTopic> GetEditableTopicById(string topicId);
-        Task Delete(string topicId);
+        Task Delete(Topic topic);
     }
 }

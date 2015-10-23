@@ -11,23 +11,43 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
     public class SqlTopicRepositoryWhenDeleteATopicShould : SqlTest
     {
         // TODO: 
-        //   - delete its productVersions from database   
         //   - delete documents for each of its productVersions from database  
 
         [Test]
         public async Task delete_topic_from_database()
         {
-            var topic = new Topic("OpportunityId").WithId("TopicId");
+            var topicId = "TopicId";
+            var topic = new Topic("OpportunityId").WithId(topicId);
             await new SqlInserter(dbConnection).Insert(topic);
             
             var topicRepository = new SqlTopicRepository(dbConnection);
-            await topicRepository.Delete(topic.TopicId);
+            await topicRepository.Delete(topic);
 
             var topicFromDataBase = (await dbConnection.Query<object>(@"SELECT * FROM Topic 
                                                                         WHERE TopicId = @TopicId",
-                                                                        new {TopicId = topic.TopicId}))
+                                                                        new {TopicId = topicId}))
                                                                         .FirstOrDefault();
             topicFromDataBase.Should().BeNull();
+        }
+
+        [Test]
+        public async Task delete_its_product_versions_from_database()
+        {
+            var versionRangeId = "VersionRangeId";
+            var versionRange = new VersionRange("AnyProductVersionId", "AnotherProductVersionId")
+                                .WithId(versionRangeId);
+            var topic = new Topic("OpportunityId").WithId("TopicId");
+            topic.AddVersionRange(versionRange);
+            await new SqlInserter(dbConnection).Insert(topic);
+            
+            var topicRepository = new SqlTopicRepository(dbConnection);
+            await topicRepository.Delete(topic);
+
+            var versionFromDataBase = (await dbConnection.Query<object>(@"SELECT * FROM VersionRange 
+                                                                        WHERE VersionRangeId = @VersionRangeId",
+                                                                        new { VersionRangeId = versionRangeId}))
+                                                                        .FirstOrDefault();
+            versionFromDataBase.Should().BeNull();
         }
     }
 }
