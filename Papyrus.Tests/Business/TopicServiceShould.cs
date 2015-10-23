@@ -97,5 +97,15 @@ namespace Papyrus.Tests.Business
 
             topicRepo.Received().Update(topic);
         }
+
+        [Test]
+        public async Task delete_a_topic_from_the_library()
+        {
+            var topic = new Topic(anyProductId).WithId("AnyTopicId");
+
+            await topicService.Delete(topic);
+
+            topicRepo.Received().Delete(topic);
+        } 
     }
 }

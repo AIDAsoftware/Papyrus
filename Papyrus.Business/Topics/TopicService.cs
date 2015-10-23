@@ -36,6 +36,11 @@ namespace Papyrus.Business.Topics
                 throw new CannotUpdateTopicsWithNoVersionRangesException();
         }
 
+        public async Task Delete(Topic topic)
+        {
+            await TopicRepository.Delete(topic);
+        }
+
         private static void ValidateToSave(Topic topic)
         {
             if (!IsNotDefined(topic.TopicId))
