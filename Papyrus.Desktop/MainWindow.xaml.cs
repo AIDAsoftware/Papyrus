@@ -26,8 +26,11 @@ namespace Papyrus.Desktop
 
         private async void NewTopic_OnClick(object sender, RoutedEventArgs e)
         {
-            var topic = await ViewModel.PrepareNewDocument();
-            new TopicWindow(topic).Show();
+            if (ViewModel.SelectedProduct != null)
+            {
+                var topic = await ViewModel.PrepareNewDocument();
+                new TopicWindow(topic).Show();
+            }
         }
     }
 }
