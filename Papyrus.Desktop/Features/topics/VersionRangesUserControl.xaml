@@ -15,8 +15,8 @@
 		            Margin="0,0,0,0"
 		            VerticalAlignment="Top"
                     ItemsSource="{Binding VersionRanges}"
-                    MinWidth="360"
-                    MinHeight="300">
+                    MinWidth="1000"
+                    MinHeight="400">
             <TabControl.ItemTemplate>
                 <DataTemplate DataType="topics1:EditableVersionRange">
                     <TextBlock>
@@ -28,7 +28,7 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate DataType="topics1:EditableVersionRange">
-                    <topics:VersionRangeUserControl Height="300" Width="300" DataContext="{Binding Converter={StaticResource VersionRangeToVmConverter}}"/>
+                    <topics:VersionRangeUserControl Height="400" Width="900" DataContext="{Binding Converter={StaticResource VersionRangeToVmConverter}}"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
