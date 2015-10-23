@@ -11,7 +11,7 @@ namespace Papyrus.Desktop.Features.Topics {
     {
         private readonly TopicRepository topicRepository;
 
-        public ObservableCollection<TopicSummary> TopicsToList { get; }
+        public ObservableCollection<TopicSummary> TopicsToList { get; private set; }
         public TopicSummary SelectedTopic { get; set; }
         public DisplayableProduct SelectedProduct { get; set; }
 

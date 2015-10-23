@@ -1,15 +1,14 @@
 using System;
-using System.Dynamic;
 
 namespace Papyrus.Business.Topics
 {
     public class Document
     {
-        public string Title { get; }
-        public string Description { get; }
-        public string Content { get; }
+        public string Title { get; private set; }
+        public string Description { get; private set; }
+        public string Content { get; private set; }
         public string DocumentId { get; private set; }
-        public string Language { get; }
+        public string Language { get; private set; }
 
         public Document(string title, string description, string content, string language)
         {

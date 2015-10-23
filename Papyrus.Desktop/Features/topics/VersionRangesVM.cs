@@ -6,7 +6,7 @@ namespace Papyrus.Desktop.Features.Topics
 {
     public class VersionRangesVM
     {
-        public ObservableCollection<EditableVersionRange> VersionRanges { get; }
+        public ObservableCollection<EditableVersionRange> VersionRanges { get; private set; }
 
         public VersionRangesVM()
         {

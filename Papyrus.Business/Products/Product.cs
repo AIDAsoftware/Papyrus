@@ -37,7 +37,7 @@ namespace Papyrus.Business.Products
         //TODO: rename properties
         public string VersionId   { get; private set; }
         public string VersionName { get; private set; }
-        public DateTime Release { get; }
+        public DateTime Release { get; private set; }
 
         public ProductVersion(string versionId, string versionName, DateTime release)
         {
