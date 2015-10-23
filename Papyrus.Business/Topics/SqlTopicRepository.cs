@@ -206,5 +206,10 @@ namespace Papyrus.Business.Topics
                 LastDocumentDescription = topic.Description,
             };
         }
+
+        public async Task Delete(string topicId)
+        {
+            await connection.Execute(@"DELETE FROM Topic WHERE TopicId=@TopicId", new {TopicId = topicId});
+        }
     }
 }

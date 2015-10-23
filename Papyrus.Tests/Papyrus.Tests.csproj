@@ -112,6 +112,7 @@
     <Compile Include="Infrastructure\Repositories\SqlProductRepositoryShould.cs" />
     <Compile Include="Infrastructure\Repositories\helpers\SqlInserter.cs" />
     <Compile Include="Infrastructure\Repositories\TopicRepository\SqlTopicRepositoryShouldGet.cs" />
+    <Compile Include="Infrastructure\Repositories\TopicRepository\SqlTopicRepositoryWhenDeleteATopicShould.cs" />
     <Compile Include="Infrastructure\Repositories\TopicRepository\SqlTopicRepositoryWhenSaveATopicShould.cs" />
     <Compile Include="Infrastructure\Repositories\TopicRepository\SqlTopicRepositoryWhenUpdateATopicShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
