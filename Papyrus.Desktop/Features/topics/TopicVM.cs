@@ -13,7 +13,7 @@ namespace Papyrus.Desktop.Features.Topics
     public class TopicVM : INotifyPropertyChanged
     {
         private readonly TopicService topicService;
-        public EditableTopic EditableTopic { get; }
+        public EditableTopic EditableTopic { get; private set; }
 
         public IAsyncCommand SaveTopic { get; set; }
 
