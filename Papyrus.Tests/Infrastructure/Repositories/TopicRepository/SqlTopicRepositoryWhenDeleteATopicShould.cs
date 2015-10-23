@@ -20,9 +20,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             new DataBaseTruncator(dbConnection).TruncateDataBase().GetAwaiter().GetResult();
         }
 
-        // TODO: 
-        //   - delete documents for each of its productVersions from database  
-
         [Test]
         public async Task delete_topic_from_database()
         {
