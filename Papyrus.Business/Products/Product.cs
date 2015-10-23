@@ -32,18 +32,4 @@ namespace Papyrus.Business.Products
             Id = Guid.NewGuid().ToString();
         }
     }
-
-    public class ProductVersion {
-        //TODO: rename properties
-        public string VersionId   { get; private set; }
-        public string VersionName { get; private set; }
-        public DateTime Release { get; private set; }
-
-        public ProductVersion(string versionId, string versionName, DateTime release)
-        {
-            VersionId = versionId;
-            VersionName = versionName;
-            Release = release;
-        }
-    }
 }

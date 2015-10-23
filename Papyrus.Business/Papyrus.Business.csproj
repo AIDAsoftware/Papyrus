@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Products\FullVersionRange.cs" />
+    <Compile Include="Products\ProductVersion.cs" />
     <Compile Include="Topics\Documents.cs" />
     <Compile Include="Topics\EditableDocument.cs" />
     <Compile Include="Topics\DisplayableProduct.cs" />

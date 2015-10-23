@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using Papyrus.Business.Topics.Exceptions;
 
 namespace Papyrus.Business.Topics
 {
@@ -25,9 +27,18 @@ namespace Papyrus.Business.Topics
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (PropertyChanged != null) {
+            if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public Topic ToTopic()
+        {
+            var topic = new Topic(Product.ProductId).WithId(TopicId);
+            foreach (var editableVersionRange in VersionRanges)
+            {
+                editableVersionRange.ToVersionRange(topic);
             }
+            return topic;
         }
     }
 }

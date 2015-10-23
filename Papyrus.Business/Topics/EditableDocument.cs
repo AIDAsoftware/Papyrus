@@ -51,5 +51,15 @@ namespace Papyrus.Business.Topics
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        public void ToDocument(VersionRange versionRange)
+        {
+            versionRange.AddDocument(new Document(
+                title: Title,
+                description: Description,
+                content: Content,
+                language: Language
+                ));
+        }
     }
 }

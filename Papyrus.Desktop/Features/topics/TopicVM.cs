@@ -6,115 +6,48 @@ using System.Threading.Tasks;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Annotations;
+using Papyrus.Desktop.Util.Command;
 
 namespace Papyrus.Desktop.Features.Topics
 {
     public class TopicVM : INotifyPropertyChanged
     {
-        private readonly TopicRepository topicRepository;
-        private readonly string topicId;
-        private readonly ProductRepository productRepository;
         private readonly TopicService topicService;
-        public ObservableCollection<DisplayableProduct> Products { get; set; }
-        public ObservableCollection<string> Languages { get; set; }
+        public EditableTopic EditableTopic { get; }
 
-        private EditableTopic editableTopic;
-
-        public EditableTopic EditableTopic
-        {
-            get { return editableTopic; }
-            set
-            {
-                editableTopic = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private EditableDocument currentDocument;
-        public EditableDocument CurrentDocument
-        {
-            get { return currentDocument; }
-            set
-            {
-                currentDocument = value;
-                OnPropertyChanged("CurrentDocument");
-            }
-        }
-
-        private string selectedLanguage;
-        public string SelectedLanguage {
-            get { return selectedLanguage; }
-            set
-            {
-                selectedLanguage = value;
-                OnPropertyChanged("SelectedLanguage");
-            }
-        }
+        public IAsyncCommand SaveTopic { get; set; }
 
         public TopicVM()
         {
-            Languages = new ObservableCollection<string>();
-            Products = new ObservableCollection<DisplayableProduct>();
+            SaveTopic = RelayAsyncSimpleCommand.Create(SaveCurrentTopic, CanSaveTopic);
         }
 
-        public TopicVM(ProductRepository productRepository, TopicService topicService) : this()
+        private TopicVM(TopicService topicService) : this()
         {
-            this.productRepository = productRepository;
             this.topicService = topicService;
         }
 
-        public TopicVM(ProductRepository productRepository, TopicService topicService, TopicRepository topicRepository, string topicId) : this(productRepository, topicService)
+        public TopicVM(TopicService topicService, EditableTopic topic) : this(topicService)
         {
-            this.topicRepository = topicRepository;
-            this.topicId = topicId;
+            EditableTopic = topic;
         }
 
-        public async Task Initialize()
+        private async Task SaveCurrentTopic()
         {
-            EditableTopic = new EditableTopic
-            {
-                Product = new DisplayableProduct()
-            };
-            CurrentDocument = new EditableDocument();
-            await LoadProductsAndLanguages();
-            if (topicId != null)
-            {
-                await LoadTopicToEdit();
-            }
-        }
-
-        private async Task LoadTopicToEdit()
-        {
-            EditableTopic = await topicRepository.GetEditableTopicById(topicId);
-            EditableTopic.Product = Products.First(p => p.ProductId == EditableTopic.Product.ProductId);
-            SelectedLanguage = "es-ES";
-            CurrentDocument = EditableTopic.VersionRanges.First().Documents.First();
-        }
-
-        private async Task LoadProductsAndLanguages()
-        {
-            Languages.Add("es-ES");
-            Languages.Add("en-GB");
-            var allProductsAvailable = await productRepository.GetAllDisplayableProducts();
-            allProductsAvailable.ForEach(p => Products.Add(p));
-        }
-
-        public async Task SaveTopic()
-        {
-            var topic = new Topic(EditableTopic.Product.ProductId);
-            var VersionIds = await productRepository
-                .GetFullVersionRangeForProduct(EditableTopic.Product.ProductId);
-            var versionRange = new VersionRange(VersionIds.FirstVersionId, VersionIds.LatestVersionId);
-            versionRange.AddDocument(new Document(CurrentDocument.Title, CurrentDocument.Description, CurrentDocument.Content, "es-ES"));
-            topic.AddVersionRange(versionRange);
-            if (string.IsNullOrEmpty(topicId))
+            var topic = EditableTopic.ToTopic();
+            if (string.IsNullOrEmpty(topic.TopicId))
             {
                 await topicService.Create(topic);
             }
             else
             {
-                await topicService.Update(topic.WithId(topicId));
+                await topicService.Update(topic);
             }
+        }
+
+        private bool CanSaveTopic()
+        {
+            return true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

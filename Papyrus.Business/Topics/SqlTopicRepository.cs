@@ -20,7 +20,7 @@ namespace Papyrus.Business.Topics
         public async Task<List<TopicSummary>> GetAllTopicsSummaries()
         {
             var resultset = (await connection.Query<dynamic>(
-                @"SELECT Topic.TopicId, Product.ProductName, ProductVersion.VersionName, Document.Title, Document.Description
+                @"SELECT Topic.TopicId, Product.ProductName, Product.ProductId, ProductVersion.VersionName, Document.Title, Document.Description
                     FROM Topic
                     JOIN Product ON Product.ProductId = Topic.ProductId
                     JOIN VersionRange ON VersionRange.TopicId = Topic.TopicId
@@ -84,7 +84,7 @@ namespace Papyrus.Business.Topics
         {
             return dynamicTopics.GroupBy(topic => topic.TopicId)
                 .Select(topics => topics.First())
-                .Select(TopicToShowFromDynamic)
+                .Select(TopicSummaryFromDynamic)
                 .ToList();
         }
 
@@ -101,9 +101,17 @@ namespace Papyrus.Business.Topics
         private async Task<ObservableCollection<EditableVersionRange>> GetVersionRangesOf(string topicId)
         {
             var versionRanges = (await connection
-                .Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
-                                                    FROM VersionRange
-                                                    WHERE TopicId = @TopicId", new {TopicId = topicId})).ToList();
+                .Query<dynamic>(@"SELECT VR.FromVersionId, ProductVersion.VersionName FromVersionName, ProductVersion.Release FromRelease,
+                                        VR.ToVersionId, ToVersions.VersionName ToVersionName, ToVersions.Release ToRelease, VR.VersionRangeId 
+                                    from VersionRange VR
+                                    join ProductVersion on VR.FromVersionId = ProductVersion.VersionId
+                                    join (
+	                                    select VersionRangeId, ToVersionId, ProductVersion.VersionName, ProductVersion.Release
+	                                    from VersionRange
+	                                    join ProductVersion on ToVersionId = ProductVersion.VersionId) ToVersions
+                                    on VR.ToVersionId = ToVersions.ToVersionId AND ToVersions.VersionRangeId = VR.VersionRangeId
+                                    where VR.TopicId = @TopicId", 
+                                new {TopicId = topicId})).ToList();
             await AddDocumentsForEachVersionRangeIn(versionRanges);
             var editableVersionRanges = versionRanges.Select(MapToEditableVersionRange);
             return new ObservableCollection<EditableVersionRange>(editableVersionRanges);
@@ -121,10 +129,14 @@ namespace Papyrus.Business.Topics
         {
             var editableVersionRange = new EditableVersionRange()
             {
-                FromVersionId = versionRange.FromVersionId,
-                ToVersionId = versionRange.ToVersionId,
+                FromVersion = new ProductVersion(versionRange.FromVersionId, versionRange.FromVersionName, versionRange.FromRelease),
+                ToVersion = new ProductVersion(versionRange.ToVersionId, versionRange.ToVersionName, versionRange.ToRelease),
             };
-            editableVersionRange.Documents.AddRange(versionRange.Documents);
+
+            foreach (var editableDocument in versionRange.Documents)
+            {
+                editableVersionRange.Documents.Add(editableDocument);
+            }
             return editableVersionRange;
         }
 
@@ -183,12 +195,12 @@ namespace Papyrus.Business.Topics
                 });
         }
 
-        private static TopicSummary TopicToShowFromDynamic(dynamic topic)
+        private static TopicSummary TopicSummaryFromDynamic(dynamic topic)
         {
             return new TopicSummary
             {
                 TopicId = topic.TopicId,
-                ProductName = topic.ProductName,
+                Product = new DisplayableProduct { ProductId = topic.ProductId, ProductName = topic.ProductName },
                 VersionName = topic.VersionName,
                 LastDocumentTitle = topic.Title,
                 LastDocumentDescription = topic.Description,

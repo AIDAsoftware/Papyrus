@@ -42,7 +42,7 @@ namespace Papyrus.Business.Products
 
         public async Task<ProductVersion> GetVersion(string versionId)  // TODO: It is not tested. It is only a try
         {
-            const string selectVersionSqlQuery = @"SELECT VersionId, VersionName FROM ProductVersion WHERE VersionId = @VersionId;";
+            const string selectVersionSqlQuery = @"SELECT VersionId, VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId;";
 
             return (await connection.Query<ProductVersion>(selectVersionSqlQuery, new { VersionId = versionId })).FirstOrDefault();
         }

@@ -2,14 +2,21 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:topics="clr-namespace:Papyrus.Desktop.Features.Topics"
-        xmlns:mainMenu="clr-namespace:Papyrus.Desktop.Features.MainMenu"
         Title="MainWindow" Height="350" Width="525"
         DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
 
     <Grid>
         <DockPanel LastChildFill="True">
-            <mainMenu:MainMenuView DockPanel.Dock="Top" />
-            <topics:TopicsGrid DockPanel.Dock="Bottom" />
+            <StackPanel Margin="8" Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Top">
+                <Button Click="NewTopic_OnClick">New documents</Button>
+                <Label>Products</Label>
+                <ComboBox MinWidth="100" 
+                        ItemsSource="{Binding Products, Mode=TwoWay}"
+                        DisplayMemberPath="ProductName" 
+                        SelectedItem="{Binding SelectedProduct}">       
+                </ComboBox>
+            </StackPanel>
+            <topics:TopicsGrid SelectedProduct="{Binding SelectedProduct}" DockPanel.Dock="Bottom" />
         </DockPanel>
     </Grid>
 </Window>

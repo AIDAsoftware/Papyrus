@@ -54,9 +54,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Features\MainMenu\MainMenuView.xaml.cs">
-      <DependentUpon>MainMenuView.xaml</DependentUpon>
-    </Compile>
     <Page Include="Features\Topics\TopicsGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -81,6 +78,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Features\Topics\VersionRangesToVmConverter.cs" />
     <Compile Include="Features\Topics\TopicsGrid.xaml.cs">
       <DependentUpon>TopicsGrid.xaml</DependentUpon>
     </Compile>
@@ -93,20 +91,18 @@
       <DependentUpon>VersionRangesUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Topics\VersionRangesVM.cs" />
+    <Compile Include="Features\Topics\VersionRangeToVmConverter.cs" />
     <Compile Include="Features\Topics\VersionRangeUserControl.xaml.cs">
       <DependentUpon>VersionRangeUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\Topics\VersionRangeVM.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Features\MainMenu\MainMenuView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Features\MainMenu\MainMenuVM.cs" />
+    <Compile Include="MainWindowVM.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Util\Command\IAsyncCommand.cs" />
     <Compile Include="Util\Command\NotifyTaskCompletion.cs" />

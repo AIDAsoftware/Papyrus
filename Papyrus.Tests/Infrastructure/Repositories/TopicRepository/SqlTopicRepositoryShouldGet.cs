@@ -15,7 +15,9 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         private SqlTopicRepository topicRepository;
         private const string ProductId = "OpportunityId";
         private const string FirstVersionId = "FirstVersionOpportunity";
+        private string FirstVersionName = "1.0";
         private const string SecondVersionId = "SecondVersionOpportunity";
+        private const string SecondVersionName = "2.0";
 
         [SetUp]
         public void Initialize()
@@ -27,9 +29,14 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
         private async Task InsertProductWithItsVersions()
         {
+            await InsertProductWithAVersion();
+            await InsertProductVersion(SecondVersionId, SecondVersionName, "20150810", ProductId);
+        }
+
+        private async Task InsertProductWithAVersion()
+        {
             await InsertProduct(ProductId, "Opportunity");
-            await InsertProductVersion(FirstVersionId, "1.0", "20150710", ProductId);
-            await InsertProductVersion(SecondVersionId, "2.0", "20150810", ProductId);
+            await InsertProductVersion(FirstVersionId, FirstVersionName, "20150710", ProductId);
         }
 
         private async Task TruncateDataBase()
@@ -54,8 +61,9 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             topicSummaries.Should().HaveCount(1);
             topicSummaries.Should().Contain(t => t.TopicId == "AnyTopicId" && 
-                                               t.ProductName == "Opportunity" &&
-                                               t.VersionName == "2.0" &&
+                                               t.Product.ProductName == "Opportunity" &&
+                                               t.Product.ProductId == ProductId &&
+                                               t.VersionName == SecondVersionName &&
                                                t.LastDocumentTitle == "Llamadas Primer mantenimiento" &&
                                                t.LastDocumentDescription == "Explicación");
         }
@@ -63,7 +71,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [Test]
         public async Task a_displayable_topic_with_its_product()
         {
-            await InsertProductWithItsVersions(); // TODO: It should be in the SetUp but it produces errors
+            await InsertProduct(ProductId, "Opportunity");
 
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             await sqlInserter.Insert(topic);
@@ -77,6 +85,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [Test]
         public async Task a_displayable_topic_with_its_versionRanges()
         {
+            await InsertProductWithAVersion();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
             topic.AddVersionRange(firstVersionRange);
@@ -86,13 +95,16 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             var editableVersionRanges = editableTopic.VersionRanges;
             editableVersionRanges.Should().HaveCount(1);
-            editableVersionRanges.FirstOrDefault().FromVersionId.Should().Be(FirstVersionId);
-            editableVersionRanges.FirstOrDefault().ToVersionId.Should().Be(FirstVersionId);
+            editableVersionRanges.FirstOrDefault().FromVersion.VersionId.Should().Be(FirstVersionId);
+            editableVersionRanges.FirstOrDefault().FromVersion.VersionName.Should().Be(FirstVersionName);
+            editableVersionRanges.FirstOrDefault().ToVersion.VersionId.Should().Be(FirstVersionId);
+            editableVersionRanges.FirstOrDefault().ToVersion.VersionName.Should().Be(FirstVersionName);
         }
 
         [Test]
         public async Task a_displayable_topic_with_documents_for_each_of_its_version_ranges()
         {
+            await InsertProductWithAVersion();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
             var document = new Document("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId");

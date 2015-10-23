@@ -42,7 +42,10 @@ namespace Papyrus.Desktop.Features.Topics {
         {
             canLoad = false;
             TopicsToList.Clear();
-            (await topicRepository.GetAllTopicsSummaries()).Where(t => t.ProductName == SelectedProduct.ProductName).ToList().ForEach(topic => TopicsToList.Add(topic));
+            (await topicRepository.GetAllTopicsSummaries())
+                .Where(t => t.Product.ProductId == SelectedProduct.ProductId)
+                .ToList()
+                .ForEach(topic => TopicsToList.Add(topic));
             canLoad = true;
         }
 
@@ -51,6 +54,11 @@ namespace Papyrus.Desktop.Features.Topics {
         public async void RefreshDocuments()
         {
             await LoadAllTopics();
+        }
+
+        public async Task<EditableTopic> GetEditableTopicById(string topicId)
+        {
+            return await topicRepository.GetEditableTopicById(topicId);
         }
     }
 }

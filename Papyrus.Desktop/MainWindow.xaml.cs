@@ -1,33 +1,36 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
-
-using Papyrus.Business.Topics;
-using Papyrus.Desktop.Features.MainMenu;
 using Papyrus.Desktop.Features.Topics;
 
 namespace Papyrus.Desktop
 {
     public partial class MainWindow : Window
     {
-        private ObservableCollection<DisplayableProduct> Products;
+        public MainWindowVM ViewModel
+        {
+            get { return (MainWindowVM) DataContext; }
+        }
 
         public MainWindow()
         {
             InitializeComponent();
-            ViewModel = new MainWindowVM()
-            {
-                MainMenuVM = ViewModelsFactory.MainMenu(),
-                TopicsGridVM = ViewModelsFactory.TopicsGrid()
-            };
+
+            DataContext = ViewModelsFactory.MainWindow();
+            this.Loaded += MainWindow_Loaded;
         }
 
-        public MainWindowVM ViewModel { get; set; }
-    }
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Initialize();
+        }
 
-    public class MainWindowVM
-    {
-        public MainMenuVM MainMenuVM { get; set; }
-
-        public TopicsGridVM TopicsGridVM { get; set; }
+        private async void NewTopic_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.SelectedProduct != null)
+            {
+                var topic = await ViewModel.PrepareNewDocument();
+                new TopicWindow(topic).Show();
+            }
+        }
     }
 }

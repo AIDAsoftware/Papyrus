@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Papyrus.Business.Topics;
 
 namespace Papyrus.Desktop.Features.Topics
 {
@@ -13,6 +14,20 @@ namespace Papyrus.Desktop.Features.Topics
         public TopicsGridVM ViewModel
         {
             get { return (TopicsGridVM)DataContext; }
+        }
+
+        public static readonly DependencyProperty SelectedProductProperty =
+                DependencyProperty.Register("SelectedProduct", typeof(DisplayableProduct), typeof(TopicsGrid));
+        public DisplayableProduct SelectedProduct
+        {
+            get
+            {
+                return this.GetValue(SelectedProductProperty) as DisplayableProduct;
+            }
+            set
+            {
+                this.SetValue(SelectedProductProperty, value);
+            }
         }
 
         public TopicsGrid()
@@ -28,20 +43,16 @@ namespace Papyrus.Desktop.Features.Topics
             await ViewModel.Initialize();
         }
 
-        private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            ViewModel.RefreshDocuments();
-        }
-
         private void ExportToFolderButton_OnClick(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        private void TopicRow_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private async void TopicRow_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var topicId = ViewModel.SelectedTopic.TopicId;
-            new TopicWindow(topicId).Show();
+            var topic = await ViewModel.GetEditableTopicById(topicId);
+            new TopicWindow(topic).Show();
         }
     }
 }
