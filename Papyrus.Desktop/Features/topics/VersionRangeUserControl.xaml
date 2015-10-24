@@ -4,12 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:topics="clr-namespace:Papyrus.Business.Topics;assembly=Papyrus.Business"
+             xmlns:topics1="clr-namespace:Papyrus.Desktop.Features.Topics"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="800" d:DataContext="{d:DesignData VersionRangeVM}">
-    <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+             d:DesignHeight="400" d:DesignWidth="800" 
+             d:DataContext="{d:DesignInstance Type=topics1:VersionRangeVM, IsDesignTimeCreatable=True}">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <StackPanel Margin="160,20,0,0" Orientation="Horizontal">
+            <Label>FromVersion</Label>
+            <ComboBox SelectedValue="{Binding VersionRange.FromVersion}" Width="100" Margin="0,0,100,0"></ComboBox>
+            <Label>ToVersion</Label>
+            <ComboBox SelectedValue="{Binding VersionRange.ToVersion}" Width="100"></ComboBox>
+        </StackPanel>
         <TabControl HorizontalAlignment="Left"
                             TabStripPlacement = "Top"
-		                    MinHeight="400"
+		                    MinHeight="350"
 		                    Margin="0,0,0,0"
 		                    VerticalAlignment="Top"
                             ItemsSource="{Binding VersionRange.Documents}"
@@ -29,7 +37,7 @@
                         <Label Content="Content"/>
                         <ScrollViewer VerticalScrollBarVisibility="Hidden">
                             <TextBox Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" AcceptsTab="True" 
-                                        TextWrapping="Wrap" MinLines="11" MaxLines="11" x:Name="ContentTextBox" 
+                                        TextWrapping="Wrap" MinLines="5" MaxLines="5" x:Name="ContentTextBox" 
                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                         ScrollViewer.VerticalScrollBarVisibility="Visible"
                                         ScrollViewer.CanContentScroll="True"/>    
@@ -38,5 +46,5 @@
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-    </Grid>
+    </StackPanel>
 </UserControl>
