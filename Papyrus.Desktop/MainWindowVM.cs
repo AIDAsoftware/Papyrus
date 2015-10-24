@@ -63,4 +63,16 @@ namespace Papyrus.Desktop
             editableVersionRange.Documents.Add(new EditableDocument {Language = "en-GB"});
         }
     }
+
+    public class DesignModeMainWindowVM : MainWindowVM
+    {
+        public DesignModeMainWindowVM(ProductRepository productRepository) : base(productRepository)
+        {
+            Products = new ObservableCollection<DisplayableProduct>
+            {
+                new DisplayableProduct {ProductId = "OpportunityId", ProductName = "Opportunity"}
+            };
+            SelectedProduct = Products[0];
+        }
+    }
 }
