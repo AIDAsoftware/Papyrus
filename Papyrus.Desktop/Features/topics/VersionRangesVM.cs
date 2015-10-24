@@ -1,20 +1,31 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Desktop.Util.Command;
 
 namespace Papyrus.Desktop.Features.Topics
 {
     public class VersionRangesVM
     {
         public ObservableCollection<EditableVersionRange> VersionRanges { get; protected set; }
+        public EditableVersionRange SelectedVersionRange { get; set; }
+        public IAsyncCommand DeleteVersionRange { get; private set; }
 
         public VersionRangesVM()
         {
             VersionRanges = new ObservableCollection<EditableVersionRange>();
+            DeleteVersionRange = RelayAsyncSimpleCommand.Create(DeleteCurrentVersionRange, () => true);
         }
 
-        public VersionRangesVM(ObservableCollection<EditableVersionRange> versionRanges)
+        private async Task DeleteCurrentVersionRange()
+        {
+            VersionRanges.Remove(SelectedVersionRange);
+            Console.WriteLine("Remove");
+        }
+
+        public VersionRangesVM(ObservableCollection<EditableVersionRange> versionRanges) : this()
         {
             VersionRanges = versionRanges;
         }
