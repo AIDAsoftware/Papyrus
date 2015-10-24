@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:topics="clr-namespace:Papyrus.Desktop.Features.Topics"
              xmlns:topics1="clr-namespace:Papyrus.Business.Topics;assembly=Papyrus.Business"
-             mc:Ignorable="d" d:DataContext="{d:DesignData SampleVM}">
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=topics:DesignModeVersionRangesVM, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <topics:VersionRangeToVmConverter x:Key="VersionRangeToVmConverter" />
     </UserControl.Resources>
