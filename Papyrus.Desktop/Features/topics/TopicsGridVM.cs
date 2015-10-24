@@ -11,7 +11,7 @@ namespace Papyrus.Desktop.Features.Topics {
     {
         private readonly TopicRepository topicRepository;
 
-        public ObservableCollection<TopicSummary> TopicsToList { get; }
+        public ObservableCollection<TopicSummary> TopicsToList { get; protected set; }
         public TopicSummary SelectedTopic { get; set; }
         public DisplayableProduct SelectedProduct { get; set; }
 
@@ -59,6 +59,30 @@ namespace Papyrus.Desktop.Features.Topics {
         public async Task<EditableTopic> GetEditableTopicById(string topicId)
         {
             return await topicRepository.GetEditableTopicById(topicId);
+        }
+    }
+
+    public class DesignModeTopicsGridVM : TopicsGridVM
+    {
+        public DesignModeTopicsGridVM()
+        {
+            TopicsToList = new ObservableCollection<TopicSummary>
+            {
+                new TopicSummary
+                {
+                    LastDocumentTitle = "Login",
+                    LastDocumentDescription = "Explicación",
+                    VersionName = "2.0",
+                    Product = new DisplayableProduct {ProductId = "ProductId", ProductName = "Opportunity"}
+                },
+                new TopicSummary
+                {
+                    LastDocumentTitle = "Llamadas",
+                    LastDocumentDescription = "Explicación",
+                    VersionName = "3.0",
+                    Product = new DisplayableProduct {ProductId = "ProductId", ProductName = "Opportunity"}
+                }
+            };
         }
     }
 }
