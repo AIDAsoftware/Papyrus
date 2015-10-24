@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Papyrus.Desktop.Features.Topics" x:Class="Papyrus.Desktop.Features.Topics.TopicWindow"
         mc:Ignorable="d"
         Title="TopicWindow"
+        d:DataContext="{d:DesignInstance Type=local:DesignModeTopicVM, IsDesignTimeCreatable=True}"
         DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Window.Resources>
         <local:VersionRangesToVmConverter x:Key="VersionRangesToVmConverter" />

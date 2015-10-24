@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -14,7 +15,7 @@ namespace Papyrus.Desktop.Features.Topics
     public class TopicVM : INotifyPropertyChanged
     {
         private readonly TopicService topicService;
-        public EditableTopic EditableTopic { get; }
+        public EditableTopic EditableTopic { get; protected set; }
 
         public IAsyncCommand SaveTopic { get; set; }
 
@@ -73,6 +74,29 @@ namespace Papyrus.Desktop.Features.Topics
         public void Handle(OnUserMessageRequest domainEvent)
         {
             EventBus.Raise(domainEvent);
+        }
+    }
+
+    public class DesignModeTopicVM : TopicVM
+    {
+        public DesignModeTopicVM()
+        {
+            EditableTopic = new EditableTopic
+            {
+                VersionRanges = new ObservableCollection<EditableVersionRange>
+                {
+                    new EditableVersionRange
+                    {
+                        FromVersion = new ProductVersion("AnyId", "1.0", DateTime.Today),
+                        ToVersion = new ProductVersion("AnyId", "2.0", DateTime.Today)
+                    },
+                    new EditableVersionRange
+                    {
+                        FromVersion = new ProductVersion("AnyId", "3.0", DateTime.Today),
+                        ToVersion = new ProductVersion("AnyId", "4.0", DateTime.Today)
+                    }
+                }
+            };
         }
     }
 }
