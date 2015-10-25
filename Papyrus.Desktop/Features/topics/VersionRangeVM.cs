@@ -20,8 +20,8 @@ namespace Papyrus.Desktop.Features.Topics
 
         public VersionRangeVM(EditableVersionRange editableVersionRange, DisplayableProduct selectedProduct, ProductRepository productRepository)
         {
-            this.productRepository = productRepository;
             ProductVersions = new ObservableCollection<ProductVersion>();
+            this.productRepository = productRepository;
             VersionRange = editableVersionRange;
             SelectedProduct = selectedProduct;
         }

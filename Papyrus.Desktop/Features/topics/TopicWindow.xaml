@@ -16,7 +16,10 @@
     </Window.Resources>
     <Grid>
         <DockPanel LastChildFill="True">
-            <local:VersionRangesUserControl DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Height="Auto" Width="Auto" DataContext="{Binding EditableTopic,Converter={StaticResource VersionRangesToVmConverter}}"/>
+            <local:VersionRangesUserControl DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="0,0,0,0" 
+                                            VerticalAlignment="Top" Height="Auto" Width="Auto" 
+                                            DataContext="{Binding EditableTopic,
+                                                    Converter={StaticResource VersionRangesToVmConverter}}"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 20, 0">
                 <Button Command="{Binding DeleteTopic}" CommandParameter="{Binding ElementName=TopicView}" MinWidth="100" Margin="10" DockPanel.Dock="Bottom" MinHeight="30" MaxWidth="100">Delete</Button>
                 <Button Command="{Binding SaveTopic}" MinWidth="100" Margin="10" DockPanel.Dock="Bottom" MinHeight="30" MaxWidth="100">Save</Button>
