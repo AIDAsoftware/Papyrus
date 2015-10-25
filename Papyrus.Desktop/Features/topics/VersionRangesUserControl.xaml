@@ -30,7 +30,10 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate DataType="topics1:EditableVersionRange">
-                    <topics:VersionRangeUserControl Height="350" Width="900" DataContext="{Binding Converter={StaticResource VersionRangeToVmConverter}}"/>
+                    <topics:VersionRangeUserControl Height="350" Width="900" 
+                        DataContext="{Binding RelativeSource={RelativeSource FindAncestor, 
+                        AncestorType={x:Type topics:VersionRangesUserControl}}, Converter={StaticResource VersionRangeToVmConverter}, 
+                        Path=ViewModel}"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>

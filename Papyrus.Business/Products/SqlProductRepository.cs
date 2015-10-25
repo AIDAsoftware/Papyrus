@@ -60,6 +60,11 @@ namespace Papyrus.Business.Products
             return new FullVersionRange(firstVersionId, latestVersionId);
         }
 
+        public async Task<List<ProductVersion>> GetAllVersionsFor(DisplayableProduct product)
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task<List<ProductVersion>> ProducVersionsForProduct(string productId)
         {
             const string selectVersionSqlQuery = @"Select VersionId, VersionName, Release

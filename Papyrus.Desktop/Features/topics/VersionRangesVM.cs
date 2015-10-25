@@ -12,6 +12,7 @@ namespace Papyrus.Desktop.Features.Topics
         public ObservableCollection<EditableVersionRange> VersionRanges { get; protected set; }
         public EditableVersionRange SelectedVersionRange { get; set; }
         public IAsyncCommand DeleteVersionRange { get; private set; }
+        public DisplayableProduct SelectedProduct { get; set; }
 
         public VersionRangesVM()
         {
@@ -25,9 +26,10 @@ namespace Papyrus.Desktop.Features.Topics
             Console.WriteLine("Remove");
         }
 
-        public VersionRangesVM(ObservableCollection<EditableVersionRange> versionRanges) : this()
+        public VersionRangesVM(EditableTopic editableTopic) : this()
         {
-            VersionRanges = versionRanges;
+            VersionRanges = editableTopic.VersionRanges;
+            SelectedProduct = editableTopic.Product;
         }
 
         public void Initialize()

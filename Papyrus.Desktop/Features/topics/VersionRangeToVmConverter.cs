@@ -12,7 +12,10 @@ namespace Papyrus.Desktop.Features.Topics
             object parameter, CultureInfo culture)
         {
             if (value == null) return new VersionRangeVM();
-            return new VersionRangeVM(value as EditableVersionRange);
+            var versionRangesVM = value as VersionRangesVM;
+            var selectedProduct = versionRangesVM.SelectedProduct;
+            var versionRange = versionRangesVM.SelectedVersionRange;
+            return new VersionRangeVM(versionRange, selectedProduct, RepositoriesFactory.Product());
         }
 
         public object ConvertBack(object value, Type targetType,
