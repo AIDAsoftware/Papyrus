@@ -9,7 +9,7 @@ namespace Papyrus.Desktop.Features.Topics
 {
     public class VersionRangesVM
     {
-        public ObservableCollection<EditableVersionRange> VersionRanges { get; private set; }
+        public ObservableCollection<EditableVersionRange> VersionRanges { get; protected set; }
         public EditableVersionRange SelectedVersionRange { get; set; }
         public IAsyncCommand DeleteVersionRange { get; private set; }
         public DisplayableProduct SelectedProduct { get; set; }
