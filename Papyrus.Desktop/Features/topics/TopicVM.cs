@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Annotations;
@@ -18,13 +18,12 @@ namespace Papyrus.Desktop.Features.Topics
         public EditableTopic EditableTopic { get; protected set; }
 
         public IAsyncCommand SaveTopic { get; set; }
-
-        public IAsyncCommand DeleteTopic { get; set; }
+        public RelayCommand<Window> DeleteTopic { get; set; }
 
         public TopicVM()
         {
             SaveTopic = RelayAsyncSimpleCommand.Create(SaveCurrentTopic, CanSaveTopic);
-            DeleteTopic = RelayAsyncSimpleCommand.Create(DeleteCurrentTopic, () => true);
+            DeleteTopic = new RelayCommand<Window>(DeleteCurrentTopic);
         }
 
         private TopicVM(TopicService topicService) : this()
@@ -52,10 +51,11 @@ namespace Papyrus.Desktop.Features.Topics
             EventBus.Raise(new OnUserMessageRequest("Topic Saved!"));
         }
 
-        private async Task DeleteCurrentTopic()
+        private async void DeleteCurrentTopic(Window window)
         {
             var topic = EditableTopic.ToTopic();
             await topicService.Delete(topic);
+            window.Close();
         }
 
         private bool CanSaveTopic()
