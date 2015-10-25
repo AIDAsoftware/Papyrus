@@ -51,6 +51,7 @@ namespace Papyrus.Desktop.Features.Topics
             EventBus.Raise(new OnUserMessageRequest("Topic Saved!"));
         }
 
+        //TODO: How to make it not void? It could be a trouble if product can't be deleted in backend
         private async void DeleteCurrentTopic(Window window)
         {
             var topic = EditableTopic.ToTopic();
