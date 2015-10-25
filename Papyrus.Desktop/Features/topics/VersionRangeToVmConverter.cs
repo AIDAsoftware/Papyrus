@@ -15,7 +15,7 @@ namespace Papyrus.Desktop.Features.Topics
             var versionRangesVM = value as VersionRangesVM;
             var selectedProduct = versionRangesVM.SelectedProduct;
             var versionRange = versionRangesVM.SelectedVersionRange;
-            return new VersionRangeVM(versionRange, selectedProduct, RepositoriesFactory.Product());
+            return ViewModelsFactory.VersionRange(versionRange, selectedProduct);
         }
 
         public object ConvertBack(object value, Type targetType,

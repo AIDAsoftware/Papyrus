@@ -20,6 +20,11 @@ namespace Papyrus.Desktop {
         {
             return new MainWindowVM(RepositoriesFactory.Product());
         }
+
+        public static VersionRangeVM VersionRange(EditableVersionRange versionRange, DisplayableProduct product)
+        {
+            return new VersionRangeVM(versionRange, product, RepositoriesFactory.Product());
+        }
     }
 
     public static class ServicesFactory {
