@@ -48,6 +48,7 @@ namespace Papyrus.Desktop.Features.Topics
             if (string.IsNullOrEmpty(topic.TopicId))
             {
                 await topicService.Create(topic);
+                EditableTopic.TopicId = topic.TopicId;
             }
             else
             {
