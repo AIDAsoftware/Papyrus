@@ -17,13 +17,6 @@ namespace Papyrus.Desktop.Features.Topics
         public VersionRangeUserControl()
         {
             InitializeComponent();
-
-            this.Loaded += VersionRangeUserControl_Loaded;
-        }
-
-        private void VersionRangeUserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Initialize();
         }
     }
 }
