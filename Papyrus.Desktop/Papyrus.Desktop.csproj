@@ -54,6 +54,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Features\Topics\DocumentUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Features\Topics\TopicsGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -77,6 +81,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Features\Topics\DocumentUserControl.xaml.cs">
+      <DependentUpon>DocumentUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Topics\VersionRangesToVmConverter.cs" />
     <Compile Include="Features\Topics\TopicsGrid.xaml.cs">

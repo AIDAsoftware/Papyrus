@@ -29,6 +29,7 @@
 		                    Margin="0,0,0,0"
 		                    VerticalAlignment="Top"
                             ItemsSource="{Binding VersionRange.Documents}"
+                            SelectedItem="{Binding SelectedDocument}"
 		                    MinWidth="900">
             <TabControl.ItemTemplate>
                 <DataTemplate DataType="topics:EditableDocument">
@@ -37,20 +38,7 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate DataType="topics:EditableDocument">
-                    <StackPanel Margin="40">
-                        <Label Content="Title"/>
-                        <TextBox x:Name="TitleTextBox" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Label Content="Description"/>
-                        <TextBox x:Name="DescriptionTextBox" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Label Content="Content"/>
-                        <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                            <TextBox Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" AcceptsTab="True" 
-                                        TextWrapping="Wrap" MinLines="5" MaxLines="5" x:Name="ContentTextBox" 
-                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                        ScrollViewer.VerticalScrollBarVisibility="Visible"
-                                        ScrollViewer.CanContentScroll="True"/>    
-                        </ScrollViewer>
-                    </StackPanel>
+                    <topics1:DocumentUserControl DataContext="{Binding}"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
