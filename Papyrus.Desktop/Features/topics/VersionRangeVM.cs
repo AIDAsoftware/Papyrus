@@ -28,7 +28,7 @@ namespace Papyrus.Desktop.Features.Topics
 
         public async void Initialize()
         {
-            var productVersions = await productRepository.GetAllVersionsFor(SelectedProduct);
+            var productVersions = await productRepository.GetAllVersionsFor(SelectedProduct.ProductId);
         }
     }
 }

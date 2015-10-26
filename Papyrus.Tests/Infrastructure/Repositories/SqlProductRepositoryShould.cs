@@ -106,7 +106,23 @@ namespace Papyrus.Tests.Infrastructure.Repositories
 
             fullRange.FirstVersionId.Should().Be("FirstVersionId");
             fullRange.LatestVersionId.Should().Be("ThirdVersionId");
-        } 
+        }
+
+        [Test]
+        public async Task gets_all_versions_for_a_given_product()
+        {
+            var papyrusVersions = new List<ProductVersion>
+            {
+                new ProductVersion("FirstVersionId", "1.0", DateTime.Today.AddDays(-3)),
+                new ProductVersion("SecondVersionId", "2.0", DateTime.Today.AddDays(-2)),
+            };
+            var product = new Product("PapyrusId", "Papyrus", papyrusVersions);
+            await InsertProduct(product);
+
+            var versions = await new SqlProductRepository(dbConnection).GetAllVersionsFor("PapyrusId");
+
+            versions.ShouldAllBeEquivalentTo(papyrusVersions);
+        }
 
         private async Task InsertProduct(Product product)
         {
