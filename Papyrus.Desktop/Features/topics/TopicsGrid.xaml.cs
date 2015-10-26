@@ -40,6 +40,16 @@ namespace Papyrus.Desktop.Features.Topics
             await ViewModel.Initialize();
         }
 
+        private async void NewTopic_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.SelectedProduct != null)
+            {
+                var topic = await ViewModel.PrepareNewDocument();
+                new TopicWindow(topic).Show();
+            }
+        }
+
+
         private void ExportToFolderButton_OnClick(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();

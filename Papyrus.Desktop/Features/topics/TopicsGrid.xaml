@@ -11,10 +11,10 @@
     <Grid>
         <DockPanel>
             <StackPanel Margin="8" Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Top">
-                <Button>New Topic</Button>
+                <Button Click="NewTopic_OnClick">New Topic</Button>
                 <Label>Products</Label>
                 <ComboBox MinWidth="100" 
-                            ItemsSource="{Binding Products, Mode=TwoWay}"
+                            ItemsSource="{Binding Products}"
                             DisplayMemberPath="ProductName" 
                             SelectedItem="{Binding SelectedProduct}">
                 </ComboBox>

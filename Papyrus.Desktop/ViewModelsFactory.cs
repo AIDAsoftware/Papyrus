@@ -8,7 +8,7 @@ namespace Papyrus.Desktop {
     public static class ViewModelsFactory {
         public static TopicsGridVM TopicsGrid()
         {
-            return new TopicsGridVM(RepositoriesFactory.Topic());
+            return new TopicsGridVM(RepositoriesFactory.Topic(), RepositoriesFactory.Product());
         }
 
         public static TopicVM Topic(EditableTopic topic)
@@ -18,7 +18,7 @@ namespace Papyrus.Desktop {
 
         public static MainWindowVM MainWindow()
         {
-            return new MainWindowVM(RepositoriesFactory.Product());
+            return new MainWindowVM();
         }
 
         public static VersionRangeVM VersionRange(EditableVersionRange versionRange)
