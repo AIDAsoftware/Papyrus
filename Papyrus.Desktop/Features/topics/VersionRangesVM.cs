@@ -1,23 +1,57 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
+using Papyrus.Infrastructure.Core.SharedDomain.Validation;
 
 namespace Papyrus.Desktop.Features.Topics
 {
-    public class VersionRangesVM
+    public class VersionRangesVM : INotifyPropertyChanged
     {
         public ObservableCollection<EditableVersionRange> VersionRanges { get; protected set; }
-        public EditableVersionRange SelectedVersionRange { get; set; }
+
+        private EditableVersionRange selectedVersionRange;
+        public EditableVersionRange SelectedVersionRange
+        {
+            get { return selectedVersionRange; }
+            set
+            {
+                selectedVersionRange = value;
+                OnPropertyChanged("SelectedVersionRange");
+            }
+        }
+
         public IAsyncCommand DeleteVersionRange { get; private set; }
+        public IAsyncCommand CreateVersionRange { get; private set; }
         public DisplayableProduct SelectedProduct { get; set; }
 
         public VersionRangesVM()
         {
             VersionRanges = new ObservableCollection<EditableVersionRange>();
             DeleteVersionRange = RelayAsyncSimpleCommand.Create(DeleteCurrentVersionRange, () => true);
+            CreateVersionRange = RelayAsyncSimpleCommand.Create(CreateNewVersionRange, () => true);
+        }
+
+        private async Task CreateNewVersionRange()
+        {
+            var editableVersionRange = DefaultEditableVersionRange();
+            VersionRanges.Add(editableVersionRange);
+            SelectedVersionRange = editableVersionRange;
+        }
+
+        private static EditableVersionRange DefaultEditableVersionRange()
+        {
+            var editableVersionRange = new EditableVersionRange();
+            var spanishEmptyDocument = new EditableDocument { Language = "es-ES" };
+            var englishEmptyDocument = new EditableDocument {Language = "en-GB"};
+            editableVersionRange.Documents.Add(spanishEmptyDocument);
+            editableVersionRange.Documents.Add(englishEmptyDocument);
+            return editableVersionRange;
         }
 
         private async Task DeleteCurrentVersionRange()
@@ -35,6 +69,15 @@ namespace Papyrus.Desktop.Features.Topics
         public void Initialize()
         {
             
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

@@ -23,7 +23,7 @@ namespace Papyrus.Desktop {
 
         public static VersionRangeVM VersionRange(EditableVersionRange versionRange)
         {
-            return new VersionRangeVM(versionRange, RepositoriesFactory.Product());
+            return new VersionRangeVM(versionRange);
         }
     }
 
