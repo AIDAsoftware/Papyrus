@@ -1,6 +1,4 @@
 using System;
-using System.Net;
-using System.Runtime.CompilerServices;
 using Papyrus.Business.Topics;
 
 namespace Papyrus.Business.Products
