@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Papyrus.Tests</RootNamespace>
     <AssemblyName>Papyrus.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -103,14 +104,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Business\DocumentServiceShould.cs" />
-    <Compile Include="Business\DocumentShould.cs" />
+    <Compile Include="Business\EditableTopicShould.cs" />
     <Compile Include="Business\TopicServiceShould.cs" />
+    <Compile Include="Business\VersionRangeShould.cs" />
     <Compile Include="Infrastructure\Database\DatabaseConnectionShould.cs" />
     <Compile Include="Infrastructure\EventBusShould.cs" />
+    <Compile Include="Infrastructure\Repositories\helpers\DataBaseTruncator.cs" />
     <Compile Include="Infrastructure\Repositories\SqlProductRepositoryShould.cs" />
+    <Compile Include="Infrastructure\Repositories\helpers\SqlInserter.cs" />
+    <Compile Include="Infrastructure\Repositories\TopicRepository\SqlTopicRepositoryShouldGet.cs" />
+    <Compile Include="Infrastructure\Repositories\TopicRepository\SqlTopicRepositoryWhenDeleteATopicShould.cs" />
+    <Compile Include="Infrastructure\Repositories\TopicRepository\SqlTopicRepositoryWhenSaveATopicShould.cs" />
+    <Compile Include="Infrastructure\Repositories\TopicRepository\SqlTopicRepositoryWhenUpdateATopicShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Infrastructure\Repositories\SqlDocumentRepositoryShould.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -133,10 +139,6 @@
     <ProjectReference Include="..\Papyrus.Infrastructure.Core\Papyrus.Infrastructure.Core.csproj">
       <Project>{efa054e5-3390-41f7-a683-c74ef1b0f384}</Project>
       <Name>Papyrus.Infrastructure.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Papyrus.WebServices\Papyrus.WebServices.csproj">
-      <Project>{dbd8cf65-ade3-4f15-947f-1c6deff7f9c6}</Project>
-      <Name>Papyrus.WebServices</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

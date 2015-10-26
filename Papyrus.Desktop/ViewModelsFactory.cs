@@ -1,28 +1,29 @@
 ﻿using System.Configuration;
-using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
-using Papyrus.Desktop.Features.Documents;
-using Papyrus.Desktop.Features.MainMenu;
+using Papyrus.Business.Topics;
+using Papyrus.Desktop.Features.Topics;
 using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Desktop {
     public static class ViewModelsFactory {
-        public static MainMenuVM MainMenu() {
-            return new MainMenuVM(ServicesFactory.Product());
-        }
-
-        public static DocumentsGridVM DocumentsGrid() {
-            return new DocumentsGridVM(ServicesFactory.Document(), RepositoriesFactory.Product());
-        }
-
-        public static NewDocumentVM NewDocumentWindowVm()
+        public static TopicsGridVM TopicsGrid()
         {
-            return new NewDocumentVM(RepositoriesFactory.Product(), ServicesFactory.Document());
+            return new TopicsGridVM(RepositoriesFactory.Topic());
         }
 
-        public static NewDocumentVM UpdateDocumentWindowVm(DocumentDetails document)
+        public static TopicVM Topic(EditableTopic topic)
         {
-            return new NewDocumentVM(RepositoriesFactory.Product(), ServicesFactory.Document(), document);
+            return new TopicVM(ServicesFactory.Topic(), RepositoriesFactory.Product(), topic);
+        }
+
+        public static MainWindowVM MainWindow()
+        {
+            return new MainWindowVM(RepositoriesFactory.Product());
+        }
+
+        public static VersionRangeVM VersionRange(EditableVersionRange versionRange)
+        {
+            return new VersionRangeVM(versionRange, RepositoriesFactory.Product());
         }
     }
 
@@ -31,8 +32,9 @@ namespace Papyrus.Desktop {
             return new ProductService(RepositoriesFactory.Product());
         }
 
-        public static DocumentService Document() {
-            return new DocumentService(RepositoriesFactory.Document());
+        public static TopicService Topic()
+        {
+            return new TopicService(RepositoriesFactory.Topic());
         }
     }
 
@@ -46,8 +48,9 @@ namespace Papyrus.Desktop {
             return new SqlProductRepository(CreateConnection());
         }
 
-        public static DocumentRepository Document() {
-            return new SqlDocumentRepository(CreateConnection());
+        public static TopicRepository Topic()
+        {
+            return new SqlTopicRepository(CreateConnection());
         }
     }
 

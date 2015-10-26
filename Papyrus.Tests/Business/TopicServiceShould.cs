@@ -1,37 +1,119 @@
-﻿using NSubstitute;
+﻿using System;
+using System.Threading.Tasks;
+using NSubstitute;
 using NUnit.Framework;
-using Papyrus.Business;
+using Papyrus.Business.Topics;
+using Papyrus.Business.Topics.Exceptions;
 
 namespace Papyrus.Tests.Business
 {
     [TestFixture]
     public class TopicServiceShould
     {
-        // TODO:
-        //   save topic 
-        //   get topic by Id
-        //   update topic
-        //   Get all topics
-        //   topic which is not related to a product cannot be saved
-        //   topic without ranges cannot be saved 
-        //   topic with id cannot be saved 
-        //   topic without id cannot be updated
+        private TopicRepository topicRepo;
+        private TopicService topicService;
+        private VersionRange anyVersionRange;
+        private string anyProductId;
 
-
-        [Test]
-        public void save_a_topic_when_it_is_created()
+        [SetUp]
+        public void SetUp()
         {
-            var topicRepo = Substitute.For<TopicRepository>();
-            var service = new TopicService(topicRepo);
-            var topic = new Topic()
-                .ForProduct("AnyProductId");
-            var anyVersionRange = new VersionRange(fromVersion: "AnyVersionId", toVersion: "AnotherVersionId");
-            topic.AddVersionRange(anyVersionRange);
-
-            service.Create(topic);
-
-            topicRepo.Received().Save(topic);
+            topicRepo = Substitute.For<TopicRepository>();
+            topicService = new TopicService(topicRepo);
+            anyVersionRange = new VersionRange(fromVersionId: null, toVersionId: null);
+            anyProductId = "AnyProductId";
         }
 
+        [Test]
+        [ExpectedException(typeof(CannotSaveTopicsWithNoRelatedProductException))]
+        public async void fail_when_trying_to_save_topics_with_no_related_product()
+        {
+            var topic = new Topic(null);
+            topic.AddVersionRange(anyVersionRange);
+
+            await topicService.Create(topic);
+        }
+
+        [Test]
+        [ExpectedException(typeof(CannotSaveTopicsWithNoVersionRangesException))]
+        public async void fail_when_trying_to_save_topics_with_no_ranges()
+        {
+            var topic = new Topic(anyProductId);
+
+            await topicService.Create(topic);
+        }
+
+        [Test]
+        [ExpectedException(typeof(CannotSaveTopicsWithDefinedTopicIdException))]
+        public async void fail_when_trying_to_save_topics_with_id()
+        {
+            var topic = new Topic(anyProductId)
+                            .WithId("AnyTopicId");
+            topic.AddVersionRange(anyVersionRange);
+
+            await topicService.Create(topic);
+        }
+
+        [Test]
+        public async void save_a_topic_when_it_is_created()
+        {
+            var topic = new Topic(anyProductId);
+            topic.AddVersionRange(anyVersionRange);
+
+            await topicService.Create(topic);
+
+            topicRepo.Received().Save(topic);
+            topicRepo.Received().Save(Arg.Is<Topic>(t => !String.IsNullOrEmpty(t.TopicId)));
+        }
+
+        [Test]
+        [ExpectedException(typeof(CannotUpdateTopicsWithoutTopicIdDeclaredException))]
+        public async Task fail_when_trying_to_update_a_topic_without_id()
+        {
+            var topic = new Topic(anyProductId);
+            topic.AddVersionRange(anyVersionRange);
+
+            await topicService.Update(topic);
+        }
+
+        [Test]
+        [ExpectedException(typeof(CannotUpdateTopicsWithNoVersionRangesException))]
+        public async Task fail_when_trying_to_update_a_topic_with_no_ranges()
+        {
+            var topic = new Topic(anyProductId)
+                .WithId("AnyTopicId");
+
+            await topicService.Update(topic);
+        }
+
+        [Test]
+        public async Task update_a_topic_of_the_library()
+        {
+            var topic = new Topic(anyProductId)
+                .WithId("AnyTopicId");
+            topic.AddVersionRange(anyVersionRange);
+
+            await topicService.Update(topic);
+
+            topicRepo.Received().Update(topic);
+        }
+
+        [Test]
+        public async Task delete_a_topic_from_the_library()
+        {
+            var topic = new Topic(anyProductId).WithId("AnyTopicId");
+
+            await topicService.Delete(topic);
+
+            topicRepo.Received().Delete(topic);
+        }
+
+        [Test]
+        [ExpectedException(typeof(CannotDeleteTopicsWithoutTopicIdAssignedException))]
+        public async Task fail_when_try_to_delete_a_topic_without_topic_id_assigned()
+        {
+            var topic = new Topic(anyProductId);
+            await topicService.Delete(topic);
+        } 
     }
 }

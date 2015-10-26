@@ -5,17 +5,28 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Papyrus.Infrastructure.Core.DomainEvents;
 
 namespace Papyrus.Desktop {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application {
-       UIEventsCoordinator eventsCoordinator = new UIEventsCoordinator();
-
+    public partial class App : Application, Subscriber<OnUserMessageRequest>
+    {
         public App() {
-            eventsCoordinator.AddService(ServicesFactory.Document());
-            eventsCoordinator.SubscribeToDocumentEvents();
+            EventBus.Subscribe(this);
+        }
+
+        public void Handle(OnUserMessageRequest domainEvent)
+        {
+            MessageBox.Show(domainEvent.Message, "Aviso");
+        }
+    }
+
+    public class OnUserMessageRequest
+    {
+        public string Message { get; private set; }
+
+        public OnUserMessageRequest(string message)
+        {
+            Message = message;
         }
     }
 }

@@ -1,11 +1,7 @@
-﻿using System.Configuration;
-using Papyrus.Business.Documents;
-
-namespace Papyrus.WebServices
+﻿namespace Papyrus.WebServices
 {
     using System.Web.Http;
     using LightInject;
-    using Infrastructure.Core.Database;
 
     public static class WebApiConfig
     {

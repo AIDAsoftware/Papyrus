@@ -1,42 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Papyrus.Infrastructure.Core.DomainEvents;
+using Papyrus.Desktop.Features.Topics;
 
-namespace Papyrus.Desktop {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window, Subscriber<ApplicationErrorOcurred>, Subscriber<OnApplicationNotification> {
-        public MainWindow() {
+namespace Papyrus.Desktop
+{
+    public partial class MainWindow : Window
+    {
+        public MainWindowVM ViewModel
+        {
+            get { return (MainWindowVM) DataContext; }
+        }
+
+        public MainWindow()
+        {
             InitializeComponent();
-            EventBus.Subscribe(this);
+
+            DataContext = ViewModelsFactory.MainWindow();
+            this.Loaded += MainWindow_Loaded;
         }
 
-        public void Handle(ApplicationErrorOcurred domainEvent) {
-            MessageBox.Show(domainEvent.Exception.Message);
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Initialize();
         }
 
-        public void Handle(OnApplicationNotification notification) {
-            MessageBox.Show(notification.Message);
+        private async void NewTopic_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.SelectedProduct != null)
+            {
+                var topic = await ViewModel.PrepareNewDocument();
+                new TopicWindow(topic).Show();
+            }
         }
-    }
-
-    public class OnApplicationNotification {
-        public OnApplicationNotification(string message) {
-            Message = message;
-        }
-        public string Message { get; set; }
     }
 }

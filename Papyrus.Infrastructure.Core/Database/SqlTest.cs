@@ -1,3 +1,5 @@
+using System;
+
 namespace Papyrus.Infrastructure.Core.Database {
     using System.Configuration;
     using NUnit.Framework;

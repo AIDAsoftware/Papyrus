@@ -5,8 +5,6 @@
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using Business.Documents;
-    using Business.Documents.Exceptions;
     using Models;
 
     public class DocumentsController : ApiController {

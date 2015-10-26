@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Papyrus.Infrastructure.Migrations</RootNamespace>
     <AssemblyName>Papyrus.Infrastructure.Migrations</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,12 +51,18 @@
     <Compile Include="Document\1 - CreateDocumentTable.cs" />
     <Compile Include="Document\3 - AddProductIdColumn.cs" />
     <Compile Include="Document\4 - RenameIdColumnToTopicId.cs" />
+    <Compile Include="Document\5 - AdaptDocumentToBeContainedByVersionRange.cs" />
+    <Compile Include="ProductVersion\2 - AddReleaseColumn.cs" />
     <Compile Include="Product\1 - CreateProductTable.cs" />
     <Compile Include="Product\2 - ConvertProductToProductVersion.cs" />
     <Compile Include="Product\3 - RemoveDescriptionColumns.cs" />
     <Compile Include="Product\4 - SeparateProductVersionTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetDocumentRowsNullableMigration.cs" />
+    <Compile Include="Topic\1 - CreateTopicTable.cs" />
+    <Compile Include="VersionRange\1 - CreateVersionRangeTable.cs" />
+    <Compile Include="ProductVersion\1 - RenameProductColToProductId.cs" />
+    <Compile Include="VersionRange\2 - AddTopicIdColumn.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
