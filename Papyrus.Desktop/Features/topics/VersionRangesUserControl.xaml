@@ -33,7 +33,7 @@
                     <topics:VersionRangeUserControl Height="350" Width="900" 
                         DataContext="{Binding RelativeSource={RelativeSource FindAncestor, 
                         AncestorType={x:Type topics:VersionRangesUserControl}}, Converter={StaticResource VersionRangeToVmConverter}, 
-                        Path=ViewModel}"/>
+                        Path=ViewModel.SelectedVersionRange}"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>

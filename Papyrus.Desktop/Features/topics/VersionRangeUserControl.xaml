@@ -11,9 +11,17 @@
     <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
         <StackPanel Margin="160,20,0,0" Orientation="Horizontal">
             <Label>FromVersion</Label>
-            <ComboBox SelectedValue="{Binding VersionRange.FromVersion}" Width="100" Margin="0,0,100,0"></ComboBox>
+            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
+                        AncestorType={x:Type topics1:TopicWindow}}, 
+                        Path=ViewModel.Versions}" DisplayMemberPath="VersionName" 
+                        SelectedValue="{Binding VersionRange.FromVersion}" 
+                        Width="100" Margin="0,0,100,0"></ComboBox>
             <Label>ToVersion</Label>
-            <ComboBox SelectedValue="{Binding VersionRange.ToVersion}" Width="100"></ComboBox>
+            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
+                        AncestorType={x:Type topics1:TopicWindow}}, 
+                        Path=ViewModel.Versions}" DisplayMemberPath="VersionName" 
+                        SelectedValue="{Binding VersionRange.ToVersion}" 
+                        Width="100"></ComboBox>
         </StackPanel>
         <TabControl HorizontalAlignment="Left"
                             TabStripPlacement = "Top"

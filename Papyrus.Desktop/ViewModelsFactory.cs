@@ -13,7 +13,7 @@ namespace Papyrus.Desktop {
 
         public static TopicVM Topic(EditableTopic topic)
         {
-            return new TopicVM(ServicesFactory.Topic(), topic);
+            return new TopicVM(ServicesFactory.Topic(), RepositoriesFactory.Product(), topic);
         }
 
         public static MainWindowVM MainWindow()
@@ -21,9 +21,9 @@ namespace Papyrus.Desktop {
             return new MainWindowVM(RepositoriesFactory.Product());
         }
 
-        public static VersionRangeVM VersionRange(EditableVersionRange versionRange, DisplayableProduct product)
+        public static VersionRangeVM VersionRange(EditableVersionRange versionRange)
         {
-            return new VersionRangeVM(versionRange, product, RepositoriesFactory.Product());
+            return new VersionRangeVM(versionRange, RepositoriesFactory.Product());
         }
     }
 

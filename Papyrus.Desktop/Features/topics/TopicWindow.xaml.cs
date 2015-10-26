@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using Papyrus.Business.Topics;
 
 namespace Papyrus.Desktop.Features.Topics
@@ -16,6 +15,12 @@ namespace Papyrus.Desktop.Features.Topics
             InitializeComponent();
             
             DataContext = ViewModelsFactory.Topic(topic);
+            this.Loaded += OnLoad;
+        }
+
+        private void OnLoad(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Initialize();
         }
     }
 }

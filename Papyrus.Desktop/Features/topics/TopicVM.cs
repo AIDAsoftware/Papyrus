@@ -15,23 +15,29 @@ namespace Papyrus.Desktop.Features.Topics
     public class TopicVM : INotifyPropertyChanged
     {
         private readonly TopicService topicService;
+        private readonly ProductRepository productRepository;
         public EditableTopic EditableTopic { get; protected set; }
 
         public IAsyncCommand SaveTopic { get; set; }
         public RelayCommand<Window> DeleteTopic { get; set; }
 
+        public ObservableCollection<ProductVersion> Versions { get; private set; }
+
         public TopicVM()
         {
             SaveTopic = RelayAsyncSimpleCommand.Create(SaveCurrentTopic, CanSaveTopic);
             DeleteTopic = new RelayCommand<Window>(DeleteCurrentTopic);
+            Versions = new ObservableCollection<ProductVersion>();
         }
 
-        private TopicVM(TopicService topicService) : this()
+        private TopicVM(TopicService topicService, ProductRepository productRepository) : this()
         {
             this.topicService = topicService;
+            this.productRepository = productRepository;
         }
 
-        public TopicVM(TopicService topicService, EditableTopic topic) : this(topicService)
+        public TopicVM(TopicService topicService, ProductRepository productRepository, EditableTopic topic) 
+            : this(topicService, productRepository)
         {
             EditableTopic = topic;
         }
@@ -75,6 +81,12 @@ namespace Papyrus.Desktop.Features.Topics
         public void Handle(OnUserMessageRequest domainEvent)
         {
             EventBus.Raise(domainEvent);
+        }
+
+        public async void Initialize()
+        {
+            var versions = await productRepository.GetAllVersionsFor(EditableTopic.Product.ProductId);
+            versions.ForEach(v => Versions.Add(v));
         }
     }
 

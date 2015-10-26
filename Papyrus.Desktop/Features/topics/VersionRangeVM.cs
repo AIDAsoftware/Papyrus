@@ -1,6 +1,11 @@
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Desktop.Annotations;
 
 namespace Papyrus.Desktop.Features.Topics
 {
@@ -16,17 +21,17 @@ namespace Papyrus.Desktop.Features.Topics
             ProductVersions = new ObservableCollection<ProductVersion>();
         }
 
-        public VersionRangeVM(EditableVersionRange editableVersionRange, DisplayableProduct selectedProduct, ProductRepository productRepository)
+        public VersionRangeVM(EditableVersionRange editableVersionRange, ProductRepository productRepository)
         {
             ProductVersions = new ObservableCollection<ProductVersion>();
             this.productRepository = productRepository;
             VersionRange = editableVersionRange;
-            SelectedProduct = selectedProduct;
         }
 
         public async void Initialize()
         {
-            var productVersions = await productRepository.GetAllVersionsFor(SelectedProduct.ProductId);
+//            var productVersions = await productRepository.GetAllVersionsFor(SelectedProduct.ProductId);
+//            productVersions.ForEach(pv => ProductVersions.Add(pv));
         }
     }
 }
