@@ -10,14 +10,16 @@
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Grid>
         <DockPanel>
-            <StackPanel Margin="8" Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Top">
-                <Button Click="NewTopic_OnClick">New Topic</Button>
+            <StackPanel Margin="10, 30, 0, 10" Orientation="Vertical" HorizontalAlignment="Left" DockPanel.Dock="Top">
                 <Label>Products</Label>
-                <ComboBox MinWidth="100" 
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox MinWidth="100" 
                             ItemsSource="{Binding Products}"
                             DisplayMemberPath="ProductName" 
                             SelectedItem="{Binding SelectedProduct}">
-                </ComboBox>
+                    </ComboBox>
+                    <Button Margin="5,0,0,0" MinWidth="100" Click="NewTopic_OnClick">New Topic</Button>
+                </StackPanel>
             </StackPanel>
             <Grid>
                 <Grid.RowDefinitions>
