@@ -29,6 +29,7 @@
 		                    Margin="0,0,0,0"
 		                    VerticalAlignment="Top"
                             ItemsSource="{Binding VersionRange.Documents}"
+                            SelectedItem="{Binding SelectedDocument}"
 		                    MinWidth="900">
             <TabControl.ItemTemplate>
                 <DataTemplate DataType="topics:EditableDocument">
