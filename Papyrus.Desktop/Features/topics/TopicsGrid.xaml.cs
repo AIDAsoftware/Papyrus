@@ -6,9 +6,6 @@ using Papyrus.Business.Topics;
 
 namespace Papyrus.Desktop.Features.Topics
 {
-    /// <summary>
-    /// Interaction logic for TopicsGrid.xaml
-    /// </summary>
     public partial class TopicsGrid : UserControl
     {
         public TopicsGridVM ViewModel
