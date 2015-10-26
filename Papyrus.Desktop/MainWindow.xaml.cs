@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
-using Papyrus.Desktop.Features.Topics;
+﻿using System.Windows;
 
 namespace Papyrus.Desktop
 {
