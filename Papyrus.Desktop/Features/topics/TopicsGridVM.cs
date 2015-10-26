@@ -19,7 +19,7 @@ namespace Papyrus.Desktop.Features.Topics {
         {
             TopicsToList = new ObservableCollection<TopicSummary>();
             RefreshTopics = RelayAsyncSimpleCommand.Create(LoadAllTopics, CanLoadAllTopics);
-            SelectedProduct = new DisplayableProduct {ProductName = "Organizer", ProductId = "OrganizerId" };
+            SelectedProduct = new DisplayableProduct { ProductName = "Opportunity", ProductId = "OpportunityId" };
         }
 
         private bool canLoad;
