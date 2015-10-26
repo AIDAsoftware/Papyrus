@@ -85,26 +85,29 @@ namespace Papyrus.Desktop.Features.Topics
     {
         public DesignModeVersionRangesVM()
         {
-            var visibleEditableVersionRange = new EditableVersionRange
-            {
-                FromVersion = new ProductVersion("AnyId", "1.0", DateTime.Today),
-                ToVersion = new ProductVersion("AnyId", "2.0", DateTime.Today),
-            };
-            visibleEditableVersionRange.Documents.Add(new EditableDocument
+            var anyDocument = new EditableDocument
             {
                 Title = "Título",
                 Description = "Descripción",
                 Content = "Contenido",
                 Language = "es-ES"
-            });
+            };
+            var anyEditableVersionRange = new EditableVersionRange
+            {
+                FromVersion = new ProductVersion("AnyId", "1.0", DateTime.Today),
+                ToVersion = new ProductVersion("AnyId", "2.0", DateTime.Today),
+            };
+            anyEditableVersionRange.Documents.Add(anyDocument);
+            var anotherVersionRange = new EditableVersionRange
+            {
+                FromVersion = new ProductVersion("AnyId", "3.0", DateTime.Today),
+                ToVersion = new ProductVersion("AnyId", "4.0", DateTime.Today)
+            };
+            anotherVersionRange.Documents.Add(anyDocument);
             VersionRanges = new ObservableCollection<EditableVersionRange>
             {
-                visibleEditableVersionRange,
-                new EditableVersionRange
-                {
-                    FromVersion = new ProductVersion("AnyId", "3.0", DateTime.Today),
-                    ToVersion = new ProductVersion("AnyId", "4.0", DateTime.Today)
-                }
+                anyEditableVersionRange,
+                anotherVersionRange
             };
         }
     }
