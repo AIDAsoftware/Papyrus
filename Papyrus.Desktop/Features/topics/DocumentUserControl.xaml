@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=topics:EditableDocument, IsDesignTimeCreatable=True}">
     <Grid>
-        <StackPanel Margin="40">
+        <StackPanel Margin="40" HorizontalAlignment="Stretch">
             <Label Content="Title"/>
             <TextBox x:Name="TitleTextBox" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="Description"/>
