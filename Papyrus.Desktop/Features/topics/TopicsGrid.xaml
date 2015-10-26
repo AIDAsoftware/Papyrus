@@ -10,8 +10,8 @@
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Grid>
         <DockPanel>
-            <StackPanel Margin="10, 30, 0, 10" Orientation="Vertical" HorizontalAlignment="Left" DockPanel.Dock="Top">
-                <Label>Products</Label>
+            <DockPanel Margin="10, 30, 10, 10" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+                <Label DockPanel.Dock="Top">Products</Label>
                 <StackPanel Orientation="Horizontal">
                     <ComboBox MinWidth="100" 
                             ItemsSource="{Binding Products}"
@@ -20,7 +20,8 @@
                     </ComboBox>
                     <Button Margin="5,0,0,0" MinWidth="100" Click="NewTopic_OnClick">New Topic</Button>
                 </StackPanel>
-            </StackPanel>
+                <Button Command="{Binding RefreshTopics}" Width="100" HorizontalAlignment="Right" DockPanel.Dock="Right">Refresh grid</Button>
+            </DockPanel>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -38,7 +39,6 @@
                     </DataGrid.Columns>
                 </DataGrid>
                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Row="1">
-                    <Button Command="{Binding RefreshTopics}" MaxWidth="150">Refresh grid</Button>
                     <Button Click="ExportToFolderButton_OnClick"  MaxWidth="150">Export to folder</Button>
                 </StackPanel>
             </Grid>
