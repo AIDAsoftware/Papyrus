@@ -8,29 +8,30 @@
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="800" 
              d:DataContext="{d:DesignInstance Type=topics1:VersionRangeVM, IsDesignTimeCreatable=True}">
-    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top">
-        <StackPanel Margin="160,20,0,0" Orientation="Horizontal">
-            <Label>FromVersion</Label>
-            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
-                        AncestorType={x:Type topics1:TopicWindow}}, 
-                        Path=ViewModel.Versions}" DisplayMemberPath="VersionName" 
-                        SelectedValue="{Binding VersionRange.FromVersion}" 
-                        Width="100" Margin="0,0,100,0"></ComboBox>
-            <Label>ToVersion</Label>
-            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
-                        AncestorType={x:Type topics1:TopicWindow}}, 
-                        Path=ViewModel.Versions}" DisplayMemberPath="VersionName" 
-                        SelectedValue="{Binding VersionRange.ToVersion}" 
-                        Width="100"></ComboBox>
-        </StackPanel>
-        <TabControl HorizontalAlignment="Left"
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
+        <DockPanel DockPanel.Dock="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <Label Width="Auto">FromVersion</Label>
+                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
+                            AncestorType={x:Type topics1:TopicWindow}}, 
+                            Path=ViewModel.Versions}" DisplayMemberPath="VersionName" 
+                          SelectedValue="{Binding VersionRange.FromVersion}" 
+                          Width="100" Margin="0,0,100,0"></ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+                <Label>ToVersion</Label>
+                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
+                            AncestorType={x:Type topics1:TopicWindow}}, 
+                            Path=ViewModel.Versions}" DisplayMemberPath="VersionName" 
+                            SelectedValue="{Binding VersionRange.ToVersion}" 
+                            Width="100"></ComboBox>
+            </StackPanel>
+        </DockPanel>
+        <TabControl HorizontalAlignment="Stretch"
                             TabStripPlacement = "Top"
-		                    MinHeight="350"
-		                    Margin="0,0,0,0"
-		                    VerticalAlignment="Top"
+		                    VerticalAlignment="Stretch"
                             ItemsSource="{Binding VersionRange.Documents}"
-                            SelectedItem="{Binding SelectedDocument}"
-		                    MinWidth="900">
+                            SelectedItem="{Binding SelectedDocument}">
             <TabControl.ItemTemplate>
                 <DataTemplate DataType="topics:EditableDocument">
                     <TextBlock Text="{Binding Language}"></TextBlock>
@@ -38,9 +39,9 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate DataType="topics:EditableDocument">
-                    <topics1:DocumentUserControl DataContext="{Binding}"/>
+                    <topics1:DocumentUserControl HorizontalAlignment="Stretch" DataContext="{Binding}"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-    </StackPanel>
+    </DockPanel>
 </UserControl>
