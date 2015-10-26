@@ -15,14 +15,13 @@
         <local:VersionRangesToVmConverter x:Key="VersionRangesToVmConverter" />
     </Window.Resources>
     <Grid>
-        <DockPanel LastChildFill="True">
-            <local:VersionRangesUserControl DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="0,0,0,0" 
-                                            VerticalAlignment="Top" Height="Auto" Width="Auto" 
-                                            DataContext="{Binding EditableTopic,
-                                                    Converter={StaticResource VersionRangesToVmConverter}}"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 20, 0">
-                <Button Command="{Binding DeleteTopic}" CommandParameter="{Binding ElementName=TopicView}" MinWidth="100" Margin="10" DockPanel.Dock="Bottom" MinHeight="30" MaxWidth="100">Delete</Button>
-                <Button Command="{Binding SaveTopic}" MinWidth="100" Margin="10" DockPanel.Dock="Bottom" MinHeight="30" MaxWidth="100">Save</Button>
+        <DockPanel LastChildFill="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <local:VersionRangesUserControl DockPanel.Dock="Top" HorizontalAlignment="Stretch" 
+                                            Margin="0,0,0,0" VerticalAlignment="Stretch"                                            DataContext="{Binding EditableTopic,
+                                            Converter={StaticResource VersionRangesToVmConverter}}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 20, 0" DockPanel.Dock="Bottom">
+                <Button Command="{Binding DeleteTopic}" CommandParameter="{Binding ElementName=TopicView}" Width="150" Margin="10" Height="30">Delete</Button>
+                <Button Command="{Binding SaveTopic}" Width="150" Margin="10" Height="30">Save</Button>
             </StackPanel>
         </DockPanel>
     </Grid>
