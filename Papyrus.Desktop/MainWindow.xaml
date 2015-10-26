@@ -11,6 +11,6 @@
         DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
 
     <Grid>
-        <topics:TopicsGrid SelectedProduct="{Binding SelectedProduct}" DockPanel.Dock="Bottom" />
+        <topics:TopicsGrid DockPanel.Dock="Bottom" />
     </Grid>
 </Window>

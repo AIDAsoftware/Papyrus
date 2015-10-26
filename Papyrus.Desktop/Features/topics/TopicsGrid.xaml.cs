@@ -13,19 +13,7 @@ namespace Papyrus.Desktop.Features.Topics
             get { return (TopicsGridVM)DataContext; }
         }
 
-        public static readonly DependencyProperty SelectedProductProperty =
-                DependencyProperty.Register("SelectedProduct", typeof(DisplayableProduct), typeof(TopicsGrid));
-        public DisplayableProduct SelectedProduct
-        {
-            get
-            {
-                return this.GetValue(SelectedProductProperty) as DisplayableProduct;
-            }
-            set
-            {
-                this.SetValue(SelectedProductProperty, value);
-            }
-        }
+        public DisplayableProduct SelectedProduct { get; set; }
 
         public TopicsGrid()
         {
