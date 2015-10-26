@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using Papyrus.Business.Topics;
+﻿using System.Windows.Controls;
 
 namespace Papyrus.Desktop.Features.Topics
 {

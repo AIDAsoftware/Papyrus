@@ -7,7 +7,6 @@ using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
-using Papyrus.Infrastructure.Core.SharedDomain.Validation;
 
 namespace Papyrus.Desktop.Features.Topics
 {

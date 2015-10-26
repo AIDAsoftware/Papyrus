@@ -6,9 +6,6 @@ using Papyrus.Business.Topics;
 
 namespace Papyrus.Desktop.Features.Topics
 {
-    /// <summary>
-    /// Interaction logic for TopicsGrid.xaml
-    /// </summary>
     public partial class TopicsGrid : UserControl
     {
         public TopicsGridVM ViewModel
@@ -16,19 +13,7 @@ namespace Papyrus.Desktop.Features.Topics
             get { return (TopicsGridVM)DataContext; }
         }
 
-        public static readonly DependencyProperty SelectedProductProperty =
-                DependencyProperty.Register("SelectedProduct", typeof(DisplayableProduct), typeof(TopicsGrid));
-        public DisplayableProduct SelectedProduct
-        {
-            get
-            {
-                return this.GetValue(SelectedProductProperty) as DisplayableProduct;
-            }
-            set
-            {
-                this.SetValue(SelectedProductProperty, value);
-            }
-        }
+        public DisplayableProduct SelectedProduct { get; set; }
 
         public TopicsGrid()
         {
@@ -42,6 +27,16 @@ namespace Papyrus.Desktop.Features.Topics
         {
             await ViewModel.Initialize();
         }
+
+        private async void NewTopic_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.SelectedProduct != null)
+            {
+                var topic = await ViewModel.PrepareNewDocument();
+                new TopicWindow(topic).Show();
+            }
+        }
+
 
         private void ExportToFolderButton_OnClick(object sender, RoutedEventArgs e)
         {

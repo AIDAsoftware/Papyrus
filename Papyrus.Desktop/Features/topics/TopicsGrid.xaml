@@ -5,28 +5,37 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:topics="clr-namespace:Papyrus.Desktop.Features.Topics"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400"
+             d:DesignHeight="400" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance Type=topics:DesignModeTopicsGridVM, IsDesignTimeCreatable=True}"
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="20" />
-        </Grid.RowDefinitions>
-
-        <DataGrid ItemsSource="{Binding TopicsToList}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                  MouseDoubleClick="TopicRow_OnMouseDoubleClick" IsReadOnly="True" SelectedValue="{ Binding SelectedTopic }"
-                  Grid.Row="0">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Title" MaxWidth="250" MinWidth="120" Binding="{ Binding Path=LastDocumentTitle }"></DataGridTextColumn>
-                <DataGridTextColumn Header="Description" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=LastDocumentDescription }"></DataGridTextColumn>
-                <DataGridTextColumn Header="Product" MaxWidth="140" MinWidth="80" Binding="{ Binding Product.ProductName }"></DataGridTextColumn>
-                <DataGridTextColumn Header="Version" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=VersionName }"></DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Row="1">
-            <Button Command="{Binding RefreshTopics}" MaxWidth="150">Refresh grid</Button>
-            <Button Click="ExportToFolderButton_OnClick"  MaxWidth="150">Export to folder</Button>
-        </StackPanel>
+        <DockPanel>
+            <DockPanel Margin="10, 30, 10, 10" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+                <Label DockPanel.Dock="Top">Products</Label>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox MinWidth="100" 
+                            ItemsSource="{Binding Products}"
+                            DisplayMemberPath="ProductName" 
+                            SelectedItem="{Binding SelectedProduct}">
+                    </ComboBox>
+                    <Button Margin="5,0,0,0" MinWidth="100" Click="NewTopic_OnClick">New Topic</Button>
+                </StackPanel>
+                <Button Command="{Binding RefreshTopics}" Width="100" HorizontalAlignment="Right" DockPanel.Dock="Right">Refresh grid</Button>
+            </DockPanel>
+            <DockPanel VerticalAlignment="Stretch">
+                <DataGrid ItemsSource="{Binding TopicsToList}" AutoGenerateColumns="False" SelectionMode="Single" 
+                          SelectionUnit="FullRow" MouseDoubleClick="TopicRow_OnMouseDoubleClick" IsReadOnly="True" 
+                          SelectedValue="{ Binding SelectedTopic }" DockPanel.Dock="Top" Height="150"> 
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Title" MaxWidth="250" MinWidth="120" Binding="{ Binding Path=LastDocumentTitle }"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Description" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=LastDocumentDescription }"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Product" MaxWidth="140" MinWidth="80" Binding="{ Binding Product.ProductName }"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Version" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=VersionName }"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button Margin="10" Click="ExportToFolderButton_OnClick" DockPanel.Dock="Bottom"  
+                        HorizontalAlignment="Right" Height="22" Width="100">Export to folder</Button>
+            </DockPanel>
+        </DockPanel>
     </Grid>
 </UserControl>
