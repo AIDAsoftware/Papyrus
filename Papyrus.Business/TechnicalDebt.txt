@@ -8,3 +8,4 @@
 - Dont return nulls from repositories.
 - Rethink about data model (Data base)
 - Organize namespaces
+- Remove ancestors from xaml because tablet compability
