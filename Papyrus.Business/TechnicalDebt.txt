@@ -1,11 +1,12 @@
 - Implement CQS (DocumentToList).
-- Change codebehind logic and move to ViewModel replacing code behind event methods by commands.
-- Adapt Query<Document, DocumentIdentity> to simplify repositories read methods.
-- Extract DocumentService.ExportDocumentsToFolder to another specialized class 
-- Make Document and VersionRange value objects.
-- Divide Repositories
+- Organize namespaces
 - Remove Product Reference from TopicRepository
+- Use Transactions in the repository
+- Change codebehind logic and move to ViewModel replacing code behind event methods by commands.
+- Divide Repositories
 - Dont return nulls from repositories.
 - Rethink about data model (Data base)
-- Organize namespaces
+- Make Document and VersionRange value objects.
+- Adapt Query<Document, DocumentIdentity> to simplify repositories read methods.
 - Remove ancestors from xaml because tablet compability
+- Extract DocumentService.ExportDocumentsToFolder to another specialized class 
