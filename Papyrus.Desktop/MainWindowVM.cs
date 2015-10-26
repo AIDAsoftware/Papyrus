@@ -1,14 +1,11 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
-using Papyrus.Desktop.Annotations;
 
 namespace Papyrus.Desktop
 {
-    public class MainWindowVM : INotifyPropertyChanged
+    public class MainWindowVM
     {
         private readonly ProductRepository productRepository;
         public DisplayableProduct SelectedProduct { get; set; }
@@ -24,16 +21,6 @@ namespace Papyrus.Desktop
         {
             var products = await productRepository.GetAllDisplayableProducts();
             products.ForEach(p => Products.Add(p));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            if (PropertyChanged != null) {
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         public async Task<EditableTopic> PrepareNewDocument()
