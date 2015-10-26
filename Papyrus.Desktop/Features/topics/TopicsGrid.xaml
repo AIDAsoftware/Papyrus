@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:topics="clr-namespace:Papyrus.Desktop.Features.Topics"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400"
+             d:DesignHeight="400" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance Type=topics:DesignModeTopicsGridVM, IsDesignTimeCreatable=True}"
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Grid>
@@ -22,15 +22,10 @@
                 </StackPanel>
                 <Button Command="{Binding RefreshTopics}" Width="100" HorizontalAlignment="Right" DockPanel.Dock="Right">Refresh grid</Button>
             </DockPanel>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="20" />
-                </Grid.RowDefinitions>
-
-                <DataGrid ItemsSource="{Binding TopicsToList}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                          MouseDoubleClick="TopicRow_OnMouseDoubleClick" IsReadOnly="True" SelectedValue="{ Binding SelectedTopic }"
-                          Grid.Row="0">
+            <DockPanel VerticalAlignment="Stretch">
+                <DataGrid ItemsSource="{Binding TopicsToList}" AutoGenerateColumns="False" SelectionMode="Single" 
+                          SelectionUnit="FullRow" MouseDoubleClick="TopicRow_OnMouseDoubleClick" IsReadOnly="True" 
+                          SelectedValue="{ Binding SelectedTopic }" DockPanel.Dock="Top" Height="150"> 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Title" MaxWidth="250" MinWidth="120" Binding="{ Binding Path=LastDocumentTitle }"></DataGridTextColumn>
                         <DataGridTextColumn Header="Description" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=LastDocumentDescription }"></DataGridTextColumn>
@@ -38,10 +33,9 @@
                         <DataGridTextColumn Header="Version" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=VersionName }"></DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Row="1">
-                    <Button Click="ExportToFolderButton_OnClick"  MaxWidth="150">Export to folder</Button>
-                </StackPanel>
-            </Grid>
+                <Button Margin="10" Click="ExportToFolderButton_OnClick" DockPanel.Dock="Bottom"  
+                        HorizontalAlignment="Right" Height="22" Width="100">Export to folder</Button>
+            </DockPanel>
         </DockPanel>
     </Grid>
 </UserControl>
