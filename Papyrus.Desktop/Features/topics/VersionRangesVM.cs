@@ -12,12 +12,30 @@ namespace Papyrus.Desktop.Features.Topics
         public ObservableCollection<EditableVersionRange> VersionRanges { get; protected set; }
         public EditableVersionRange SelectedVersionRange { get; set; }
         public IAsyncCommand DeleteVersionRange { get; private set; }
+        public IAsyncCommand CreateVersionRange { get; private set; }
         public DisplayableProduct SelectedProduct { get; set; }
 
         public VersionRangesVM()
         {
             VersionRanges = new ObservableCollection<EditableVersionRange>();
             DeleteVersionRange = RelayAsyncSimpleCommand.Create(DeleteCurrentVersionRange, () => true);
+            CreateVersionRange = RelayAsyncSimpleCommand.Create(CreateNewVersionRange, () => true);
+        }
+
+        private async Task CreateNewVersionRange()
+        {
+            var editableVersionRange = DefaultEditableVersionRange();
+            VersionRanges.Add(editableVersionRange);
+        }
+
+        private static EditableVersionRange DefaultEditableVersionRange()
+        {
+            var editableVersionRange = new EditableVersionRange();
+            var spanishEmptyDocument = new EditableDocument { Language = "es-ES" };
+            var englishEmptyDocument = new EditableDocument {Language = "en-GB"};
+            editableVersionRange.Documents.Add(spanishEmptyDocument);
+            editableVersionRange.Documents.Add(englishEmptyDocument);
+            return editableVersionRange;
         }
 
         private async Task DeleteCurrentVersionRange()
