@@ -19,7 +19,7 @@ namespace Papyrus.Desktop.Features.Topics {
 
         public IAsyncCommand RefreshTopics { get; set; }
 
-        public TopicsGridVM()
+        protected TopicsGridVM()
         {
             TopicsToList = new ObservableCollection<TopicSummary>();
             Products = new ObservableCollection<DisplayableProduct>();
@@ -35,8 +35,7 @@ namespace Papyrus.Desktop.Features.Topics {
 
         public async Task Initialize()
         {
-            var products = await productRepository.GetAllDisplayableProducts();
-            products.ForEach(p => Products.Add(p));
+            await LoadAllProducts();
             await LoadAllTopics();
         }
 
@@ -49,7 +48,7 @@ namespace Papyrus.Desktop.Features.Topics {
         {
             return await topicRepository.GetEditableTopicById(topicId);
         }
-        
+
         public async Task<EditableTopic> PrepareNewDocument()
         {
             var fullVersionRange = await DefaultVersionRange();
@@ -61,10 +60,11 @@ namespace Papyrus.Desktop.Features.Topics {
             };
         }
 
-        private bool canLoadTopics;
-        private bool CanLoadAllTopics()
+
+        private async Task LoadAllProducts()
         {
-            return canLoadTopics;
+            var products = await productRepository.GetAllDisplayableProducts();
+            products.ForEach(p => Products.Add(p));
         }
 
         private async Task LoadAllTopics()
@@ -78,6 +78,12 @@ namespace Papyrus.Desktop.Features.Topics {
             canLoadTopics = true;
         }
 
+        private bool canLoadTopics;
+        private bool CanLoadAllTopics()
+        {
+            return canLoadTopics;
+        }
+
         private async Task<EditableVersionRange> DefaultVersionRange()
         {
             var fullVersionRange = await productRepository.GetFullVersionRangeForProduct(SelectedProduct.ProductId);
@@ -86,11 +92,11 @@ namespace Papyrus.Desktop.Features.Topics {
                 FromVersion = await productRepository.GetVersion(fullVersionRange.FirstVersionId),
                 ToVersion = await productRepository.GetVersion(fullVersionRange.LatestVersionId)
             };
-            AddDefaultLanguages(editableVersionRange);
+            AddDocumentsForDefaultLanguages(editableVersionRange);
             return editableVersionRange;
         }
 
-        private static void AddDefaultLanguages(EditableVersionRange editableVersionRange)
+        private static void AddDocumentsForDefaultLanguages(EditableVersionRange editableVersionRange)
         {
             editableVersionRange.Documents.Add(new EditableDocument { Language = "es-ES" });
             editableVersionRange.Documents.Add(new EditableDocument { Language = "en-GB" });
