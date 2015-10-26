@@ -9,24 +9,37 @@
              d:DataContext="{d:DesignInstance Type=topics:DesignModeTopicsGridVM, IsDesignTimeCreatable=True}"
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="20" />
-        </Grid.RowDefinitions>
+        <DockPanel>
+            <StackPanel Margin="8" Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Top">
+                <Button>New Topic</Button>
+                <Label>Products</Label>
+                <ComboBox MinWidth="100" 
+                            ItemsSource="{Binding Products, Mode=TwoWay}"
+                            DisplayMemberPath="ProductName" 
+                            SelectedItem="{Binding SelectedProduct}">
+                </ComboBox>
+            </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20" />
+                </Grid.RowDefinitions>
 
-        <DataGrid ItemsSource="{Binding TopicsToList}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                  MouseDoubleClick="TopicRow_OnMouseDoubleClick" IsReadOnly="True" SelectedValue="{ Binding SelectedTopic }"
-                  Grid.Row="0">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Title" MaxWidth="250" MinWidth="120" Binding="{ Binding Path=LastDocumentTitle }"></DataGridTextColumn>
-                <DataGridTextColumn Header="Description" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=LastDocumentDescription }"></DataGridTextColumn>
-                <DataGridTextColumn Header="Product" MaxWidth="140" MinWidth="80" Binding="{ Binding Product.ProductName }"></DataGridTextColumn>
-                <DataGridTextColumn Header="Version" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=VersionName }"></DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Row="1">
-            <Button Command="{Binding RefreshTopics}" MaxWidth="150">Refresh grid</Button>
-            <Button Click="ExportToFolderButton_OnClick"  MaxWidth="150">Export to folder</Button>
-        </StackPanel>
+                <DataGrid ItemsSource="{Binding TopicsToList}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+                          MouseDoubleClick="TopicRow_OnMouseDoubleClick" IsReadOnly="True" SelectedValue="{ Binding SelectedTopic }"
+                          Grid.Row="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Title" MaxWidth="250" MinWidth="120" Binding="{ Binding Path=LastDocumentTitle }"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Description" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=LastDocumentDescription }"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Product" MaxWidth="140" MinWidth="80" Binding="{ Binding Product.ProductName }"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Version" MaxWidth="140" MinWidth="80" Binding="{ Binding Path=VersionName }"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Row="1">
+                    <Button Command="{Binding RefreshTopics}" MaxWidth="150">Refresh grid</Button>
+                    <Button Click="ExportToFolderButton_OnClick"  MaxWidth="150">Export to folder</Button>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
     </Grid>
 </UserControl>

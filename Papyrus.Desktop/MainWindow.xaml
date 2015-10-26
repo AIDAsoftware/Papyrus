@@ -11,17 +11,6 @@
         DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
 
     <Grid>
-        <DockPanel LastChildFill="True">
-            <StackPanel Margin="8" Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Top">
-                <Button Click="NewTopic_OnClick">New documents</Button>
-                <Label>Products</Label>
-                <ComboBox MinWidth="100" 
-                        ItemsSource="{Binding Products, Mode=TwoWay}"
-                        DisplayMemberPath="ProductName" 
-                        SelectedItem="{Binding SelectedProduct}">       
-                </ComboBox>
-            </StackPanel>
-            <topics:TopicsGrid SelectedProduct="{Binding SelectedProduct}" DockPanel.Dock="Bottom" />
-        </DockPanel>
+        <topics:TopicsGrid SelectedProduct="{Binding SelectedProduct}" DockPanel.Dock="Bottom" />
     </Grid>
 </Window>
