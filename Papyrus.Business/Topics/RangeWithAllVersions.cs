@@ -6,8 +6,8 @@ namespace Papyrus.Business.Topics
 {
     public class RangeWithAllVersions
     {
-        public VersionRange VersionRange { get; private set; }
-        public List<ProductVersion> Versions { get; private set; } 
+        private VersionRange VersionRange { get; set; }
+        private List<ProductVersion> Versions { get; set; } 
 
         public RangeWithAllVersions(List<ProductVersion> versions, VersionRange versionRange)
         {
@@ -25,10 +25,9 @@ namespace Papyrus.Business.Topics
             var collisions = new List<Collision>();
             foreach (var rangeWithAllVersions in otherRanges)
             {
-                if (this.Intersect(rangeWithAllVersions))
+                if (Intersect(rangeWithAllVersions))
                 {
-                    collisions.Add(new Collision(this.ToEditableVersionRange(),
-                        rangeWithAllVersions.ToEditableVersionRange()));
+                    collisions.Add(new Collision(ToEditableVersionRange(), rangeWithAllVersions.ToEditableVersionRange()));
                 }
             }
             return collisions;
@@ -38,9 +37,14 @@ namespace Papyrus.Business.Topics
         {
             return new EditableVersionRange
             {
-                FromVersion = Versions.First(vr => vr.VersionId == this.VersionRange.FromVersionId),
-                ToVersion = Versions.First(vr => vr.VersionId == this.VersionRange.ToVersionId)
+                FromVersion = GetVersionById(VersionRange.FromVersionId),
+                ToVersion = GetVersionById(VersionRange.ToVersionId)
             };
+        }
+
+        private ProductVersion GetVersionById(string versionId)
+        {
+            return Versions.First(vr => vr.VersionId == versionId);
         }
     }
 }
