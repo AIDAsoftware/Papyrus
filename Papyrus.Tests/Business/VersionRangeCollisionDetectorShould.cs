@@ -43,16 +43,17 @@ namespace Papyrus.Tests.Business
         {
             var topic = new Topic(ProductId);
             topic.AddVersionRange(new VersionRange("version1", "version2"));
-            topic.AddVersionRange(new VersionRange("version3", "version4"));
-            topic.AddVersionRange(new VersionRange("version4", "version5"));
+            topic.AddVersionRange(new VersionRange("version2", "version4"));
 
-            var versionsWithCollision = await versionRangeCollisionDetector.VersionRangesWithCollisionsFor(topic);
+            var collisions = await versionRangeCollisionDetector.CollisionsFor(topic);
 
-            var expectedEditableVersionRanges = new List<EditableVersionRange>
+            var expectedCollisions = new List<Collision>
             {
-                new EditableVersionRange { FromVersion = version4, ToVersion = version5 }
-            };
-            versionsWithCollision.ShouldAllBeEquivalentTo(expectedEditableVersionRanges);
+                new Collision(
+                    new EditableVersionRange { FromVersion = version1, ToVersion = version2 },
+                    new EditableVersionRange { FromVersion = version2, ToVersion = version4 }
+            )};
+            collisions.ShouldAllBeEquivalentTo(expectedCollisions);
         }
         
         [Test]

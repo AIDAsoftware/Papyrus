@@ -25,6 +25,37 @@ namespace Papyrus.Business.Topics
             return MapToEditableVersionRange(collidedVersionRanges);
         }
 
+        public virtual async Task<List<Collision>> CollisionsFor(Topic topic)
+        {
+            Versions = await productRepository.GetAllVersionsFor(topic.ProductId);
+            var versionRanges = new List<VersionRange>(topic.VersionRanges);
+            var rangesWithAllVersions = RangeWithAllVersionsFrom(versionRanges);
+            var collisions = new List<Collision>();
+            var range = rangesWithAllVersions[0];
+            
+            for (var i = 1; i < rangesWithAllVersions.Count; i++)
+            {
+                if (range.Versions.Intersect(rangesWithAllVersions[i].Versions).Any())
+                {
+                    collisions.Add(new Collision(ToEditableVersionRange(range.VersionRange), ToEditableVersionRange(rangesWithAllVersions[i].VersionRange)));
+                }    
+            }
+            return collisions;
+        }
+
+        private List<RangeWithAllVersions> RangeWithAllVersionsFrom(List<VersionRange> versionRanges)
+        {
+            var rangesWithAllVersions = new List<RangeWithAllVersions>();
+            foreach (var versionRange in versionRanges)
+            {
+                var versions = Versions.Where(v => ReleaseFor(versionRange.FromVersionId) <= v.Release &&
+                                                               v.Release <= ReleaseFor(versionRange.ToVersionId)).ToList();
+                var rangeWithAllVersions = new RangeWithAllVersions(versions, versionRange);
+                rangesWithAllVersions.Add(rangeWithAllVersions);
+            }
+            return rangesWithAllVersions;
+        }
+
         private List<VersionRange> GetOnlyThoseWithCollisions(VersionRanges versionRanges)
         {
             return versionRanges.Where(versionRange => 

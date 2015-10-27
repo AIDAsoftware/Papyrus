@@ -47,6 +47,7 @@
     <Compile Include="Exporters\MkDocsExporter.cs" />
     <Compile Include="Products\FullVersionRange.cs" />
     <Compile Include="Products\ProductVersion.cs" />
+    <Compile Include="Topics\Collision.cs" />
     <Compile Include="Topics\Documents.cs" />
     <Compile Include="Topics\EditableDocument.cs" />
     <Compile Include="Topics\DisplayableProduct.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Topics\EditableVersionRange.cs" />
     <Compile Include="Topics\Exceptions\CannotDeleteTopicsWithoutTopicIdAssignedException.cs" />
     <Compile Include="Topics\Exceptions\VersionRangesCollisionException.cs" />
+    <Compile Include="Topics\RangeWithAllVersions.cs" />
     <Compile Include="Topics\SqlTopicRepository.cs" />
     <Compile Include="Topics\Document.cs" />
     <Compile Include="Topics\Exceptions\CannotUpdateTopicsWithNoVersionRangesException.cs" />
