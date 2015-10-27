@@ -39,11 +39,12 @@ namespace Papyrus.Business.Topics
         private List<Collision> CollisionsIn(List<RangeWithAllVersions> rangesWithAllVersions)
         {
             var allCollisions = new List<Collision>();
-            var analylized = new List<RangeWithAllVersions>();
+            var checkedRanges = new List<RangeWithAllVersions>();
             foreach (var currentRange in rangesWithAllVersions)
             {
-                analylized.Add(currentRange);
-                var collisions = currentRange.CollissionsWith(rangesWithAllVersions.Except(analylized));
+                checkedRanges.Add(currentRange);
+                var rangesToCheck = rangesWithAllVersions.Except(checkedRanges);
+                var collisions = currentRange.CollissionsWith(rangesToCheck);
                 allCollisions.AddRange(collisions);
             }
             return allCollisions;
