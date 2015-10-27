@@ -34,21 +34,20 @@ namespace Papyrus.Business.Topics
                 analylized.Add(currentRange);
                 var collisions = currentRange.CollissionsWith(rangesWithAllVersions.Except(analylized));
                 allCollisions.AddRange(collisions);
-                
             }
             return allCollisions;
         }
 
         private List<RangeWithAllVersions> MapToRangeWithAllVersions(List<VersionRange> versionRanges)
         {
-            var rangesWithAllVersions = new List<RangeWithAllVersions>();
-            foreach (var versionRange in versionRanges)
-            {
-                var versions = AllVersionsContainedIn(versionRange);
-                var rangeWithAllVersions = new RangeWithAllVersions(versions, versionRange);
-                rangesWithAllVersions.Add(rangeWithAllVersions);
-            }
-            return rangesWithAllVersions;
+            return versionRanges.Select(ToRangeWithAllVersions).ToList();
+        }
+
+        private RangeWithAllVersions ToRangeWithAllVersions(VersionRange versionRange)
+        {
+            var versions = AllVersionsContainedIn(versionRange);
+            var rangeWithAllVersions = new RangeWithAllVersions(versions, versionRange);
+            return rangeWithAllVersions;
         }
 
         private List<ProductVersion> AllVersionsContainedIn(VersionRange versionRange)
