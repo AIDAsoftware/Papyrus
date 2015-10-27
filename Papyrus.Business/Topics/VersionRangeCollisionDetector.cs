@@ -29,8 +29,13 @@ namespace Papyrus.Business.Topics
         {
             var fromVersionId = versionRange.FromVersionId;
             return versionRanges.Where(vr => vr != versionRange)
-                    .Any(vr => ReleaseFor(vr.FromVersionId) <= ReleaseFor(fromVersionId) &&
-                               ReleaseFor(fromVersionId) <= ReleaseFor(vr.ToVersionId));
+                    .Any(vr => IsVersionIncludedInVersionRange(fromVersionId, vr));
+        }
+
+        private bool IsVersionIncludedInVersionRange(string fromVersionId, VersionRange versionRange)
+        {
+            return ReleaseFor(versionRange.FromVersionId) <= ReleaseFor(fromVersionId) &&
+                   ReleaseFor(fromVersionId) <= ReleaseFor(versionRange.ToVersionId);
         }
 
         private DateTime ReleaseFor(string versionId)
