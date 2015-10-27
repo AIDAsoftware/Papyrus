@@ -31,14 +31,16 @@ namespace Papyrus.Business.Topics
             var versionRanges = new List<VersionRange>(topic.VersionRanges);
             var rangesWithAllVersions = RangeWithAllVersionsFrom(versionRanges);
             var collisions = new List<Collision>();
-            var range = rangesWithAllVersions[0];
-            
-            for (var i = 1; i < rangesWithAllVersions.Count; i++)
+            for (var j = 0; j < rangesWithAllVersions.Count - 1; j++)
             {
-                if (range.Versions.Intersect(rangesWithAllVersions[i].Versions).Any())
+                for (var i = j + 1; i < rangesWithAllVersions.Count; i++)
                 {
-                    collisions.Add(new Collision(ToEditableVersionRange(range.VersionRange), ToEditableVersionRange(rangesWithAllVersions[i].VersionRange)));
-                }    
+                    if (rangesWithAllVersions[j].Versions.Intersect(rangesWithAllVersions[i].Versions).Any())
+                    {
+                        collisions.Add(new Collision(ToEditableVersionRange(rangesWithAllVersions[j].VersionRange),
+                            ToEditableVersionRange(rangesWithAllVersions[i].VersionRange)));
+                    }
+                }
             }
             return collisions;
         }
