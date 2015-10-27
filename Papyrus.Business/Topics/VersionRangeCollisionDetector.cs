@@ -28,15 +28,9 @@ namespace Papyrus.Business.Topics
         private bool DoesVersionRangeCollideWithAnyRangeIn(VersionRange versionRange, VersionRanges versionRanges)
         {
             var fromVersionId = versionRange.FromVersionId;
-            var isThereCollision =
-                versionRanges.Where(vr => vr != versionRange)
+            return versionRanges.Where(vr => vr != versionRange)
                     .Any(vr => ReleaseFor(vr.FromVersionId) <= ReleaseFor(fromVersionId) &&
                                ReleaseFor(fromVersionId) <= ReleaseFor(vr.ToVersionId));
-            if (isThereCollision)
-            {
-                return true;
-            }
-            return false;
         }
 
         private DateTime ReleaseFor(string versionId)
