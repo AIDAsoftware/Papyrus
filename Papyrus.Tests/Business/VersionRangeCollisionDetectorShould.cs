@@ -57,5 +57,20 @@ namespace Papyrus.Tests.Business
 
             isThereCollision.Should().BeTrue();
         }
+
+
+        [Test]
+        public async Task not_detect_collision_no_ranges_use_same_product_version()
+        {
+            var topic = new Topic(ProductId);
+            topic.AddVersionRange(new VersionRange("version1", "version2"));
+            topic.AddVersionRange(new VersionRange("version3", "version4"));
+            topic.AddVersionRange(new VersionRange("version5", "version5"));
+
+            var isThereCollision = await versionRangeCollisionDetector.IsThereAnyCollisionFor(topic);
+
+            isThereCollision.Should().BeFalse();
+        }
+
     }
 }
