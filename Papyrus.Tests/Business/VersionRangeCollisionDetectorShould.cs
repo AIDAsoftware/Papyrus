@@ -26,7 +26,8 @@ namespace Papyrus.Tests.Business
             var productId = "PapyrusId";
             var topic = new Topic(productId);
             topic.AddVersionRange(new VersionRange("version1", "version2"));
-            topic.AddVersionRange(new VersionRange("version2", "version3"));
+            topic.AddVersionRange(new VersionRange("version3", "version4"));
+            topic.AddVersionRange(new VersionRange("version4", "version5"));
 
             var versionRangeCollisionDetector = new VersionRangeCollisionDetector(productRepository);
             var isThereCollision = await versionRangeCollisionDetector.IsThereAnyCollisionFor(topic);

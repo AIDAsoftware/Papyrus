@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
 
@@ -15,8 +16,15 @@ namespace Papyrus.Business.Topics
 
         public async Task<bool> IsThereAnyCollisionFor(Topic topic)
         {
-            var versionRange = topic.VersionRanges[0];
-            return topic.VersionRanges.Any(range => versionRange.ToVersionId == range.FromVersionId);
+            foreach (var versionRange in topic.VersionRanges)
+            {
+                var isThereCollision = topic.VersionRanges.Any(range => versionRange.ToVersionId == range.FromVersionId);
+                if (isThereCollision)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
