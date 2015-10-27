@@ -70,6 +70,7 @@
     <Compile Include="Topics\TopicRepository.cs" />
     <Compile Include="Topics\TopicService.cs" />
     <Compile Include="Topics\VersionRange.cs" />
+    <Compile Include="Topics\VersionRangeCollisionDetector.cs" />
     <Compile Include="Topics\VersionRanges.cs" />
     <Compile Include="Topics\TopicSummary.cs" />
   </ItemGroup>
