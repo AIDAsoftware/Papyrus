@@ -21,14 +21,8 @@ namespace Papyrus.Business.Topics
         {
             Versions = await productRepository.GetAllVersionsFor(topic.ProductId);
             var versionRanges = topic.VersionRanges;
-            foreach (var versionRange in versionRanges)
-            {
-                if (DoesVersionRangeCollideWithAnyRangeIn(versionRange, versionRanges))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return versionRanges.Any(versionRange => 
+                DoesVersionRangeCollideWithAnyRangeIn(versionRange, versionRanges));
         }
 
         private bool DoesVersionRangeCollideWithAnyRangeIn(VersionRange versionRange, VersionRanges versionRanges)
