@@ -84,7 +84,7 @@ namespace Papyrus.Tests.Business
             topic.AddVersionRange(new VersionRange("version3", "version4"));
             topic.AddVersionRange(new VersionRange("version5", "version5"));
 
-            var collisions = await versionRangeCollisionDetector.VersionRangesWithCollisionsFor(topic);
+            var collisions = await versionRangeCollisionDetector.CollisionsFor(topic);
 
             collisions.Should().BeEmpty();
         }
