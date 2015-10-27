@@ -7,7 +7,7 @@ namespace Papyrus.Business.Topics
 {
     public class TopicService
     {
-        public TopicRepository TopicRepository { get; set; }
+        private TopicRepository TopicRepository { get; set; }
 
         public TopicService(TopicRepository topicRepo)
         {
