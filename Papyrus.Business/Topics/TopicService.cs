@@ -36,6 +36,11 @@ namespace Papyrus.Business.Topics
                 throw new CannotUpdateTopicsWithoutTopicIdDeclaredException();
             if (HasNotAnyVersionRange(topic))
                 throw new CannotUpdateTopicsWithNoVersionRangesException();
+            await ValidateVersionRangesCollisionsFor(topic);
+        }
+
+        private async Task ValidateVersionRangesCollisionsFor(Topic topic)
+        {
             if (await collisionDetector.IsThereAnyCollisionFor(topic))
                 throw new VersionRangesCollisionException();
         }
@@ -57,8 +62,7 @@ namespace Papyrus.Business.Topics
                 throw new CannotSaveTopicsWithNoRelatedProductException();
             if (HasNotAnyVersionRange(topic))
                 throw new CannotSaveTopicsWithNoVersionRangesException();
-            if (await collisionDetector.IsThereAnyCollisionFor(topic))
-                throw new VersionRangesCollisionException();
+            await ValidateVersionRangesCollisionsFor(topic);
         }
 
         private static bool HasNotAnyVersionRange(Topic topic)
