@@ -49,9 +49,9 @@ namespace Papyrus.Desktop.Features.Topics
             {
                 await SaveCurrentTopic();
             }
-            catch (VersionRangesCollisionException)
+            catch (VersionRangesCollisionException exception)
             {
-                EventBus.Raise(new OnUserMessageRequest("Cannot save because of current topic has version ranges that collide"));
+                EventBus.Raise(new OnUserMessageRequest(exception.Message));
             }
         }
 

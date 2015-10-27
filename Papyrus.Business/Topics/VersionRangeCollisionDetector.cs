@@ -17,12 +17,38 @@ namespace Papyrus.Business.Topics
             this.productRepository = productRepository;
         }
 
-        public virtual async Task<bool> IsThereAnyCollisionFor(Topic topic)
+        public virtual async Task<List<EditableVersionRange>> VersionRangesWithCollisionsFor(Topic topic)
         {
             Versions = await productRepository.GetAllVersionsFor(topic.ProductId);
             var versionRanges = topic.VersionRanges;
-            return versionRanges.Any(versionRange => 
-                DoesVersionRangeCollideWithAnyRangeIn(versionRange, versionRanges));
+            var collidedVersionRanges = GetOnlyThoseWithCollisions(versionRanges);
+            return MapToEditableVersionRange(collidedVersionRanges);
+        }
+
+        private List<VersionRange> GetOnlyThoseWithCollisions(VersionRanges versionRanges)
+        {
+            return versionRanges.Where(versionRange => 
+                DoesVersionRangeCollideWithAnyRangeIn(versionRange, versionRanges)).ToList();
+        }
+
+        private List<EditableVersionRange> MapToEditableVersionRange(IEnumerable<VersionRange> collidedVersionRanges)
+        {
+            var editableVersionRanges = new List<EditableVersionRange>();
+            foreach (var versionRange in collidedVersionRanges)
+            {
+                var editableVersionRange = ToEditableVersionRange(versionRange);
+                editableVersionRanges.Add(editableVersionRange);
+            }
+            return editableVersionRanges;
+        }
+
+        private EditableVersionRange ToEditableVersionRange(VersionRange versionRange)
+        {
+            return new EditableVersionRange
+            {
+                FromVersion = Versions.First(vr => vr.VersionId == versionRange.FromVersionId),
+                ToVersion = Versions.First(vr => vr.VersionId == versionRange.ToVersionId)
+            };
         }
 
         private bool DoesVersionRangeCollideWithAnyRangeIn(VersionRange versionRange, VersionRanges versionRanges)

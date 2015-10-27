@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
+using FluentAssertions;
 using NSubstitute;
-using NSubstitute.Core.Arguments;
 using NUnit.Framework;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
@@ -61,23 +60,31 @@ namespace Papyrus.Tests.Business
             await topicService.Create(topic);
         }
 
-        [Test, ExpectedException(typeof(VersionRangesCollisionException))]
-        public async void fail_when_try_to_create_a_topic_with_version_ranges_that_collide()
+        [Test]
+        public void fail_when_try_to_create_a_topic_with_version_ranges_that_collide()
         {
             var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
             topic.AddVersionRange(anyVersionRange);
-            collisionDetector.IsThereAnyCollisionFor(topic).Returns(Task.FromResult(true));
+            var anyListToRepresentConflictedVersionRanges = new List<EditableVersionRange> {new EditableVersionRange
+            {
+                FromVersion = new ProductVersion("Any", "2.0", DateTime.MaxValue),
+                ToVersion = new ProductVersion("Any", "2.0", DateTime.MinValue)
+            }};
+            collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(anyListToRepresentConflictedVersionRanges));
 
-            await topicService.Create(topic);
+            Func<Task> createTopic = async () => await topicService.Create(topic);
+            
+            createTopic.ShouldThrow<VersionRangesCollisionException>().WithMessage("Following ranges are colliding with any Range:\n2.0-2.0\n");
         }
+
 
         [Test]
         public async void save_a_topic_when_it_is_created()
         {
             var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
-            collisionDetector.IsThereAnyCollisionFor(topic).Returns(Task.FromResult(false));
+            collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(new List<EditableVersionRange>()));
 
             await topicService.Create(topic);
 
@@ -105,16 +112,23 @@ namespace Papyrus.Tests.Business
             await topicService.Update(topic);
         }
 
-        [Test, ExpectedException(typeof(VersionRangesCollisionException))]
+        [Test]
         public async Task fail_when_try_to_update_a_topic_with_version_ranges_that_collide()
         {
             var topic = new Topic(anyProductId)
                 .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
             topic.AddVersionRange(anyVersionRange);
-            collisionDetector.IsThereAnyCollisionFor(topic).Returns(Task.FromResult(true));
+            var anyListToRepresentConflictedVersionRanges = new List<EditableVersionRange> {new EditableVersionRange
+            {
+                FromVersion = new ProductVersion("Any", "2.0", DateTime.MaxValue),
+                ToVersion = new ProductVersion("Any", "2.0", DateTime.MinValue)
+            }};
+            collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(anyListToRepresentConflictedVersionRanges));
 
-            await topicService.Update(topic);
+            Func<Task> createTopic = async () => await topicService.Update(topic);
+            
+            createTopic.ShouldThrow<VersionRangesCollisionException>().WithMessage("Following ranges are colliding with any Range:\n2.0-2.0\n");
         }
 
         [Test]
@@ -123,7 +137,7 @@ namespace Papyrus.Tests.Business
             var topic = new Topic(anyProductId)
                 .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
-            collisionDetector.IsThereAnyCollisionFor(topic).Returns(Task.FromResult(false));
+            collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(new List<EditableVersionRange>()));
 
             await topicService.Update(topic);
 
@@ -146,6 +160,6 @@ namespace Papyrus.Tests.Business
         {
             var topic = new Topic(anyProductId);
             await topicService.Delete(topic);
-        } 
+        }
     }
 }
