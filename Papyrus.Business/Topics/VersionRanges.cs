@@ -19,11 +19,6 @@ namespace Papyrus.Business.Topics
             return versions.Any();
         }
 
-        public VersionRange this[int index]
-        {
-            get { return versions[index]; }
-        }
-
         public IEnumerator<VersionRange> GetEnumerator()
         {
             return versions.GetEnumerator();
