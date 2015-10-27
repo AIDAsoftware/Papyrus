@@ -66,16 +66,20 @@ namespace Papyrus.Tests.Business
             var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
             topic.AddVersionRange(anyVersionRange);
-            var anyListToRepresentConflictedVersionRanges = new List<EditableVersionRange> {new EditableVersionRange
+            var anyEditableVersionRange = new EditableVersionRange
             {
-                FromVersion = new ProductVersion("Any", "2.0", DateTime.MaxValue),
-                ToVersion = new ProductVersion("Any", "2.0", DateTime.MinValue)
-            }};
-            collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(anyListToRepresentConflictedVersionRanges));
+                FromVersion = new ProductVersion("Any", "2.0", DateTime.Today),
+                ToVersion = new ProductVersion("Any", "3.0", DateTime.Today)
+            };
+            var anyListToRepresentConflictedVersionRanges = new List<Collision> {new Collision(
+                anyEditableVersionRange, anyEditableVersionRange
+            )};
+            collisionDetector.CollisionsFor(topic).Returns(Task.FromResult(anyListToRepresentConflictedVersionRanges));
 
             Func<Task> createTopic = async () => await topicService.Create(topic);
             
-            createTopic.ShouldThrow<VersionRangesCollisionException>().WithMessage("Following ranges are colliding with any Range:\n2.0-2.0\n");
+            createTopic.ShouldThrow<VersionRangesCollisionException>()
+                .WithMessage("Following ranges are colliding with any Range:\n(2.0, 3.0) with (2.0, 3.0)\n");
         }
 
 
@@ -84,7 +88,7 @@ namespace Papyrus.Tests.Business
         {
             var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
-            collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(new List<EditableVersionRange>()));
+            collisionDetector.CollisionsFor(topic).Returns(Task.FromResult(new List<Collision>()));
 
             await topicService.Create(topic);
 
@@ -119,16 +123,20 @@ namespace Papyrus.Tests.Business
                 .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
             topic.AddVersionRange(anyVersionRange);
-            var anyListToRepresentConflictedVersionRanges = new List<EditableVersionRange> {new EditableVersionRange
+            var anyEditableVersionRange = new EditableVersionRange
             {
-                FromVersion = new ProductVersion("Any", "2.0", DateTime.MaxValue),
-                ToVersion = new ProductVersion("Any", "2.0", DateTime.MinValue)
-            }};
-            collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(anyListToRepresentConflictedVersionRanges));
+                FromVersion = new ProductVersion("Any", "2.0", DateTime.Today),
+                ToVersion = new ProductVersion("Any", "3.0", DateTime.Today)
+            };
+            var anyListToRepresentConflictedVersionRanges = new List<Collision> {new Collision(
+                anyEditableVersionRange, anyEditableVersionRange
+            )};
+            collisionDetector.CollisionsFor(topic).Returns(Task.FromResult(anyListToRepresentConflictedVersionRanges));
 
             Func<Task> createTopic = async () => await topicService.Update(topic);
-            
-            createTopic.ShouldThrow<VersionRangesCollisionException>().WithMessage("Following ranges are colliding with any Range:\n2.0-2.0\n");
+
+            createTopic.ShouldThrow<VersionRangesCollisionException>()
+                .WithMessage("Following ranges are colliding with any Range:\n(2.0, 3.0) with (2.0, 3.0)\n");
         }
 
         [Test]
@@ -137,7 +145,7 @@ namespace Papyrus.Tests.Business
             var topic = new Topic(anyProductId)
                 .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
-            collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(new List<EditableVersionRange>()));
+            collisionDetector.CollisionsFor(topic).Returns(Task.FromResult(new List<Collision>()));
 
             await topicService.Update(topic);
 

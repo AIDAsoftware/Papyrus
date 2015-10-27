@@ -7,18 +7,19 @@ namespace Papyrus.Business.Topics.Exceptions
     {
         private static readonly string BaseMessage = "Following ranges are colliding with any Range:\n";
 
-        public VersionRangesCollisionException(List<EditableVersionRange> conflictedRanges) : base(ConstructMessageFrom(conflictedRanges))
+        public VersionRangesCollisionException(List<Collision> conflictedRanges) : base(ConstructMessageFrom(conflictedRanges))
         {
-            var rangesToShow = ConstructMessageFrom(conflictedRanges);
         }
 
-        private static string ConstructMessageFrom(List<EditableVersionRange> conflictedRanges)
+        private static string ConstructMessageFrom(List<Collision> conflictedRanges)
         {
             var rangesToShow = "";
             foreach (var editableVersionRange in conflictedRanges)
             {
-                rangesToShow += editableVersionRange.FromVersion.VersionName + "-" +
-                                editableVersionRange.ToVersion.VersionName + "\n";
+                rangesToShow += "(" + editableVersionRange.FirstVersionRange.FromVersion.VersionName + ", " +
+                                editableVersionRange.FirstVersionRange.ToVersion.VersionName + ") with " +
+                                "(" + editableVersionRange.SecondVersionRange.FromVersion.VersionName + ", " +
+                                editableVersionRange.SecondVersionRange.ToVersion.VersionName + ")" + "\n";
             }
             return BaseMessage + rangesToShow;
         }
