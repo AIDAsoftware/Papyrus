@@ -23,9 +23,11 @@ namespace Papyrus.Business.Topics
             var versionRanges = topic.VersionRanges;
             foreach (var versionRange in versionRanges)
             {
+                var fromVersionId = versionRange.FromVersionId;
                 var isThereCollision =
                     versionRanges.Where(vr => vr != versionRange)
-                                .Any(vr => ReleaseFor(versionRange.ToVersionId).Equals(ReleaseFor(vr.FromVersionId)));
+                                .Any(vr => ReleaseFor(vr.FromVersionId) <= ReleaseFor(fromVersionId) &&
+                                    ReleaseFor(fromVersionId) <= ReleaseFor(vr.ToVersionId));
                 if (isThereCollision)
                 {
                     return true;
