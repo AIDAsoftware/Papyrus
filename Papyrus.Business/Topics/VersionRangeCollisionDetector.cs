@@ -19,10 +19,21 @@ namespace Papyrus.Business.Topics
 
         public virtual async Task<List<Collision>> CollisionsFor(Topic topic)
         {
-            Versions = await productRepository.GetAllVersionsFor(topic.ProductId);
+            await LoadAllVersionsFor(topic.ProductId);
+            var rangesWithAllVersions = RangesWithAllVersionsFor(topic);
+            return CollisionsIn(rangesWithAllVersions);
+        }
+
+        private List<RangeWithAllVersions> RangesWithAllVersionsFor(Topic topic)
+        {
             var versionRanges = new List<VersionRange>(topic.VersionRanges);
             var rangesWithAllVersions = MapToRangeWithAllVersions(versionRanges);
-            return CollisionsIn(rangesWithAllVersions);
+            return rangesWithAllVersions;
+        }
+
+        private async Task LoadAllVersionsFor(string productId)
+        {
+            Versions = await productRepository.GetAllVersionsFor(productId);
         }
 
         private List<Collision> CollisionsIn(List<RangeWithAllVersions> rangesWithAllVersions)
@@ -38,7 +49,7 @@ namespace Papyrus.Business.Topics
             return allCollisions;
         }
 
-        private List<RangeWithAllVersions> MapToRangeWithAllVersions(List<VersionRange> versionRanges)
+        private List<RangeWithAllVersions> MapToRangeWithAllVersions(IEnumerable<VersionRange> versionRanges)
         {
             return versionRanges.Select(ToRangeWithAllVersions).ToList();
         }
