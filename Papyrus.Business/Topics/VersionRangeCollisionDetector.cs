@@ -17,7 +17,7 @@ namespace Papyrus.Business.Topics
             this.productRepository = productRepository;
         }
 
-        public async Task<bool> IsThereAnyCollisionFor(Topic topic)
+        public virtual async Task<bool> IsThereAnyCollisionFor(Topic topic)
         {
             Versions = await productRepository.GetAllVersionsFor(topic.ProductId);
             var versionRanges = topic.VersionRanges;

@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading.Tasks;
 using NSubstitute;
+using NSubstitute.Core.Arguments;
 using NUnit.Framework;
+using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Business.Topics.Exceptions;
 
@@ -11,6 +15,7 @@ namespace Papyrus.Tests.Business
     public class TopicServiceShould
     {
         private TopicRepository topicRepo;
+        private VersionRangeCollisionDetector collisionDetector;
         private TopicService topicService;
         private VersionRange anyVersionRange;
         private string anyProductId;
@@ -19,7 +24,9 @@ namespace Papyrus.Tests.Business
         public void SetUp()
         {
             topicRepo = Substitute.For<TopicRepository>();
-            topicService = new TopicService(topicRepo);
+            var productRepository = Substitute.For<ProductRepository>();
+            collisionDetector = Substitute.For<VersionRangeCollisionDetector>(productRepository);
+            topicService = new TopicService(topicRepo, collisionDetector);
             anyVersionRange = new VersionRange(fromVersionId: null, toVersionId: null);
             anyProductId = "AnyProductId";
         }
@@ -54,11 +61,23 @@ namespace Papyrus.Tests.Business
             await topicService.Create(topic);
         }
 
+        [Test, ExpectedException(typeof(VersionRangesCollsionException))]
+        public async void fail_when_try_to_create_a_topic_with_version_ranges_that_collide()
+        {
+            var topic = new Topic(anyProductId);
+            topic.AddVersionRange(anyVersionRange);
+            topic.AddVersionRange(anyVersionRange);
+            collisionDetector.IsThereAnyCollisionFor(topic).Returns(Task.FromResult(true));
+
+            await topicService.Create(topic);
+        }
+
         [Test]
         public async void save_a_topic_when_it_is_created()
         {
             var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
+            collisionDetector.IsThereAnyCollisionFor(topic).Returns(Task.FromResult(false));
 
             await topicService.Create(topic);
 
@@ -86,12 +105,25 @@ namespace Papyrus.Tests.Business
             await topicService.Update(topic);
         }
 
+        [Test, ExpectedException(typeof(VersionRangesCollsionException))]
+        public async Task fail_when_try_to_update_a_topic_with_version_ranges_that_collide()
+        {
+            var topic = new Topic(anyProductId)
+                .WithId("AnyTopicId");
+            topic.AddVersionRange(anyVersionRange);
+            topic.AddVersionRange(anyVersionRange);
+            collisionDetector.IsThereAnyCollisionFor(topic).Returns(Task.FromResult(true));
+
+            await topicService.Update(topic);
+        }
+
         [Test]
         public async Task update_a_topic_of_the_library()
         {
             var topic = new Topic(anyProductId)
                 .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
+            collisionDetector.IsThereAnyCollisionFor(topic).Returns(Task.FromResult(false));
 
             await topicService.Update(topic);
 
