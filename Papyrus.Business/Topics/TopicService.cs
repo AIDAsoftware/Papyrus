@@ -7,33 +7,42 @@ namespace Papyrus.Business.Topics
 {
     public class TopicService
     {
-        public TopicRepository TopicRepository { get; set; }
+        private readonly VersionRangeCollisionDetector collisionDetector;
+        private TopicRepository TopicRepository { get; set; }
 
-        public TopicService(TopicRepository topicRepo)
+        public TopicService(TopicRepository topicRepo, VersionRangeCollisionDetector collisionDetector)
         {
+            this.collisionDetector = collisionDetector;
             TopicRepository = topicRepo;
         }
 
         public async Task Create(Topic topic)
         {
-            ValidateToSave(topic);
+            await ValidateToSave(topic);
             topic.GenerateRecursiveAutomaticIdIfNeeded();
             await TopicRepository.Save(topic);
         }
 
         public async Task Update(Topic topic)
         {
-            ValidateToUpdate(topic);
+            await ValidateToUpdate(topic);
             topic.GenerateRecursiveAutomaticIdIfNeeded();
             await TopicRepository.Update(topic);
         }
 
-        private static void ValidateToUpdate(Topic topic)
+        private async Task ValidateToUpdate(Topic topic)
         {
             if (IsNotDefined(topic.TopicId))
                 throw new CannotUpdateTopicsWithoutTopicIdDeclaredException();
             if (HasNotAnyVersionRange(topic))
                 throw new CannotUpdateTopicsWithNoVersionRangesException();
+            await ValidateVersionRangesCollisionsFor(topic);
+        }
+
+        private async Task ValidateVersionRangesCollisionsFor(Topic topic)
+        {
+            if (await collisionDetector.IsThereAnyCollisionFor(topic))
+                throw new VersionRangesCollisionException();
         }
 
         public async Task Delete(Topic topic)
@@ -45,7 +54,7 @@ namespace Papyrus.Business.Topics
             await TopicRepository.Delete(topic);
         }
 
-        private static void ValidateToSave(Topic topic)
+        private async Task ValidateToSave(Topic topic)
         {
             if (!IsNotDefined(topic.TopicId))
                 throw new CannotSaveTopicsWithDefinedTopicIdException();
@@ -53,6 +62,7 @@ namespace Papyrus.Business.Topics
                 throw new CannotSaveTopicsWithNoRelatedProductException();
             if (HasNotAnyVersionRange(topic))
                 throw new CannotSaveTopicsWithNoVersionRangesException();
+            await ValidateVersionRangesCollisionsFor(topic);
         }
 
         private static bool HasNotAnyVersionRange(Topic topic)

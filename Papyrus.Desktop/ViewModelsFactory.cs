@@ -34,7 +34,7 @@ namespace Papyrus.Desktop {
 
         public static TopicService Topic()
         {
-            return new TopicService(RepositoriesFactory.Topic());
+            return new TopicService(RepositoriesFactory.Topic(), new VersionRangeCollisionDetector(RepositoriesFactory.Product()));
         }
     }
 

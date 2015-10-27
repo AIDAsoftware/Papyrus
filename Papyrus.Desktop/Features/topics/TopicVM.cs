@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Business.Topics.Exceptions;
 using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
 using Papyrus.Infrastructure.Core.DomainEvents;
@@ -25,7 +26,7 @@ namespace Papyrus.Desktop.Features.Topics
 
         public TopicVM()
         {
-            SaveTopic = RelayAsyncSimpleCommand.Create(SaveCurrentTopic, CanSaveTopic);
+            SaveTopic = RelayAsyncSimpleCommand.Create(TryToSaveCurrentTopic, CanSaveTopic);
             DeleteTopic = new RelayCommand<Window>(DeleteCurrentTopic);
             Versions = new ObservableCollection<ProductVersion>();
         }
@@ -42,6 +43,18 @@ namespace Papyrus.Desktop.Features.Topics
             EditableTopic = topic;
         }
 
+        private async Task TryToSaveCurrentTopic()
+        {
+            try
+            {
+                await SaveCurrentTopic();
+            }
+            catch (VersionRangesCollisionException)
+            {
+                EventBus.Raise(new OnUserMessageRequest("Cannot save because of current topic has version ranges that collide"));
+            }
+        }
+
         private async Task SaveCurrentTopic()
         {
             var topic = EditableTopic.ToTopic();
@@ -53,7 +66,7 @@ namespace Papyrus.Desktop.Features.Topics
             else
             {
                 await topicService.Update(topic);
-            }  
+            }
 
             EventBus.Raise(new OnUserMessageRequest("Topic Saved!"));
         }
