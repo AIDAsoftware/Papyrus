@@ -37,7 +37,7 @@ namespace Papyrus.Business.Topics
             if (HasNotAnyVersionRange(topic))
                 throw new CannotUpdateTopicsWithNoVersionRangesException();
             if (await collisionDetector.IsThereAnyCollisionFor(topic))
-                throw new VersionRangesCollsionException();
+                throw new VersionRangesCollisionException();
         }
 
         public async Task Delete(Topic topic)
@@ -58,7 +58,7 @@ namespace Papyrus.Business.Topics
             if (HasNotAnyVersionRange(topic))
                 throw new CannotSaveTopicsWithNoVersionRangesException();
             if (await collisionDetector.IsThereAnyCollisionFor(topic))
-                throw new VersionRangesCollsionException();
+                throw new VersionRangesCollisionException();
         }
 
         private static bool HasNotAnyVersionRange(Topic topic)

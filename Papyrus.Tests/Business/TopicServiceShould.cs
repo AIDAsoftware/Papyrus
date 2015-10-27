@@ -61,7 +61,7 @@ namespace Papyrus.Tests.Business
             await topicService.Create(topic);
         }
 
-        [Test, ExpectedException(typeof(VersionRangesCollsionException))]
+        [Test, ExpectedException(typeof(VersionRangesCollisionException))]
         public async void fail_when_try_to_create_a_topic_with_version_ranges_that_collide()
         {
             var topic = new Topic(anyProductId);
@@ -105,7 +105,7 @@ namespace Papyrus.Tests.Business
             await topicService.Update(topic);
         }
 
-        [Test, ExpectedException(typeof(VersionRangesCollsionException))]
+        [Test, ExpectedException(typeof(VersionRangesCollisionException))]
         public async Task fail_when_try_to_update_a_topic_with_version_ranges_that_collide()
         {
             var topic = new Topic(anyProductId)

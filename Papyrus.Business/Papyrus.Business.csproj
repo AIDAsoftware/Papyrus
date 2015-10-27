@@ -53,7 +53,7 @@
     <Compile Include="Topics\EditableTopic.cs" />
     <Compile Include="Topics\EditableVersionRange.cs" />
     <Compile Include="Topics\Exceptions\CannotDeleteTopicsWithoutTopicIdAssignedException.cs" />
-    <Compile Include="Topics\Exceptions\VersionRangesCollsionException.cs" />
+    <Compile Include="Topics\Exceptions\VersionRangesCollisionException.cs" />
     <Compile Include="Topics\SqlTopicRepository.cs" />
     <Compile Include="Topics\Document.cs" />
     <Compile Include="Topics\Exceptions\CannotUpdateTopicsWithNoVersionRangesException.cs" />

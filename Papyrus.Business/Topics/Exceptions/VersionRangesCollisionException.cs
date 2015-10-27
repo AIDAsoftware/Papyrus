@@ -2,7 +2,7 @@
 
 namespace Papyrus.Business.Topics.Exceptions
 {
-    public class VersionRangesCollsionException : Exception
+    public class VersionRangesCollisionException : Exception
     {
          
     }
