@@ -34,7 +34,7 @@ namespace Papyrus.Business.Topics
                 analylized.Add(currentRange);
                 foreach (var rangeWithAllVersions in rangesWithAllVersions)
                 {
-                    if (!analylized.Contains(rangeWithAllVersions) && currentRange.Versions.Intersect(rangeWithAllVersions.Versions).Any())
+                    if (!analylized.Contains(rangeWithAllVersions) && currentRange.Intersect(rangeWithAllVersions))
                     {
                         collisions.Add(new Collision(ToEditableVersionRange(currentRange.VersionRange),
                             ToEditableVersionRange(rangeWithAllVersions.VersionRange)));

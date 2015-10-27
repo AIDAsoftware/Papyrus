@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Papyrus.Business.Products;
 
 namespace Papyrus.Business.Topics
@@ -12,6 +13,11 @@ namespace Papyrus.Business.Topics
         {
             VersionRange = versionRange;
             Versions = versions;
+        }
+
+        public bool Intersect(RangeWithAllVersions rangeWithAllVersions)
+        {
+            return this.Versions.Intersect(rangeWithAllVersions.Versions).Any();
         }
     }
 }
