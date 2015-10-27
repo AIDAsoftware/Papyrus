@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Business.Topics.Exceptions;
 using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
 using Papyrus.Infrastructure.Core.DomainEvents;
@@ -45,17 +46,24 @@ namespace Papyrus.Desktop.Features.Topics
         private async Task SaveCurrentTopic()
         {
             var topic = EditableTopic.ToTopic();
-            if (string.IsNullOrEmpty(topic.TopicId))
+            try
             {
-                await topicService.Create(topic);
-                EditableTopic.TopicId = topic.TopicId;
-            }
-            else
-            {
-                await topicService.Update(topic);
-            }  
+                if (string.IsNullOrEmpty(topic.TopicId))
+                {
+                    await topicService.Create(topic);
+                    EditableTopic.TopicId = topic.TopicId;
+                }
+                else
+                {
+                    await topicService.Update(topic);
+                }
 
-            EventBus.Raise(new OnUserMessageRequest("Topic Saved!"));
+                EventBus.Raise(new OnUserMessageRequest("Topic Saved!"));
+            }
+            catch (VersionRangesCollisionException)
+            {
+                EventBus.Raise(new OnUserMessageRequest("Cannot save because of current topic has version ranges that collide"));
+            }
         }
 
         //TODO: How to make it not void? It could be a trouble if product can't be deleted in backend
