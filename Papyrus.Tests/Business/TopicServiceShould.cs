@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
 using NSubstitute;
-using NSubstitute.Core.Arguments;
 using NUnit.Framework;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
@@ -67,17 +65,19 @@ namespace Papyrus.Tests.Business
             var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
             topic.AddVersionRange(anyVersionRange);
-            collisionDetector.IsThereAnyCollisionFor(topic).Returns(Task.FromResult(true));
+            var anyListToRepresentConflictedVersionRanges = new List<EditableVersionRange> {new EditableVersionRange()};
+            collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(anyListToRepresentConflictedVersionRanges));
 
             await topicService.Create(topic);
         }
+
 
         [Test]
         public async void save_a_topic_when_it_is_created()
         {
             var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
-            collisionDetector.IsThereAnyCollisionFor(topic).Returns(Task.FromResult(false));
+            collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(new List<EditableVersionRange>()));
 
             await topicService.Create(topic);
 
@@ -112,7 +112,8 @@ namespace Papyrus.Tests.Business
                 .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
             topic.AddVersionRange(anyVersionRange);
-            collisionDetector.IsThereAnyCollisionFor(topic).Returns(Task.FromResult(true));
+            var anyListToRepresentConflictedVersionRanges = new List<EditableVersionRange> {new EditableVersionRange()};
+            collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(anyListToRepresentConflictedVersionRanges));
 
             await topicService.Update(topic);
         }
@@ -123,7 +124,7 @@ namespace Papyrus.Tests.Business
             var topic = new Topic(anyProductId)
                 .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
-            collisionDetector.IsThereAnyCollisionFor(topic).Returns(Task.FromResult(false));
+            collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(new List<EditableVersionRange>()));
 
             await topicService.Update(topic);
 
@@ -146,6 +147,6 @@ namespace Papyrus.Tests.Business
         {
             var topic = new Topic(anyProductId);
             await topicService.Delete(topic);
-        } 
+        }
     }
 }

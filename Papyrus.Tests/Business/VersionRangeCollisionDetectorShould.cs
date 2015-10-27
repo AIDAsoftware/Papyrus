@@ -41,9 +41,17 @@ namespace Papyrus.Tests.Business
             topic.AddVersionRange(new VersionRange("version3", "version4"));
             topic.AddVersionRange(new VersionRange("version4", "version5"));
 
-            var isThereCollision = await versionRangeCollisionDetector.IsThereAnyCollisionFor(topic);
+            var versionsWithCollision = await versionRangeCollisionDetector.VersionRangesWithCollisionsFor(topic);
 
-            isThereCollision.Should().BeTrue();
+            var expectedEditableVersionRanges = new List<EditableVersionRange>
+            {
+                new EditableVersionRange
+                {
+                    FromVersion = new ProductVersion("version4", "4.0", DateTime.Today.AddDays(-4)),
+                    ToVersion = new ProductVersion("version5", "5.0", DateTime.Today.AddDays(-2))
+                }
+            };
+            versionsWithCollision.ShouldAllBeEquivalentTo(expectedEditableVersionRanges);
         }
         
         [Test]
@@ -53,9 +61,17 @@ namespace Papyrus.Tests.Business
             topic.AddVersionRange(new VersionRange("version1", "version3"));
             topic.AddVersionRange(new VersionRange("version2", "version4"));
 
-            var isThereCollision = await versionRangeCollisionDetector.IsThereAnyCollisionFor(topic);
+            var versionsWithCollision = await versionRangeCollisionDetector.VersionRangesWithCollisionsFor(topic);
 
-            isThereCollision.Should().BeTrue();
+            var expectedEditableVersionRanges = new List<EditableVersionRange>
+            {
+                new EditableVersionRange
+                {
+                    FromVersion = new ProductVersion("version2", "2.0", DateTime.Today.AddDays(-8)),
+                    ToVersion = new ProductVersion("version4", "4.0", DateTime.Today.AddDays(-4))
+                }
+            };
+            versionsWithCollision.ShouldAllBeEquivalentTo(expectedEditableVersionRanges);
         }
 
 
@@ -67,9 +83,9 @@ namespace Papyrus.Tests.Business
             topic.AddVersionRange(new VersionRange("version3", "version4"));
             topic.AddVersionRange(new VersionRange("version5", "version5"));
 
-            var isThereCollision = await versionRangeCollisionDetector.IsThereAnyCollisionFor(topic);
+            var versionsWithCollision = await versionRangeCollisionDetector.VersionRangesWithCollisionsFor(topic);
 
-            isThereCollision.Should().BeFalse();
+            versionsWithCollision.Should().BeEmpty();
         }
 
     }

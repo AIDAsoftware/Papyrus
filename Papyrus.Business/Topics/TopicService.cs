@@ -41,7 +41,7 @@ namespace Papyrus.Business.Topics
 
         private async Task ValidateVersionRangesCollisionsFor(Topic topic)
         {
-            if (await collisionDetector.IsThereAnyCollisionFor(topic))
+            if ((await collisionDetector.VersionRangesWithCollisionsFor(topic)).Any())
                 throw new VersionRangesCollisionException();
         }
 
