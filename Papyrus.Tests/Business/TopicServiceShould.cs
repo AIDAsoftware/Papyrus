@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using Papyrus.Business.Products;
@@ -59,16 +60,22 @@ namespace Papyrus.Tests.Business
             await topicService.Create(topic);
         }
 
-        [Test, ExpectedException(typeof(VersionRangesCollisionException))]
-        public async void fail_when_try_to_create_a_topic_with_version_ranges_that_collide()
+        [Test]
+        public void fail_when_try_to_create_a_topic_with_version_ranges_that_collide()
         {
             var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
             topic.AddVersionRange(anyVersionRange);
-            var anyListToRepresentConflictedVersionRanges = new List<EditableVersionRange> {new EditableVersionRange()};
+            var anyListToRepresentConflictedVersionRanges = new List<EditableVersionRange> {new EditableVersionRange
+            {
+                FromVersion = new ProductVersion("Any", "2.0", DateTime.MaxValue),
+                ToVersion = new ProductVersion("Any", "2.0", DateTime.MinValue)
+            }};
             collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(anyListToRepresentConflictedVersionRanges));
 
-            await topicService.Create(topic);
+            Func<Task> createTopic = async () => await topicService.Create(topic);
+            
+            createTopic.ShouldThrow<VersionRangesCollisionException>().WithMessage("Following ranges are colliding with any Range:\n2.0-2.0\n");
         }
 
 
@@ -105,17 +112,23 @@ namespace Papyrus.Tests.Business
             await topicService.Update(topic);
         }
 
-        [Test, ExpectedException(typeof(VersionRangesCollisionException))]
+        [Test]
         public async Task fail_when_try_to_update_a_topic_with_version_ranges_that_collide()
         {
             var topic = new Topic(anyProductId)
                 .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
             topic.AddVersionRange(anyVersionRange);
-            var anyListToRepresentConflictedVersionRanges = new List<EditableVersionRange> {new EditableVersionRange()};
+            var anyListToRepresentConflictedVersionRanges = new List<EditableVersionRange> {new EditableVersionRange
+            {
+                FromVersion = new ProductVersion("Any", "2.0", DateTime.MaxValue),
+                ToVersion = new ProductVersion("Any", "2.0", DateTime.MinValue)
+            }};
             collisionDetector.VersionRangesWithCollisionsFor(topic).Returns(Task.FromResult(anyListToRepresentConflictedVersionRanges));
 
-            await topicService.Update(topic);
+            Func<Task> createTopic = async () => await topicService.Update(topic);
+            
+            createTopic.ShouldThrow<VersionRangesCollisionException>().WithMessage("Following ranges are colliding with any Range:\n2.0-2.0\n");
         }
 
         [Test]

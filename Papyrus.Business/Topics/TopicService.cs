@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Papyrus.Business.Topics.Exceptions;
 
@@ -41,8 +43,11 @@ namespace Papyrus.Business.Topics
 
         private async Task ValidateVersionRangesCollisionsFor(Topic topic)
         {
-            if ((await collisionDetector.VersionRangesWithCollisionsFor(topic)).Any())
-                throw new VersionRangesCollisionException();
+            var conflictedRanges = (await collisionDetector.VersionRangesWithCollisionsFor(topic));
+            if (conflictedRanges.Any())
+            {
+                throw new VersionRangesCollisionException(conflictedRanges);
+            }
         }
 
         public async Task Delete(Topic topic)
