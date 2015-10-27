@@ -26,7 +26,7 @@ namespace Papyrus.Desktop.Features.Topics
 
         public TopicVM()
         {
-            SaveTopic = RelayAsyncSimpleCommand.Create(SaveCurrentTopic, CanSaveTopic);
+            SaveTopic = RelayAsyncSimpleCommand.Create(TryToSaveCurrentTopic, CanSaveTopic);
             DeleteTopic = new RelayCommand<Window>(DeleteCurrentTopic);
             Versions = new ObservableCollection<ProductVersion>();
         }
@@ -43,27 +43,32 @@ namespace Papyrus.Desktop.Features.Topics
             EditableTopic = topic;
         }
 
-        private async Task SaveCurrentTopic()
+        private async Task TryToSaveCurrentTopic()
         {
-            var topic = EditableTopic.ToTopic();
             try
             {
-                if (string.IsNullOrEmpty(topic.TopicId))
-                {
-                    await topicService.Create(topic);
-                    EditableTopic.TopicId = topic.TopicId;
-                }
-                else
-                {
-                    await topicService.Update(topic);
-                }
-
-                EventBus.Raise(new OnUserMessageRequest("Topic Saved!"));
+                await SaveCurrentTopic();
             }
             catch (VersionRangesCollisionException)
             {
                 EventBus.Raise(new OnUserMessageRequest("Cannot save because of current topic has version ranges that collide"));
             }
+        }
+
+        private async Task SaveCurrentTopic()
+        {
+            var topic = EditableTopic.ToTopic();
+            if (string.IsNullOrEmpty(topic.TopicId))
+            {
+                await topicService.Create(topic);
+                EditableTopic.TopicId = topic.TopicId;
+            }
+            else
+            {
+                await topicService.Update(topic);
+            }
+
+            EventBus.Raise(new OnUserMessageRequest("Topic Saved!"));
         }
 
         //TODO: How to make it not void? It could be a trouble if product can't be deleted in backend
