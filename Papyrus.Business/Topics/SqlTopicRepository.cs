@@ -67,6 +67,11 @@ namespace Papyrus.Business.Topics
             await DeleteVersionRangesOf(topic);
         }
 
+        public Task<List<EditableTopic>> GetEditableTopicsForProduct(string productId)
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task DeleteDocumentsForEachVersionRangeIn(IEnumerable<string> versionRangeIds)
         {
             foreach (var versionRangeId in versionRangeIds)

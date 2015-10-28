@@ -11,5 +11,6 @@ namespace Papyrus.Business.Topics
         Task<List<TopicSummary>> GetAllTopicsSummaries();
         Task<EditableTopic> GetEditableTopicById(string topicId);
         Task Delete(Topic topic);
+        Task<List<EditableTopic>> GetEditableTopicsForProduct(string productId);
     }
 }
