@@ -14,30 +14,29 @@ namespace Papyrus.Business.Exporters {
         }
 
         public async Task ExportDocumentsForProductToFolder(string productId, DirectoryInfo targetDirectory) {
-            targetDirectory.CreateSubdirectory("es-ES");
-            targetDirectory.CreateSubdirectory("en-GB");
+            var spanishDirectory = targetDirectory.CreateSubdirectory("es-ES");
+            var englishDirectory = targetDirectory.CreateSubdirectory("en-GB");
             var topics = await repository.GetEditableTopicsForProduct(productId);
             foreach (var topic in topics)
             {
-                await ExportTopic(topic, targetDirectory);
+                await ExportTopic(topic, spanishDirectory, englishDirectory);
             }
         }
         
-        private async Task ExportTopic(EditableTopic topic, DirectoryInfo targetDirectory)
+        private async Task ExportTopic(EditableTopic topic, params DirectoryInfo[] languageDirectories)
         {
-            var spanishPath = ConstructPath(topic, targetDirectory, "es-ES");
-            var spanishContent = Content(topic, "es-ES");
-            var englishPath = ConstructPath(topic, targetDirectory, "en-GB");
-            var englishContent = Content(topic, "en-GB");
-            await WriteTextAsync(spanishPath, spanishContent);
-            await WriteTextAsync(englishPath, englishContent);
+            foreach (var languageDirectory in languageDirectories)
+            {
+                var path = ConstructPath(topic, languageDirectory);
+                var documentContent = Content(topic, languageDirectory.Name);
+                await WriteTextAsync(path, documentContent);
+            }
         }
 
-        private static string ConstructPath(EditableTopic topic, DirectoryInfo targetDirectory, string language)
+        private static string ConstructPath(EditableTopic topic, DirectoryInfo languageDirectory)
         {
-            var spanishFolder = targetDirectory.GetDirectories().First(d => d.Name == language);
-            var spanishName = topic.VersionRanges[0].Documents.First(d => d.Language == language).Title + ".md";
-            return Path.Combine(spanishFolder.FullName, spanishName);
+            var spanishName = topic.VersionRanges[0].Documents.First(d => d.Language == languageDirectory.Name).Title + ".md";
+            return Path.Combine(languageDirectory.FullName, spanishName);
         }
 
         private static string Content(EditableTopic topic, string language)
