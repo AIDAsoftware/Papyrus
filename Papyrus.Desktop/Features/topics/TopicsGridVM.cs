@@ -25,7 +25,7 @@ namespace Papyrus.Desktop.Features.Topics {
             {
                 selectedProduct = value;
                 OnPropertyChanged("SelectedProduct");
-                RefreshDocuments();
+                RefreshTopicsForCurrentProduct();
             }
         }
 
@@ -51,7 +51,7 @@ namespace Papyrus.Desktop.Features.Topics {
             await LoadAllTopics();
         }
 
-        public async void RefreshDocuments()
+        public async void RefreshTopicsForCurrentProduct()
         {
             await LoadAllTopics();
         }
