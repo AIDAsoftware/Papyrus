@@ -25,6 +25,7 @@ namespace Papyrus.Desktop.Features.Topics {
             {
                 selectedProduct = value;
                 OnPropertyChanged("SelectedProduct");
+                RefreshDocuments();
             }
         }
 
