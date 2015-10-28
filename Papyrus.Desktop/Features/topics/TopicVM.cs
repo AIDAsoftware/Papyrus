@@ -49,7 +49,7 @@ namespace Papyrus.Desktop.Features.Topics
             {
                 await SaveCurrentTopic();
             }
-            catch (VersionRangesCollisionException exception)
+            catch (Exception exception)
             {
                 EventBus.Raise(new OnUserMessageRequest(exception.Message));
             }
