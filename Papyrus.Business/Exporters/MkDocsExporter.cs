@@ -10,6 +10,8 @@ using Papyrus.Business.Topics;
 namespace Papyrus.Business.Exporters {
     public class MkDocsExporter {
         private TopicRepository repository;
+        private const string EnglishLanguage = "en-GB";
+        private const string SpanishLanguage = "es-ES";
 
         public MkDocsExporter(TopicRepository repository) {
             this.repository = repository;
@@ -18,12 +20,11 @@ namespace Papyrus.Business.Exporters {
         public async Task ExportDocumentsForProductToFolder(string productId, List<ProductVersion> versions, DirectoryInfo testDirectory)
         {
             Versions = versions;
-            var spanishDirectory = "es-ES";
-            var englishDirectory = "en-GB";
+            var languages = new[] {SpanishLanguage, EnglishLanguage};
             var topics = await repository.GetEditableTopicsForProduct(productId);
             foreach (var topic in topics)
             {
-                await ExportTopic(topic, testDirectory, spanishDirectory, englishDirectory);
+                await ExportTopic(topic, testDirectory, languages);
             }
         }
 
