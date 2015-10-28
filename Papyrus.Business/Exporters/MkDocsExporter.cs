@@ -31,16 +31,16 @@ namespace Papyrus.Business.Exporters {
 
         private async Task ExportTopic(EditableTopic topic, DirectoryInfo directory, params string[] languages)
         {
-            foreach (var editableVersionRange in topic.VersionRanges)
+            foreach (var versionRange in topic.VersionRanges)
             {
-                foreach (var productVersion in GetVersionsGroup(editableVersionRange))
+                foreach (var productVersion in GetVersionsGroup(versionRange))
                 {
                     foreach (var language in languages)
                     {
                         var versionDirectory = directory.CreateSubdirectory(productVersion.VersionName);
                         var languageDirectory = versionDirectory.CreateSubdirectory(language);
-                        var path = ConstructPath(topic, languageDirectory, language);
-                        var documentContent = Content(editableVersionRange, language);
+                        var path = ConstructPath(versionRange, languageDirectory, language);
+                        var documentContent = Content(versionRange, language);
                         await WriteTextAsync(path, documentContent);
                     }
                 }
@@ -52,9 +52,9 @@ namespace Papyrus.Business.Exporters {
             return editableVersionRange.Documents.First(d => d.Language == language).Content;
         }
 
-        private string ConstructPath(EditableTopic topic, DirectoryInfo versionDirectory, string language)
+        private string ConstructPath(EditableVersionRange versionRange, DirectoryInfo versionDirectory, string language)
         {
-            var spanishName = topic.VersionRanges[0].Documents.First(d => d.Language == language).Title + ".md";
+            var spanishName = versionRange.Documents.First(d => d.Language == language).Title + ".md";
             return Path.Combine(versionDirectory.FullName, spanishName);
         }
 
