@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Papyrus.Business.Products;
 
 namespace Papyrus.Business.Topics
 {
@@ -11,6 +10,20 @@ namespace Papyrus.Business.Topics
         Task<List<TopicSummary>> GetAllTopicsSummaries();
         Task<EditableTopic> GetEditableTopicById(string topicId);
         Task Delete(Topic topic);
+        Task<List<EditableTopic>> GetEditableTopicsForProduct(string productId);
+    }
+
+    public interface CommandTopicRepository
+    {
+        Task Save(Topic topic);
+        Task Update(Topic topic);
+        Task Delete(Topic topic);
+    }
+
+    public interface QueryTopicRepository
+    {
+        Task<List<TopicSummary>> GetAllTopicsSummaries();
+        Task<EditableTopic> GetEditableTopicById(string topicId);
         Task<List<EditableTopic>> GetEditableTopicsForProduct(string productId);
     }
 }

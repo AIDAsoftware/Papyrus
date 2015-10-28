@@ -12,7 +12,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
     public class SqlTopicRepositoryShouldGet : SqlTest
     {
         private SqlInserter sqlInserter;
-        private SqlTopicRepository topicRepository;
+        private SqlQueryTopicRepository topicRepository;
         private const string ProductId = "OpportunityId";
         private const string FirstVersionId = "FirstVersionOpportunity";
         private string FirstVersionName = "1.0";
@@ -23,7 +23,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         public void Initialize()
         {
             sqlInserter = new SqlInserter(dbConnection);
-            topicRepository = new SqlTopicRepository(dbConnection);
+            topicRepository = new SqlQueryTopicRepository(dbConnection);
             TruncateDataBase().GetAwaiter().GetResult();
         }
 
