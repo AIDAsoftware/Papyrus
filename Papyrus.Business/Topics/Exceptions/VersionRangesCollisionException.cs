@@ -5,22 +5,25 @@ namespace Papyrus.Business.Topics.Exceptions
 {
     public class VersionRangesCollisionException : Exception
     {
-        private static readonly string BaseMessage = "Following ranges are colliding with any Range:\n";
-
-        public VersionRangesCollisionException(List<EditableVersionRange> conflictedRanges) : base(ConstructMessageFrom(conflictedRanges))
+        public VersionRangesCollisionException(List<Collision> conflictedRanges) : base(ConstructMessageFrom(conflictedRanges))
         {
-            var rangesToShow = ConstructMessageFrom(conflictedRanges);
         }
 
-        private static string ConstructMessageFrom(List<EditableVersionRange> conflictedRanges)
+        private static string ConstructMessageFrom(List<Collision> conflictedRanges)
         {
             var rangesToShow = "";
             foreach (var editableVersionRange in conflictedRanges)
             {
-                rangesToShow += editableVersionRange.FromVersion.VersionName + "-" +
-                                editableVersionRange.ToVersion.VersionName + "\n";
+                rangesToShow += ParseToString(editableVersionRange.FirstVersionRange) + " collide with "
+                                + ParseToString(editableVersionRange.SecondVersionRange) + "\n";
             }
-            return BaseMessage + rangesToShow;
+            return rangesToShow;
+        }
+
+        private static string ParseToString(EditableVersionRange editableVersionRange)
+        {
+            return "(" + editableVersionRange.FromVersion.VersionName + " -- " +
+                   editableVersionRange.ToVersion.VersionName + ")";
         }
     }
 }

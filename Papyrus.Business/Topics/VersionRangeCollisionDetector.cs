@@ -11,57 +11,60 @@ namespace Papyrus.Business.Topics
         private readonly ProductRepository productRepository;
         private List<ProductVersion> Versions { get; set; }
 
-
         public VersionRangeCollisionDetector(ProductRepository productRepository)
         {
             this.productRepository = productRepository;
         }
 
-        public virtual async Task<List<EditableVersionRange>> VersionRangesWithCollisionsFor(Topic topic)
+        public virtual async Task<List<Collision>> CollisionsFor(Topic topic)
         {
-            Versions = await productRepository.GetAllVersionsFor(topic.ProductId);
-            var versionRanges = topic.VersionRanges;
-            var collidedVersionRanges = GetOnlyThoseWithCollisions(versionRanges);
-            return MapToEditableVersionRange(collidedVersionRanges);
+            await LoadAllVersionsFor(topic.ProductId);
+            var rangesWithAllVersions = RangesWithAllVersionsFor(topic);
+            return CollisionsIn(rangesWithAllVersions);
         }
 
-        private List<VersionRange> GetOnlyThoseWithCollisions(VersionRanges versionRanges)
+        private List<RangeWithAllVersions> RangesWithAllVersionsFor(Topic topic)
         {
-            return versionRanges.Where(versionRange => 
-                DoesVersionRangeCollideWithAnyRangeIn(versionRange, versionRanges)).ToList();
+            var versionRanges = new List<VersionRange>(topic.VersionRanges);
+            var rangesWithAllVersions = MapToRangeWithAllVersions(versionRanges);
+            return rangesWithAllVersions;
         }
 
-        private List<EditableVersionRange> MapToEditableVersionRange(IEnumerable<VersionRange> collidedVersionRanges)
+        private async Task LoadAllVersionsFor(string productId)
         {
-            var editableVersionRanges = new List<EditableVersionRange>();
-            foreach (var versionRange in collidedVersionRanges)
+            Versions = await productRepository.GetAllVersionsFor(productId);
+        }
+
+        private List<Collision> CollisionsIn(List<RangeWithAllVersions> rangesWithAllVersions)
+        {
+            var allCollisions = new List<Collision>();
+            var checkedRanges = new List<RangeWithAllVersions>();
+            foreach (var currentRange in rangesWithAllVersions)
             {
-                var editableVersionRange = ToEditableVersionRange(versionRange);
-                editableVersionRanges.Add(editableVersionRange);
+                checkedRanges.Add(currentRange);
+                var rangesToCheck = rangesWithAllVersions.Except(checkedRanges);
+                var collisions = currentRange.CollissionsWith(rangesToCheck);
+                allCollisions.AddRange(collisions);
             }
-            return editableVersionRanges;
+            return allCollisions;
         }
 
-        private EditableVersionRange ToEditableVersionRange(VersionRange versionRange)
+        private List<RangeWithAllVersions> MapToRangeWithAllVersions(IEnumerable<VersionRange> versionRanges)
         {
-            return new EditableVersionRange
-            {
-                FromVersion = Versions.First(vr => vr.VersionId == versionRange.FromVersionId),
-                ToVersion = Versions.First(vr => vr.VersionId == versionRange.ToVersionId)
-            };
+            return versionRanges.Select(ToRangeWithAllVersions).ToList();
         }
 
-        private bool DoesVersionRangeCollideWithAnyRangeIn(VersionRange versionRange, VersionRanges versionRanges)
+        private RangeWithAllVersions ToRangeWithAllVersions(VersionRange versionRange)
         {
-            var fromVersionId = versionRange.FromVersionId;
-            return versionRanges.Where(vr => vr != versionRange)
-                    .Any(vr => IsVersionIncludedInVersionRange(fromVersionId, vr));
+            var versions = AllVersionsContainedIn(versionRange);
+            var rangeWithAllVersions = new RangeWithAllVersions(versions, versionRange);
+            return rangeWithAllVersions;
         }
 
-        private bool IsVersionIncludedInVersionRange(string fromVersionId, VersionRange versionRange)
+        private List<ProductVersion> AllVersionsContainedIn(VersionRange versionRange)
         {
-            return ReleaseFor(versionRange.FromVersionId) <= ReleaseFor(fromVersionId) &&
-                   ReleaseFor(fromVersionId) <= ReleaseFor(versionRange.ToVersionId);
+            return Versions.Where(v => ReleaseFor(versionRange.FromVersionId) <= v.Release &&
+                                       v.Release <= ReleaseFor(versionRange.ToVersionId)).ToList();
         }
 
         private DateTime ReleaseFor(string versionId)
