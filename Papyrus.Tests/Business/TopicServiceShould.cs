@@ -79,7 +79,7 @@ namespace Papyrus.Tests.Business
             Func<Task> createTopic = async () => await topicService.Create(topic);
             
             createTopic.ShouldThrow<VersionRangesCollisionException>()
-                .WithMessage("Following ranges are colliding with any Range:\n(2.0, 3.0) with (2.0, 3.0)\n");
+                .WithMessage("(2.0 -- 3.0) collide with (2.0 -- 3.0)\n");
         }
 
 
@@ -136,7 +136,7 @@ namespace Papyrus.Tests.Business
             Func<Task> createTopic = async () => await topicService.Update(topic);
 
             createTopic.ShouldThrow<VersionRangesCollisionException>()
-                .WithMessage("Following ranges are colliding with any Range:\n(2.0, 3.0) with (2.0, 3.0)\n");
+                .WithMessage("(2.0 -- 3.0) collide with (2.0 -- 3.0)\n");
         }
 
         [Test]
