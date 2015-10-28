@@ -13,5 +13,17 @@ namespace Papyrus.Business.Products
             VersionName = versionName;
             Release = release;
         }
+
+        public override bool Equals(object obj)
+        {
+            var otherVersion = obj as ProductVersion;
+            if (otherVersion != null)
+            {
+                return VersionId == otherVersion.VersionId &&
+                        VersionName == otherVersion.VersionName &&
+                        Release.Equals(otherVersion.Release);                
+            }
+            return false;
+        }
     }
 }
