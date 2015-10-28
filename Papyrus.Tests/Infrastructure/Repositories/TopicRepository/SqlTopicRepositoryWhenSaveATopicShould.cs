@@ -11,7 +11,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
     public class SqlTopicWhenSaveATopicShould : SqlTest
     {
         private Topic anyTopic;
-        private SqlTopicRepository topicRepository;
+        private SqlCommandTopicRepository topicRepository;
         private const string ProductId = "OpportunityId";
         private const string FirstVersionId = "FirstVersionId";
 
@@ -19,7 +19,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         public async void Initialize()
         {
             anyTopic = new Topic(ProductId).WithId("AnyTopicId");
-            topicRepository = new SqlTopicRepository(dbConnection);
+            topicRepository = new SqlCommandTopicRepository(dbConnection);
             await new DataBaseTruncator(dbConnection).TruncateDataBase();
         }
 
