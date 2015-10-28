@@ -65,14 +65,20 @@ namespace Papyrus.Tests.Business
             var versionDirectories = testDirectory.GetDirectories();
             var directoryVersion1 = versionDirectories.First(d => d.Name == "1.0");
             var directoryVersion2 = versionDirectories.First(d => d.Name == "2.0");
-            var spanishDocumentVersion1 = directoryVersion1.GetDirectories().First(d => d.Name == SpanishLanguage)
-                                                            .GetFiles().First();
-            var spanishDocumentVersion2 = directoryVersion2.GetDirectories().First(d => d.Name == SpanishLanguage)
-                                                            .GetFiles().First();
+            var spanishDocumentVersion1 = GetSpanishDocumentFrom(directoryVersion1);
+            var spanishDocumentVersion2 = GetSpanishDocumentFrom(directoryVersion2);
             spanishDocumentVersion2.Name.Should().NotBeEmpty("Título.md");
             GetContentOf(spanishDocumentVersion2).Should().Be("Contenido");
             spanishDocumentVersion1.Name.Should().Be("Título.md");
             GetContentOf(spanishDocumentVersion1).Should().Be("Contenido");
+        }
+
+        private static FileInfo GetSpanishDocumentFrom(DirectoryInfo directoryVersion1)
+        {
+            return directoryVersion1
+                .GetDirectories()
+                .First(d => d.Name == SpanishLanguage)
+                .GetFiles().First();
         }
 
         private static string GetContentOf(FileInfo document)
