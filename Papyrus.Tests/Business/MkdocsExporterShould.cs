@@ -30,7 +30,7 @@ namespace Papyrus.Tests.Business
         [SetUp]
         public void CreateTestDirectory()
         {
-            testDirectory = Directory.CreateDirectory(@"C:\Users\rancorini\Desktop\test");
+            testDirectory = Directory.CreateDirectory(@"test");
             topicRepository = Substitute.For<TopicRepository>();
             mkdocsExporter = new MkDocsExporter(topicRepository);
         }
