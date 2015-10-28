@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 
 namespace Papyrus.Business.Topics
 {
-    public interface CommandTopicRepository
+    public interface TopicCommandRepository
     {
         Task Save(Topic topic);
         Task Update(Topic topic);
         Task Delete(Topic topic);
     }
 
-    public interface QueryTopicRepository
+    public interface TopicQueryRepository
     {
         Task<List<TopicSummary>> GetAllTopicsSummaries();
         Task<EditableTopic> GetEditableTopicById(string topicId);

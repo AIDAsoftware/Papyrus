@@ -10,9 +10,9 @@ namespace Papyrus.Business.Topics
     public class TopicService
     {
         private readonly VersionRangeCollisionDetector collisionDetector;
-        private CommandTopicRepository TopicRepository { get; set; }
+        private TopicCommandRepository TopicRepository { get; set; }
 
-        public TopicService(CommandTopicRepository topicRepo, VersionRangeCollisionDetector collisionDetector)
+        public TopicService(TopicCommandRepository topicRepo, VersionRangeCollisionDetector collisionDetector)
         {
             this.collisionDetector = collisionDetector;
             TopicRepository = topicRepo;

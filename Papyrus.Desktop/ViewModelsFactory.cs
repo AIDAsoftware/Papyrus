@@ -48,14 +48,14 @@ namespace Papyrus.Desktop {
             return new SqlProductRepository(CreateConnection());
         }
 
-        public static CommandTopicRepository Topic()
+        public static TopicCommandRepository Topic()
         {
-            return new SqlCommandTopicRepository(CreateConnection());
+            return new SqlTopicCommandRepository(CreateConnection());
         }
 
-        public static QueryTopicRepository QueryTopic()
+        public static TopicQueryRepository QueryTopic()
         {
-            return new SqlQueryTopicRepository(CreateConnection());
+            return new SqlTopicQueryRepository(CreateConnection());
         }
     }
 

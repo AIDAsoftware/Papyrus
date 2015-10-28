@@ -4,11 +4,11 @@ using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Business.Topics
 {
-    public class SqlCommandTopicRepository : CommandTopicRepository
+    public class SqlTopicCommandRepository : TopicCommandRepository
     {
         private readonly DatabaseConnection connection;
 
-        public SqlCommandTopicRepository(DatabaseConnection connection)
+        public SqlTopicCommandRepository(DatabaseConnection connection)
         {
             this.connection = connection;
         }

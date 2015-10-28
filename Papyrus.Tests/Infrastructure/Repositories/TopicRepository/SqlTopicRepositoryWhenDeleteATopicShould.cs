@@ -11,12 +11,12 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
     [TestFixture]
     public class SqlTopicRepositoryWhenDeleteATopicShould : SqlTest
     {
-        private SqlCommandTopicRepository topicRepository;
+        private SqlTopicCommandRepository topicRepository;
 
         [SetUp]
         public void Initialize()
         {
-            topicRepository = new SqlCommandTopicRepository(dbConnection);
+            topicRepository = new SqlTopicCommandRepository(dbConnection);
             new DataBaseTruncator(dbConnection).TruncateDataBase().GetAwaiter().GetResult();
         }
 

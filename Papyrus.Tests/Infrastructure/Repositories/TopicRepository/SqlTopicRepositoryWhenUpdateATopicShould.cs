@@ -11,13 +11,13 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
     public class SqlTopicRepositoryWhenUpdateATopicShould : SqlTest
     {
         private SqlInserter sqlInserter;
-        private SqlCommandTopicRepository sqlTopicRepository;
+        private SqlTopicCommandRepository sqlTopicRepository;
 
         [SetUp]
         public void Initialize()
         {
             sqlInserter = new SqlInserter(dbConnection);
-            sqlTopicRepository = new SqlCommandTopicRepository(dbConnection);
+            sqlTopicRepository = new SqlTopicCommandRepository(dbConnection);
         }
 
         [Test]

@@ -7,11 +7,11 @@ using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Business.Topics
 {
-    public class SqlQueryTopicRepository : QueryTopicRepository
+    public class SqlTopicQueryRepository : TopicQueryRepository
     {
         private readonly DatabaseConnection connection;
 
-        public SqlQueryTopicRepository(DatabaseConnection connection)
+        public SqlTopicQueryRepository(DatabaseConnection connection)
         {
             this.connection = connection;
         }
