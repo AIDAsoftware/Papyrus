@@ -8,7 +8,7 @@ namespace Papyrus.Desktop {
     public static class ViewModelsFactory {
         public static TopicsGridVM TopicsGrid()
         {
-            return new TopicsGridVM(RepositoriesFactory.Topic(), RepositoriesFactory.Product());
+            return new TopicsGridVM(RepositoriesFactory.QueryTopic(), RepositoriesFactory.Product());
         }
 
         public static TopicVM Topic(EditableTopic topic)
@@ -51,6 +51,11 @@ namespace Papyrus.Desktop {
         public static TopicRepository Topic()
         {
             return new SqlTopicRepository(CreateConnection());
+        }
+
+        public static QueryTopicRepository QueryTopic()
+        {
+            return new SqlQueryTopicRepository(CreateConnection());
         }
     }
 

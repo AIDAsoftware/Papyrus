@@ -11,7 +11,7 @@ using Papyrus.Desktop.Util.Command;
 namespace Papyrus.Desktop.Features.Topics {
     public class TopicsGridVM : INotifyPropertyChanged
     {
-        private readonly TopicRepository topicRepository;
+        private readonly QueryTopicRepository topicRepository;
         private readonly ProductRepository productRepository;
         public ObservableCollection<TopicSummary> TopicsToList { get; protected set; }
         public ObservableCollection<DisplayableProduct> Products { get; private set; }
@@ -38,7 +38,7 @@ namespace Papyrus.Desktop.Features.Topics {
             RefreshTopics = RelayAsyncSimpleCommand.Create(LoadAllTopics, CanLoadAllTopics);
         }
 
-        public TopicsGridVM(TopicRepository topicRepository, ProductRepository productRepository) : this()
+        public TopicsGridVM(QueryTopicRepository topicRepository, ProductRepository productRepository) : this()
         {
             this.topicRepository = topicRepository;
             this.productRepository = productRepository;
