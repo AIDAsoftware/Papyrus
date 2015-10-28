@@ -42,31 +42,28 @@ namespace Papyrus.Tests.Business
         }
 
         [Test]
-        public async Task create_two_folders_for_spanish_and_english_documents_into_the_given_directory()
-        {
-            topicRepository.GetEditableTopicsForProduct(PapyrusId).Returns(Task.FromResult(new List<EditableTopic>()));
-            
-            await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, testDirectory);
-
-            var languagesFolders = testDirectory.GetDirectories().Select(d => d.Name);
-            languagesFolders.Should().Contain(SpanishLanguage);
-            languagesFolders.Should().Contain(EnglishLanguage);
-        }
-
-        [Test]
         public async Task insert_in_each_language_folder_its_respective_topics()
         {
             var topic = TopicForPapyrusWithOneVersionRangeWithAnyDocumentForSpanishAndEnglishLanguage();
-            topicRepository.GetEditableTopicsForProduct(PapyrusId).Returns(Task.FromResult(new List<EditableTopic>{topic}));
+            topicRepository.GetEditableTopicsForProduct(PapyrusId).Returns(Task.FromResult(new List<EditableTopic> { topic }));
+            var versions = new List<ProductVersion>
+            {
+                new ProductVersion("version1", "1.0", DateTime.Today),
+                new ProductVersion("version2", "2.0", DateTime.Today.AddDays(3))
+            };
 
-            await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, testDirectory);
+            await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, versions, testDirectory);
 
-            var spanishDocument = testDirectory.GetDirectories().First(d => d.Name == SpanishLanguage).GetFiles()[0];
-            var englishDocument = testDirectory.GetDirectories().First(d => d.Name == EnglishLanguage).GetFiles()[0];
-            spanishDocument.Name.Should().EndWith("Título.md");
-            GetContentOf(spanishDocument).Should().Be("Contenido");
-            englishDocument.Name.Should().Be("Title.md");
-            GetContentOf(englishDocument).Should().Be("Content");
+            var directoryVersion1 = testDirectory.GetDirectories().First(d => d.Name == "1.0");
+            var directoryVersion2 = testDirectory.GetDirectories().First(d => d.Name == "2.0");
+            var spanishDocumentVersion1 = directoryVersion1.GetDirectories().First(d => d.Name == SpanishLanguage)
+                                                            .GetFiles().First();
+            var spanishDocumentVersion2 = directoryVersion2.GetDirectories().First(d => d.Name == SpanishLanguage)
+                                                            .GetFiles().First();
+            spanishDocumentVersion2.Name.Should().EndWith("Título.md");
+            GetContentOf(spanishDocumentVersion2).Should().Be("Contenido");
+            spanishDocumentVersion1.Name.Should().Be("Título.md");
+            GetContentOf(spanishDocumentVersion1).Should().Be("Contenido");
         }
 
         private static string GetContentOf(FileInfo document)
@@ -81,11 +78,10 @@ namespace Papyrus.Tests.Business
                 ProductId = "ProductId",
                 ProductName = "Papyrus",
             };
-            var productVersion = new ProductVersion("version1", "1.0", DateTime.Today);
             var versionRange = new EditableVersionRange
             {
-                FromVersion = productVersion,
-                ToVersion = productVersion
+                FromVersion = new ProductVersion("version1", "1.0", DateTime.Today),
+                ToVersion = new ProductVersion("version2", "2.0", DateTime.Today.AddDays(3))
             };
             versionRange.Documents.Add(new EditableDocument
             {

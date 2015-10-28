@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 
 namespace Papyrus.Business.Exporters {
@@ -13,35 +15,58 @@ namespace Papyrus.Business.Exporters {
             this.repository = repository;
         }
 
-        public async Task ExportDocumentsForProductToFolder(string productId, DirectoryInfo targetDirectory) {
-            var spanishDirectory = targetDirectory.CreateSubdirectory("es-ES");
-            var englishDirectory = targetDirectory.CreateSubdirectory("en-GB");
+        public async Task ExportDocumentsForProductToFolder(string productId, List<ProductVersion> versions, DirectoryInfo testDirectory)
+        {
+            Versions = versions;
+            var spanishDirectory = "es-ES";
+            var englishDirectory = "en-GB";
             var topics = await repository.GetEditableTopicsForProduct(productId);
             foreach (var topic in topics)
             {
-                await ExportTopic(topic, spanishDirectory, englishDirectory);
+                await ExportTopic(topic, testDirectory, spanishDirectory, englishDirectory);
             }
         }
-        
-        private async Task ExportTopic(EditableTopic topic, params DirectoryInfo[] languageDirectories)
+
+        public List<ProductVersion> Versions { get; private set; }
+
+        private async Task ExportTopic(EditableTopic topic, DirectoryInfo directory, params string[] languages)
         {
-            foreach (var languageDirectory in languageDirectories)
+            foreach (var editableVersionRange in topic.VersionRanges)
             {
-                var path = ConstructPath(topic, languageDirectory);
-                var documentContent = Content(topic, languageDirectory.Name);
-                await WriteTextAsync(path, documentContent);
+                foreach (var productVersion in GetVersionsGroup(editableVersionRange))
+                {
+                    foreach (var language in languages)
+                    {
+                        var versionDirectory = directory.CreateSubdirectory(productVersion.VersionName);
+                        var languageDirectory = versionDirectory.CreateSubdirectory(language);
+                        var path = ConstructPath(topic, languageDirectory, language);
+                        var documentContent = Content(editableVersionRange, language);
+                        await WriteTextAsync(path, documentContent);
+                    }
+                }
             }
         }
 
-        private static string ConstructPath(EditableTopic topic, DirectoryInfo languageDirectory)
+        private string Content(EditableVersionRange editableVersionRange, string language)
         {
-            var spanishName = topic.VersionRanges[0].Documents.First(d => d.Language == languageDirectory.Name).Title + ".md";
-            return Path.Combine(languageDirectory.FullName, spanishName);
+            return editableVersionRange.Documents.First(d => d.Language == language).Content;
         }
 
-        private static string Content(EditableTopic topic, string language)
+        private string ConstructPath(EditableTopic topic, DirectoryInfo versionDirectory, string language)
         {
-            return topic.VersionRanges[0].Documents.First(d => d.Language == language).Content;
+            var spanishName = topic.VersionRanges[0].Documents.First(d => d.Language == language).Title + ".md";
+            return Path.Combine(versionDirectory.FullName, spanishName);
+        }
+
+        private List<ProductVersion> GetVersionsGroup(EditableVersionRange versionRange)
+        {
+            return AllVersionsContainedIn(versionRange);
+        }
+
+        private List<ProductVersion> AllVersionsContainedIn(EditableVersionRange versionRange)
+        {
+            return Versions.Where(v => versionRange.FromVersion.Release <= v.Release &&
+                                       v.Release <= versionRange.ToVersion.Release).ToList();
         }
 
         private async Task WriteTextAsync(string filePath, string text) {
@@ -53,6 +78,5 @@ namespace Papyrus.Business.Exporters {
                 await sourceStream.WriteAsync(encodedText, 0, encodedText.Length);
             };
         }
-    
     }
 }
