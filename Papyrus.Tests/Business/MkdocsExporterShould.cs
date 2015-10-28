@@ -55,8 +55,8 @@ namespace Papyrus.Tests.Business
                         .To(version2)
                         .WithDocument("Título", "Contenido", "es-ES")
                         .WithDocument("Title", "Content", "en-GB")
-                        .Build()
-                ).BuildTopic();
+                        .Build())
+                .BuildTopic();
             topicRepository.GetEditableTopicsForProduct(PapyrusId).Returns(Task.FromResult(new List<EditableTopic> { topic }));
             var versions = new List<ProductVersion> { version1, version2 };
 
