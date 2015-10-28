@@ -14,12 +14,16 @@ namespace Papyrus.Business.Topics.Exceptions
             var rangesToShow = "";
             foreach (var editableVersionRange in conflictedRanges)
             {
-                rangesToShow += "(" + editableVersionRange.FirstVersionRange.FromVersion.VersionName + " -- " +
-                                editableVersionRange.FirstVersionRange.ToVersion.VersionName + ") collide with " +
-                                "(" + editableVersionRange.SecondVersionRange.FromVersion.VersionName + " -- " +
-                                editableVersionRange.SecondVersionRange.ToVersion.VersionName + ")" + "\n";
+                rangesToShow += ParseToString(editableVersionRange.FirstVersionRange) + " collide with "
+                                + ParseToString(editableVersionRange.SecondVersionRange) + "\n";
             }
             return rangesToShow;
+        }
+
+        private static string ParseToString(EditableVersionRange editableVersionRange)
+        {
+            return "(" + editableVersionRange.FromVersion.VersionName + " -- " +
+                   editableVersionRange.ToVersion.VersionName + ")";
         }
     }
 }
