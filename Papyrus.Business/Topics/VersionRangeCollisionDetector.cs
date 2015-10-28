@@ -11,7 +11,6 @@ namespace Papyrus.Business.Topics
         private readonly ProductRepository productRepository;
         private List<ProductVersion> Versions { get; set; }
 
-
         public VersionRangeCollisionDetector(ProductRepository productRepository)
         {
             this.productRepository = productRepository;
