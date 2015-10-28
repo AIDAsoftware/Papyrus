@@ -22,6 +22,18 @@ namespace Papyrus.Tests.Business
 
         private const string PapyrusId = "PapyrusId";
         private DirectoryInfo testDirectory;
+        private MkDocsExporter mkdocsExporter;
+        private TopicRepository topicRepository;
+        private const string SpanishLanguage = "es-ES";
+        private const string EnglishLanguage = "en-GB";
+
+        [SetUp]
+        public void CreateTestDirectory()
+        {
+            testDirectory = Directory.CreateDirectory(@"C:\Users\rancorini\Desktop\test");
+            topicRepository = Substitute.For<TopicRepository>();
+            mkdocsExporter = new MkDocsExporter(topicRepository);
+        }
 
         [TearDown]
         public void DeleteFolder()
@@ -32,32 +44,25 @@ namespace Papyrus.Tests.Business
         [Test]
         public async Task create_two_folders_for_spanish_and_english_documents_into_the_given_directory()
         {
-            testDirectory = Directory.CreateDirectory(@"C:\Users\rancorini\Desktop\test");
-            var topicRepository = Substitute.For<TopicRepository>();
             topicRepository.GetEditableTopicsForProduct(PapyrusId).Returns(Task.FromResult(new List<EditableTopic>()));
-            var mkdocsExporter = new MkDocsExporter(topicRepository);
-
+            
             await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, testDirectory);
 
             var languagesFolders = testDirectory.GetDirectories().Select(d => d.Name);
-            languagesFolders.Should().Contain("es-ES");
-            languagesFolders.Should().Contain("en-GB");
+            languagesFolders.Should().Contain(SpanishLanguage);
+            languagesFolders.Should().Contain(EnglishLanguage);
         }
 
         [Test]
         public async Task insert_in_each_language_folder_its_respective_topics()
         {
-            testDirectory = Directory.CreateDirectory(@"C:\Users\rancorini\Desktop\test");
-            var topicRepository = Substitute.For<TopicRepository>();
             var topic = TopicForPapyrusWithOneVersionRangeWithAnyDocumentForSpanishAndEnglishLanguage();
             topicRepository.GetEditableTopicsForProduct(PapyrusId).Returns(Task.FromResult(new List<EditableTopic>{topic}));
-            var mkdocsExporter = new MkDocsExporter(topicRepository);
 
             await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, testDirectory);
 
-            var spanishDocument = testDirectory.GetDirectories().First(d => d.Name == "es-ES").GetFiles()[0];
-            var englishDocument = testDirectory.GetDirectories().First(d => d.Name == "en-GB").GetFiles()[0];
-
+            var spanishDocument = testDirectory.GetDirectories().First(d => d.Name == SpanishLanguage).GetFiles()[0];
+            var englishDocument = testDirectory.GetDirectories().First(d => d.Name == EnglishLanguage).GetFiles()[0];
             spanishDocument.Name.Should().EndWith("Título.md");
             GetContentOf(spanishDocument).Should().Be("Contenido");
             englishDocument.Name.Should().Be("Title.md");
@@ -87,14 +92,14 @@ namespace Papyrus.Tests.Business
                 Title = "Título",
                 Description = "Descripción",
                 Content = "Contenido",
-                Language = "es-ES"
+                Language = SpanishLanguage
             });
             versionRange.Documents.Add(new EditableDocument
             {
                 Title = "Title",
                 Description = "Description",
                 Content = "Content",
-                Language = "en-GB"
+                Language = EnglishLanguage
             });
             var topic = new EditableTopic
             {
