@@ -24,6 +24,9 @@ namespace Papyrus.Tests.Business
         private DirectoryInfo testDirectory;
         private MkDocsExporter mkdocsExporter;
         private TopicRepository topicRepository;
+        private readonly DisplayableProduct papyrus = new DisplayableProduct{ ProductId = PapyrusId, ProductName = "Papyrus"};
+        private ProductVersion version1 = new ProductVersion("version1", "1.0", DateTime.Today);
+        private ProductVersion version2 = new ProductVersion("version2", "2.0", DateTime.Today.AddDays(3));
         private const string SpanishLanguage = "es-ES";
         private const string EnglishLanguage = "en-GB";
 
@@ -44,23 +47,29 @@ namespace Papyrus.Tests.Business
         [Test]
         public async Task insert_in_each_language_folder_its_respective_topics()
         {
-            var topic = TopicForPapyrusWithOneVersionRangeWithAnyDocumentForSpanishAndEnglishLanguage();
+            var topic = new TopicBuilder()
+                .ATopicForProduct(papyrus)
+                .WithVersionRange(
+                    new VersionRangeBuilder()
+                        .VersionRangeFrom(version1)
+                        .To(version2)
+                        .WithDocument("Título", "Contenido", "es-ES")
+                        .WithDocument("Title", "Content", "en-GB")
+                        .Build()
+                ).BuildTopic();
             topicRepository.GetEditableTopicsForProduct(PapyrusId).Returns(Task.FromResult(new List<EditableTopic> { topic }));
-            var versions = new List<ProductVersion>
-            {
-                new ProductVersion("version1", "1.0", DateTime.Today),
-                new ProductVersion("version2", "2.0", DateTime.Today.AddDays(3))
-            };
+            var versions = new List<ProductVersion> { version1, version2 };
 
             await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, versions, testDirectory);
 
-            var directoryVersion1 = testDirectory.GetDirectories().First(d => d.Name == "1.0");
-            var directoryVersion2 = testDirectory.GetDirectories().First(d => d.Name == "2.0");
+            var versionDirectories = testDirectory.GetDirectories();
+            var directoryVersion1 = versionDirectories.First(d => d.Name == "1.0");
+            var directoryVersion2 = versionDirectories.First(d => d.Name == "2.0");
             var spanishDocumentVersion1 = directoryVersion1.GetDirectories().First(d => d.Name == SpanishLanguage)
                                                             .GetFiles().First();
             var spanishDocumentVersion2 = directoryVersion2.GetDirectories().First(d => d.Name == SpanishLanguage)
                                                             .GetFiles().First();
-            spanishDocumentVersion2.Name.Should().EndWith("Título.md");
+            spanishDocumentVersion2.Name.Should().NotBeEmpty("Título.md");
             GetContentOf(spanishDocumentVersion2).Should().Be("Contenido");
             spanishDocumentVersion1.Name.Should().Be("Título.md");
             GetContentOf(spanishDocumentVersion1).Should().Be("Contenido");
@@ -70,40 +79,73 @@ namespace Papyrus.Tests.Business
         {
             return File.ReadAllText(document.FullName);
         }
+    }
 
-        private static EditableTopic TopicForPapyrusWithOneVersionRangeWithAnyDocumentForSpanishAndEnglishLanguage()
+    public class VersionRangeBuilder
+    {
+        private EditableVersionRange versionRange;
+
+        public VersionRangeBuilder()
         {
-            var product = new DisplayableProduct
-            {
-                ProductId = "ProductId",
-                ProductName = "Papyrus",
-            };
-            var versionRange = new EditableVersionRange
-            {
-                FromVersion = new ProductVersion("version1", "1.0", DateTime.Today),
-                ToVersion = new ProductVersion("version2", "2.0", DateTime.Today.AddDays(3))
-            };
+            versionRange = new EditableVersionRange();
+        }
+
+        public VersionRangeBuilder VersionRangeFrom(ProductVersion version)
+        {
+            versionRange.FromVersion = version;
+            return this;
+        }
+
+        public VersionRangeBuilder To(ProductVersion version)
+        {
+            versionRange.ToVersion = version;
+            return this;
+        }
+
+        public VersionRangeBuilder WithDocument(string title, string content, string language)
+        {
             versionRange.Documents.Add(new EditableDocument
             {
-                Title = "Título",
-                Description = "Descripción",
-                Content = "Contenido",
-                Language = SpanishLanguage
+                Title = title,
+                Content = content,
+                Language = language
             });
-            versionRange.Documents.Add(new EditableDocument
+            return this;
+        }
+
+        public EditableVersionRange Build()
+        {
+            return versionRange;
+        }
+    }
+
+    public class TopicBuilder
+    {
+        private EditableTopic editableTopic;
+
+        public TopicBuilder()
+        {
+            editableTopic = new EditableTopic();
+        }
+
+        public TopicBuilder ATopicForProduct(DisplayableProduct product)
+        {
+            editableTopic = new EditableTopic
             {
-                Title = "Title",
-                Description = "Description",
-                Content = "Content",
-                Language = EnglishLanguage
-            });
-            var topic = new EditableTopic
-            {
-                Product = product,
-                TopicId = "TopicId",
-                VersionRanges = new ObservableCollection<EditableVersionRange>() {versionRange}
+                Product = product
             };
-            return topic;
+            return this;
+        }
+
+        public TopicBuilder WithVersionRange(EditableVersionRange versionRange)
+        {
+            editableTopic.VersionRanges.Add(versionRange);
+            return this;
+        }
+
+        public EditableTopic BuildTopic()
+        {
+            return editableTopic;
         }
     }
 }
