@@ -71,7 +71,8 @@
     <Compile Include="Products\SqlProductRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Topics\Topic.cs" />
-    <Compile Include="Topics\TopicRepository.cs" />
+    <Compile Include="Topics\TopicCommandRepository.cs" />
+    <Compile Include="Topics\TopicQueryRepository.cs" />
     <Compile Include="Topics\TopicService.cs" />
     <Compile Include="Topics\VersionRange.cs" />
     <Compile Include="Topics\VersionRangeCollisionDetector.cs" />
