@@ -8,6 +8,7 @@ using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
+using Papyrus.Infrastructure.Core.DomainEvents;
 
 namespace Papyrus.Desktop.Features.Topics
 {
@@ -56,8 +57,12 @@ namespace Papyrus.Desktop.Features.Topics
 
         private async Task DeleteCurrentVersionRange()
         {
+            if (VersionRanges.Count == 1)
+            {
+                EventBus.Raise(new OnUserMessageRequest("A topic must have at least one version range"));
+                return;
+            } 
             VersionRanges.Remove(SelectedVersionRange);
-            Console.WriteLine("Remove");
         }
 
         public VersionRangesVM(EditableTopic editableTopic) : this()
