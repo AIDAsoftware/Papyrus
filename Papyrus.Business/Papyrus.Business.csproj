@@ -58,7 +58,6 @@
     <Compile Include="Topics\RangeWithAllVersions.cs" />
     <Compile Include="Topics\SqlCommandTopicRepository.cs" />
     <Compile Include="Topics\SqlQueryTopicRepository.cs" />
-    <Compile Include="Topics\SqlTopicRepository.cs" />
     <Compile Include="Topics\Document.cs" />
     <Compile Include="Topics\Exceptions\CannotUpdateTopicsWithNoVersionRangesException.cs" />
     <Compile Include="Topics\Exceptions\CannotSaveTopicsWithDefinedTopicIdException.cs" />

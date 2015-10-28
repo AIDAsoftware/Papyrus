@@ -3,16 +3,6 @@ using System.Threading.Tasks;
 
 namespace Papyrus.Business.Topics
 {
-    public interface TopicRepository
-    {
-        Task Save(Topic topic);
-        Task Update(Topic topic);
-        Task<List<TopicSummary>> GetAllTopicsSummaries();
-        Task<EditableTopic> GetEditableTopicById(string topicId);
-        Task Delete(Topic topic);
-        Task<List<EditableTopic>> GetEditableTopicsForProduct(string productId);
-    }
-
     public interface CommandTopicRepository
     {
         Task Save(Topic topic);

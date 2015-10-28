@@ -13,7 +13,7 @@ namespace Papyrus.Tests.Business
     [TestFixture]
     public class TopicServiceShould
     {
-        private TopicRepository topicRepo;
+        private CommandTopicRepository topicRepo;
         private VersionRangeCollisionDetector collisionDetector;
         private TopicService topicService;
         private VersionRange anyVersionRange;
@@ -22,7 +22,7 @@ namespace Papyrus.Tests.Business
         [SetUp]
         public void SetUp()
         {
-            topicRepo = Substitute.For<TopicRepository>();
+            topicRepo = Substitute.For<CommandTopicRepository>();
             var productRepository = Substitute.For<ProductRepository>();
             collisionDetector = Substitute.For<VersionRangeCollisionDetector>(productRepository);
             topicService = new TopicService(topicRepo, collisionDetector);
