@@ -9,11 +9,11 @@ using Papyrus.Business.Topics;
 
 namespace Papyrus.Business.Exporters {
     public class MkDocsExporter {
-        private TopicRepository repository;
+        private QueryTopicRepository repository;
         private const string EnglishLanguage = "en-GB";
         private const string SpanishLanguage = "es-ES";
 
-        public MkDocsExporter(TopicRepository repository) {
+        public MkDocsExporter(QueryTopicRepository repository) {
             this.repository = repository;
         }
 

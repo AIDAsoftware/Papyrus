@@ -23,7 +23,7 @@ namespace Papyrus.Tests.Business
         private const string PapyrusId = "PapyrusId";
         private DirectoryInfo testDirectory;
         private MkDocsExporter mkdocsExporter;
-        private TopicRepository topicRepository;
+        private QueryTopicRepository topicRepository;
         private readonly DisplayableProduct papyrus = new DisplayableProduct{ ProductId = PapyrusId, ProductName = "Papyrus"};
         private ProductVersion version1 = new ProductVersion("version1", "1.0", DateTime.Today);
         private ProductVersion version2 = new ProductVersion("version2", "2.0", DateTime.Today.AddDays(3));
@@ -34,7 +34,7 @@ namespace Papyrus.Tests.Business
         public void CreateTestDirectory()
         {
             testDirectory = Directory.CreateDirectory(@"test");
-            topicRepository = Substitute.For<TopicRepository>();
+            topicRepository = Substitute.For<QueryTopicRepository>();
             mkdocsExporter = new MkDocsExporter(topicRepository);
         }
 
