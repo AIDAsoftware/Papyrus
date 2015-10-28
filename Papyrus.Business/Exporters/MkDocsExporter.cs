@@ -60,11 +60,6 @@ namespace Papyrus.Business.Exporters {
 
         private List<ProductVersion> GetVersionsGroup(EditableVersionRange versionRange)
         {
-            return AllVersionsContainedIn(versionRange);
-        }
-
-        private List<ProductVersion> AllVersionsContainedIn(EditableVersionRange versionRange)
-        {
             return Versions.Where(v => versionRange.FromVersion.Release <= v.Release &&
                                        v.Release <= versionRange.ToVersion.Release).ToList();
         }
