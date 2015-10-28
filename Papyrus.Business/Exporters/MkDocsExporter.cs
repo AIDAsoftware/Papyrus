@@ -40,16 +40,16 @@ namespace Papyrus.Business.Exporters {
                         var versionDirectory = directory.CreateSubdirectory(productVersion.VersionName);
                         var languageDirectory = versionDirectory.CreateSubdirectory(language);
                         var path = ConstructPath(versionRange, languageDirectory, language);
-                        var documentContent = Content(versionRange, language);
+                        var documentContent = GetDocumentContentForLanguage(versionRange, language);
                         await WriteTextAsync(path, documentContent);
                     }
                 }
             }
         }
 
-        private string Content(EditableVersionRange editableVersionRange, string language)
+        private string GetDocumentContentForLanguage(EditableVersionRange versionRange, string language)
         {
-            return editableVersionRange.Documents.First(d => d.Language == language).Content;
+            return versionRange.Documents.First(d => d.Language == language).Content;
         }
 
         private string ConstructPath(EditableVersionRange versionRange, DirectoryInfo versionDirectory, string language)
