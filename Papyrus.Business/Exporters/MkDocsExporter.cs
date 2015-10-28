@@ -40,7 +40,8 @@ namespace Papyrus.Business.Exporters {
                     {
                         var versionDirectory = directory.CreateSubdirectory(productVersion.VersionName);
                         var languageDirectory = versionDirectory.CreateSubdirectory(language);
-                        var path = ConstructPath(versionRange, languageDirectory, language);
+                        var documentName = GetDocumentTitleForLanguage(versionRange, language) + ".md";
+                        var path = Path.Combine(languageDirectory.FullName, documentName);
                         var documentContent = GetDocumentContentForLanguage(versionRange, language);
                         await WriteTextAsync(path, documentContent);
                     }
@@ -48,15 +49,14 @@ namespace Papyrus.Business.Exporters {
             }
         }
 
+        private static string GetDocumentTitleForLanguage(EditableVersionRange versionRange, string language)
+        {
+            return versionRange.Documents.First(d => d.Language == language).Title;
+        }
+
         private string GetDocumentContentForLanguage(EditableVersionRange versionRange, string language)
         {
             return versionRange.Documents.First(d => d.Language == language).Content;
-        }
-
-        private string ConstructPath(EditableVersionRange versionRange, DirectoryInfo versionDirectory, string language)
-        {
-            var spanishName = versionRange.Documents.First(d => d.Language == language).Title + ".md";
-            return Path.Combine(versionDirectory.FullName, spanishName);
         }
 
         private List<ProductVersion> GetVersionsGroup(EditableVersionRange versionRange)
