@@ -52,26 +52,34 @@ namespace Papyrus.Business.Topics {
                                                                         WHERE TopicId = @TopicId;",
                                                                     new {TopicId = topicId});
                 foreach (var versionRange in versionRanges) {
-                    var exportableVersionRange = new ExportableVersionRange();
-                    var productVersions = await connection.Query<ProductVersion>(@"SELECT VersionId, VersionName, Release
-                                                                            FROM ProductVersion
-                                                                            WHERE @FromVersion <= VersionId AND VersionId <= @ToVersion",
-                                                                            new {
-                                                                                FromVersion = versionRange.FromVersionId,
-                                                                                ToVersion = versionRange.ToVersionId
-                                                                            });
-                    exportableVersionRange.AddVersions(productVersions);
-                    var documents = await connection.Query<ExportableDocument>(@"SELECT Title, Content, Language
-                                                                        FROM Document
-                                                                        WHERE VersionRangeId = @VersionRangeId",
-                                                                    new {VersionRangeId = versionRange.VersionRangeId});
-                    
-                    exportableVersionRange.AddDocuments(documents);
+                    var exportableVersionRange = await GetExportableVersionRange(versionRange);
                     topic.AddVersion(exportableVersionRange);
                 }
                 topics.Add(topic);
             }
             return topics;
+        }
+
+        private async Task<ExportableVersionRange> GetExportableVersionRange(dynamic versionRange) {
+            var exportableVersionRange = new ExportableVersionRange();
+            var productVersions = await SelectProductVersionsCorrespondingTo(versionRange);
+            exportableVersionRange.AddVersions(productVersions);
+            var documents = await connection.Query<ExportableDocument>(@"SELECT Title, Content, Language
+                                                                        FROM Document
+                                                                        WHERE VersionRangeId = @VersionRangeId",
+                new {VersionRangeId = versionRange.VersionRangeId});
+            exportableVersionRange.AddDocuments(documents);
+            return exportableVersionRange;
+        }
+
+        private async Task<IEnumerable<ProductVersion>> SelectProductVersionsCorrespondingTo(dynamic versionRange) {
+            return await connection.Query<ProductVersion>(@"SELECT VersionId, VersionName, Release
+                                                                            FROM ProductVersion
+                                                                            WHERE @FromVersion <= VersionId AND VersionId <= @ToVersion",
+                new {
+                    FromVersion = versionRange.FromVersionId,
+                    ToVersion = versionRange.ToVersionId
+                });
         }
 
         public Task<List<ExportableTopic>> GetEditableTopicsForProductVersion(string productId, ProductVersion version) {
