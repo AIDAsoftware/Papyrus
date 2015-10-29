@@ -39,7 +39,7 @@ namespace Papyrus.Business.Exporters
             return Documents.Select(d => d.Language);
         }
 
-        public async Task ExportDocumentForProduct(ProductVersion productVersion, DirectoryInfo directory)
+        public async Task ExportDocumentForProductVersion(ProductVersion productVersion, DirectoryInfo directory)
         {
             var versionDirectory = directory.CreateSubdirectory(productVersion.VersionName);
             foreach (var language in Languages())
@@ -73,7 +73,7 @@ namespace Papyrus.Business.Exporters
         {
             foreach (var productVersion in Versions)
             {
-                await ExportDocumentForProduct(productVersion, directory);
+                await ExportDocumentForProductVersion(productVersion, directory);
             }
         }
     }
