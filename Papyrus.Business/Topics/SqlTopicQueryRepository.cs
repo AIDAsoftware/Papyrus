@@ -49,6 +49,10 @@ namespace Papyrus.Business.Topics
             throw new System.NotImplementedException();
         }
 
+        public Task<List<ExportableTopic>> GetEditableTopicsForProductVersion(string productId, ProductVersion version) {
+            throw new System.NotImplementedException();
+        }
+
         private static List<TopicSummary> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics)
         {
             return dynamicTopics.GroupBy(topic => topic.TopicId)

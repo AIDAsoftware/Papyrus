@@ -39,11 +39,13 @@ namespace Papyrus.Business.Exporters
             return Documents.Select(d => d.Language);
         }
 
-        public async Task ExportDocumentForProductVersion(ProductVersion productVersion, DirectoryInfo directory)
-        {
+        private async Task ExportDocumentForProductVersion(ProductVersion productVersion, DirectoryInfo directory) {
             var versionDirectory = directory.CreateSubdirectory(productVersion.VersionName);
-            foreach (var language in Languages())
-            {
+            await CreateDocumentsStructureForEachLanguageIn(versionDirectory);
+        }
+
+        public async Task CreateDocumentsStructureForEachLanguageIn(DirectoryInfo versionDirectory) {
+            foreach (var language in Languages()) {
                 await ConstructDocumentForLanguageInDirectory(language, versionDirectory);
             }
         }
@@ -75,6 +77,10 @@ namespace Papyrus.Business.Exporters
             {
                 await ExportDocumentForProductVersion(productVersion, directory);
             }
+        }
+
+        public bool Contains(ProductVersion version) {
+            return Versions.Contains(version);
         }
     }
 }

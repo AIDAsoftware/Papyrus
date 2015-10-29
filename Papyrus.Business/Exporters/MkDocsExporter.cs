@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
@@ -28,8 +26,11 @@ namespace Papyrus.Business.Exporters {
             await topic.ExportTopicIn(directory);
         }
 
-        public Task ExportDocumentsForProductToFolder(string productId, ProductVersion version3, DirectoryInfo directory) {
-            throw new NotImplementedException();
+        public async Task ExportDocumentsForProductToFolder(string productId, ProductVersion version, DirectoryInfo directory) {
+            var topics = await repository.GetEditableTopicsForProductVersion(productId, version);
+            foreach (var exportableVersionRange in topics.Select(exportableTopic => exportableTopic.VersionRanges.First())) {
+                await exportableVersionRange.CreateDocumentsStructureForEachLanguageIn(directory);
+            }
         }
     }
 }

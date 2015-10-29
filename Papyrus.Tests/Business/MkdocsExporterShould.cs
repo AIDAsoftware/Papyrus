@@ -21,7 +21,7 @@ namespace Papyrus.Tests.Business {
         private readonly DisplayableProduct papyrus = new DisplayableProduct { ProductId = PapyrusId, ProductName = "Papyrus" };
         private readonly ProductVersion version1 = new ProductVersion("version1", "1.0", DateTime.Today);
         private readonly ProductVersion version2 = new ProductVersion("version2", "2.0", DateTime.Today.AddDays(3));
-        
+        private readonly ProductVersion version3 = new ProductVersion("version3", "3.0", DateTime.Today.AddDays(4));
         private const string SpanishLanguage = "es-ES";
         private const string EnglishLanguage = "en-GB";
 
@@ -63,6 +63,39 @@ namespace Papyrus.Tests.Business {
             spanishDocumentVersion1.Name.Should().Be("Título.md");
             GetContentOf(spanishDocumentVersion1).Should().Be("Contenido");
         }
+
+        [Test]
+        public async Task export_documentation_only_for_a_given_version_of_a_product() {
+            var firstTopic = new TopicBuilder()
+                .ATopicForProduct(papyrus)
+                .WithVersionRange(
+                    new VersionRangeBuilder()
+                        .AddVersion(version3)
+                        .WithDocument("Un Título", "Un Contenido", SpanishLanguage)
+                        .WithDocument("A Title", "A Content", EnglishLanguage)
+                        .Build())
+                .BuildTopic();
+            topicRepository.GetEditableTopicsForProductVersion(PapyrusId, version3).Returns(Task
+                                        .FromResult(new List<ExportableTopic> { firstTopic }));
+
+            await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, version3, testDirectory);
+
+            testDirectory.GetDirectories().Should().HaveCount(2);
+            var spanishDirectory = testDirectory.GetDirectories().First(d => d.Name == SpanishLanguage);
+            spanishDirectory.GetFiles().Should().HaveCount(1);
+            spanishDirectory.GetDirectories().Should().HaveCount(0);
+            var spanishDocument = spanishDirectory.GetFiles().First();
+            spanishDocument.Name.Should().Be("Un Título.md");
+            GetContentOf(spanishDocument).Should().Be("Un Contenido");
+            var englishDirectory = testDirectory.GetDirectories().First(d => d.Name == EnglishLanguage);
+            englishDirectory.GetFiles().Should().HaveCount(1);
+            englishDirectory.GetDirectories().Should().HaveCount(0);
+            var englishDocument = englishDirectory.GetFiles().First();
+            englishDocument.Name.Should().Be("A Title.md");
+            GetContentOf(englishDocument).Should().Be("A Content");
+        }
+
+
 
         private static FileInfo GetSpanishDocumentFrom(DirectoryInfo directoryVersion1) {
             return directoryVersion1
