@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -130,12 +131,15 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             var exportableTopics = await topicRepository.GetExportableTopicsForProduct(ProductId);
 
+            var spanishExportableDocument = new ExportableDocument(spanishDocument.Title, spanishDocument.Content, spanishDocument.Language);
+            var englishExportableDocument = new ExportableDocument(englishDocument.Title, englishDocument.Content, englishDocument.Language);
             var exportableVersionRange = exportableTopics.First().VersionRanges.First();
             exportableVersionRange.Versions.Should().HaveCount(2);
             exportableVersionRange.Versions.Should().Contain(version1);
             exportableVersionRange.Versions.Should().Contain(version2);
-            exportableVersionRange.Documents.Should().Contain(spanishDocument);
-            exportableVersionRange.Documents.Should().Contain(englishDocument);
+            exportableVersionRange.Documents.ShouldBeEquivalentTo(new List<ExportableDocument> {
+                spanishExportableDocument, englishExportableDocument
+            });
         }
 
         private async Task InsertProductWithItsVersions() {

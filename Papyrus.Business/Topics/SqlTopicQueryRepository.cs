@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Infrastructure.Core.Database;
@@ -38,8 +39,42 @@ namespace Papyrus.Business.Topics {
             };
         }
 
-        public Task<List<ExportableTopic>> GetExportableTopicsForProduct(string productId) {
-            return null;
+        public async Task<List<ExportableTopic>> GetExportableTopicsForProduct(string productId) {
+            var topicIds = await connection.Query<string>(@"SELECT TopicId FROM Topic WHERE ProductId = @ProductId;", 
+                                                            new {
+                                                                ProductId = productId
+                                                            });
+            List<ExportableTopic> topics = new List<ExportableTopic>();
+            foreach (var topicId in topicIds) {
+                var topic = new ExportableTopic();
+                var versionRanges = await connection.Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
+                                                                        FROM VersionRange 
+                                                                        WHERE TopicId = @TopicId;",
+                                                                    new {TopicId = topicId});
+                foreach (var versionRange in versionRanges) {
+                    var exportableVersionRange = new ExportableVersionRange();
+                    var products = await connection.Query<ProductVersion>(@"SELECT VersionId, VersionName, Release
+                                                                            FROM ProductVersion
+                                                                            WHERE @FromVersion <= VersionId AND VersionId <= @ToVersion",
+                                                                            new {
+                                                                                FromVersion = versionRange.FromVersionId,
+                                                                                ToVersion = versionRange.ToVersionId
+                                                                            });
+                    foreach (var productVersion in products) {
+                        exportableVersionRange.AddVersion(productVersion);
+                    }
+                    var documents = await connection.Query<ExportableDocument>(@"SELECT Title, Content, Language
+                                                                        FROM Document
+                                                                        WHERE VersionRangeId = @VersionRangeId",
+                                                                    new {VersionRangeId = versionRange.VersionRangeId});
+                    foreach (var document in documents) {
+                        exportableVersionRange.AddDocument(document);
+                    }
+                    topic.AddVersion(exportableVersionRange);
+                }
+                topics.Add(topic);
+            }
+            return topics;
         }
 
         public Task<List<ExportableTopic>> GetEditableTopicsForProductVersion(string productId, ProductVersion version) {
@@ -115,6 +150,18 @@ namespace Papyrus.Business.Topics {
                 new { VersionRangeId = versionRange.VersionRangeId }))
                 .ToList();
             return documents;
+        }
+    }
+
+    public class ExportableDocument {
+        public string Title { get; private set; }
+        public string Content { get; private set; }
+        public string Language { get; private set; }
+
+        public ExportableDocument(string title, string content, string language) {
+            Title = title;
+            Content = content;
+            Language = language;
         }
     }
 }

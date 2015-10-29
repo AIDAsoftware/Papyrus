@@ -120,7 +120,7 @@ namespace Papyrus.Tests.Business {
         }
 
         public VersionRangeBuilder WithDocument(string title, string content, string language) {
-            versionRange.Documents.Add(new Document(title, "", content, language));
+            versionRange.Documents.Add(new ExportableDocument(title, content, language));
             return this;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
@@ -10,22 +11,22 @@ namespace Papyrus.Business.Exporters
     public class ExportableVersionRange
     {
         public List<ProductVersion> Versions { get; private set; } 
-        public Documents Documents { get; private set; }
+        public List<ExportableDocument> Documents { get; private set; }
 
         public ExportableVersionRange()
         {
             Versions = new List<ProductVersion>();
-            Documents = new Documents();
+            Documents = new List<ExportableDocument>();
         }
 
-        public void AddDocument(Document document)
+        public void AddDocument(ExportableDocument document)
         {
             Documents.Add(document);
         }
 
-        public Document GetDocumentByLanguage(string language)
+        public ExportableDocument GetDocumentByLanguage(string language)
         {
-            return Documents[language];
+            return Documents.First(d => d.Language == language);
         }
 
         public void AddVersion(ProductVersion version)
@@ -35,7 +36,7 @@ namespace Papyrus.Business.Exporters
 
         public List<string> Languages()
         {
-            return Documents.Select(d => d.Language);
+            return Documents.Select(d => d.Language).ToList();
         }
 
         public async Task ExportDocumentForProductVersion(ProductVersion productVersion, DirectoryInfo directory, string extension) {
