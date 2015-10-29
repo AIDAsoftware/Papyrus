@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Infrastructure.Core.Database;
 
@@ -43,7 +44,7 @@ namespace Papyrus.Business.Topics
             };
         }
 
-        public Task<List<EditableTopic>> GetEditableTopicsForProduct(string productId)
+        public Task<List<ExportableTopic>> GetEditableTopicsForProduct(string productId)
         {
             throw new System.NotImplementedException();
         }

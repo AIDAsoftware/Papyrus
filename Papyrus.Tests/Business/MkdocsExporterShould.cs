@@ -51,13 +51,13 @@ namespace Papyrus.Tests.Business
                 .ATopicForProduct(papyrus)
                 .WithVersionRange(
                     new VersionRangeBuilder()
-                        .VersionRangeFrom(version1)
-                        .To(version2)
+                        .AddVersion(version1)
+                        .AddVersion(version2)
                         .WithDocument("Título", "Contenido", "es-ES")
                         .WithDocument("Title", "Content", "en-GB")
                         .Build())
                 .BuildTopic();
-            topicRepository.GetEditableTopicsForProduct(PapyrusId).Returns(Task.FromResult(new List<EditableTopic> { topic }));
+            topicRepository.GetEditableTopicsForProduct(PapyrusId).Returns(Task.FromResult(new List<ExportableTopic> { topic }));
             var versions = new List<ProductVersion> { version1, version2 };
 
             await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, versions, testDirectory);
@@ -89,37 +89,26 @@ namespace Papyrus.Tests.Business
 
     public class VersionRangeBuilder
     {
-        private EditableVersionRange versionRange;
+        private ExportableVersionRange versionRange;
 
         public VersionRangeBuilder()
         {
-            versionRange = new EditableVersionRange();
+            versionRange = new ExportableVersionRange();
         }
 
-        public VersionRangeBuilder VersionRangeFrom(ProductVersion version)
+        public VersionRangeBuilder AddVersion(ProductVersion version)
         {
-            versionRange.FromVersion = version;
-            return this;
-        }
-
-        public VersionRangeBuilder To(ProductVersion version)
-        {
-            versionRange.ToVersion = version;
+            versionRange.AddVersion(version);
             return this;
         }
 
         public VersionRangeBuilder WithDocument(string title, string content, string language)
         {
-            versionRange.Documents.Add(new EditableDocument
-            {
-                Title = title,
-                Content = content,
-                Language = language
-            });
+            versionRange.Documents.Add(new Document(title, "", content, language));
             return this;
         }
 
-        public EditableVersionRange Build()
+        public ExportableVersionRange Build()
         {
             return versionRange;
         }
@@ -127,29 +116,26 @@ namespace Papyrus.Tests.Business
 
     public class TopicBuilder
     {
-        private EditableTopic editableTopic;
+        private ExportableTopic editableTopic;
 
         public TopicBuilder()
         {
-            editableTopic = new EditableTopic();
+            editableTopic = new ExportableTopic();
         }
 
         public TopicBuilder ATopicForProduct(DisplayableProduct product)
         {
-            editableTopic = new EditableTopic
-            {
-                Product = product
-            };
+            editableTopic = new ExportableTopic();
             return this;
         }
 
-        public TopicBuilder WithVersionRange(EditableVersionRange versionRange)
+        public TopicBuilder WithVersionRange(ExportableVersionRange versionRange)
         {
             editableTopic.VersionRanges.Add(versionRange);
             return this;
         }
 
-        public EditableTopic BuildTopic()
+        public ExportableTopic BuildTopic()
         {
             return editableTopic;
         }

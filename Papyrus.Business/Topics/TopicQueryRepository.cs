@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Papyrus.Business.Exporters;
 
 namespace Papyrus.Business.Topics
 {
@@ -7,6 +8,6 @@ namespace Papyrus.Business.Topics
     {
         Task<List<TopicSummary>> GetAllTopicsSummaries();
         Task<EditableTopic> GetEditableTopicById(string topicId);
-        Task<List<EditableTopic>> GetEditableTopicsForProduct(string productId);
+        Task<List<ExportableTopic>> GetEditableTopicsForProduct(string productId);
     }
 }
