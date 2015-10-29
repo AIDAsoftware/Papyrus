@@ -15,6 +15,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
     {
         private SqlInserter sqlInserter;
         private SqlTopicQueryRepository topicRepository;
+        private const string EnglishLanguage = "en-GB";
+        private const string SpanishLanguage = "es-ES";
         private const string ProductId = "OpportunityId";
         private const string FirstVersionId = "FirstVersionOpportunity";
         private const string FirstVersionName = "1.0";
@@ -31,8 +33,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             sqlInserter = new SqlInserter(dbConnection);
             topicRepository = new SqlTopicQueryRepository(dbConnection);
             TruncateDataBase().GetAwaiter().GetResult();
-            spanishDocument = new Document("Título", "Descripción", "Contenido", "es-ES");
-            englishDocument = new Document("Title", "Description", "Content", "en-GB");
+            spanishDocument = new Document("Título", "Descripción", "Contenido", SpanishLanguage);
+            englishDocument = new Document("Title", "Description", "Content", EnglishLanguage);
         }
 
         [Test]
@@ -111,7 +113,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             editableDocument.Title.Should().Be("Título");
             editableDocument.Description.Should().Be("Descripción");
             editableDocument.Content.Should().Be("Contenido");
-            editableDocument.Language.Should().Be("es-ES");
+            editableDocument.Language.Should().Be(SpanishLanguage);
         }
 
         [Test, Ignore]
@@ -119,8 +121,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             await InsertProductWithItsVersions();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var versionRange = new VersionRange(FirstVersionId, SecondVersionId).WithId("FirstVersionRangeId");
-            var spanishDocument = this.spanishDocument.WithId("DocumentId");
-            var englishDocument = this.englishDocument.WithId("AnotherDocumentId");
+            spanishDocument.WithId("DocumentId");
+            englishDocument.WithId("AnotherDocumentId");
             versionRange.AddDocument(spanishDocument);
             versionRange.AddDocument(englishDocument);
             topic.AddVersionRange(versionRange);
