@@ -17,11 +17,13 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         private SqlTopicQueryRepository topicRepository;
         private const string ProductId = "OpportunityId";
         private const string FirstVersionId = "FirstVersionOpportunity";
-        private string FirstVersionName = "1.0";
-        private Document spanishDocument;
-        private Document englishDocument;
+        private const string FirstVersionName = "1.0";
         private const string SecondVersionId = "SecondVersionOpportunity";
         private const string SecondVersionName = "2.0";
+        private Document spanishDocument;
+        private Document englishDocument;
+        private static ProductVersion version2 = new ProductVersion(SecondVersionId, SecondVersionName, DateTime.Today);
+        private ProductVersion version1 = new ProductVersion(FirstVersionId, FirstVersionName, DateTime.Today.AddDays(-20));
 
         [SetUp]
         public void Initialize()
@@ -112,14 +114,33 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             editableDocument.Language.Should().Be("es-ES");
         }
 
+        [Test, Ignore]
+        public async Task a_list_of_all_exportable_topics_for_a_given_product() {
+            await InsertProductWithItsVersions();
+            var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
+            var versionRange = new VersionRange(FirstVersionId, SecondVersionId).WithId("FirstVersionRangeId");
+            var spanishDocument = this.spanishDocument.WithId("DocumentId");
+            var englishDocument = this.englishDocument.WithId("AnotherDocumentId");
+            versionRange.AddDocument(spanishDocument);
+            versionRange.AddDocument(englishDocument);
+            topic.AddVersionRange(versionRange);
+            await sqlInserter.Insert(topic);
+
+            var exportableTopics = await topicRepository.GetExportableTopicsForProduct(ProductId);
+
+            var exportableVersionRange = exportableTopics.First().VersionRanges.First();
+            exportableVersionRange.Versions.Should().HaveCount(2);
+            exportableVersionRange.Versions.First(v => v.VersionId == "");
+        }
+
         private async Task InsertProductWithItsVersions() {
             await InsertProductWithAVersion();
-            await InsertProductVersion(new ProductVersion(SecondVersionId, SecondVersionName, DateTime.Today), ProductId);
+            await InsertProductVersion(version2, ProductId);
         }
 
         private async Task InsertProductWithAVersion() {
             await InsertProduct(ProductId, "Opportunity");
-            await InsertProductVersion(new ProductVersion(FirstVersionId, FirstVersionName, DateTime.Today.AddDays(-20)), ProductId);
+            await InsertProductVersion(version1, ProductId);
         }
 
         private async Task TruncateDataBase() {
