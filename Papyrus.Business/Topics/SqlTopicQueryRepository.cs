@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
@@ -37,6 +38,20 @@ namespace Papyrus.Business.Topics {
                 Product = product,
                 VersionRanges = observableVersionRanges
             };
+        }
+
+        public async Task<List<ExportableTopic>> GetExportableTopicsForProductVersion(string productId, ProductVersion version) {
+            var topics = await GetExportableTopicsForProduct(productId);
+
+            foreach (var exportableTopic in topics) {
+                var versionRanges = exportableTopic.VersionRanges;
+                for (var index = 0; index < versionRanges.Count; index++) {
+                    if (!versionRanges[index].Contains(version)) {
+                        exportableTopic.VersionRanges.Remove(versionRanges[index]);
+                    }
+                }
+            }
+            return topics;
         }
 
         public async Task<List<ExportableTopic>> GetExportableTopicsForProduct(string productId) {
@@ -95,10 +110,6 @@ namespace Papyrus.Business.Topics {
                     FromVersion = versionRange.FromVersionId,
                     ToVersion = versionRange.ToVersionId
                 });
-        }
-
-        public Task<List<ExportableTopic>> GetEditableTopicsForProductVersion(string productId, ProductVersion version) {
-            throw new System.NotImplementedException();
         }
 
         private static List<TopicSummary> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics) {
