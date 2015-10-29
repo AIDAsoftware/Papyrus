@@ -30,7 +30,7 @@ namespace Papyrus.Business.Exporters {
         public async Task ExportDocumentsForProductToFolder(string productId, ProductVersion version, DirectoryInfo directory) {
             var topics = await repository.GetEditableTopicsForProductVersion(productId, version);
             foreach (var exportableVersionRange in topics.Select(exportableTopic => exportableTopic.VersionRanges.First())) {
-                await exportableVersionRange.CreateDocumentsStructureForEachLanguageIn(directory, MkDocsExtension);
+                await exportableVersionRange.ExportDocumentForProductVersion(version, directory, MkDocsExtension);
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -80,14 +79,15 @@ namespace Papyrus.Tests.Business {
 
             await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, version3, testDirectory);
 
-            testDirectory.GetDirectories().Should().HaveCount(2);
-            var spanishDirectory = testDirectory.GetDirectories().First(d => d.Name == SpanishLanguage);
+            var versionDirectory = testDirectory.GetDirectories().First(d => d.Name == "3.0");
+            versionDirectory.GetDirectories().Should().HaveCount(2);
+            var spanishDirectory = versionDirectory.GetDirectories().First(d => d.Name == SpanishLanguage);
             spanishDirectory.GetFiles().Should().HaveCount(1);
             spanishDirectory.GetDirectories().Should().HaveCount(0);
             var spanishDocument = spanishDirectory.GetFiles().First();
             spanishDocument.Name.Should().Be("Un Título.md");
             GetContentOf(spanishDocument).Should().Be("Un Contenido");
-            var englishDirectory = testDirectory.GetDirectories().First(d => d.Name == EnglishLanguage);
+            var englishDirectory = versionDirectory.GetDirectories().First(d => d.Name == EnglishLanguage);
             englishDirectory.GetFiles().Should().HaveCount(1);
             englishDirectory.GetDirectories().Should().HaveCount(0);
             var englishDocument = englishDirectory.GetFiles().First();

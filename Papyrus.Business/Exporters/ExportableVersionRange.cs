@@ -38,12 +38,12 @@ namespace Papyrus.Business.Exporters
             return Documents.Select(d => d.Language);
         }
 
-        private async Task ExportDocumentForProductVersion(ProductVersion productVersion, DirectoryInfo directory, string extension) {
+        public async Task ExportDocumentForProductVersion(ProductVersion productVersion, DirectoryInfo directory, string extension) {
             var versionDirectory = directory.CreateSubdirectory(productVersion.VersionName);
             await CreateDocumentsStructureForEachLanguageIn(versionDirectory, extension);
         }
 
-        public async Task CreateDocumentsStructureForEachLanguageIn(DirectoryInfo versionDirectory, string extension) {
+        private async Task CreateDocumentsStructureForEachLanguageIn(DirectoryInfo versionDirectory, string extension) {
             foreach (var language in Languages()) {
                 await ConstructDocumentForLanguageInDirectory(language, versionDirectory, extension);
             }
