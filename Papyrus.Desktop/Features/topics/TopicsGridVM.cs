@@ -1,8 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Annotations;
@@ -13,6 +16,7 @@ namespace Papyrus.Desktop.Features.Topics {
     {
         private readonly TopicQueryRepository topicRepository;
         private readonly ProductRepository productRepository;
+        private MkDocsExporter topicExporter;
         public ObservableCollection<TopicSummary> TopicsToList { get; protected set; }
         public ObservableCollection<DisplayableProduct> Products { get; private set; }
         public TopicSummary SelectedTopic { get; set; }
@@ -29,19 +33,22 @@ namespace Papyrus.Desktop.Features.Topics {
             }
         }
 
-        public IAsyncCommand RefreshTopics { get; set; }
+        public IAsyncCommand RefreshTopics { get; private set; }
+        public IAsyncCommand ExportToMkDocs { get; private set; }
 
         protected TopicsGridVM()
         {
             TopicsToList = new ObservableCollection<TopicSummary>();
             Products = new ObservableCollection<DisplayableProduct>();
             RefreshTopics = RelayAsyncSimpleCommand.Create(LoadAllTopics, CanLoadAllTopics);
+            ExportToMkDocs = RelayAsyncSimpleCommand.Create(ExportTopicsToMkDocs, CanLoadAllTopics);
         }
 
-        public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository) : this()
+        public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository, MkDocsExporter exporter) : this()
         {
             this.topicRepository = topicRepository;
             this.productRepository = productRepository;
+            this.topicExporter = exporter;
         }
 
         public async Task Initialize()
@@ -72,6 +79,10 @@ namespace Papyrus.Desktop.Features.Topics {
             };
         }
 
+        private async Task ExportTopicsToMkDocs() {
+            await topicExporter.ExportDocumentsForProductToFolder(SelectedProduct.ProductId,
+                Directory.CreateDirectory(@"F:\Desarrollo\prueba\test"));
+        }
 
         private async Task LoadAllProducts()
         {

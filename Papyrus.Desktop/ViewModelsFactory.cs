@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Features.Topics;
@@ -8,7 +9,7 @@ namespace Papyrus.Desktop {
     public static class ViewModelsFactory {
         public static TopicsGridVM TopicsGrid()
         {
-            return new TopicsGridVM(RepositoriesFactory.QueryTopic(), RepositoriesFactory.Product());
+            return new TopicsGridVM(RepositoriesFactory.QueryTopic(), RepositoriesFactory.Product(), new MkDocsExporter(RepositoriesFactory.QueryTopic()));
         }
 
         public static TopicVM Topic(EditableTopic topic)
