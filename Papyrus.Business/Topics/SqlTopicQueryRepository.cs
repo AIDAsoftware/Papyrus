@@ -47,29 +47,37 @@ namespace Papyrus.Business.Topics {
             List<ExportableTopic> topics = new List<ExportableTopic>();
             foreach (var topicId in topicIds) {
                 var topic = new ExportableTopic();
-                var versionRanges = await connection.Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
-                                                                        FROM VersionRange 
-                                                                        WHERE TopicId = @TopicId;",
-                                                                    new {TopicId = topicId});
+                var versionRanges = await SelectVersionRangesFor(topicId);
                 foreach (var versionRange in versionRanges) {
-                    var exportableVersionRange = await GetExportableVersionRange(versionRange);
-                    topic.AddVersion(exportableVersionRange);
+                    var exportableVersionRange = await ConstructExportableVersionRange(versionRange);
+                    topic.AddVersionRange(exportableVersionRange);
                 }
                 topics.Add(topic);
             }
             return topics;
         }
 
-        private async Task<ExportableVersionRange> GetExportableVersionRange(dynamic versionRange) {
+        private async Task<IEnumerable<dynamic>> SelectVersionRangesFor(string topicId) {
+            return await connection.Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
+                                                                        FROM VersionRange 
+                                                                        WHERE TopicId = @TopicId;",
+                new {TopicId = topicId});
+        }
+
+        private async Task<ExportableVersionRange> ConstructExportableVersionRange(dynamic versionRange) {
             var exportableVersionRange = new ExportableVersionRange();
             var productVersions = await SelectProductVersionsCorrespondingTo(versionRange);
             exportableVersionRange.AddVersions(productVersions);
-            var documents = await connection.Query<ExportableDocument>(@"SELECT Title, Content, Language
+            var documents = await SelectDocumentsCorrespondingTo(versionRange);
+            exportableVersionRange.AddDocuments(documents);
+            return exportableVersionRange;
+        }
+
+        private async Task<IEnumerable<ExportableDocument>> SelectDocumentsCorrespondingTo(dynamic versionRange) {
+            return await connection.Query<ExportableDocument>(@"SELECT Title, Content, Language
                                                                         FROM Document
                                                                         WHERE VersionRangeId = @VersionRangeId",
                 new {VersionRangeId = versionRange.VersionRangeId});
-            exportableVersionRange.AddDocuments(documents);
-            return exportableVersionRange;
         }
 
         private async Task<IEnumerable<ProductVersion>> SelectProductVersionsCorrespondingTo(dynamic versionRange) {

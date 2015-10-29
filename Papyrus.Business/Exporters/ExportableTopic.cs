@@ -13,7 +13,7 @@ namespace Papyrus.Business.Exporters
             VersionRanges = new List<ExportableVersionRange>();
         }
 
-        public void AddVersion(ExportableVersionRange versionRange)
+        public void AddVersionRange(ExportableVersionRange versionRange)
         {
             VersionRanges.Add(versionRange);
         }
