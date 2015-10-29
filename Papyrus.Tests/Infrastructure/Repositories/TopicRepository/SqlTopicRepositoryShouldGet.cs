@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Infrastructure.Core.Database;
 using Papyrus.Tests.Infrastructure.Repositories.helpers;
@@ -16,6 +18,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         private const string ProductId = "OpportunityId";
         private const string FirstVersionId = "FirstVersionOpportunity";
         private string FirstVersionName = "1.0";
+        private Document spanishDocument;
+        private Document englishDocument;
         private const string SecondVersionId = "SecondVersionOpportunity";
         private const string SecondVersionName = "2.0";
 
@@ -25,23 +29,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             sqlInserter = new SqlInserter(dbConnection);
             topicRepository = new SqlTopicQueryRepository(dbConnection);
             TruncateDataBase().GetAwaiter().GetResult();
-        }
-
-        private async Task InsertProductWithItsVersions()
-        {
-            await InsertProductWithAVersion();
-            await InsertProductVersion(SecondVersionId, SecondVersionName, "20150810", ProductId);
-        }
-
-        private async Task InsertProductWithAVersion()
-        {
-            await InsertProduct(ProductId, "Opportunity");
-            await InsertProductVersion(FirstVersionId, FirstVersionName, "20150710", ProductId);
-        }
-
-        private async Task TruncateDataBase()
-        {
-            await new DataBaseTruncator(dbConnection).TruncateDataBase();
+            spanishDocument = new Document("Título", "Descripción", "Contenido", "es-ES");
+            englishDocument = new Document("Title", "Description", "Content", "en-GB");
         }
 
         [Test]
@@ -51,8 +40,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topic = new Topic(ProductId).WithId("AnyTopicId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("AnyRangeId");
             var secondVersionRange = new VersionRange(SecondVersionId, SecondVersionId).WithId("AnotherRangeId");
-            firstVersionRange.AddDocument(new Document("AnyTitle", "AnyDescription", "AnyContent", "es-ES").WithId("AnyDocumentId"));
-            secondVersionRange.AddDocument(new Document("Llamadas Primer mantenimiento", "Explicación", "AnyContent", "es-ES").WithId("AnotherDocumentId"));
+            firstVersionRange.AddDocument(englishDocument.WithId("AnyDocumentId"));
+            secondVersionRange.AddDocument(spanishDocument.WithId("AnotherDocumentId"));
             topic.AddVersionRange(firstVersionRange);
             topic.AddVersionRange(secondVersionRange);
             await sqlInserter.Insert(topic);
@@ -64,8 +53,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                                                t.Product.ProductName == "Opportunity" &&
                                                t.Product.ProductId == ProductId &&
                                                t.VersionName == SecondVersionName &&
-                                               t.LastDocumentTitle == "Llamadas Primer mantenimiento" &&
-                                               t.LastDocumentDescription == "Explicación");
+                                               t.LastDocumentTitle == "Título" &&
+                                               t.LastDocumentDescription == "Descripción");
         }
 
         [Test]
@@ -107,8 +96,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             await InsertProductWithAVersion();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
-            var document = new Document("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId");
-            firstVersionRange.AddDocument(document);
+            spanishDocument.WithId("DocumentId");
+            firstVersionRange.AddDocument(spanishDocument);
             topic.AddVersionRange(firstVersionRange);
             await sqlInserter.Insert(topic);
 
@@ -123,27 +112,37 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             editableDocument.Language.Should().Be("es-ES");
         }
 
-        protected async Task InsertProductVersion(string versionId, string versionName, string release, string productId)
-        {
-            await dbConnection.Execute(@"INSERT INTO ProductVersion(VersionId, VersionName, Release, ProductId)
-                                            VALUES(@VersionId, @VersionName, @Release, @ProductId);", 
-                                            new
-                                            {
-                                                VersionId = versionId,
-                                                VersionName = versionName,
-                                                Release = release,
-                                                ProductId = productId
-                                            });
+        private async Task InsertProductWithItsVersions() {
+            await InsertProductWithAVersion();
+            await InsertProductVersion(new ProductVersion(SecondVersionId, SecondVersionName, DateTime.Today), ProductId);
         }
 
-        protected async Task InsertProduct(string productId, string productName)
-        {
+        private async Task InsertProductWithAVersion() {
+            await InsertProduct(ProductId, "Opportunity");
+            await InsertProductVersion(new ProductVersion(FirstVersionId, FirstVersionName, DateTime.Today.AddDays(-20)), ProductId);
+        }
+
+        private async Task TruncateDataBase() {
+            await new DataBaseTruncator(dbConnection).TruncateDataBase();
+        }
+
+        protected async Task InsertProductVersion(ProductVersion version, string productId) {
+            await dbConnection.Execute(@"INSERT INTO ProductVersion(VersionId, VersionName, Release, ProductId)
+                                            VALUES(@VersionId, @VersionName, @Release, @ProductId);",
+                new {
+                    VersionId = version.VersionId,
+                    VersionName = version.VersionName,
+                    Release = version.Release,
+                    ProductId = productId
+                });
+        }
+
+        protected async Task InsertProduct(string productId, string productName) {
             await dbConnection.Execute(@"INSERT INTO Product(ProductId, ProductName) VALUES(@ProductId, @ProductName);",
-                                        new
-                                        {
-                                            ProductId = productId, 
-                                            ProductName = productName
-                                        });
+                new {
+                    ProductId = productId,
+                    ProductName = productName
+                });
         }
     }
 }
