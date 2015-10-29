@@ -95,8 +95,6 @@ namespace Papyrus.Tests.Business {
             GetContentOf(englishDocument).Should().Be("A Content");
         }
 
-
-
         private static FileInfo GetSpanishDocumentFrom(DirectoryInfo directoryVersion1) {
             return directoryVersion1
                 .GetDirectories()
