@@ -67,9 +67,8 @@ namespace Papyrus.Business.Topics {
                                                                         FROM Document
                                                                         WHERE VersionRangeId = @VersionRangeId",
                                                                     new {VersionRangeId = versionRange.VersionRangeId});
-                    foreach (var document in documents) {
-                        exportableVersionRange.AddDocument(document);
-                    }
+                    
+                    exportableVersionRange.AddDocuments(documents);
                     topic.AddVersion(exportableVersionRange);
                 }
                 topics.Add(topic);

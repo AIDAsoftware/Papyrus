@@ -82,5 +82,9 @@ namespace Papyrus.Business.Exporters
         public bool Contains(ProductVersion version) {
             return Versions.Contains(version);
         }
+
+        public void AddDocuments(IEnumerable<ExportableDocument> documents) {
+            Documents.AddRange(documents);
+        }
     }
 }
