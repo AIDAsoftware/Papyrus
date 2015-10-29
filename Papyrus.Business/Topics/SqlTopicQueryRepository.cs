@@ -53,16 +53,14 @@ namespace Papyrus.Business.Topics {
                                                                     new {TopicId = topicId});
                 foreach (var versionRange in versionRanges) {
                     var exportableVersionRange = new ExportableVersionRange();
-                    var products = await connection.Query<ProductVersion>(@"SELECT VersionId, VersionName, Release
+                    var productVersions = await connection.Query<ProductVersion>(@"SELECT VersionId, VersionName, Release
                                                                             FROM ProductVersion
                                                                             WHERE @FromVersion <= VersionId AND VersionId <= @ToVersion",
                                                                             new {
                                                                                 FromVersion = versionRange.FromVersionId,
                                                                                 ToVersion = versionRange.ToVersionId
                                                                             });
-                    foreach (var productVersion in products) {
-                        exportableVersionRange.AddVersion(productVersion);
-                    }
+                    exportableVersionRange.AddVersions(productVersions);
                     var documents = await connection.Query<ExportableDocument>(@"SELECT Title, Content, Language
                                                                         FROM Document
                                                                         WHERE VersionRangeId = @VersionRangeId",

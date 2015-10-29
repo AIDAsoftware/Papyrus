@@ -86,5 +86,9 @@ namespace Papyrus.Business.Exporters
         public void AddDocuments(IEnumerable<ExportableDocument> documents) {
             Documents.AddRange(documents);
         }
+
+        public void AddVersions(IEnumerable<ProductVersion> productVersions) {
+            Versions.AddRange(productVersions);
+        }
     }
 }
