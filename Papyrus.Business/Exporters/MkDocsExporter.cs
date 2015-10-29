@@ -14,7 +14,7 @@ namespace Papyrus.Business.Exporters {
             this.repository = repository;
         }
 
-        public async Task ExportDocumentsForProductToFolder(string productId, List<ProductVersion> versions, DirectoryInfo testDirectory)
+        public async Task ExportDocumentsForProductToFolder(string productId, DirectoryInfo testDirectory)
         {
             var topics = await repository.GetEditableTopicsForProduct(productId);
             foreach (var topic in topics)
@@ -26,6 +26,10 @@ namespace Papyrus.Business.Exporters {
         private async Task ExportTopic(ExportableTopic topic, DirectoryInfo directory)
         {
             await topic.ExportTopicIn(directory);
+        }
+
+        public Task ExportDocumentsForProductToFolder(string productId, ProductVersion version3, DirectoryInfo directory) {
+            throw new NotImplementedException();
         }
     }
 }

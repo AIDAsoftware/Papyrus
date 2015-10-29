@@ -11,56 +11,47 @@ using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 
-namespace Papyrus.Tests.Business
-{
+namespace Papyrus.Tests.Business {
     [TestFixture]
-    public class MkdocsExporterShould
-    {
-        // TODO:
-        //   - create a folder for spanish and english documents
-        //   - insert in each of these folders topics its respective topics
-
+    public class MkdocsExporterShould {
         private const string PapyrusId = "PapyrusId";
         private DirectoryInfo testDirectory;
         private MkDocsExporter mkdocsExporter;
         private TopicQueryRepository topicRepository;
-        private readonly DisplayableProduct papyrus = new DisplayableProduct{ ProductId = PapyrusId, ProductName = "Papyrus"};
-        private ProductVersion version1 = new ProductVersion("version1", "1.0", DateTime.Today);
-        private ProductVersion version2 = new ProductVersion("version2", "2.0", DateTime.Today.AddDays(3));
+        private readonly DisplayableProduct papyrus = new DisplayableProduct { ProductId = PapyrusId, ProductName = "Papyrus" };
+        private readonly ProductVersion version1 = new ProductVersion("version1", "1.0", DateTime.Today);
+        private readonly ProductVersion version2 = new ProductVersion("version2", "2.0", DateTime.Today.AddDays(3));
+        
         private const string SpanishLanguage = "es-ES";
         private const string EnglishLanguage = "en-GB";
 
         [SetUp]
-        public void CreateTestDirectory()
-        {
+        public void CreateTestDirectory() {
             testDirectory = Directory.CreateDirectory(@"test");
             topicRepository = Substitute.For<TopicQueryRepository>();
             mkdocsExporter = new MkDocsExporter(topicRepository);
         }
 
         [TearDown]
-        public void DeleteFolder()
-        {
+        public void DeleteFolder() {
             testDirectory.Delete(true);
         }
 
         [Test]
-        public async Task insert_in_each_language_folder_its_respective_topics()
-        {
+        public async Task insert_in_each_language_folder_its_respective_topics() {
             var topic = new TopicBuilder()
                 .ATopicForProduct(papyrus)
                 .WithVersionRange(
                     new VersionRangeBuilder()
                         .AddVersion(version1)
                         .AddVersion(version2)
-                        .WithDocument("Título", "Contenido", "es-ES")
-                        .WithDocument("Title", "Content", "en-GB")
+                        .WithDocument("Título", "Contenido", SpanishLanguage)
+                        .WithDocument("Title", "Content", EnglishLanguage)
                         .Build())
                 .BuildTopic();
             topicRepository.GetEditableTopicsForProduct(PapyrusId).Returns(Task.FromResult(new List<ExportableTopic> { topic }));
-            var versions = new List<ProductVersion> { version1, version2 };
 
-            await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, versions, testDirectory);
+            await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, testDirectory);
 
             var versionDirectories = testDirectory.GetDirectories();
             var directoryVersion1 = versionDirectories.First(d => d.Name == "1.0");
@@ -73,70 +64,58 @@ namespace Papyrus.Tests.Business
             GetContentOf(spanishDocumentVersion1).Should().Be("Contenido");
         }
 
-        private static FileInfo GetSpanishDocumentFrom(DirectoryInfo directoryVersion1)
-        {
+        private static FileInfo GetSpanishDocumentFrom(DirectoryInfo directoryVersion1) {
             return directoryVersion1
                 .GetDirectories()
                 .First(d => d.Name == SpanishLanguage)
                 .GetFiles().First();
         }
 
-        private static string GetContentOf(FileInfo document)
-        {
+        private static string GetContentOf(FileInfo document) {
             return File.ReadAllText(document.FullName);
         }
     }
 
-    public class VersionRangeBuilder
-    {
+    public class VersionRangeBuilder {
         private ExportableVersionRange versionRange;
 
-        public VersionRangeBuilder()
-        {
+        public VersionRangeBuilder() {
             versionRange = new ExportableVersionRange();
         }
 
-        public VersionRangeBuilder AddVersion(ProductVersion version)
-        {
+        public VersionRangeBuilder AddVersion(ProductVersion version) {
             versionRange.AddVersion(version);
             return this;
         }
 
-        public VersionRangeBuilder WithDocument(string title, string content, string language)
-        {
+        public VersionRangeBuilder WithDocument(string title, string content, string language) {
             versionRange.Documents.Add(new Document(title, "", content, language));
             return this;
         }
 
-        public ExportableVersionRange Build()
-        {
+        public ExportableVersionRange Build() {
             return versionRange;
         }
     }
 
-    public class TopicBuilder
-    {
+    public class TopicBuilder {
         private ExportableTopic editableTopic;
 
-        public TopicBuilder()
-        {
+        public TopicBuilder() {
             editableTopic = new ExportableTopic();
         }
 
-        public TopicBuilder ATopicForProduct(DisplayableProduct product)
-        {
+        public TopicBuilder ATopicForProduct(DisplayableProduct product) {
             editableTopic = new ExportableTopic();
             return this;
         }
 
-        public TopicBuilder WithVersionRange(ExportableVersionRange versionRange)
-        {
+        public TopicBuilder WithVersionRange(ExportableVersionRange versionRange) {
             editableTopic.VersionRanges.Add(versionRange);
             return this;
         }
 
-        public ExportableTopic BuildTopic()
-        {
+        public ExportableTopic BuildTopic() {
             return editableTopic;
         }
     }
