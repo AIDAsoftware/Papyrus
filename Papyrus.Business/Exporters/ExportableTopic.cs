@@ -18,11 +18,11 @@ namespace Papyrus.Business.Exporters
             VersionRanges.Add(versionRange);
         }
 
-        public async Task ExportTopicIn(DirectoryInfo directory)
+        public async Task ExportTopicIn(DirectoryInfo directory, string extension)
         {
             foreach (var versionRange in VersionRanges)
             {
-                await versionRange.ExportVersionRangeIn(directory);
+                await versionRange.ExportVersionRangeIn(directory, extension);
             }
         }
     }

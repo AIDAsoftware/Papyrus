@@ -9,7 +9,6 @@ namespace Papyrus.Business.Exporters
 {
     public class ExportableVersionRange
     {
-        private const string MarkDownExtension = ".md";
         public List<ProductVersion> Versions { get; private set; } 
         public Documents Documents { get; private set; }
 
@@ -39,21 +38,21 @@ namespace Papyrus.Business.Exporters
             return Documents.Select(d => d.Language);
         }
 
-        private async Task ExportDocumentForProductVersion(ProductVersion productVersion, DirectoryInfo directory) {
+        private async Task ExportDocumentForProductVersion(ProductVersion productVersion, DirectoryInfo directory, string extension) {
             var versionDirectory = directory.CreateSubdirectory(productVersion.VersionName);
-            await CreateDocumentsStructureForEachLanguageIn(versionDirectory);
+            await CreateDocumentsStructureForEachLanguageIn(versionDirectory, extension);
         }
 
-        public async Task CreateDocumentsStructureForEachLanguageIn(DirectoryInfo versionDirectory) {
+        public async Task CreateDocumentsStructureForEachLanguageIn(DirectoryInfo versionDirectory, string extension) {
             foreach (var language in Languages()) {
-                await ConstructDocumentForLanguageInDirectory(language, versionDirectory);
+                await ConstructDocumentForLanguageInDirectory(language, versionDirectory, extension);
             }
         }
 
-        private async Task ConstructDocumentForLanguageInDirectory(string language, DirectoryInfo versionDirectory)
+        private async Task ConstructDocumentForLanguageInDirectory(string language, DirectoryInfo versionDirectory, string extension)
         {
             var languageDirectory = versionDirectory.CreateSubdirectory(language);
-            var documentName = GetDocumentByLanguage(language).Title + MarkDownExtension;
+            var documentName = GetDocumentByLanguage(language).Title + extension;
             var path = Path.Combine(languageDirectory.FullName, documentName);
             var documentContent = GetDocumentByLanguage(language).Content;
             await WriteTextAsync(path, documentContent);
@@ -71,11 +70,11 @@ namespace Papyrus.Business.Exporters
             };
         }
 
-        public async Task ExportVersionRangeIn(DirectoryInfo directory)
+        public async Task ExportVersionRangeIn(DirectoryInfo directory, string extension)
         {
             foreach (var productVersion in Versions)
             {
-                await ExportDocumentForProductVersion(productVersion, directory);
+                await ExportDocumentForProductVersion(productVersion, directory, extension);
             }
         }
 
