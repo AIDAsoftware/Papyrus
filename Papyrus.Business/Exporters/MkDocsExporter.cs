@@ -15,7 +15,7 @@ namespace Papyrus.Business.Exporters {
 
         public async Task ExportDocumentsForProductToFolder(string productId, DirectoryInfo testDirectory)
         {
-            var topics = await repository.GetEditableTopicsForProduct(productId);
+            var topics = await repository.GetExportableTopicsForProduct(productId);
             foreach (var topic in topics)
             {
                 await ExportTopic(topic, testDirectory, MkDocsExtension);

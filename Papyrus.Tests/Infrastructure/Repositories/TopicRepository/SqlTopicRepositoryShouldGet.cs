@@ -116,7 +116,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             editableDocument.Language.Should().Be(SpanishLanguage);
         }
 
-        [Test, Ignore]
+        [Test]
         public async Task a_list_of_all_exportable_topics_for_a_given_product() {
             await InsertProductWithItsVersions();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
@@ -132,7 +132,10 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             var exportableVersionRange = exportableTopics.First().VersionRanges.First();
             exportableVersionRange.Versions.Should().HaveCount(2);
-            exportableVersionRange.Versions.First(v => v.VersionId == "");
+            exportableVersionRange.Versions.Should().Contain(version1);
+            exportableVersionRange.Versions.Should().Contain(version2);
+            exportableVersionRange.Documents.Should().Contain(spanishDocument);
+            exportableVersionRange.Documents.Should().Contain(englishDocument);
         }
 
         private async Task InsertProductWithItsVersions() {

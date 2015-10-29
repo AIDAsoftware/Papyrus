@@ -9,7 +9,7 @@ namespace Papyrus.Business.Topics
     {
         Task<List<TopicSummary>> GetAllTopicsSummaries();
         Task<EditableTopic> GetEditableTopicById(string topicId);
-        Task<List<ExportableTopic>> GetEditableTopicsForProduct(string productId);
+        Task<List<ExportableTopic>> GetExportableTopicsForProduct(string productId);
         Task<List<ExportableTopic>>  GetEditableTopicsForProductVersion(string productId, ProductVersion version);
     }
 }

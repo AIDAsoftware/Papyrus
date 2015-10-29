@@ -48,7 +48,7 @@ namespace Papyrus.Tests.Business {
                         .WithDocument("Title", "Content", EnglishLanguage)
                         .Build())
                 .BuildTopic();
-            topicRepository.GetEditableTopicsForProduct(PapyrusId).Returns(Task.FromResult(new List<ExportableTopic> { topic }));
+            topicRepository.GetExportableTopicsForProduct(PapyrusId).Returns(Task.FromResult(new List<ExportableTopic> { topic }));
 
             await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, testDirectory);
 
