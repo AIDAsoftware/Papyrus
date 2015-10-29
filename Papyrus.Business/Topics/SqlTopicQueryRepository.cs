@@ -41,20 +41,27 @@ namespace Papyrus.Business.Topics {
 
         public async Task<List<ExportableTopic>> GetExportableTopicsForProduct(string productId) {
             var topicIds = await connection.Query<string>(@"SELECT TopicId FROM Topic WHERE ProductId = @ProductId;", 
-                                                            new {
-                                                                ProductId = productId
-                                                            });
+                                                            new { ProductId = productId });
+            return await GetAllExportableTopics(topicIds);
+        }
+
+        private async Task<List<ExportableTopic>> GetAllExportableTopics(IEnumerable<string> topicIds) {
             List<ExportableTopic> topics = new List<ExportableTopic>();
             foreach (var topicId in topicIds) {
-                var topic = new ExportableTopic();
-                var versionRanges = await SelectVersionRangesFor(topicId);
-                foreach (var versionRange in versionRanges) {
-                    var exportableVersionRange = await ConstructExportableVersionRange(versionRange);
-                    topic.AddVersionRange(exportableVersionRange);
-                }
+                var topic = await ConstructExportableTopic(topicId);
                 topics.Add(topic);
             }
             return topics;
+        }
+
+        private async Task<ExportableTopic> ConstructExportableTopic(string topicId) {
+            var topic = new ExportableTopic();
+            var versionRanges = await SelectVersionRangesFor(topicId);
+            foreach (var versionRange in versionRanges) {
+                var exportableVersionRange = await ConstructExportableVersionRange(versionRange);
+                topic.AddVersionRange(exportableVersionRange);
+            }
+            return topic;
         }
 
         private async Task<IEnumerable<dynamic>> SelectVersionRangesFor(string topicId) {
