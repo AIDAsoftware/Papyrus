@@ -55,7 +55,6 @@ namespace Papyrus.Desktop.Features.Topics {
         {
             await LoadAllProducts();
             SelectedProduct = Products[0];
-            await LoadAllTopics();
         }
 
         public async void RefreshTopicsForCurrentProduct()
