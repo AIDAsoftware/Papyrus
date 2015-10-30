@@ -66,6 +66,13 @@ namespace Papyrus.Business.Products
                                                             new {ProductId = productId})).ToList();
         }
 
+        public async Task<ProductVersion> GetLastVersionForProduct(string productId) {
+            return (await connection.Query<ProductVersion>(@"SELECT TOP 1 VersionId, VersionName, Release
+                                                            FROM ProductVersion
+                                                            WHERE ProductId = @ProductId
+                                                            ORDER BY Release DESC", new {ProductId = productId})).First();
+        }
+
         private async Task<List<ProductVersion>> ProducVersionsForProduct(string productId)
         {
             const string selectVersionSqlQuery = @"Select VersionId, VersionName, Release
