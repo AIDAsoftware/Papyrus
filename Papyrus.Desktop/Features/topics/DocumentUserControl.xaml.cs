@@ -13,7 +13,7 @@ namespace Papyrus.Desktop.Features.Topics
 
         private void ScrollViewer_OnScrollChanged(object sender, ScrollChangedEventArgs e) {
             try {
-                //this.MarkdownPreview.InvokeScript("setVerticalScrollPosition", ((TextBox)sender).VerticalOffset);
+                this.MarkdownPreview.InvokeScript("setVerticalScrollPosition", ((TextBox)sender).VerticalOffset);
             } catch (Exception exn) {
                 Console.WriteLine(exn.Message);
             }

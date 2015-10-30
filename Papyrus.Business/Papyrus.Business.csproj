@@ -65,7 +65,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exporters\Markdown.cs" />
     <Compile Include="Exporters\MkDocsExporter.cs" />
     <Compile Include="Products\FullVersionRange.cs" />
     <Compile Include="Products\ProductVersion.cs" />
