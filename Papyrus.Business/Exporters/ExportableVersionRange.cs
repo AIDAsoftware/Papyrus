@@ -53,22 +53,8 @@ namespace Papyrus.Business.Exporters
         private async Task ConstructDocumentForLanguageInDirectory(string language, DirectoryInfo versionDirectory, string extension)
         {
             var languageDirectory = versionDirectory.CreateSubdirectory(language);
-            var documentName = GetDocumentByLanguage(language).Title + extension;
-            var path = Path.Combine(languageDirectory.FullName, documentName);
-            var documentContent = GetDocumentByLanguage(language).Content;
-            await WriteTextAsync(path, documentContent);
-        }
-
-        private async Task WriteTextAsync(string filePath, string text)
-        {
-            byte[] encodedText = Encoding.UTF8.GetBytes(text);
-
-            using (FileStream sourceStream = new FileStream(filePath,
-                FileMode.Append, FileAccess.Write, FileShare.None,
-                bufferSize: 4096, useAsync: true))
-            {
-                await sourceStream.WriteAsync(encodedText, 0, encodedText.Length);
-            };
+            var document = GetDocumentByLanguage(language);
+            await document.ExportDocument(languageDirectory, extension);
         }
 
         public async Task ExportVersionRangeIn(DirectoryInfo directory, string extension)
