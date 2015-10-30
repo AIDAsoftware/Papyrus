@@ -103,12 +103,22 @@ namespace Papyrus.Business.Topics {
         }
 
         private async Task<IEnumerable<ProductVersion>> SelectProductVersionsCorrespondingTo(dynamic versionRange) {
+            var fromProductVersion = (await connection.Query<dynamic>(@"SELECT ProductId, VersionName, Release
+                                                                                FROM ProductVersion
+                                                                                WHERE VersionId = @FromVersionId",
+                                                                                new { FromVersionId = versionRange.FromVersionId })).First();
+            var toProductVersion = (await connection.Query<dynamic>(@"SELECT ProductId, VersionName, Release
+                                                                                FROM ProductVersion
+                                                                                WHERE VersionId = @ToVersionId",
+                                                                                new { ToVersionId = versionRange.ToVersionId })).First();
             return await connection.Query<ProductVersion>(@"SELECT VersionId, VersionName, Release
                                                                             FROM ProductVersion
-                                                                            WHERE @FromVersion <= VersionId AND VersionId <= @ToVersion",
+                                                                            WHERE @FromVersion <= Release AND Release <= @ToVersion
+                                                                                    AND ProductId = @ProductId",
                 new {
-                    FromVersion = versionRange.FromVersionId,
-                    ToVersion = versionRange.ToVersionId
+                    FromVersion = fromProductVersion.Release,
+                    ToVersion = toProductVersion.Release,
+                    ProductId = fromProductVersion.ProductId
                 });
         }
 

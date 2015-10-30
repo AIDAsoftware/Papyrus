@@ -120,6 +120,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [Test]
         public async Task a_list_of_all_exportable_topics_for_a_given_product() {
             await InsertProductWithItsVersions();
+            var versionForOtherProduct = new ProductVersion("otherProductVersion", "1.0", DateTime.Today.AddDays(-10));
+            await InsertProductVersion(versionForOtherProduct, "otherProduct");
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var versionRange = new VersionRange(FirstVersionId, SecondVersionId).WithId("FirstVersionRangeId");
             spanishDocument.WithId("DocumentId");
