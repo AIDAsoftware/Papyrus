@@ -17,12 +17,12 @@ namespace Papyrus.Business.Topics {
 
         public async Task ExportDocument(DirectoryInfo languageDirectory, string extension) {
             var documentName = Title + extension;
-            var path = Path.Combine(languageDirectory.FullName, documentName);
-            await WriteTextAsync(path, Content);
+            var documentPath = Path.Combine(languageDirectory.FullName, documentName);
+            await WriteContentIn(documentPath);
         }
 
-        private static async Task WriteTextAsync(string filePath, string text) {
-            var encodedText = Encoding.UTF8.GetBytes(text);
+        private async Task WriteContentIn(string filePath) {
+            var encodedText = Encoding.UTF8.GetBytes(Content);
 
             using (var sourceStream = new FileStream(filePath,
                 FileMode.Append, FileAccess.Write, FileShare.None,
