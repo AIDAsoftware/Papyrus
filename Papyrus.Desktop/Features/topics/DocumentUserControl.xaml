@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:topics="clr-namespace:Papyrus.Business.Topics;assembly=Papyrus.Business"
+             xmlns:markdown="clr-namespace:Papyrus.Desktop.Markdown"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=topics:EditableDocument, IsDesignTimeCreatable=True}">
@@ -14,13 +15,19 @@
             <Label Content="Description"/>
             <TextBox x:Name="DescriptionTextBox" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="Content"/>
-            <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                <TextBox Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" AcceptsTab="True" 
-                                        TextWrapping="Wrap" MinLines="5" MaxLines="5" x:Name="ContentTextBox" 
-                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                        ScrollViewer.VerticalScrollBarVisibility="Visible"
-                                        ScrollViewer.CanContentScroll="True"/>
-            </ScrollViewer>
+            <Grid Height="Auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" AcceptsTab="True" 
+                                    TextWrapping="Wrap" MinLines="5" MaxLines="5" x:Name="ContentTextBox" 
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                    ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                    ScrollViewer.CanContentScroll="True"
+                                    ScrollViewer.ScrollChanged="ScrollViewer_OnScrollChanged"/>
+                <WebBrowser Grid.Column="1" Name="MarkdownPreview" markdown:BrowserBehavior.Html="{Binding ContentAsHtml}"/>
+            </Grid>
         </StackPanel>
     </Grid>
 </UserControl>

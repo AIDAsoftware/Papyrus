@@ -1,5 +1,8 @@
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using CommonMark;
+using MarkdownSharp;
 
 namespace Papyrus.Business.Topics
 {
@@ -39,9 +42,41 @@ namespace Papyrus.Business.Topics
             set
             {
                 content = value;
+                CommonMarkSettings settings = CommonMarkSettings.Default.Clone();
+                settings.RenderSoftLineBreaksAsLineBreaks = true;
+                var htmlResult = CommonMark.CommonMarkConverter.Convert(value, settings);
+                //MarkdownOptions mkOptions = new MarkdownOptions() {AutoNewlines = true};
+                //MarkdownSharp.Markdown mkParser = new Markdown(mkOptions);
+                //var htmlResult = mkParser.Transform(value);
+                htmlResult = string.Format(@"
+                                            <!DOCTYPE html>
+                                            <html>
+                                                <head>
+                                                    <base href='file://c:/'>
+                                                    <meta charset='UTF-8'/>
+                                                </head>
+                                                <script type='text/javascript'>
+                                                        function setVerticalScrollPosition(position) {{alert('xxx');document.body.scrollTop = position;}}
+                                                </script>
+                                                <body>
+                                                    {0}
+                                                </body>
+                                            </html>", htmlResult);
+                ContentAsHtml = htmlResult;
                 OnPropertyChanged("Content");
             }
         }
+
+        private string contentAsHtml;
+        public string ContentAsHtml {
+            get { return contentAsHtml; }
+            set
+            {
+                contentAsHtml = value;
+                OnPropertyChanged("ContentAsHtml");
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
