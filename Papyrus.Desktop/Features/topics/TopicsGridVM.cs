@@ -34,14 +34,16 @@ namespace Papyrus.Desktop.Features.Topics {
         }
 
         public IAsyncCommand RefreshTopics { get; private set; }
-        public IAsyncCommand ExportToMkDocs { get; private set; }
+        public IAsyncCommand ExportProductToMkDocs { get; private set; }
+        public IAsyncCommand ExportLastVersionToMkDocs { get; private set; }
 
         protected TopicsGridVM()
         {
             TopicsToList = new ObservableCollection<TopicSummary>();
             Products = new ObservableCollection<DisplayableProduct>();
             RefreshTopics = RelayAsyncSimpleCommand.Create(LoadAllTopics, CanLoadAllTopics);
-            ExportToMkDocs = RelayAsyncSimpleCommand.Create(ExportTopicsToMkDocs, CanLoadAllTopics);
+            ExportProductToMkDocs = RelayAsyncSimpleCommand.Create(ExportTopicsForCurrentProductToMkDocs, () => true);
+            ExportLastVersionToMkDocs = RelayAsyncSimpleCommand.Create(ExportTopicsForLastVersionToMkDocs, () => true);
         }
 
         public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository, MkDocsExporter exporter) : this()
@@ -78,9 +80,16 @@ namespace Papyrus.Desktop.Features.Topics {
             };
         }
 
-        private async Task ExportTopicsToMkDocs() {
+        private async Task ExportTopicsForLastVersionToMkDocs() {
+            var productId = SelectedProduct.ProductId;
+            var lastVersion = await productRepository.GetLastVersionForProduct(productId);
+            await topicExporter.ExportDocumentsForProductToFolder(productId, lastVersion,
+                Directory.CreateDirectory(@"F:\Desarrollo\prueba\testProductVersion"));
+        }
+
+        private async Task ExportTopicsForCurrentProductToMkDocs() {
             await topicExporter.ExportDocumentsForProductToFolder(SelectedProduct.ProductId,
-                Directory.CreateDirectory(@"F:\Desarrollo\prueba\test"));
+                Directory.CreateDirectory(@"F:\Desarrollo\prueba\testProduct"));
         }
 
         private async Task LoadAllProducts()
