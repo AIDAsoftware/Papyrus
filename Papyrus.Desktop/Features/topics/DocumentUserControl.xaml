@@ -26,7 +26,7 @@
                                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                                     ScrollViewer.CanContentScroll="True"
                                     ScrollViewer.ScrollChanged="ScrollViewer_OnScrollChanged"/>
-                <WebBrowser Grid.Column="1" Name="MarkdownPreview" markdown:BrowserBehavior.Html="{Binding ContentAsHtml}"/>
+                <WebBrowser Grid.Column="1" Name="MarkdownPreview" markdown:MarkdownPreviewBrowserBehavior.Html="{Binding Content}"/>
             </Grid>
         </StackPanel>
     </Grid>

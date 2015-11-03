@@ -1,7 +1,5 @@
-using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using CommonMark;
 
 namespace Papyrus.Business.Topics
 {
@@ -41,38 +39,9 @@ namespace Papyrus.Business.Topics
             set
             {
                 content = value;
-                var settings = CommonMarkSettings.Default.Clone();
-                settings.RenderSoftLineBreaksAsLineBreaks = true;
-                var htmlResult = CommonMarkConverter.Convert(value, settings);
-                htmlResult = string.Format(@"
-                                            <!DOCTYPE html>
-                                            <html>
-                                                <head>
-                                                    <base href='file://c:/'>
-                                                    <meta charset='UTF-8'/>
-                                                </head>
-                                                <script type='text/javascript'>
-                                                        function setVerticalScrollPosition(position) {{window.scrollTo(position, position);}}
-                                                </script>
-                                                <body>
-                                                    {0}
-                                                </body>
-                                            </html>", htmlResult);
-                ContentAsHtml = htmlResult;
                 OnPropertyChanged("Content");
             }
         }
-
-        private string contentAsHtml;
-        public string ContentAsHtml {
-            get { return contentAsHtml; }
-            set
-            {
-                contentAsHtml = value;
-                OnPropertyChanged("ContentAsHtml");
-            }
-        }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 
