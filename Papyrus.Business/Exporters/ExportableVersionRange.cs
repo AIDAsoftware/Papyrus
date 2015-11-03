@@ -40,7 +40,7 @@ namespace Papyrus.Business.Exporters
         }
 
         public async Task ExportDocumentForProduct(ExportableProduct product, DirectoryInfo directory, string extension) {
-            var productDirectory = directory.CreateSubdirectory(product.ProductName);
+            var productDirectory = product.ExportIn(directory);
             await CreateDocumentsStructureForEachLanguageIn(productDirectory, extension);
         }
 
