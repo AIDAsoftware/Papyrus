@@ -17,6 +17,7 @@ namespace Papyrus.Tests.Business {
         private DirectoryInfo testDirectory;
         private MkDocsExporter mkdocsExporter;
         private TopicQueryRepository topicRepository;
+        private ProductRepository productRepository;
         private readonly ExportableProduct papyrus = new ExportableProduct(PapyrusId, "Papyrus");
         private readonly ProductVersion version1 = new ProductVersion("version1", "1.0", DateTime.Today);
         private readonly ProductVersion version2 = new ProductVersion("version2", "2.0", DateTime.Today.AddDays(3));
@@ -28,7 +29,8 @@ namespace Papyrus.Tests.Business {
         public void CreateTestDirectory() {
             testDirectory = Directory.CreateDirectory(@"test");
             topicRepository = Substitute.For<TopicQueryRepository>();
-            mkdocsExporter = new MkDocsExporter(topicRepository);
+            productRepository = Substitute.For<ProductRepository>();
+            mkdocsExporter = new MkDocsExporter(topicRepository, productRepository);
         }
 
         [TearDown]
@@ -94,6 +96,52 @@ namespace Papyrus.Tests.Business {
             var englishDocsDirectory = englishDirectory.GetDirectories().First(d => d.Name == "docs");
             var englishDocument = englishDocsDirectory.GetFiles().First(f => f.Name == "A Title.md");
             GetContentOf(englishDocument).Should().Be("A Content");
+        }
+
+        [Test]
+        public async Task export_documentation_for_all_products() {
+            var papyrusTopic = new TopicBuilder()
+                .ATopicForProduct(papyrus)
+                .WithVersionRange(
+                    new VersionRangeBuilder()
+                        .AddVersion(version1)
+                        .WithDocument("Crear Documento", "Contenido", SpanishLanguage)
+                        .WithDocument("Create Document", "Content", EnglishLanguage)
+                        .Build())
+                .BuildTopic();
+            var opportunity = new ExportableProduct("OpportunityId", "Opportunity");
+            var opportunityTopic = new TopicBuilder()
+                .ATopicForProduct(opportunity)
+                .WithVersionRange(
+                    new VersionRangeBuilder()
+                        .AddVersion(version1)
+                        .WithDocument("Primer Mantenimiento", "Un Contenido", SpanishLanguage)
+                        .WithDocument("First Maintenance", "A Content", EnglishLanguage)
+                        .Build())
+                .BuildTopic();
+
+            productRepository.GetAllExportableProducts().Returns(Task.FromResult(
+                new List<ExportableProduct> { opportunity, papyrus })
+            );
+            topicRepository.GetExportableTopicsForProduct(opportunity.ProductId).Returns(Task.FromResult(
+                new List<ExportableTopic> {opportunityTopic}
+            ));
+            topicRepository.GetExportableTopicsForProduct(papyrus.ProductId).Returns(Task.FromResult(
+                new List<ExportableTopic> {papyrusTopic}
+            ));
+
+            await mkdocsExporter.ExportAllProductsIn(testDirectory);
+
+            testDirectory.GetDirectories().Should().Contain(d => d.Name == EnglishLanguage);
+            var spanishDirectory = testDirectory.GetDirectories().First(d => d.Name == SpanishLanguage);
+            var versionDirectory = spanishDirectory.GetDirectories().First(d => d.Name == version1.VersionName);
+            versionDirectory.GetFiles().Should().Contain(f => f.Name == "mkdocs.yml");
+            var docsDirectory = versionDirectory.GetDirectories().First(d => d.Name == "docs");
+            docsDirectory.GetDirectories().Should().Contain(d => d.Name == opportunity.ProductName);
+            docsDirectory.GetFiles().Should().Contain(f => f.Name == "index.md");
+            var papyrusDirectory = docsDirectory.GetDirectories().First(d => d.Name == papyrus.ProductName);
+            var document = papyrusDirectory.GetFiles().First(f => f.Name == "Crear Documento.md");
+            GetContentOf(document).Should().Be("Contenido");
         }
 
         private static string GetContentOf(FileInfo document) {

@@ -87,5 +87,19 @@ namespace Papyrus.Business.Exporters
         public void AddVersions(IEnumerable<ProductVersion> productVersions) {
             Versions.AddRange(productVersions);
         }
+
+        public async Task ExportForAllProductsStructure(DirectoryInfo languageDirectory, ExportableProduct product) {
+            foreach (var productVersion in Versions) {
+                var versionDirectory = languageDirectory.CreateSubdirectory(productVersion.VersionName);
+                var docsDirectory = versionDirectory.CreateSubdirectory("docs");
+                if (!File.Exists(Path.Combine(versionDirectory.FullName, "mkdocs.yml"))) {
+                    await FileWriter.WriteFileWithContent(Path.Combine(versionDirectory.FullName, "mkdocs.yml"), "site_name: SIMA Documentation");
+                    await FileWriter.WriteFileWithContent(Path.Combine(docsDirectory.FullName, "index.md"), "#All Products Documentation");
+                }
+                var productDirectory = docsDirectory.CreateSubdirectory(product.ProductName);
+                var document = GetDocumentByLanguage(languageDirectory.Name);
+                await document.ExportDocument(productDirectory, ".md");
+            }
+        }
     }
 }

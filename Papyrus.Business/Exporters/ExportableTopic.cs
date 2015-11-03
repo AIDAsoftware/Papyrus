@@ -29,5 +29,11 @@ namespace Papyrus.Business.Exporters
                 await versionRange.ExportVersionRangeIn(directory, Product, extension);
             }
         }
+
+        public async Task ExportForAllProductsStructureIn(DirectoryInfo languageDirectory, ExportableProduct product) {
+            foreach (var exportableVersionRange in VersionRanges) {
+                await exportableVersionRange.ExportForAllProductsStructure(languageDirectory, product);
+            }
+        }
     }
 }
