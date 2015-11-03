@@ -54,13 +54,14 @@ namespace Papyrus.Business.Exporters
         {
             var languageDirectory = versionDirectory.CreateSubdirectory(language);
             var docs = languageDirectory.CreateSubdirectory("docs");
-            await CreateMkDocsStructureIfNeeded(languageDirectory, docs);
+            await CreateMkDocsProjectIfNeeded(languageDirectory, docs);
             var document = GetDocumentByLanguage(language);
             await document.ExportDocument(docs, extension);
         }
 
-        private async Task CreateMkDocsStructureIfNeeded(DirectoryInfo languageDirectory, DirectoryInfo docs) {
-            var ymlDocumentPath = Path.Combine(languageDirectory.FullName, "mkdocs.yml");
+        //TODO: this is not ExportableVersionRange Responsibility
+        private static async Task CreateMkDocsProjectIfNeeded(DirectoryInfo baseDirectory, DirectoryInfo docs) {
+            var ymlDocumentPath = Path.Combine(baseDirectory.FullName, "mkdocs.yml");
             if (!File.Exists(ymlDocumentPath)) {
                 await FileWriter.WriteFileWithContent(ymlDocumentPath, "site_name: SIMA Documentation");
                 await FileWriter.WriteFileWithContent(Path.Combine(docs.FullName, "index.md"), "###Documentación de SIMA");
