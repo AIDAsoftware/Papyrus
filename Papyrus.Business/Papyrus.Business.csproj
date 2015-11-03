@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exporters\ExportableProduct.cs" />
     <Compile Include="Exporters\ExportableTopic.cs" />
     <Compile Include="Exporters\ExportableVersionRange.cs" />
     <Compile Include="Exporters\MkDocsExporter.cs" />

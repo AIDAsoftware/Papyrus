@@ -17,7 +17,7 @@ namespace Papyrus.Tests.Business {
         private DirectoryInfo testDirectory;
         private MkDocsExporter mkdocsExporter;
         private TopicQueryRepository topicRepository;
-        private readonly DisplayableProduct papyrus = new DisplayableProduct { ProductId = PapyrusId, ProductName = "Papyrus" };
+        private readonly ExportableProduct papyrus = new ExportableProduct(PapyrusId, "Papyrus");
         private readonly ProductVersion version1 = new ProductVersion("version1", "1.0", DateTime.Today);
         private readonly ProductVersion version2 = new ProductVersion("version2", "2.0", DateTime.Today.AddDays(3));
         private readonly ProductVersion version3 = new ProductVersion("version3", "3.0", DateTime.Today.AddDays(4));
@@ -53,14 +53,14 @@ namespace Papyrus.Tests.Business {
             await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, testDirectory);
 
             var versionDirectories = testDirectory.GetDirectories();
-            var directoryVersion1 = versionDirectories.First(d => d.Name == "1.0");
-            var directoryVersion2 = versionDirectories.First(d => d.Name == "2.0");
-            var spanishDocumentVersion1 = GetSpanishDocumentFrom(directoryVersion1);
-            var spanishDocumentVersion2 = GetSpanishDocumentFrom(directoryVersion2);
-            spanishDocumentVersion2.Name.Should().NotBeEmpty("Título.md");
-            GetContentOf(spanishDocumentVersion2).Should().Be("Contenido");
-            spanishDocumentVersion1.Name.Should().Be("Título.md");
-            GetContentOf(spanishDocumentVersion1).Should().Be("Contenido");
+            var versionDirectory = versionDirectories.First(d => d.Name == "1.0");
+            var productDirectory = versionDirectory.GetDirectories().First(d => d.Name == "Papyrus");
+            var spanishDirectory = productDirectory.GetDirectories().First(d => d.Name == "es-ES");
+            spanishDirectory.GetFiles().Should().Contain(d => d.Name == "mkdocs.yml");
+            var docsDirectory = spanishDirectory.GetDirectories().First(d => d.Name == "docs");
+            var documentDirectory = docsDirectory.GetFiles().First(f => f.Name == "Título");
+            documentDirectory.Name.Should().Be("Título.md");
+            GetContentOf(documentDirectory).Should().Be("Contenido");
         }
 
         [Test]
@@ -130,24 +130,20 @@ namespace Papyrus.Tests.Business {
     }
 
     public class TopicBuilder {
-        private ExportableTopic editableTopic;
+        private ExportableTopic exportableTopic;
 
-        public TopicBuilder() {
-            editableTopic = new ExportableTopic();
-        }
-
-        public TopicBuilder ATopicForProduct(DisplayableProduct product) {
-            editableTopic = new ExportableTopic();
+        public TopicBuilder ATopicForProduct(ExportableProduct product) {
+            exportableTopic = new ExportableTopic(product);
             return this;
         }
 
         public TopicBuilder WithVersionRange(ExportableVersionRange versionRange) {
-            editableTopic.VersionRanges.Add(versionRange);
+            exportableTopic.VersionRanges.Add(versionRange);
             return this;
         }
 
         public ExportableTopic BuildTopic() {
-            return editableTopic;
+            return exportableTopic;
         }
     }
 }

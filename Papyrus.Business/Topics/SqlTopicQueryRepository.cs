@@ -70,13 +70,21 @@ namespace Papyrus.Business.Topics {
         }
 
         private async Task<ExportableTopic> ConstructExportableTopic(string topicId) {
-            var topic = new ExportableTopic();
+            var product = await SelectProductOf(topicId);
+            var topic = new ExportableTopic(product);
             var versionRanges = await SelectVersionRangesFor(topicId);
             foreach (var versionRange in versionRanges) {
                 var exportableVersionRange = await ConstructExportableVersionRange(versionRange);
                 topic.AddVersionRange(exportableVersionRange);
             }
             return topic;
+        }
+
+        private async Task<ExportableProduct> SelectProductOf(string topicId) {
+            var product = (await connection.Query<ExportableProduct>(@"SELECT Product.ProductId, Product.ProductName FROM Product
+                                                                        JOIN Topic ON Topic.ProductId = Product.ProductId", 
+                                                                        new {TopicId = topicId})).First();
+            return product;
         }
 
         private async Task<IEnumerable<dynamic>> SelectVersionRangesFor(string topicId) {

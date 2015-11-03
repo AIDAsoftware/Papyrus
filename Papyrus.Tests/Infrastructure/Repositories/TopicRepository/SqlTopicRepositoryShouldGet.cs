@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Infrastructure.Core.Database;
@@ -164,7 +165,10 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             var spanishExportableDocument = new ExportableDocument("A Title", "A Content", "en-GB");
             var englishExportableDocument = new ExportableDocument("Un Título", "Un Contenido", "es-ES");
-            var exportableVersionRange = exportableTopics.First().VersionRanges.First();
+            var exportableTopic = exportableTopics.First();
+            var expectedProduct = new ExportableProduct(ProductId, "Opportunity");
+            exportableTopic.Product.ShouldBeEquivalentTo(expectedProduct);
+            var exportableVersionRange = exportableTopic.VersionRanges.First();
             exportableVersionRange.Versions.Should().HaveCount(1);
             exportableVersionRange.Versions.Should().Contain(version2);
             exportableVersionRange.Documents.ShouldBeEquivalentTo(new List<ExportableDocument> {

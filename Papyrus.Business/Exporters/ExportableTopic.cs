@@ -1,16 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Papyrus.Business.Products;
+using Papyrus.Business.Topics;
 
 namespace Papyrus.Business.Exporters
 {
     public class ExportableTopic
     {
         public List<ExportableVersionRange> VersionRanges { get; private set; }
+        public ExportableProduct Product { get; set; }
 
-        public ExportableTopic()
+        public ExportableTopic(ExportableProduct product)
         {
             VersionRanges = new List<ExportableVersionRange>();
+            Product = product;
         }
 
         public void AddVersionRange(ExportableVersionRange versionRange)
