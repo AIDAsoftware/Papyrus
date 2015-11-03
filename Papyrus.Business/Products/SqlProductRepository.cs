@@ -1,4 +1,5 @@
 using System;
+using Papyrus.Business.Exporters;
 using Papyrus.Business.Topics;
 
 namespace Papyrus.Business.Products
@@ -79,6 +80,10 @@ namespace Papyrus.Business.Products
                                             FROM [ProductVersion] WHERE ProductId = @ProductId;";
 
             return (await connection.Query<ProductVersion>(selectVersionSqlQuery, new {ProductId = productId})).ToList();
+        }
+
+        public async Task<List<ExportableProduct>>  GetAllExportableProducts() {
+            return (await connection.Query<ExportableProduct>(@"SELECT ProductId, ProductName FROM Product")).ToList();
         }
     }
 }

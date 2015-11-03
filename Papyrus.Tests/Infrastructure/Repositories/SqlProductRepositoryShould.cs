@@ -144,6 +144,20 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             lastVersion.ShouldBeEquivalentTo(thirdVersion);
         }
 
+        [Test]
+        public async Task get_all_exportable_products() {
+            var papyrus = new Product("PapyrusId", "Papyrus", new List<ProductVersion>());
+            var opportunity = new Product("OpportunityId", "Opportunity", new List<ProductVersion>());
+            await InsertProduct(papyrus);
+            await InsertProduct(opportunity);
+
+            var products = await sqlProductRepository.GetAllExportableProducts();
+
+            products.Should().HaveCount(2);
+            products.Should().Contain(p => p.ProductName == papyrus.Name && p.ProductId == papyrus.Id);
+            products.Should().Contain(p => p.ProductName == opportunity.Name && p.ProductId == opportunity.Id);
+        }
+
         private async Task InsertProduct(Product product)
         {
             await dbConnection.Execute(@"INSERT INTO Product(ProductId, ProductName) 
