@@ -58,8 +58,8 @@ namespace Papyrus.Tests.Business {
             var spanishDirectory = productDirectory.GetDirectories().First(d => d.Name == "es-ES");
             spanishDirectory.GetFiles().Should().Contain(d => d.Name == "mkdocs.yml");
             var docsDirectory = spanishDirectory.GetDirectories().First(d => d.Name == "docs");
-            var documentDirectory = docsDirectory.GetFiles().First(f => f.Name == "Título");
-            documentDirectory.Name.Should().Be("Título.md");
+            docsDirectory.GetFiles().Should().Contain(f => f.Name == "index.md");
+            var documentDirectory = docsDirectory.GetFiles().First(f => f.Name == "Título.md");
             GetContentOf(documentDirectory).Should().Be("Contenido");
         }
 
@@ -80,18 +80,19 @@ namespace Papyrus.Tests.Business {
             await mkdocsExporter.ExportDocumentsForProductToFolder(PapyrusId, version3, testDirectory);
 
             var versionDirectory = testDirectory.GetDirectories().First(d => d.Name == "3.0");
-            versionDirectory.GetDirectories().Should().HaveCount(2);
-            var spanishDirectory = versionDirectory.GetDirectories().First(d => d.Name == SpanishLanguage);
-            spanishDirectory.GetFiles().Should().HaveCount(1);
-            spanishDirectory.GetDirectories().Should().HaveCount(0);
-            var spanishDocument = spanishDirectory.GetFiles().First();
-            spanishDocument.Name.Should().Be("Un Título.md");
+            versionDirectory.GetDirectories().Should().HaveCount(1);
+            var productDirectory = versionDirectory.GetDirectories().First(d => d.Name == "Papyrus");
+            var spanishDirectory = productDirectory.GetDirectories().First(d => d.Name == SpanishLanguage);
+            spanishDirectory.GetFiles().Should().Contain(f => f.Name == "mkdocs.yml");
+            spanishDirectory.GetDirectories().Should().HaveCount(1);
+            var spanishDocsDirectory = spanishDirectory.GetDirectories().First(d => d.Name == "docs");
+            var spanishDocument = spanishDocsDirectory.GetFiles().First(f => f.Name == "Un Título.md");
             GetContentOf(spanishDocument).Should().Be("Un Contenido");
-            var englishDirectory = versionDirectory.GetDirectories().First(d => d.Name == EnglishLanguage);
-            englishDirectory.GetFiles().Should().HaveCount(1);
-            englishDirectory.GetDirectories().Should().HaveCount(0);
-            var englishDocument = englishDirectory.GetFiles().First();
-            englishDocument.Name.Should().Be("A Title.md");
+            var englishDirectory = productDirectory.GetDirectories().First(d => d.Name == EnglishLanguage);
+            englishDirectory.GetFiles().Should().Contain(f => f.Name == "mkdocs.yml");
+            englishDirectory.GetDirectories().Should().HaveCount(1);
+            var englishDocsDirectory = englishDirectory.GetDirectories().First(d => d.Name == "docs");
+            var englishDocument = englishDocsDirectory.GetFiles().First(f => f.Name == "A Title.md");
             GetContentOf(englishDocument).Should().Be("A Content");
         }
 

@@ -26,7 +26,7 @@ namespace Papyrus.Business.Exporters
         {
             foreach (var versionRange in VersionRanges)
             {
-                await versionRange.ExportVersionRangeIn(directory, extension);
+                await versionRange.ExportVersionRangeIn(directory, Product, extension);
             }
         }
     }

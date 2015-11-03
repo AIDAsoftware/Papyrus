@@ -39,9 +39,9 @@ namespace Papyrus.Business.Exporters
             return Documents.Select(d => d.Language).ToList();
         }
 
-        public async Task ExportDocumentForProductVersion(ProductVersion productVersion, DirectoryInfo directory, string extension) {
-            var versionDirectory = directory.CreateSubdirectory(productVersion.VersionName);
-            await CreateDocumentsStructureForEachLanguageIn(versionDirectory, extension);
+        public async Task ExportDocumentForProduct(ExportableProduct product, DirectoryInfo directory, string extension) {
+            var productDirectory = directory.CreateSubdirectory(product.ProductName);
+            await CreateDocumentsStructureForEachLanguageIn(productDirectory, extension);
         }
 
         private async Task CreateDocumentsStructureForEachLanguageIn(DirectoryInfo versionDirectory, string extension) {
@@ -53,15 +53,30 @@ namespace Papyrus.Business.Exporters
         private async Task ConstructDocumentForLanguageInDirectory(string language, DirectoryInfo versionDirectory, string extension)
         {
             var languageDirectory = versionDirectory.CreateSubdirectory(language);
+            var docs = languageDirectory.CreateSubdirectory("docs");
+            if (!File.Exists(Path.Combine(languageDirectory.FullName, "mkdocs.yml"))) {
+                await WriteContentIn(Path.Combine(languageDirectory.FullName, "mkdocs.yml"), "site_name: SIMA Documentation");
+                await WriteContentIn(Path.Combine(docs.FullName, "index.md"), "###Documentación de SIMA");                
+            }
             var document = GetDocumentByLanguage(language);
-            await document.ExportDocument(languageDirectory, extension);
+            await document.ExportDocument(docs, extension);
         }
 
-        public async Task ExportVersionRangeIn(DirectoryInfo directory, string extension)
+        private async Task WriteContentIn(string filePath, string content) {
+            var encodedText = Encoding.UTF8.GetBytes(content);
+
+            using (var sourceStream = new FileStream(filePath,
+                FileMode.Append, FileAccess.Write, FileShare.None,
+                bufferSize: 4096, useAsync: true)) {
+                await sourceStream.WriteAsync(encodedText, 0, encodedText.Length);
+            };
+        }
+
+        public async Task ExportVersionRangeIn(DirectoryInfo directory, ExportableProduct product, string extension)
         {
-            foreach (var productVersion in Versions)
-            {
-                await ExportDocumentForProductVersion(productVersion, directory, extension);
+            foreach (var productVersion in Versions) {
+                var versionDirectory = directory.CreateSubdirectory(productVersion.VersionName);
+                await ExportDocumentForProduct(product, versionDirectory, extension);
             }
         }
 
