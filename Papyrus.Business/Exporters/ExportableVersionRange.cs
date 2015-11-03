@@ -54,22 +54,17 @@ namespace Papyrus.Business.Exporters
         {
             var languageDirectory = versionDirectory.CreateSubdirectory(language);
             var docs = languageDirectory.CreateSubdirectory("docs");
-            if (!File.Exists(Path.Combine(languageDirectory.FullName, "mkdocs.yml"))) {
-                await WriteContentIn(Path.Combine(languageDirectory.FullName, "mkdocs.yml"), "site_name: SIMA Documentation");
-                await WriteContentIn(Path.Combine(docs.FullName, "index.md"), "###Documentación de SIMA");                
-            }
+            await CreateMkDocsStructureIfNeeded(languageDirectory, docs);
             var document = GetDocumentByLanguage(language);
             await document.ExportDocument(docs, extension);
         }
 
-        private async Task WriteContentIn(string filePath, string content) {
-            var encodedText = Encoding.UTF8.GetBytes(content);
-
-            using (var sourceStream = new FileStream(filePath,
-                FileMode.Append, FileAccess.Write, FileShare.None,
-                bufferSize: 4096, useAsync: true)) {
-                await sourceStream.WriteAsync(encodedText, 0, encodedText.Length);
-            };
+        private async Task CreateMkDocsStructureIfNeeded(DirectoryInfo languageDirectory, DirectoryInfo docs) {
+            var ymlDocumentPath = Path.Combine(languageDirectory.FullName, "mkdocs.yml");
+            if (!File.Exists(ymlDocumentPath)) {
+                await FileWriter.WriteFileWithContent(ymlDocumentPath, "site_name: SIMA Documentation");
+                await FileWriter.WriteFileWithContent(Path.Combine(docs.FullName, "index.md"), "###Documentación de SIMA");
+            }
         }
 
         public async Task ExportVersionRangeIn(DirectoryInfo directory, ExportableProduct product, string extension)

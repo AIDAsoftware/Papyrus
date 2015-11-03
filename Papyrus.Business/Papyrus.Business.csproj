@@ -47,6 +47,7 @@
     <Compile Include="Exporters\ExportableProduct.cs" />
     <Compile Include="Exporters\ExportableTopic.cs" />
     <Compile Include="Exporters\ExportableVersionRange.cs" />
+    <Compile Include="Exporters\FileWriter.cs" />
     <Compile Include="Exporters\MkDocsExporter.cs" />
     <Compile Include="Products\FullVersionRange.cs" />
     <Compile Include="Products\ProductVersion.cs" />

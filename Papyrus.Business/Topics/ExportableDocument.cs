@@ -22,13 +22,7 @@ namespace Papyrus.Business.Topics {
         }
 
         private async Task WriteContentIn(string filePath) {
-            var encodedText = Encoding.UTF8.GetBytes(Content);
-
-            using (var sourceStream = new FileStream(filePath,
-                FileMode.Append, FileAccess.Write, FileShare.None,
-                bufferSize: 4096, useAsync: true)) {
-                await sourceStream.WriteAsync(encodedText, 0, encodedText.Length);
-            };
+            await FileWriter.WriteFileWithContent(filePath, Content);
         }
     }
 }
