@@ -8,10 +8,11 @@ using System.Windows;
 using Papyrus.Infrastructure.Core.DomainEvents;
 
 namespace Papyrus.Desktop {
-    public partial class App : Application, Subscriber<OnUserMessageRequest>
+    public partial class App : Application
     {
         public App() {
-            EventBus.Subscribe(this);
+            var userMessageRequestSubscription = ReactiveEventBus.AsObservable<OnUserMessageRequest>().Subscribe(Handle);
+            Exit += (sender, args) => userMessageRequestSubscription.Dispose();
         }
 
         public void Handle(OnUserMessageRequest domainEvent)
