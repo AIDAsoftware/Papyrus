@@ -3,7 +3,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
 namespace Papyrus.Infrastructure.Core.DomainEvents {
-    public static class ReactiveEventBus {
+    public static class EventBus {
         private static readonly Subject<object> messageSubject = new Subject<object>();
 
         public static void Send<T>(T message) {

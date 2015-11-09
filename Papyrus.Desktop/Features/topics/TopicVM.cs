@@ -50,7 +50,7 @@ namespace Papyrus.Desktop.Features.Topics
             }
             catch (Exception exception)
             {
-                ReactiveEventBus.Send(new OnUserMessageRequest(exception.Message));
+                EventBus.Send(new OnUserMessageRequest(exception.Message));
             }
         }
 
@@ -67,7 +67,7 @@ namespace Papyrus.Desktop.Features.Topics
                 await topicService.Update(topic);
             }
 
-            ReactiveEventBus.Send(new OnUserMessageRequest("Topic Saved!"));
+            EventBus.Send(new OnUserMessageRequest("Topic Saved!"));
         }
 
         //TODO: How to make it not void? It could be a trouble if product can't be deleted in backend

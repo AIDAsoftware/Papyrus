@@ -11,7 +11,7 @@ namespace Papyrus.Desktop {
     public partial class App : Application
     {
         public App() {
-            var userMessageRequestSubscription = ReactiveEventBus.AsObservable<OnUserMessageRequest>().Subscribe(Handle);
+            var userMessageRequestSubscription = EventBus.AsObservable<OnUserMessageRequest>().Subscribe(Handle);
             Exit += (sender, args) => userMessageRequestSubscription.Dispose();
         }
 
