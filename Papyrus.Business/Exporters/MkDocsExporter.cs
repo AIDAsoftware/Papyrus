@@ -42,10 +42,8 @@ namespace Papyrus.Business.Exporters {
         private async Task ExportAllProductsForLanguage(DirectoryInfo testDirectory, List<ExportableProduct> products, string language) {
             var languageDirectory = testDirectory.CreateSubdirectory(language);
             foreach (var product in products) {
-                var topics = await topicRepository.GetExportableTopicsForProduct(product.ProductId);
-                foreach (var topic in topics) {
-                    await topic.ExportForAllProductsStructureIn(languageDirectory, product);
-                }
+                product.Topics = await topicRepository.GetExportableTopicsForProduct(product.ProductId);
+                product.ExportInAllProductsFormatIn(languageDirectory);
             }
         }
     }
