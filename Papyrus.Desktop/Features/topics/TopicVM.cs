@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
-using Papyrus.Business.Topics.Exceptions;
 using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
 using Papyrus.Infrastructure.Core.DomainEvents;
@@ -51,7 +50,7 @@ namespace Papyrus.Desktop.Features.Topics
             }
             catch (Exception exception)
             {
-                EventBus.Raise(new OnUserMessageRequest(exception.Message));
+                EventBus.Send(new OnUserMessageRequest(exception.Message));
             }
         }
 
@@ -68,7 +67,7 @@ namespace Papyrus.Desktop.Features.Topics
                 await topicService.Update(topic);
             }
 
-            EventBus.Raise(new OnUserMessageRequest("Topic Saved!"));
+            EventBus.Send(new OnUserMessageRequest("Topic Saved!"));
         }
 
         //TODO: How to make it not void? It could be a trouble if product can't be deleted in backend
@@ -90,11 +89,6 @@ namespace Papyrus.Desktop.Features.Topics
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public void Handle(OnUserMessageRequest domainEvent)
-        {
-            EventBus.Raise(domainEvent);
         }
 
         public async void Initialize()

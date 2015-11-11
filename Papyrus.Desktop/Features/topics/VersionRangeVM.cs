@@ -46,9 +46,8 @@ namespace Papyrus.Desktop.Features.Topics
             ProductVersions = new ObservableCollection<ProductVersion>();
         }
 
-        public VersionRangeVM(EditableVersionRange editableVersionRange)
+        public VersionRangeVM(EditableVersionRange editableVersionRange) : this()
         {
-            ProductVersions = new ObservableCollection<ProductVersion>();
             VersionRange = editableVersionRange;
         }
 
@@ -65,5 +64,18 @@ namespace Papyrus.Desktop.Features.Topics
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
+    }
+
+    public class DesignModeVersionRangeVM    {
+        public DesignModeVersionRangeVM() {
+            VersionRange = new EditableVersionRange();
+            var editableDocument = new EditableDocument() {Language ="es-ES"};
+            VersionRange.Documents.Add(editableDocument);
+            SelectedDocument = editableDocument;
+        }
+
+        public EditableVersionRange VersionRange { get; set; }
+
+        public EditableDocument SelectedDocument { get; set; }
     }
 }

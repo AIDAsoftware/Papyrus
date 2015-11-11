@@ -8,21 +8,22 @@
         x:Name="TopicView"
         Title="TopicWindow"
         MinHeight="540"
-        d:DesignHeight="540"
         d:DataContext="{d:DesignInstance Type=local:DesignModeTopicVM, IsDesignTimeCreatable=True}"
-        DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
+        DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}" Height="668" Width="1004">
     <Window.Resources>
         <local:VersionRangesToVmConverter x:Key="VersionRangesToVmConverter" />
     </Window.Resources>
     <Grid>
-        <DockPanel LastChildFill="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-            <local:VersionRangesUserControl DockPanel.Dock="Top" HorizontalAlignment="Stretch" 
-                                            Margin="0,0,0,0" VerticalAlignment="Stretch" DataContext="{Binding EditableTopic,
-                                            Converter={StaticResource VersionRangesToVmConverter}}"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 20, 0" DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
-                <Button Command="{Binding DeleteTopic}" CommandParameter="{Binding ElementName=TopicView}" Width="150" Margin="10" Height="30">Delete</Button>
-                <Button Command="{Binding SaveTopic}" Width="150" Margin="10" Height="30">Save</Button>
-            </StackPanel>
-        </DockPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <local:VersionRangesUserControl Grid.Row="0" HorizontalAlignment="Stretch" 
+                                        Margin="0,0,0,0" Height="Auto" DataContext="{Binding EditableTopic,
+                                        Converter={StaticResource VersionRangesToVmConverter}}"/>
+        <StackPanel Grid.Row ="1"  Orientation="Horizontal" HorizontalAlignment="Right" Height="25" >
+            <Button Command="{Binding DeleteTopic}" CommandParameter="{Binding ElementName=TopicView}" Margin="0,0,20,0" Width="150" Height="25">Delete</Button>
+            <Button Command="{Binding SaveTopic}" Width="150" Margin="0,0,20,0" Height="250">Save</Button>
+        </StackPanel>
     </Grid>
 </Window>
