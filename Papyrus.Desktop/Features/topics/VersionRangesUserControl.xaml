@@ -11,41 +11,45 @@
     <UserControl.Resources>
         <topics:VersionRangeToVmConverter x:Key="VersionRangeToVmConverter" />
     </UserControl.Resources>
-    <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" LastChildFill="True">
-        <TabControl DockPanel.Dock="Top" 
-                    HorizontalAlignment="Stretch" 
-		            VerticalAlignment="Stretch"
-                    TabStripPlacement = "Left"
-		            Margin="0,0,0,0"
-                    ItemsSource="{Binding VersionRanges}"
-                    SelectedValue="{Binding SelectedVersionRange}"
-                    >
-            <TabControl.ItemTemplate>
-                <DataTemplate DataType="topics1:EditableVersionRange">
-                    <TextBlock>
-                        <Run Text="{Binding FromVersion.VersionName}"/>
-                        <Run Text=" -- "/>
-                        <Run Text="{Binding ToVersion.VersionName}"/>
-                    </TextBlock>
-                </DataTemplate>
-            </TabControl.ItemTemplate>
-            <TabControl.ContentTemplate>
-                <DataTemplate DataType="topics1:EditableVersionRange">
-                    <topics:VersionRangeUserControl 
-                        DataContext="{Binding RelativeSource={RelativeSource FindAncestor, 
-                        AncestorType={x:Type topics:VersionRangesUserControl}}, Converter={StaticResource VersionRangeToVmConverter}, 
-                        Path=ViewModel.SelectedVersionRange}"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"/>
-                </DataTemplate>
-            </TabControl.ContentTemplate>
-        </TabControl>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button Command="{Binding DeleteVersionRange}" HorizontalAlignment="Right" Height="23" Width="100" MinHeight="30"
-                        Margin="0, 10, 20, 10" DockPanel.Dock="Bottom">Delete</Button>
-            <Button Command="{Binding CreateVersionRange}" HorizontalAlignment="Right" Height="23" Width="100" MinHeight="30"
-                        Margin="0, 10, 20, 10" DockPanel.Dock="Bottom">Create</Button>
-        </StackPanel>
-    </DockPanel>
+    <Grid>
+
+        <DockPanel Height="Auto" HorizontalAlignment="Stretch">
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <Button Command="{Binding DeleteVersionRange}" HorizontalAlignment="Right" Height="23" Width="100" MinHeight="30"
+                            Margin="0, 10, 20, 10" DockPanel.Dock="Bottom">Delete</Button>
+                <Button Command="{Binding CreateVersionRange}" HorizontalAlignment="Right" Height="23" Width="100" MinHeight="30"
+                            Margin="0, 10, 20, 10" DockPanel.Dock="Bottom">Create</Button>
+            </StackPanel>
+            <TabControl DockPanel.Dock="Top" 
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"
+                        TabStripPlacement = "Left"
+		                Margin="0,0,0,0"
+                        ItemsSource="{Binding VersionRanges}"
+                        SelectedValue="{Binding SelectedVersionRange}"
+                        >
+                <TabControl.ItemTemplate>
+                    <DataTemplate DataType="topics1:EditableVersionRange">
+                        <TextBlock>
+                            <Run Text="{Binding FromVersion.VersionName}"/>
+                            <Run Text=" -- "/>
+                            <Run Text="{Binding ToVersion.VersionName}"/>
+                        </TextBlock>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate DataType="topics1:EditableVersionRange">
+                        <topics:VersionRangeUserControl 
+                            DataContext="{Binding RelativeSource={RelativeSource FindAncestor, 
+                            AncestorType={x:Type topics:VersionRangesUserControl}}, Converter={StaticResource VersionRangeToVmConverter}, 
+                            Path=ViewModel.SelectedVersionRange}"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"/>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+
+        </DockPanel>
+    </Grid>
 </UserControl>
                                                                           

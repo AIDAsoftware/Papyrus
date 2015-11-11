@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,10 @@ namespace Papyrus.Desktop.Markdown {
         }
 
         static void OnHtmlChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e) {
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) {
+                return;
+            }
+
             var webBrowser = dependencyObject as WebBrowser;
             if (webBrowser == null) return;
             var markdown = e.NewValue as string;

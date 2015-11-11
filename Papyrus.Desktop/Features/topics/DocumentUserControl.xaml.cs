@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Reactive.Linq;
 using System.Windows;
@@ -19,6 +20,10 @@ namespace Papyrus.Desktop.Features.Topics
         public DocumentUserControl()
         {
             InitializeComponent();
+
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) {
+                return;
+            }
 
             var addImageSubscriber = EventBus.AsObservable<SelectedDiskImagesToInsertIn>()
                 .Where(evt => ReferenceEquals(evt.Document, ViewModel))

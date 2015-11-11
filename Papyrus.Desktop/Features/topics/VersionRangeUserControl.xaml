@@ -6,19 +6,19 @@
              xmlns:topics="clr-namespace:Papyrus.Business.Topics;assembly=Papyrus.Business"
              xmlns:topics1="clr-namespace:Papyrus.Desktop.Features.Topics"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="800" 
-             d:DataContext="{d:DesignInstance Type=topics1:VersionRangeVM, IsDesignTimeCreatable=True}">
+             d:DesignHeight="496" d:DesignWidth="889" 
+             d:DataContext="{d:DesignInstance Type=topics1:DesignModeVersionRangeVM, IsDesignTimeCreatable=True}">
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
-        <DockPanel DockPanel.Dock="Top" Margin="0,20,0,0" HorizontalAlignment="Center">
+        <DockPanel DockPanel.Dock="Top" Height="35" VerticalAlignment="Top" HorizontalAlignment="Center" LastChildFill="True">
             <StackPanel Orientation="Horizontal">
                 <Label Width="Auto">FromVersion</Label>
                 <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
                             AncestorType={x:Type topics1:TopicWindow}}, 
                             Path=ViewModel.Versions}" DisplayMemberPath="VersionName" 
                           SelectedValue="{Binding VersionRange.FromVersion}" 
-                          Width="100" Margin="0,0,100,0"></ComboBox>
+                          Width="100" Margin="0,0,0,0"></ComboBox>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal" Margin="100,0,0,0"  DockPanel.Dock="Bottom">
                 <Label>ToVersion</Label>
                 <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
                             AncestorType={x:Type topics1:TopicWindow}}, 
@@ -28,8 +28,10 @@
             </StackPanel>
         </DockPanel>
         <TabControl HorizontalAlignment="Stretch"
+                            DockPanel.Dock="Bottom"
                             TabStripPlacement = "Top"
 		                    VerticalAlignment="Stretch"
+                            Height="Auto"
                             ItemsSource="{Binding VersionRange.Documents}"
                             SelectedItem="{Binding SelectedDocument}">
             <TabControl.ItemTemplate>
