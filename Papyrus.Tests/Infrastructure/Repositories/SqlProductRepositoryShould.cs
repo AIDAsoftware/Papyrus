@@ -7,26 +7,22 @@ using NUnit.Framework;
 using Papyrus.Business.Products;
 using Papyrus.Infrastructure.Core.Database;
 
-namespace Papyrus.Tests.Infrastructure.Repositories
-{
+namespace Papyrus.Tests.Infrastructure.Repositories {
     [TestFixture]
-    public class SqlProductRepositoryShould : SqlTest
-    {
+    public class SqlProductRepositoryShould : SqlTest {
         private string anyProductId = "AnyProductID";
         private string anyProductName = "AnyProductName";
         private SqlProductRepository sqlProductRepository;
 
         [SetUp]
-        public async void TruncateDataBase()
-        {
+        public async void TruncateDataBase() {
             await dbConnection.Execute("TRUNCATE TABLE Product");
             await dbConnection.Execute("TRUNCATE TABLE ProductVersion");
             sqlProductRepository = new SqlProductRepository(dbConnection);
         }
 
         [Test]
-        public async void load_a_product()
-        {
+        public async void load_a_product() {
             const string anyVersionId = "AnyVersionId";
             const string anyVersionName = "AnyVersionName";
             var versions = new List<ProductVersion> { new ProductVersion(anyVersionId, anyVersionName, DateTime.Today) };
@@ -43,8 +39,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         }
 
         [Test]
-        public async void load_a_product_with_its_versions()
-        {
+        public async void load_a_product_with_its_versions() {
             var versions = new List<ProductVersion>
             {
                 new ProductVersion("versionId1", "version1", DateTime.Today.AddDays(-1)),
@@ -61,16 +56,14 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         }
 
         [Test]
-        public async void return_null_when_try_to_load_an_no_existing_product()
-        {
+        public async void return_null_when_try_to_load_an_no_existing_product() {
             var product = await sqlProductRepository.GetProduct("AnyId");
 
             product.Should().Be(null);
         }
 
         [Test]
-        public async Task load_a_list_with_all_products_containing_its_versions()
-        {
+        public async Task load_a_list_with_all_products_containing_its_versions() {
             var versionsForPapyrus = new List<ProductVersion>
             {
                 new ProductVersion("AnyIdForPapyrus", "AnyVersion", DateTime.Today.AddDays(-1)),
@@ -93,8 +86,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         }
 
         [Test]
-        public async Task gets_range_that_goes_from_first_version_to_the_latest_one()
-        {
+        public async Task gets_range_that_goes_from_first_version_to_the_latest_one() {
             var versions = new List<ProductVersion>
             {
                 new ProductVersion("FirstVersionId", "1.0", DateTime.Today.AddDays(-3)),
@@ -111,8 +103,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories
         }
 
         [Test]
-        public async Task gets_all_versions_for_a_given_product()
-        {
+        public async Task gets_all_versions_for_a_given_product() {
             var papyrusVersions = new List<ProductVersion>
             {
                 new ProductVersion("FirstVersionId", "1.0", DateTime.Today.AddDays(-3)),
@@ -158,8 +149,19 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             products.Should().Contain(p => p.ProductName == opportunity.Name && p.ProductId == opportunity.Id);
         }
 
-        private async Task InsertProduct(Product product)
-        {
+        [Test]
+        public async Task get_a_exportable_products_with_its_topics() {
+            var papyrus = new Product("PapyrusId", "Papyrus", new List<ProductVersion>());
+            await InsertProduct(papyrus);
+
+            var products = await sqlProductRepository.GetAllExportableProducts();
+
+            products.Should().HaveCount(2);
+            products.Should().Contain(p => p.ProductName == papyrus.Name && p.ProductId == papyrus.Id);
+            products.Should().Contain(p => p.ProductName == opportunity.Name && p.ProductId == opportunity.Id);
+        }
+
+        private async Task InsertProduct(Product product) {
             await dbConnection.Execute(@"INSERT INTO Product(ProductId, ProductName) 
                                 VALUES (@ProductId, @ProductName);",
                                 new {
@@ -169,10 +171,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories
             await InsertProductVersions(product);
         }
 
-        private async Task InsertProductVersions(Product product)
-        {
-            foreach (var productVersion in product.Versions)
-            {
+        private async Task InsertProductVersions(Product product) {
+            foreach (var productVersion in product.Versions) {
                 await InsertProductVersion(productVersion, product.Id);
             }
         }
