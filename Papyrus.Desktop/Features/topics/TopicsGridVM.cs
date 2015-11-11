@@ -36,6 +36,8 @@ namespace Papyrus.Desktop.Features.Topics {
         public IAsyncCommand RefreshTopics { get; private set; }
         public IAsyncCommand ExportProductToMkDocs { get; private set; }
         public IAsyncCommand ExportLastVersionToMkDocs { get; private set; }
+        public IAsyncCommand ExportAllProducts { get; private set; }
+
 
         protected TopicsGridVM()
         {
@@ -44,6 +46,7 @@ namespace Papyrus.Desktop.Features.Topics {
             RefreshTopics = RelayAsyncSimpleCommand.Create(LoadAllTopics, CanLoadAllTopics);
             ExportProductToMkDocs = RelayAsyncSimpleCommand.Create(ExportTopicsForCurrentProductToMkDocs, () => true);
             ExportLastVersionToMkDocs = RelayAsyncSimpleCommand.Create(ExportTopicsForLastVersionToMkDocs, () => true);
+            ExportAllProducts = RelayAsyncSimpleCommand.Create(ExportAllProductsForAllVersions, () => true);
         }
 
         public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository, MkDocsExporter exporter) : this()
@@ -78,6 +81,10 @@ namespace Papyrus.Desktop.Features.Topics {
                 Product = SelectedProduct,
                 VersionRanges = versionRanges
             };
+        }
+
+        private async Task ExportAllProductsForAllVersions() {
+            await topicExporter.ExportAllProductsIn(Directory.CreateDirectory(@"F:\Desarrollo\prueba\testAllProducts"));
         }
 
         private async Task ExportTopicsForLastVersionToMkDocs() {

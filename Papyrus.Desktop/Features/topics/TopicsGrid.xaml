@@ -38,6 +38,8 @@
                             Width="120" Command="{Binding ExportProductToMkDocs}">Export Product</Button>
                     <Button Margin="10" DockPanel.Dock="Bottom"  HorizontalAlignment="Right" Height="23" 
                             Width="120" Command="{Binding ExportLastVersionToMkDocs}">Export Last Version</Button>
+                    <Button Margin="10" DockPanel.Dock="Bottom"  HorizontalAlignment="Right" Height="23" 
+                            Width="120" Command="{Binding ExportAllProducts}">Export All Products</Button>
                 </StackPanel>
             </DockPanel>
         </DockPanel>
