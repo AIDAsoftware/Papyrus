@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,20 +37,22 @@ namespace Papyrus.Desktop.Markdown {
             var settings = CommonMarkSettings.Default.Clone();
             settings.RenderSoftLineBreaksAsLineBreaks = true;
             var htmlResult = CommonMarkConverter.Convert(markdown, settings);
+            var imagesFolder = ConfigurationManager.AppSettings["ImagesFolder"];
+            var imagesUri = new Uri(imagesFolder);
             htmlResult = string.Format(@"
                                             <!DOCTYPE html>
                                             <html>
                                                 <head>
-                                                    <base href='file://c:/'>
+                                                    <base href='{0}'>
                                                     <meta charset='UTF-8'/>
                                                 </head>
                                                 <script type='text/javascript'>
                                                         function setVerticalScrollPosition(position) {{window.scrollTo(position, position);}}
                                                 </script>
                                                 <body>
-                                                    {0}
+                                                    {1}
                                                 </body>
-                                            </html>", htmlResult);
+                                            </html>", imagesUri.AbsoluteUri, htmlResult);
             return htmlResult;
         }
     }
