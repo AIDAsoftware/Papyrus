@@ -149,18 +149,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories {
             products.Should().Contain(p => p.ProductName == opportunity.Name && p.ProductId == opportunity.Id);
         }
 
-        [Test]
-        public async Task get_a_exportable_products_with_its_topics() {
-            var papyrus = new Product("PapyrusId", "Papyrus", new List<ProductVersion>());
-            await InsertProduct(papyrus);
-
-            var products = await sqlProductRepository.GetAllExportableProducts();
-
-            products.Should().HaveCount(2);
-            products.Should().Contain(p => p.ProductName == papyrus.Name && p.ProductId == papyrus.Id);
-            products.Should().Contain(p => p.ProductName == opportunity.Name && p.ProductId == opportunity.Id);
-        }
-
         private async Task InsertProduct(Product product) {
             await dbConnection.Execute(@"INSERT INTO Product(ProductId, ProductName) 
                                 VALUES (@ProductId, @ProductName);",
