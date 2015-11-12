@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
@@ -92,11 +91,8 @@ namespace Papyrus.Business.Exporters
             foreach (var productVersion in Versions) {
                 var versionDirectory = languageDirectory.CreateSubdirectory(productVersion.VersionName);
                 var docsDirectory = versionDirectory.CreateSubdirectory("docs");
-                if (!File.Exists(Path.Combine(versionDirectory.FullName, "mkdocs.yml"))) {
-                    await FileWriter.WriteFileWithContent(Path.Combine(versionDirectory.FullName, "mkdocs.yml"), "site_name: SIMA Documentation");
-                    await FileWriter.WriteFileWithContent(Path.Combine(docsDirectory.FullName, "index.md"), "#All Products Documentation");
-                }
-                var productDirectory = docsDirectory.CreateSubdirectory(product.ProductName);
+                await CreateMkDocsProjectIfNeeded(versionDirectory, docsDirectory);
+                var productDirectory = product.ExportIn(docsDirectory);
                 var document = GetDocumentByLanguage(languageDirectory.Name);
                 await document.ExportDocument(productDirectory, ".md");
             }
