@@ -43,7 +43,7 @@ namespace Papyrus.Business.Exporters {
             var languageDirectory = testDirectory.CreateSubdirectory(language);
             foreach (var product in products) {
                 product.Topics = await topicRepository.GetExportableTopicsForProduct(product.ProductId);
-                product.ExportInAllProductsFormatIn(languageDirectory);
+                await product.ExportInAllProductsFormatIn(languageDirectory);
             }
         }
     }
