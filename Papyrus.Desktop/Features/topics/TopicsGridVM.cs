@@ -59,7 +59,7 @@ namespace Papyrus.Desktop.Features.Topics {
         public async Task Initialize()
         {
             await LoadAllProducts();
-            SelectedProduct = Products[0];
+            SelectedProduct = Products.FirstOrDefault();
         }
 
         public async void RefreshTopicsForCurrentProduct()
