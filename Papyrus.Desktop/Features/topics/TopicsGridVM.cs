@@ -20,6 +20,7 @@ namespace Papyrus.Desktop.Features.Topics {
         public ObservableCollection<TopicSummary> TopicsToList { get; protected set; }
         public ObservableCollection<DisplayableProduct> Products { get; private set; }
         public TopicSummary SelectedTopic { get; set; }
+        private string DefaultDirectoryPath { get; set; }
 
         private DisplayableProduct selectedProduct;
         public DisplayableProduct SelectedProduct
@@ -47,6 +48,7 @@ namespace Papyrus.Desktop.Features.Topics {
             ExportProductToMkDocs = RelayAsyncSimpleCommand.Create(ExportTopicsForCurrentProductToMkDocs, () => true);
             ExportLastVersionToMkDocs = RelayAsyncSimpleCommand.Create(ExportTopicsForLastVersionToMkDocs, () => true);
             ExportAllProducts = RelayAsyncSimpleCommand.Create(ExportAllProductsForAllVersions, () => true);
+            DefaultDirectoryPath = Directory.GetCurrentDirectory();
         }
 
         public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository, MkDocsExporter exporter) : this()
@@ -84,19 +86,20 @@ namespace Papyrus.Desktop.Features.Topics {
         }
 
         private async Task ExportAllProductsForAllVersions() {
-            await topicExporter.ExportAllProductsIn(Directory.CreateDirectory(@"F:\Desarrollo\prueba\testAllProducts"));
+            await topicExporter.ExportAllProductsIn(Directory.CreateDirectory(Path.Combine(DefaultDirectoryPath, "testAllProducts")));
         }
 
         private async Task ExportTopicsForLastVersionToMkDocs() {
             var productId = SelectedProduct.ProductId;
             var lastVersion = await productRepository.GetLastVersionForProduct(productId);
+            var folderPath = Path.Combine(DefaultDirectoryPath, "testProductVersion");
             await topicExporter.ExportDocumentsForProductToFolder(productId, lastVersion,
-                Directory.CreateDirectory(@"F:\Desarrollo\prueba\testProductVersion"));
+              Directory.CreateDirectory(folderPath));
         }
 
         private async Task ExportTopicsForCurrentProductToMkDocs() {
             await topicExporter.ExportDocumentsForProductToFolder(SelectedProduct.ProductId,
-                Directory.CreateDirectory(@"F:\Desarrollo\prueba\testProduct"));
+                Directory.CreateDirectory(Path.Combine(DefaultDirectoryPath, "testProduct")));
         }
 
         private async Task LoadAllProducts()
