@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Papyrus.Business.Products;
-using Papyrus.Business.Topics;
 
 namespace Papyrus.Business.Exporters
 {
