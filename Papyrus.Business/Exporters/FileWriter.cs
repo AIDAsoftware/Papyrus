@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Papyrus.Business.Exporters {
     public class FileWriter {
         public static async Task WriteFileWithContent(string filePath, string content) {
-            var encodedText = Encoding.UTF8.GetBytes(content);
+            var encodedText = Encoding.UTF8.GetBytes(content ?? "");
 
             using (var sourceStream = new FileStream(filePath,
                 FileMode.Append, FileAccess.Write, FileShare.None,
