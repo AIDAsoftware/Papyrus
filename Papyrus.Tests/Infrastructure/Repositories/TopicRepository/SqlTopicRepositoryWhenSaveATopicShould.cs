@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Papyrus.Business.Topics;
 using Papyrus.Infrastructure.Core.Database;
-using Papyrus.Tests.Infrastructure.Repositories.helpers;
+using Papyrus.Tests.Infrastructure.Repositories.Helpers;
 
 namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 {
