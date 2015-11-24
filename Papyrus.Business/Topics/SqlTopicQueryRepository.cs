@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Infrastructure.Core.Database;
@@ -158,17 +156,17 @@ namespace Papyrus.Business.Topics {
 
         private async Task<ObservableCollection<EditableVersionRange>> GetVersionRangesOf(string topicId) {
             var versionRanges = (await connection
-                .Query<dynamic>(@"SELECT VR.FromVersionId, ProductVersion.VersionName FromVersionName, ProductVersion.Release FromRelease,
-                                        VR.ToVersionId, ToVersions.VersionName ToVersionName, ToVersions.Release ToRelease, VR.VersionRangeId 
-                                    from VersionRange VR
-                                    join ProductVersion on VR.FromVersionId = ProductVersion.VersionId
-                                    join (
-	                                    select VersionRangeId, ToVersionId, ProductVersion.VersionName, ProductVersion.Release
-	                                    from VersionRange
-	                                    join ProductVersion on ToVersionId = ProductVersion.VersionId) ToVersions
-                                    on VR.ToVersionId = ToVersions.ToVersionId AND ToVersions.VersionRangeId = VR.VersionRangeId
-                                    where VR.TopicId = @TopicId",
+                .Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
+                                FROM VersionRange WHERE TopicId = @TopicId",
                                 new { TopicId = topicId })).ToList();
+            foreach (var versionRange in versionRanges) {
+                versionRange.FromVersion = (await connection
+                        .Query<ProductVersion>(@"SELECT VersionId, VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId",
+                                        new { VersionId = versionRange.FromVersionId })).First();
+                versionRange.ToVersion = (await connection
+                        .Query<ProductVersion>(@"SELECT VersionId, VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId",
+                                        new { VersionId = versionRange.ToVersionId })).First();
+            }
             await AddDocumentsForEachVersionRangeIn(versionRanges);
             var editableVersionRanges = versionRanges.Select(MapToEditableVersionRange);
             return new ObservableCollection<EditableVersionRange>(editableVersionRanges);
@@ -181,9 +179,11 @@ namespace Papyrus.Business.Topics {
         }
 
         private EditableVersionRange MapToEditableVersionRange(dynamic versionRange) {
+            var fromVersion = versionRange.FromVersion;
+            var toVersion = versionRange.ToVersion;
             var editableVersionRange = new EditableVersionRange() {
-                FromVersion = new ProductVersion(versionRange.FromVersionId, versionRange.FromVersionName, versionRange.FromRelease),
-                ToVersion = new ProductVersion(versionRange.ToVersionId, versionRange.ToVersionName, versionRange.ToRelease),
+                FromVersion = versionRange.FromVersion,
+                ToVersion = versionRange.ToVersion
             };
 
             foreach (var editableDocument in versionRange.Documents) {
