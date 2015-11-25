@@ -62,6 +62,21 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                                                t.LastDocumentTitle == "Título" &&
                                                t.LastDocumentDescription == "Descripción");
         }
+        
+        [Test]
+        public async void a_list_with_topics_defined_for_last_version_with_the_name_of_its_last_version_today()
+        {
+            await InsertProductWithItsVersions();
+            var topic = new Topic(ProductId).WithId("AnyTopicId");
+            var firstVersionRange = new VersionRange(FirstVersionId, "*").WithId("AnyRangeId");
+            firstVersionRange.AddDocument(spanishDocument.WithId("AnyDocumentId"));
+            topic.AddVersionRange(firstVersionRange);
+            await sqlInserter.Insert(topic);
+
+            var topicSummaries = await topicRepository.GetAllTopicsSummaries();
+
+            topicSummaries.Should().Contain(t => t.Product.ProductId == ProductId);
+        }
 
         [Test]
         public async Task a_displayable_topic_with_its_product()

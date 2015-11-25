@@ -16,15 +16,26 @@ namespace Papyrus.Business.Topics {
 
         public async Task<List<TopicSummary>> GetAllTopicsSummaries() {
             var resultset = (await connection.Query<dynamic>(
-                @"SELECT Topic.TopicId, Product.ProductName, Product.ProductId, ProductVersion.VersionName, Document.Title, Document.Description
+                @"SELECT Topic.TopicId, Product.ProductName, Product.ProductId, VersionRange.ToVersionId, Document.Title, Document.Description
                     FROM Topic
                     JOIN Product ON Product.ProductId = Topic.ProductId
                     JOIN VersionRange ON VersionRange.TopicId = Topic.TopicId
-                    JOIN ProductVersion ON VersionRange.ToVersionId = ProductVersion.VersionId
-                    JOIN Document ON Document.VersionRangeId = VersionRange.VersionRangeId
-                    ORDER BY ProductVersion.Release DESC"
-                ));
-            var topicsToShow = DistinctByTopicChoosingTheRowWithLatestDocumentAdded(resultset);
+                    JOIN Document ON Document.VersionRangeId = VersionRange.VersionRangeId"
+                )).ToList();
+            foreach (var topic in resultset) {
+                if (topic.ToVersionId == "*") {
+                    topic.VersionName = (await connection.Query<string>(
+                        @"SELECT TOP 1 VersionName, Release FROM ProductVersion WHERE ProductId = @ProductId ORDER BY Release DESC"
+                        , new {ProductId = topic.ProductId})).First();
+                }
+                else {
+                    topic.VersionName = (await connection.Query<string>(
+                        @"SELECT VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId"
+                        , new { VersionId = topic.ToVersionId })).First();
+                }
+            }
+            var orderedResultSet = resultset.OrderBy(t => t.Release);
+            var topicsToShow = DistinctByTopicChoosingTheRowWithLatestDocumentAdded(orderedResultSet);
             return topicsToShow;
         }
 
