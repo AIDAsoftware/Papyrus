@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -174,7 +175,8 @@ namespace Papyrus.Business.Topics {
                 versionRange.FromVersion = (await connection
                         .Query<ProductVersion>(@"SELECT VersionId, VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId",
                                         new { VersionId = versionRange.FromVersionId })).First();
-                versionRange.ToVersion = (await connection
+                if (versionRange.ToVersionId == "*") versionRange.ToVersion = new ProductVersion("*", "Last version", DateTime.MaxValue);
+                else versionRange.ToVersion = (await connection
                         .Query<ProductVersion>(@"SELECT VersionId, VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId",
                                         new { VersionId = versionRange.ToVersionId })).First();
             }

@@ -191,6 +191,22 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             });
         }
 
+        [Test]
+        public async Task editable_topic_when_to_version_is_a_wildcard() {
+            await InsertProduct(ProductId, "any Product");
+            var fromVersionId = "anyId";
+            await InsertProductVersion(new ProductVersion(fromVersionId, "Any Name", DateTime.Today), ProductId);
+            var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
+            var firstVersionRange = new VersionRange(fromVersionId, "*").WithId("FirstVersionRangeId");
+            topic.AddVersionRange(firstVersionRange);
+            await sqlInserter.Insert(topic);
+
+            var editableTopic = await topicRepository.GetEditableTopicById("FirstTopicPapyrusId");
+
+            var expectedVersion = new ProductVersion("*", "Last version", DateTime.MaxValue);
+            editableTopic.VersionRanges.First().ToVersion.ShouldBeEquivalentTo(expectedVersion);
+        }
+
         private async Task InsertProductWithItsVersions() {
             await InsertProductWithAVersion();
             await InsertProductVersion(version2, ProductId);
