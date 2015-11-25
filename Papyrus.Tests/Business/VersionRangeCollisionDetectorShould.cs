@@ -89,5 +89,24 @@ namespace Papyrus.Tests.Business
             collisions.Should().BeEmpty();
         }
 
+        [Test]
+        public async Task detect_collision_when_we_have_a_version_range_linking_always_to_last_version_if_there_are_a_collision() {
+            var topic = new Topic(ProductId);
+            topic.AddVersionRange(new VersionRange("version3", "version4"));
+            topic.AddVersionRange(new VersionRange("version4", "*"));
+
+            var collision = await versionRangeCollisionDetector.CollisionsFor(topic);
+
+            var expectedCollisions = new List<Collision>
+            {
+                new Collision(
+                    new EditableVersionRange { FromVersion = version3, ToVersion = version4 },
+                    new EditableVersionRange { FromVersion = version4, ToVersion = new ProductVersion("*", "Last version", DateTime.MaxValue)}
+                )
+            };
+
+            collision.ShouldBeEquivalentTo(expectedCollisions);
+        }
+
     }
 }
