@@ -191,19 +191,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             });
         }
 
-        [Test]
-        public async Task topics_that_can_be_defined_for_new_versions_automatically() {
-            await InsertProductWithItsVersions();
-            var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
-            var versionRange = new VersionRange(version1.VersionId, "*").WithId("VersionRangeId");
-            topic.AddVersionRange(versionRange);
-            await sqlInserter.Insert(topic);
-
-            var editableTopic = await topicRepository.GetEditableTopicById("FirstTopicPapyrusId");
-
-            editableTopic.VersionRanges.First().ToVersion.VersionId.Should().Be(version2.VersionId);
-        }
-
         private async Task InsertProductWithItsVersions() {
             await InsertProductWithAVersion();
             await InsertProductVersion(version2, ProductId);
