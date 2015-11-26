@@ -105,10 +105,10 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             var editableVersionRanges = editableTopic.VersionRanges;
             editableVersionRanges.Should().HaveCount(1);
-            editableVersionRanges.FirstOrDefault().FromVersion.VersionId.Should().Be(FirstVersionId);
-            editableVersionRanges.FirstOrDefault().FromVersion.VersionName.Should().Be(FirstVersionName);
-            editableVersionRanges.FirstOrDefault().ToVersion.VersionId.Should().Be(FirstVersionId);
-            editableVersionRanges.FirstOrDefault().ToVersion.VersionName.Should().Be(FirstVersionName);
+            editableVersionRanges.First().FromVersion.VersionId.Should().Be(FirstVersionId);
+            editableVersionRanges.First().FromVersion.VersionName.Should().Be(FirstVersionName);
+            editableVersionRanges.First().ToVersion.VersionId.Should().Be(FirstVersionId);
+            editableVersionRanges.First().ToVersion.VersionName.Should().Be(FirstVersionName);
         }
 
         [Test]
@@ -124,7 +124,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             var editableTopic = await topicRepository.GetEditableTopicById("FirstTopicPapyrusId");
 
-            var editableVersionRange = editableTopic.VersionRanges.FirstOrDefault();
+            var editableVersionRange = editableTopic.VersionRanges.First();
             editableVersionRange.Documents.Should().HaveCount(1);
             var editableDocument = editableVersionRange.Documents.First();
             editableDocument.Title.Should().Be("Título");
