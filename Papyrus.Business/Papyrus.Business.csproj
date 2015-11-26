@@ -62,9 +62,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exporters\ExportableProduct.cs" />
-    <Compile Include="Exporters\ExportableTopic.cs" />
-    <Compile Include="Exporters\ExportableVersionRange.cs" />
     <Compile Include="Exporters\FileWriter.cs" />
     <Compile Include="Exporters\MkDocsExporter.cs" />
     <Compile Include="Products\FullVersionRange.cs" />
@@ -77,7 +74,6 @@
     <Compile Include="Topics\EditableVersionRange.cs" />
     <Compile Include="Topics\Exceptions\CannotDeleteTopicsWithoutTopicIdAssignedException.cs" />
     <Compile Include="Topics\Exceptions\VersionRangesCollisionException.cs" />
-    <Compile Include="Topics\ExportableDocument.cs" />
     <Compile Include="Topics\RangeWithAllVersions.cs" />
     <Compile Include="Topics\SqlTopicCommandRepository.cs" />
     <Compile Include="Topics\SqlTopicQueryRepository.cs" />
