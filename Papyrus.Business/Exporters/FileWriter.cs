@@ -3,7 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Papyrus.Business.Exporters {
-    public class FileWriter {
+    public static class FileWriter {
         public static async Task WriteFileWithContent(string filePath, string content) {
             var encodedText = Encoding.UTF8.GetBytes(content ?? "");
 
