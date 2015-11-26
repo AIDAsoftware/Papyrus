@@ -197,14 +197,13 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var fromVersionId = "anyId";
             await InsertProductVersion(new ProductVersion(fromVersionId, "Any Name", DateTime.Today), ProductId);
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
-            var firstVersionRange = new VersionRange(fromVersionId, "*").WithId("FirstVersionRangeId");
+            var firstVersionRange = new VersionRange(fromVersionId, LastProductVersion.Id).WithId("FirstVersionRangeId");
             topic.AddVersionRange(firstVersionRange);
             await sqlInserter.Insert(topic);
 
             var editableTopic = await topicRepository.GetEditableTopicById("FirstTopicPapyrusId");
 
-            var expectedVersion = new ProductVersion("*", "Last version", DateTime.MaxValue);
-            editableTopic.VersionRanges.First().ToVersion.ShouldBeEquivalentTo(expectedVersion);
+            (editableTopic.VersionRanges.First().ToVersion is LastProductVersion).Should().BeTrue();
         }
 
         private async Task InsertProductWithItsVersions() {

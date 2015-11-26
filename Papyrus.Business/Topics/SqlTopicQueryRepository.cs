@@ -172,17 +172,28 @@ namespace Papyrus.Business.Topics {
                                 FROM VersionRange WHERE TopicId = @TopicId",
                                 new { TopicId = topicId })).ToList();
             foreach (var versionRange in versionRanges) {
-                versionRange.FromVersion = (await connection
-                        .Query<ProductVersion>(@"SELECT VersionId, VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId",
-                                        new { VersionId = versionRange.FromVersionId })).First();
-                if (versionRange.ToVersionId == "*") versionRange.ToVersion = new ProductVersion("*", "Last version", DateTime.MaxValue);
-                else versionRange.ToVersion = (await connection
-                        .Query<ProductVersion>(@"SELECT VersionId, VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId",
-                                        new { VersionId = versionRange.ToVersionId })).First();
+                await AssignProductVersionTo(versionRange);
             }
             await AddDocumentsForEachVersionRangeIn(versionRanges);
             var editableVersionRanges = versionRanges.Select(MapToEditableVersionRange);
             return new ObservableCollection<EditableVersionRange>(editableVersionRanges);
+        }
+
+        private async Task AssignProductVersionTo(dynamic versionRange) {
+            string fromVersionId = versionRange.FromVersionId;
+            versionRange.FromVersion = await SelectProductVersionById(fromVersionId);
+            if (versionRange.ToVersionId == LastProductVersion.Id) {
+                versionRange.ToVersion = new LastProductVersion();
+                return;
+            }
+            var toVersionId = versionRange.ToVersionId;
+            versionRange.ToVersion = SelectProductVersionById(toVersionId);
+        }
+
+        private async Task<ProductVersion> SelectProductVersionById(string id) {
+            return (await connection
+                .Query<ProductVersion>(@"SELECT VersionId, VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId",
+                    new {VersionId = id})).First();
         }
 
         private async Task AddDocumentsForEachVersionRangeIn(IEnumerable<dynamic> versionRanges) {
