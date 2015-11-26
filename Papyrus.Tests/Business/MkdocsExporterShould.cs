@@ -39,6 +39,20 @@ namespace Papyrus.Tests.Business {
             GetFilesFrom(mkdocsPath).Should().Contain(x => x.Name == "mkdocs.yml");
         }
 
+        [Test]
+        public async Task generate_docs_folder_in_the_given_folder() {
+            var mkdocsPath = "anyLanguage/AnyVersion";
+            var webSite = WebSiteWithDocument(AnyDocument());
+
+            await new MkdocsExporter().Export(mkdocsPath, webSite, testDirectory);
+
+            GetFoldersFrom(mkdocsPath).Should().Contain(x => x.Name == "docs");
+        }
+
+        private DirectoryInfo[] GetFoldersFrom(string path) {
+            return new DirectoryInfo(Path.Combine(testDirectory.FullName, path)).GetDirectories();
+        }
+
         private FileInfo[] GetFilesFrom(string path) {
             return new DirectoryInfo(Path.Combine(testDirectory.FullName, path)).GetFiles();
         }

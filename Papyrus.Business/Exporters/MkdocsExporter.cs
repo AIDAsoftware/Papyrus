@@ -6,6 +6,7 @@ namespace Papyrus.Business.Exporters {
     public class MkdocsExporter {
         public async Task Export(string path, WebSite webSite, DirectoryInfo directory) {
             var mkdocsDirectory = directory.CreateSubdirectory(path);
+            mkdocsDirectory.CreateSubdirectory("docs");
             var ymlPath = Path.Combine(mkdocsDirectory.FullName, "mkdocs.yml");
             await FileWriter.WriteFileWithContent(ymlPath, "");
         }
