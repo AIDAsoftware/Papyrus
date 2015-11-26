@@ -124,6 +124,7 @@
   <ItemGroup>
     <Compile Include="Business\EditableTopicShould.cs" />
     <Compile Include="Business\MkdocsExporterShould.cs" />
+    <Compile Include="Business\PathByVersionGeneratorShould.cs" />
     <Compile Include="Business\TopicServiceShould.cs" />
     <Compile Include="Business\VersionRangeCollisionDetectorShould.cs" />
     <Compile Include="Business\VersionRangeShould.cs" />
