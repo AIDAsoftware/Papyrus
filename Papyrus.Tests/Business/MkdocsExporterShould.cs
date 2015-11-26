@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,30 +12,27 @@ using Papyrus.Business.Topics;
 namespace Papyrus.Tests.Business {
     [TestFixture]
     public class MkdocsExporterShould {
-        private const string PapyrusId = "PapyrusId";
         private DirectoryInfo testDirectory;
-        private TopicQueryRepository topicRepository;
-        private ProductRepository productRepository;
-        private readonly ProductVersion version1 = new ProductVersion("version1", "1.0", DateTime.Today);
-        private readonly ProductVersion version2 = new ProductVersion("version2", "2.0", DateTime.Today.AddDays(3));
-        private readonly ProductVersion version3 = new ProductVersion("version3", "3.0", DateTime.Today.AddDays(4));
-        private const string SpanishLanguage = "es-ES";
-        private const string EnglishLanguage = "en-GB";
+        // TODO
+        //  - should generate docs folder in the given folder
+        //  - should generate exportable document in the docs folder
 
         [SetUp]
-        public void CreateTestDirectory() {
-            testDirectory = Directory.CreateDirectory(@"test");
-            topicRepository = Substitute.For<TopicQueryRepository>();
-            productRepository = Substitute.For<ProductRepository>();
+        public void SetUp() {
+            var testDirectoryPath = Directory.GetCurrentDirectory();
+            testDirectory = Directory.CreateDirectory(testDirectoryPath);
         }
 
-        [TearDown]
-        public void DeleteFolder() {
-            testDirectory.Delete(true);
-        }
+        [Test]
+        public async Task generate_mkdocs_yml_file_in_the_given_path() {
+            var path = "anyLanguage/AnyVersion";
+            var webSite = new WebSite();
+            webSite.AddDocument(new ExportableDocument("AnyTitle", "AnyContent", "AnyWebsitePath"));
 
-        private static string GetContentOf(FileInfo document) {
-            return File.ReadAllText(document.FullName);
+            await new MkdocsExporter().Export(path, webSite, testDirectory);
+
+            var mkdocsDirectoryFiles = new DirectoryInfo(Path.Combine(testDirectory.FullName, path)).GetFiles(); 
+            mkdocsDirectoryFiles.Should().Contain(x => x.Name == "mkdocs.yml");
         }
     }
 }

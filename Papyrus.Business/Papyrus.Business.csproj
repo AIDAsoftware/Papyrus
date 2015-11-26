@@ -62,12 +62,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exporters\ExportableDocument.cs" />
     <Compile Include="Exporters\FileWriter.cs" />
+    <Compile Include="Exporters\MkdocsExporter.cs" />
     <Compile Include="Exporters\PathByProductGenerator.cs" />
     <Compile Include="Exporters\PathByVersionGenerator.cs" />
     <Compile Include="Exporters\PathGenerator.cs" />
     <Compile Include="Products\FullVersionRange.cs" />
     <Compile Include="Products\ProductVersion.cs" />
+    <Compile Include="Products\WebSite.cs" />
     <Compile Include="Topics\Collision.cs" />
     <Compile Include="Topics\Documents.cs" />
     <Compile Include="Topics\EditableDocument.cs" />
