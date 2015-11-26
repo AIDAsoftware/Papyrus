@@ -19,20 +19,38 @@ namespace Papyrus.Tests.Business {
 
         [SetUp]
         public void SetUp() {
-            var testDirectoryPath = Directory.GetCurrentDirectory();
+            var path = Path.GetTempPath();
+            var testDirectoryPath = Path.Combine(path, Guid.NewGuid().ToString());
             testDirectory = Directory.CreateDirectory(testDirectoryPath);
+        }
+
+        [TearDown]
+        public void TearDown() {
+            testDirectory.Delete(true);
         }
 
         [Test]
         public async Task generate_mkdocs_yml_file_in_the_given_path() {
-            var path = "anyLanguage/AnyVersion";
+            var mkdocsPath = "anyLanguage/AnyVersion";
+            var webSite = WebSiteWithDocument(AnyDocument());
+
+            await new MkdocsExporter().Export(mkdocsPath, webSite, testDirectory);
+
+            GetFilesFrom(mkdocsPath).Should().Contain(x => x.Name == "mkdocs.yml");
+        }
+
+        private FileInfo[] GetFilesFrom(string path) {
+            return new DirectoryInfo(Path.Combine(testDirectory.FullName, path)).GetFiles();
+        }
+
+        private static ExportableDocument AnyDocument() {
+            return new ExportableDocument("AnyTitle", "AnyContent", "AnyWebsitePath");
+        }
+
+        private static WebSite WebSiteWithDocument(ExportableDocument exportableDocument) {
             var webSite = new WebSite();
-            webSite.AddDocument(new ExportableDocument("AnyTitle", "AnyContent", "AnyWebsitePath"));
-
-            await new MkdocsExporter().Export(path, webSite, testDirectory);
-
-            var mkdocsDirectoryFiles = new DirectoryInfo(Path.Combine(testDirectory.FullName, path)).GetFiles(); 
-            mkdocsDirectoryFiles.Should().Contain(x => x.Name == "mkdocs.yml");
+            webSite.AddDocument(exportableDocument);
+            return webSite;
         }
     }
 }
