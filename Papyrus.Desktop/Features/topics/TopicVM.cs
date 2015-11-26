@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -8,6 +9,7 @@ using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
+using Papyrus.Infrastructure.Core;
 using Papyrus.Infrastructure.Core.DomainEvents;
 
 namespace Papyrus.Desktop.Features.Topics
@@ -96,8 +98,12 @@ namespace Papyrus.Desktop.Features.Topics
         public async void Initialize()
         {
             var versions = await productRepository.GetAllVersionsFor(EditableTopic.Product.ProductId);
-            versions.ForEach(v => FromVersions.Add(v));
-            versions.ForEach(v => ToVersions.Add(v));
+            FromVersions.AddRange(versions);
+            FillToVersions(versions);
+        }
+
+        private void FillToVersions(List<ProductVersion> versions) {
+            ToVersions.AddRange(versions);
             ToVersions.Add(new LastProductVersion());
         }
     }
