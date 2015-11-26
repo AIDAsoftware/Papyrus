@@ -90,10 +90,10 @@ namespace Papyrus.Tests.Business
         }
 
         [Test]
-        public async Task detect_collision_when_we_have_a_version_range_linking_always_to_last_version_if_there_are_a_collision() {
+        public async Task detect_collision_when_to_version_is_defined_with_wildcard() {
             var topic = new Topic(ProductId);
             topic.AddVersionRange(new VersionRange("version3", "version4"));
-            topic.AddVersionRange(new VersionRange("version4", "*"));
+            topic.AddVersionRange(new VersionRange("version4", LastProductVersion.Id));
 
             var collision = await versionRangeCollisionDetector.CollisionsFor(topic);
 
@@ -101,7 +101,7 @@ namespace Papyrus.Tests.Business
             {
                 new Collision(
                     new EditableVersionRange { FromVersion = version3, ToVersion = version4 },
-                    new EditableVersionRange { FromVersion = version4, ToVersion = new ProductVersion("*", "Last version", DateTime.MaxValue)}
+                    new EditableVersionRange { FromVersion = version4, ToVersion = new LastProductVersion()}
                 )
             };
 

@@ -45,7 +45,7 @@ namespace Papyrus.Business.Topics
 
         private ProductVersion GetVersionById(string versionId)
         {
-            if (versionId == "*") return new ProductVersion("*", "Last version", DateTime.MaxValue);
+            if (versionId == LastProductVersion.Id) return new LastProductVersion();
             return Versions.First(vr => vr.VersionId == versionId);
         }
     }

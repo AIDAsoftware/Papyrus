@@ -68,7 +68,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         {
             await InsertProductWithItsVersions();
             var topic = new Topic(ProductId).WithId("AnyTopicId");
-            var firstVersionRange = new VersionRange(FirstVersionId, "*").WithId("AnyRangeId");
+            var firstVersionRange = new VersionRange(FirstVersionId, LastProductVersion.Id).WithId("AnyRangeId");
             firstVersionRange.AddDocument(spanishDocument.WithId("AnyDocumentId"));
             topic.AddVersionRange(firstVersionRange);
             await sqlInserter.Insert(topic);

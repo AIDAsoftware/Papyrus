@@ -69,7 +69,7 @@ namespace Papyrus.Business.Topics
 
         private DateTime ReleaseFor(string versionId)
         {
-            if (versionId == "*") return DateTime.MaxValue;
+            if (versionId == LastProductVersion.Id) return DateTime.MaxValue;
             return Versions.First(vr => versionId == vr.VersionId).Release;
         }
     }
