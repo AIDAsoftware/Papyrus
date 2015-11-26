@@ -187,7 +187,7 @@ namespace Papyrus.Business.Topics {
                 return;
             }
             var toVersionId = versionRange.ToVersionId;
-            versionRange.ToVersion = SelectProductVersionById(toVersionId);
+            versionRange.ToVersion = await SelectProductVersionById(toVersionId);
         }
 
         private async Task<ProductVersion> SelectProductVersionById(string id) {
