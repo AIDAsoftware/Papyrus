@@ -21,13 +21,15 @@ namespace Papyrus.Desktop.Features.Topics
         public IAsyncCommand SaveTopic { get; set; }
         public RelayCommand<Window> DeleteTopic { get; set; }
 
-        public ObservableCollection<ProductVersion> Versions { get; private set; }
+        public ObservableCollection<ProductVersion> FromVersions { get; private set; }
+        public ObservableCollection<ProductVersion> ToVersions { get; private set; }
 
         public TopicVM()
         {
             SaveTopic = RelayAsyncSimpleCommand.Create(TryToSaveCurrentTopic, CanSaveTopic);
             DeleteTopic = new RelayCommand<Window>(DeleteCurrentTopic);
-            Versions = new ObservableCollection<ProductVersion>();
+            FromVersions = new ObservableCollection<ProductVersion>();
+            ToVersions = new ObservableCollection<ProductVersion>();
         }
 
         private TopicVM(TopicService topicService, ProductRepository productRepository) : this()
@@ -94,7 +96,9 @@ namespace Papyrus.Desktop.Features.Topics
         public async void Initialize()
         {
             var versions = await productRepository.GetAllVersionsFor(EditableTopic.Product.ProductId);
-            versions.ForEach(v => Versions.Add(v));
+            versions.ForEach(v => FromVersions.Add(v));
+            versions.ForEach(v => ToVersions.Add(v));
+            ToVersions.Add(new LastProductVersion());
         }
     }
 
