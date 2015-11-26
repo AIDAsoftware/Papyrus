@@ -9,7 +9,7 @@ namespace Papyrus.Desktop {
     public static class ViewModelsFactory {
         public static TopicsGridVM TopicsGrid()
         {
-            return new TopicsGridVM(RepositoriesFactory.QueryTopic(), RepositoriesFactory.Product(), new MkDocsExporter(RepositoriesFactory.QueryTopic(), RepositoriesFactory.Product()));
+            return new TopicsGridVM(RepositoriesFactory.QueryTopic(), RepositoriesFactory.Product());
         }
 
         public static TopicVM Topic(EditableTopic topic)

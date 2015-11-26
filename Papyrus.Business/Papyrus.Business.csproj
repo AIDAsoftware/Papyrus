@@ -63,7 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exporters\FileWriter.cs" />
-    <Compile Include="Exporters\MkDocsExporter.cs" />
+    <Compile Include="Exporters\PathByProductGenerator.cs" />
     <Compile Include="Products\FullVersionRange.cs" />
     <Compile Include="Products\ProductVersion.cs" />
     <Compile Include="Topics\Collision.cs" />

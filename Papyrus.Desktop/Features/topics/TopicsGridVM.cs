@@ -16,7 +16,6 @@ namespace Papyrus.Desktop.Features.Topics {
     {
         private readonly TopicQueryRepository topicRepository;
         private readonly ProductRepository productRepository;
-        private MkDocsExporter topicExporter;
         public ObservableCollection<TopicSummary> TopicsToList { get; protected set; }
         public ObservableCollection<DisplayableProduct> Products { get; private set; }
         public TopicSummary SelectedTopic { get; set; }
@@ -45,17 +44,13 @@ namespace Papyrus.Desktop.Features.Topics {
             TopicsToList = new ObservableCollection<TopicSummary>();
             Products = new ObservableCollection<DisplayableProduct>();
             RefreshTopics = RelayAsyncSimpleCommand.Create(LoadAllTopics, CanLoadAllTopics);
-            ExportProductToMkDocs = RelayAsyncSimpleCommand.Create(ExportTopicsForCurrentProductToMkDocs, () => true);
-            ExportLastVersionToMkDocs = RelayAsyncSimpleCommand.Create(ExportTopicsForLastVersionToMkDocs, () => true);
-            ExportAllProducts = RelayAsyncSimpleCommand.Create(ExportAllProductsForAllVersions, () => true);
             DefaultDirectoryPath = Directory.GetCurrentDirectory();
         }
 
-        public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository, MkDocsExporter exporter) : this()
+        public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository) : this()
         {
             this.topicRepository = topicRepository;
             this.productRepository = productRepository;
-            this.topicExporter = exporter;
         }
 
         public async Task Initialize()
@@ -83,23 +78,6 @@ namespace Papyrus.Desktop.Features.Topics {
                 Product = SelectedProduct,
                 VersionRanges = versionRanges
             };
-        }
-
-        private async Task ExportAllProductsForAllVersions() {
-            await topicExporter.ExportAllProductsIn(Directory.CreateDirectory(Path.Combine(DefaultDirectoryPath, "testAllProducts")));
-        }
-
-        private async Task ExportTopicsForLastVersionToMkDocs() {
-            var productId = SelectedProduct.ProductId;
-            var lastVersion = await productRepository.GetLastVersionForProduct(productId);
-            var folderPath = Path.Combine(DefaultDirectoryPath, "testProductVersion");
-            await topicExporter.ExportDocumentsForProductToFolder(productId, lastVersion,
-              Directory.CreateDirectory(folderPath));
-        }
-
-        private async Task ExportTopicsForCurrentProductToMkDocs() {
-            await topicExporter.ExportDocumentsForProductToFolder(SelectedProduct.ProductId,
-                Directory.CreateDirectory(Path.Combine(DefaultDirectoryPath, "testProduct")));
         }
 
         private async Task LoadAllProducts()

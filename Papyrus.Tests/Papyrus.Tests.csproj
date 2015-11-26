@@ -127,6 +127,7 @@
     <Compile Include="Business\TopicServiceShould.cs" />
     <Compile Include="Business\VersionRangeCollisionDetectorShould.cs" />
     <Compile Include="Business\VersionRangeShould.cs" />
+    <Compile Include="Business\PathByProductGeneratorShould.cs" />
     <Compile Include="Infrastructure\Database\DatabaseConnectionShould.cs" />
     <Compile Include="Infrastructure\Repositories\helpers\DataBaseTruncator.cs" />
     <Compile Include="Infrastructure\Repositories\SqlProductRepositoryShould.cs" />

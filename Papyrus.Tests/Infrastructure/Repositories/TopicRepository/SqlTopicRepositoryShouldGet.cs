@@ -134,64 +134,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async Task a_list_of_all_exportable_topics_for_a_given_product() {
-            await InsertProductWithItsVersions();
-            var versionForOtherProduct = new ProductVersion("otherProductVersion", "1.0", DateTime.Today.AddDays(-10));
-            await InsertProductVersion(versionForOtherProduct, "otherProduct");
-            var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
-            var versionRange = new VersionRange(FirstVersionId, SecondVersionId).WithId("FirstVersionRangeId");
-            spanishDocument.WithId("DocumentId");
-            englishDocument.WithId("AnotherDocumentId");
-            versionRange.AddDocument(spanishDocument);
-            versionRange.AddDocument(englishDocument);
-            topic.AddVersionRange(versionRange);
-            await sqlInserter.Insert(topic);
-
-            var exportableTopics = await topicRepository.GetExportableTopicsForProduct(ProductId);
-
-            var spanishExportableDocument = new ExportableDocument(spanishDocument.Title, spanishDocument.Content, spanishDocument.Language);
-            var englishExportableDocument = new ExportableDocument(englishDocument.Title, englishDocument.Content, englishDocument.Language);
-            var exportableVersionRange = exportableTopics.First().VersionRanges.First();
-            exportableVersionRange.Versions.Should().HaveCount(2);
-            exportableVersionRange.Versions.Should().Contain(version1);
-            exportableVersionRange.Versions.Should().Contain(version2);
-            exportableVersionRange.Documents.ShouldBeEquivalentTo(new List<ExportableDocument> {
-                spanishExportableDocument, englishExportableDocument
-            });
-        }
-
-        [Test]
-        public async Task a_list_of_all_exportable_topics_for_a_given_product_version() {
-            await InsertProductWithItsVersions();
-            var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
-            var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
-            var secondVersionRange = new VersionRange(SecondVersionId, SecondVersionId).WithId("SecondVersionRangeId");
-            spanishDocument.WithId("DocumentId");
-            englishDocument.WithId("AnotherDocumentId");
-            firstVersionRange.AddDocument(spanishDocument);
-            firstVersionRange.AddDocument(englishDocument);
-            secondVersionRange.AddDocument(new Document("A Title", "A Description", "A Content", "en-GB").WithId("AnyId"));
-            secondVersionRange.AddDocument(new Document("Un Título", "Una Descripción", "Un Contenido", "es-ES").WithId("AnotherId"));
-            topic.AddVersionRange(firstVersionRange);
-            topic.AddVersionRange(secondVersionRange);
-            await sqlInserter.Insert(topic);
-
-            var exportableTopics = await topicRepository.GetExportableTopicsForProductVersion(ProductId, version2);
-
-            var spanishExportableDocument = new ExportableDocument("A Title", "A Content", "en-GB");
-            var englishExportableDocument = new ExportableDocument("Un Título", "Un Contenido", "es-ES");
-            var exportableTopic = exportableTopics.First();
-            var expectedProduct = new ExportableProduct(ProductId, "Opportunity");
-            exportableTopic.Product.ShouldBeEquivalentTo(expectedProduct);
-            var exportableVersionRange = exportableTopic.VersionRanges.First();
-            exportableVersionRange.Versions.Should().HaveCount(1);
-            exportableVersionRange.Versions.Should().Contain(version2);
-            exportableVersionRange.Documents.ShouldBeEquivalentTo(new List<ExportableDocument> {
-                spanishExportableDocument, englishExportableDocument
-            });
-        }
-
-        [Test]
         public async Task editable_topic_when_to_version_is_a_wildcard() {
             await InsertProduct(ProductId, "any Product");
             var fromVersionId = "anyId";
