@@ -25,9 +25,7 @@ namespace Papyrus.Business.Topics {
                 )).ToList();
             foreach (var topic in resultset) {
                 if (topic.ToVersionId == LastProductVersion.Id) {
-                    topic.VersionName = (await connection.Query<string>(
-                        @"SELECT TOP 1 VersionName, Release FROM ProductVersion WHERE ProductId = @ProductId ORDER BY Release DESC"
-                        , new {ProductId = topic.ProductId})).First();
+                    topic.VersionName = LastProductVersion.Name;
                 }
                 else {
                     topic.VersionName = (await connection.Query<string>(

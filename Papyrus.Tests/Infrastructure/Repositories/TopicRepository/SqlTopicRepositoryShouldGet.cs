@@ -64,7 +64,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
         
         [Test]
-        public async void a_list_with_topics_defined_for_last_version_with_the_name_of_its_last_version_today()
+        public async void a_list_with_topics_with_wildcard_as_to_version()
         {
             await InsertProductWithItsVersions();
             var topic = new Topic(ProductId).WithId("AnyTopicId");
@@ -75,7 +75,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             var topicSummaries = await topicRepository.GetAllTopicsSummaries();
 
-            topicSummaries.Should().Contain(t => t.Product.ProductId == ProductId);
+            topicSummaries.First().VersionName.Should().Be(LastProductVersion.Name);
         }
 
         [Test]

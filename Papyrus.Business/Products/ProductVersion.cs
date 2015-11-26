@@ -28,7 +28,8 @@ namespace Papyrus.Business.Products
     }
 
     public class LastProductVersion : ProductVersion {
-        public static readonly string Id = "*";
-        public LastProductVersion() : base(Id, "Last version", DateTime.MaxValue) {}
+        public const string Name = "Last version";
+        public const string Id = "*";
+        public LastProductVersion() : base(Id, Name, DateTime.MaxValue) {}
     }
 }
