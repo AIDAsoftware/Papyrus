@@ -12,6 +12,7 @@ using Papyrus.Business.Topics;
 namespace Papyrus.Tests.Business {
     [TestFixture]
     public class MkdocsExporterShould {
+        private const string AnyMkdocsPath = "AnyLanguage/AnyVersion";
         private DirectoryInfo testDirectory;
         // TODO
         //  - should generate exportable document in the docs folder
@@ -31,34 +32,37 @@ namespace Papyrus.Tests.Business {
 
         [Test]
         public async Task generate_mkdocs_yml_file_in_the_given_path() {
-            var mkdocsPath = "anyLanguage/AnyVersion";
             var webSite = WebSiteWithDocument(AnyDocument());
 
-            await new MkdocsExporter().Export(mkdocsPath, webSite, testDirectory);
+            await new MkdocsExporter().Export(AnyMkdocsPath, webSite, testDirectory);
 
-            GetFilesFrom(mkdocsPath).Should().Contain(x => x.Name == "mkdocs.yml");
+            GetFilesFrom(AnyMkdocsPath).Should().Contain(x => x.Name == "mkdocs.yml");
         }
 
         [Test]
         public async Task generate_docs_folder_in_the_given_folder() {
-            var mkdocsPath = "anyLanguage/AnyVersion";
             var webSite = WebSiteWithDocument(AnyDocument());
 
-            await new MkdocsExporter().Export(mkdocsPath, webSite, testDirectory);
+            await new MkdocsExporter().Export(AnyMkdocsPath, webSite, testDirectory);
 
-            GetFoldersFrom(mkdocsPath).Should().Contain(x => x.Name == "docs");
+            GetFoldersFrom(AnyMkdocsPath).Should().Contain(x => x.Name == "docs");
         }
 
         [Test]
         public async Task generate_exportable_document_in_the_docs_folder() {
-            var mkdocsPath = "AnyLanguage/AnyVersion";
-            var webSite = WebSiteWithDocument(new ExportableDocument("Title", "Content", "Product"));
+            var documentContent = "Content";
+            var webSite = WebSiteWithDocument(new ExportableDocument("Title", documentContent, "Product"));
 
-            await new MkdocsExporter().Export(mkdocsPath, webSite, testDirectory);
+            await new MkdocsExporter().Export(AnyMkdocsPath, webSite, testDirectory);
 
-            var documentRelativePath = Path.Combine(mkdocsPath, "docs/Product/Title.md");
+            var fileContent = GetFileContentFrom(AnyMkdocsPath, "docs/Product/Title.md");
+            fileContent.Should().Be(documentContent);
+        }
+
+        private string GetFileContentFrom(string mkdocsPath, string documentPath) {
+            var documentRelativePath = Path.Combine(mkdocsPath, documentPath);
             var fileContent = File.ReadAllText(Path.Combine(testDirectory.FullName, documentRelativePath));
-            fileContent.Should().Be("Content");
+            return fileContent;
         }
 
         private FileInfo[] GetDocsFrom(string path) {
