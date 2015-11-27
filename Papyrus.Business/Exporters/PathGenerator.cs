@@ -19,6 +19,6 @@
             return this;
         }
 
-        public abstract string GeneratePath();
+        public abstract string GenerateMkdocsPath();
     }
 }
