@@ -23,7 +23,7 @@ namespace Papyrus.Business.Exporters {
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, DirectoryInfo directory) {
-            var documentDirectory = directory.CreateSubdirectory(document.Route);
+            var documentDirectory = Directory.CreateDirectory(Path.Combine(directory.FullName, document.Route));
             var documentPath = Path.Combine(documentDirectory.FullName, document.Title + MarkDownExtension);
             await FileWriter.WriteFileWithContent(documentPath, document.Content);
         }
