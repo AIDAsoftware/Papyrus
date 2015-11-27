@@ -14,9 +14,6 @@ namespace Papyrus.Tests.Business {
     public class MkdocsExporterShould {
         private const string AnyMkdocsPath = "AnyLanguage/AnyVersion";
         private DirectoryInfo testDirectory;
-        // TODO
-        //  - should generate exportable document in the docs folder
-        //  - should generate proper content for mkdocs.yml
 
         [SetUp]
         public void SetUp() {
@@ -40,6 +37,15 @@ namespace Papyrus.Tests.Business {
         }
 
         [Test]
+        public async Task write_the_theme_in_the_yml_file() {
+            var webSite = WebSiteWithDocument(AnyDocument());
+
+            await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
+
+            GetFoldersFrom(AnyMkdocsPath).Should().Contain(x => x.Name == "docs");
+        }
+        
+        [Test]
         public async Task generate_docs_folder_in_the_given_folder() {
             var webSite = WebSiteWithDocument(AnyDocument());
 
@@ -50,13 +56,12 @@ namespace Papyrus.Tests.Business {
 
         [Test]
         public async Task generate_exportable_document_in_the_docs_folder() {
-            var documentContent = "Content";
-            var webSite = WebSiteWithDocument(new ExportableDocument("Title", documentContent, "Product"));
+            var webSite = WebSiteWithDocument(AnyDocument());
 
             await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
 
-            var documentPath = Path.Combine(GetAnyExportationPath(), "docs/Product/Title.md");
-            GetFileContentFrom(documentPath).Should().Be(documentContent);
+            var documentPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
+            GetFileContentFrom(documentPath).Should().Be("theme: readthedocs");
         }
 
         private string GetAnyExportationPath() {

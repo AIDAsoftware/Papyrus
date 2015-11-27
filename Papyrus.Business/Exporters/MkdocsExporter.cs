@@ -6,6 +6,7 @@ namespace Papyrus.Business.Exporters {
     public class MkdocsExporter {
         private const string YmlFileName = "mkdocs.yml";
         private const string MarkDownExtension = ".md";
+        private const string MkdocsTheme = "theme: readthedocs";
 
         public async Task Export(WebSite webSite, string path) {
             var docsPath = Path.Combine(path, "docs");
@@ -18,7 +19,7 @@ namespace Papyrus.Business.Exporters {
 
         private static async Task WriteYmlFileIn(string path) {
             var ymlPath = Path.Combine(path, YmlFileName);
-            await FileWriter.WriteFileWithContent(ymlPath, "");
+            await FileWriter.WriteFileWithContent(ymlPath, MkdocsTheme);
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, DirectoryInfo directory) {
