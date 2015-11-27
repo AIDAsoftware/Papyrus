@@ -34,7 +34,7 @@ namespace Papyrus.Tests.Business {
         public async Task generate_mkdocs_yml_file_in_the_given_path() {
             var webSite = WebSiteWithDocument(AnyDocument());
 
-            await new MkdocsExporter().Export(AnyMkdocsPath, webSite, testDirectory);
+            await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
 
             GetFilesFrom(AnyMkdocsPath).Should().Contain(x => x.Name == "mkdocs.yml");
         }
@@ -43,7 +43,7 @@ namespace Papyrus.Tests.Business {
         public async Task generate_docs_folder_in_the_given_folder() {
             var webSite = WebSiteWithDocument(AnyDocument());
 
-            await new MkdocsExporter().Export(AnyMkdocsPath, webSite, testDirectory);
+            await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
 
             GetFoldersFrom(AnyMkdocsPath).Should().Contain(x => x.Name == "docs");
         }
@@ -53,15 +53,18 @@ namespace Papyrus.Tests.Business {
             var documentContent = "Content";
             var webSite = WebSiteWithDocument(new ExportableDocument("Title", documentContent, "Product"));
 
-            await new MkdocsExporter().Export(AnyMkdocsPath, webSite, testDirectory);
+            await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
 
-            var documentPath = Path.Combine(AnyMkdocsPath, "docs/Product/Title.md");
+            var documentPath = Path.Combine(GetAnyExportationPath(), "docs/Product/Title.md");
             GetFileContentFrom(documentPath).Should().Be(documentContent);
         }
 
+        private string GetAnyExportationPath() {
+            return Path.Combine(testDirectory.FullName, AnyMkdocsPath);
+        }
+
         private string GetFileContentFrom(string documentPath) {
-            var fullDocumentPath = Path.Combine(testDirectory.FullName, documentPath);
-            return File.ReadAllText(fullDocumentPath);
+            return File.ReadAllText(documentPath);
         }
 
         private FileInfo[] GetDocsFrom(string path) {
