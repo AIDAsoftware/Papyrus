@@ -20,5 +20,7 @@
         }
 
         public abstract string GenerateMkdocsPath();
+
+        public abstract string GenerateDocumentRoute();
     }
 }
