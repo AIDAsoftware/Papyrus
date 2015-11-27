@@ -1,13 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using NSubstitute;
 using NUnit.Framework;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
-using Papyrus.Business.Topics;
 
 namespace Papyrus.Tests.Business {
     [TestFixture]
@@ -37,12 +34,13 @@ namespace Papyrus.Tests.Business {
         }
 
         [Test]
-        public async Task write_the_theme_in_the_yml_file() {
-            var webSite = WebSiteWithDocument(AnyDocument());
+        public async Task generate_documents_in_docs_file() {
+            var webSite = WebSiteWithDocument(new ExportableDocument("Title", "Content", ""));
 
             await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
 
-            GetFoldersFrom(AnyMkdocsPath).Should().Contain(x => x.Name == "docs");
+            var content = GetFileContentFrom(Path.Combine(GetAnyExportationPath(), "docs/Title.md"));
+            content.Should().Be("Content");
         }
         
         [Test]
@@ -55,7 +53,7 @@ namespace Papyrus.Tests.Business {
         }
 
         [Test]
-        public async Task generate_exportable_document_in_the_docs_folder() {
+        public async Task write_the_theme_in_the_yml_file() {
             var webSite = WebSiteWithDocument(AnyDocument());
 
             await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
@@ -86,7 +84,7 @@ namespace Papyrus.Tests.Business {
         }
 
         private static ExportableDocument AnyDocument() {
-            return new ExportableDocument("AnyTitle", "AnyContent", "AnyWebsitePath");
+            return new ExportableDocument("AnyTitle", "AnyContent", "/AnyWebsitePath");
         }
 
         private static WebSite WebSiteWithDocument(ExportableDocument exportableDocument) {
