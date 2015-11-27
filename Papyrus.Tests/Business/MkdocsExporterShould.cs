@@ -55,14 +55,13 @@ namespace Papyrus.Tests.Business {
 
             await new MkdocsExporter().Export(AnyMkdocsPath, webSite, testDirectory);
 
-            var fileContent = GetFileContentFrom(AnyMkdocsPath, "docs/Product/Title.md");
-            fileContent.Should().Be(documentContent);
+            var documentPath = Path.Combine(AnyMkdocsPath, "docs/Product/Title.md");
+            GetFileContentFrom(documentPath).Should().Be(documentContent);
         }
 
-        private string GetFileContentFrom(string mkdocsPath, string documentPath) {
-            var documentRelativePath = Path.Combine(mkdocsPath, documentPath);
-            var fileContent = File.ReadAllText(Path.Combine(testDirectory.FullName, documentRelativePath));
-            return fileContent;
+        private string GetFileContentFrom(string documentPath) {
+            var fullDocumentPath = Path.Combine(testDirectory.FullName, documentPath);
+            return File.ReadAllText(fullDocumentPath);
         }
 
         private FileInfo[] GetDocsFrom(string path) {
