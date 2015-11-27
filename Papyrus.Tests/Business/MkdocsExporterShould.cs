@@ -14,8 +14,8 @@ namespace Papyrus.Tests.Business {
     public class MkdocsExporterShould {
         private DirectoryInfo testDirectory;
         // TODO
-        //  - should generate docs folder in the given folder
         //  - should generate exportable document in the docs folder
+        //  - should generate proper content for mkdocs.yml
 
         [SetUp]
         public void SetUp() {
@@ -47,6 +47,23 @@ namespace Papyrus.Tests.Business {
             await new MkdocsExporter().Export(mkdocsPath, webSite, testDirectory);
 
             GetFoldersFrom(mkdocsPath).Should().Contain(x => x.Name == "docs");
+        }
+
+        [Test]
+        public async Task generate_exportable_document_in_the_docs_folder() {
+            var mkdocsPath = "AnyLanguage/AnyVersion";
+            var webSite = WebSiteWithDocument(new ExportableDocument("Title", "Content", "Product"));
+
+            await new MkdocsExporter().Export(mkdocsPath, webSite, testDirectory);
+
+            var documentRelativePath = Path.Combine(mkdocsPath, "docs/Product/Title.md");
+            var fileContent = File.ReadAllText(Path.Combine(testDirectory.FullName, documentRelativePath));
+            fileContent.Should().Be("Content");
+        }
+
+        private FileInfo[] GetDocsFrom(string path) {
+            var docsPath = Path.Combine(path, "docs");
+            return new DirectoryInfo(Path.Combine(testDirectory.FullName, docsPath)).GetFiles();
         }
 
         private DirectoryInfo[] GetFoldersFrom(string path) {
