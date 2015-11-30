@@ -39,7 +39,7 @@ namespace Papyrus.Tests.Business {
             productRepo.GetProductForVersions("OpportunityId", versionsNames)
                         .Returns(Task.FromResult(opportunity));
             var document = new ExportableDocument("Title", "Content", "DocumentRoute");
-            topicRepo.GetAllDocumentsFor(opportunity, languages).Returns(Task.FromResult(new List<ExportableDocument>{ document }));
+            topicRepo.GetAllDocumentsFor(opportunity, "15.11.27", "es-ES").Returns(Task.FromResult(new List<ExportableDocument> { document }));
 
             var websites = await websiteConstructor.Export(new List<string>{opportunity.Id}, versionsNames, languages);
 
@@ -47,6 +47,24 @@ namespace Papyrus.Tests.Business {
             websiteDocument.Content.Should().Be("Content");
             websiteDocument.Title.Should().Be("Title");
             websiteDocument.Route.Should().Be("DocumentRoute");
+        }
+        
+        [Test]
+        public async Task construct_proper_keys_for_each_website() {
+            var versionsNames = new List<string>{ "15.11.27" };
+            var versions = new List<ProductVersion>{ new ProductVersion("AnyId", "15.11.27", DateTime.Today) };
+            var languages = new List<string>{ "es-ES" };
+            var opportunity = new Product("OpportunityId", "Opportunity", versions);
+            productRepo.GetProductForVersions("OpportunityId", versionsNames)
+                        .Returns(Task.FromResult(opportunity));
+            var document = new ExportableDocument("Title", "Content", "DocumentRoute");
+            topicRepo.GetAllDocumentsFor(opportunity, "15.11.27", "es-ES").Returns(Task.FromResult(new List<ExportableDocument>{ document }));
+
+            await websiteConstructor.Export(new List<string>{opportunity.Id}, versionsNames, languages);
+
+            pathGenerator.Received().ForProduct(opportunity.Name);
+            pathGenerator.Received().ForVersion("15.11.27");
+            pathGenerator.Received().ForLanguage("es-ES");
         }
     }
 }

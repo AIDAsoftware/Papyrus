@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,8 +47,8 @@ namespace Papyrus.Business.Topics {
             };
         }
 
-        public Task<List<ExportableDocument>> GetAllDocumentsFor(Product product, List<string> languages) {
-            throw new NotImplementedException();
+        public Task<List<ExportableDocument>> GetAllDocumentsFor(Product product, string version, string language) {
+            throw new System.NotImplementedException();
         }
 
         private static List<TopicSummary> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics) {

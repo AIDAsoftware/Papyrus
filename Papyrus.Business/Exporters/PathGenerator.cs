@@ -4,17 +4,17 @@
         protected string Product;
         protected string Version;
 
-        public PathGenerator ForLanguage(string language) {
+        public virtual PathGenerator ForLanguage(string language) {
             this.Language = language;
             return this;
         }
 
-        public PathGenerator ForProduct(string product) {
+        public virtual PathGenerator ForProduct(string product) {
             this.Product = product;
             return this;
         }
 
-        public PathGenerator ForVersion(string version) {
+        public virtual PathGenerator ForVersion(string version) {
             this.Version = version;
             return this;
         }

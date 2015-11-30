@@ -19,9 +19,16 @@ namespace Papyrus.Business.Exporters {
             var websitesCollection = new WebsiteCollection();
             foreach (var productId in products) {
                 var product = await productRepo.GetProductForVersions(productId, versions);
-                var documents = await topicRepo.GetAllDocumentsFor(product, languages);
-                var website = new WebSite(documents);
-                websitesCollection.Add(pathGenerator.GenerateMkdocsPath(), website);
+                pathGenerator.ForProduct(product.Name);
+                foreach (var version in product.Versions) {
+                    pathGenerator.ForVersion(version.VersionName);
+                    foreach (var language in languages) {
+                        var documents = await topicRepo.GetAllDocumentsFor(product, version.VersionName, language);
+                        pathGenerator.ForLanguage(language);
+                        var website = new WebSite(documents);
+                        websitesCollection.Add(pathGenerator.GenerateMkdocsPath(), website);  
+                    }
+                }
             }
             return websitesCollection;
         }
