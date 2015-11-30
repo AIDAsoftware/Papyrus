@@ -12,17 +12,26 @@ using Papyrus.Business.Topics;
 namespace Papyrus.Tests.Business {
     [TestFixture]
     public class WebConstructorShould {
+        private TopicQueryRepository topicRepo;
+        private ProductRepository productRepo;
+        private PathGenerator pathGenerator;
+        private WebsiteConstructor websiteConstructor;
         // TODO:
         //   - should construct a website with documents associated to given product, version and language
         //   - should get the route to construct the website in the website collection using the given strategy
 
+        [SetUp]
+        public void SetUp() {
+            topicRepo = Substitute.For<TopicQueryRepository>();
+            productRepo = Substitute.For<ProductRepository>();
+            pathGenerator = Substitute.For<PathGenerator>();
+            websiteConstructor = new WebsiteConstructor(pathGenerator, topicRepo, productRepo);
+        }
+        
         [Test]
         public async Task construct_a_website_with_documents_associated_to_given_product_and_version() {
-            var pathGenerator = Substitute.For<PathGenerator>();
             pathGenerator.GenerateMkdocsPath().Returns("Route/Route"); 
             pathGenerator.GenerateDocumentRoute().Returns("DocumentRoute"); 
-            var topicRepo = Substitute.For<TopicQueryRepository>();
-            var productRepo = Substitute.For<ProductRepository>();
             var versionsNames = new List<string>{ "15.11.27" };
             var versions = new List<ProductVersion>{ new ProductVersion("AnyId", "15.11.27", DateTime.Today) };
             var languages = new List<string>{ "es-ES" };
@@ -31,7 +40,6 @@ namespace Papyrus.Tests.Business {
                         .Returns(Task.FromResult(opportunity));
             var document = new ExportableDocument("Title", "Content", "DocumentRoute");
             topicRepo.GetAllDocumentsFor(opportunity, languages).Returns(Task.FromResult(new List<ExportableDocument>{ document }));
-            var websiteConstructor = new WebsiteConstructor(pathGenerator, topicRepo, productRepo);
 
             var websites = await websiteConstructor.Export(new List<string>{opportunity.Id}, versionsNames, languages);
 
