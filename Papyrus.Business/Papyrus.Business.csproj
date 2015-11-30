@@ -68,6 +68,8 @@
     <Compile Include="Exporters\PathByProductGenerator.cs" />
     <Compile Include="Exporters\PathByVersionGenerator.cs" />
     <Compile Include="Exporters\PathGenerator.cs" />
+    <Compile Include="Exporters\WebsiteCollection.cs" />
+    <Compile Include="Exporters\WebsiteConstructor.cs" />
     <Compile Include="Products\FullVersionRange.cs" />
     <Compile Include="Products\ProductVersion.cs" />
     <Compile Include="Products\WebSite.cs" />

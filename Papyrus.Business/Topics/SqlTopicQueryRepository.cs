@@ -48,6 +48,10 @@ namespace Papyrus.Business.Topics {
             };
         }
 
+        public Task<List<ExportableDocument>> GetAllDocumentsFor(Product product, List<string> languages) {
+            throw new NotImplementedException();
+        }
+
         private static List<TopicSummary> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics) {
             return dynamicTopics.GroupBy(topic => topic.TopicId)
                 .Select(topics => topics.First())

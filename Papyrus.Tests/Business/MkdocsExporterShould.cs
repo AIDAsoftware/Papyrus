@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -88,9 +89,7 @@ namespace Papyrus.Tests.Business {
         }
 
         private static WebSite WebSiteWithDocument(ExportableDocument exportableDocument) {
-            var webSite = new WebSite();
-            webSite.AddDocument(exportableDocument);
-            return webSite;
+            return new WebSite(new List<ExportableDocument> { exportableDocument });
         }
     }
 }

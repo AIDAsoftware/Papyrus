@@ -11,7 +11,7 @@ namespace Papyrus.Business.Exporters {
         public async Task Export(WebSite webSite, string path) {
             var docsPath = Path.Combine(path, "docs");
             var docsDirectory = Directory.CreateDirectory(docsPath);
-            foreach (var document in webSite.documents) {
+            foreach (var document in webSite.Documents) {
                 await ExportDocumentIn(document, docsDirectory);
             }
             await WriteYmlFileIn(path);

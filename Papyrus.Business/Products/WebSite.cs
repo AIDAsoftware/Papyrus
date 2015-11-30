@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using Papyrus.Business.Exporters;
+using Papyrus.Business.Topics;
 
 namespace Papyrus.Business.Products {
     public class WebSite {
-        public List<ExportableDocument> documents { get; set; }
+        public IList<ExportableDocument> Documents { get; set; }
 
-        public WebSite() {
-            documents = new List<ExportableDocument>();
+        public WebSite(IList<ExportableDocument> documents) {
+            Documents = documents;
         }
 
         public void AddDocument(ExportableDocument document) {
-            documents.Add(document);
+            Documents.Add(document);
         }
     }
 }
