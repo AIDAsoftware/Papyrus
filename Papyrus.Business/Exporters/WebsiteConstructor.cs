@@ -23,7 +23,7 @@ namespace Papyrus.Business.Exporters {
                 foreach (var version in product.Versions) {
                     pathGenerator.ForVersion(version.VersionName);
                     foreach (var language in languages) {
-                        var documents = await topicRepo.GetAllDocumentsFor(product, version.VersionName, language);
+                        var documents = await topicRepo.GetAllDocumentsFor(product, version.VersionName, language, pathGenerator.GenerateDocumentRoute());
                         pathGenerator.ForLanguage(language);
                         var website = new WebSite(documents);
                         websitesCollection.Add(pathGenerator.GenerateMkdocsPath(), website);  

@@ -47,7 +47,7 @@ namespace Papyrus.Business.Topics {
             };
         }
 
-        public Task<List<ExportableDocument>> GetAllDocumentsFor(Product product, string version, string language) {
+        public Task<List<ExportableDocument>> GetAllDocumentsFor(Product product, string version, string language, string documentRoute) {
             throw new System.NotImplementedException();
         }
 

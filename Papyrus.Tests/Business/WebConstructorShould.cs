@@ -41,7 +41,7 @@ namespace Papyrus.Tests.Business {
             var opportunity = new Product("OpportunityId", "Opportunity", VersionsFrom(versionsNames));
             StubPathGeneratorToReturnAs(exportationPath: "Route/Route", documentRoute: DocumentRoute);
             RepositoryReturnsProductWhenAskingForVersions(opportunity, versionsNames);
-            topicRepo.GetAllDocumentsFor(opportunity, LastVersionName, Spanish)
+            topicRepo.GetAllDocumentsFor(opportunity, LastVersionName, Spanish, DocumentRoute)
                 .Returns(AsyncDocumentsList(englishDocument));
 
             var websites = await websiteConstructor
@@ -58,7 +58,8 @@ namespace Papyrus.Tests.Business {
             var versionsNames = VersionNames(LastVersionName);
             var opportunity = new Product("OpportunityId", "Opportunity", VersionsFrom(versionsNames));
             RepositoryReturnsProductWhenAskingForVersions(opportunity, versionsNames);
-            topicRepo.GetAllDocumentsFor(opportunity, LastVersionName, Spanish).Returns(AsyncDocumentsList(englishDocument));
+            topicRepo.GetAllDocumentsFor(opportunity, LastVersionName, Spanish, DocumentRoute)
+                .Returns(AsyncDocumentsList(englishDocument));
 
             await websiteConstructor.Construct(new List<string> { opportunity.Id }, versionsNames, Languages(Spanish));
 
