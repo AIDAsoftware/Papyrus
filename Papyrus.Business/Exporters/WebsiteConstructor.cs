@@ -8,6 +8,7 @@ namespace Papyrus.Business.Exporters {
         private readonly PathGenerator pathGenerator;
         private readonly TopicQueryRepository topicRepo;
         private readonly ProductRepository productRepo;
+        private WebsiteCollection websitesCollection;
 
         public WebsiteConstructor(PathGenerator pathGenerator, TopicQueryRepository topicRepo, ProductRepository productRepo) {
             this.pathGenerator = pathGenerator;
@@ -16,21 +17,31 @@ namespace Papyrus.Business.Exporters {
         }
 
         public async Task<WebsiteCollection> Construct(IEnumerable<string> products, List<string> versions, List<string> languages) {
-            var websitesCollection = new WebsiteCollection();
+            websitesCollection = new WebsiteCollection();
             foreach (var productId in products) {
                 var product = await productRepo.GetProductForVersions(productId, versions);
                 pathGenerator.ForProduct(product.Name);
-                foreach (var version in product.Versions) {
-                    pathGenerator.ForVersion(version.VersionName);
-                    foreach (var language in languages) {
-                        var documents = await topicRepo.GetAllDocumentsFor(product, version.VersionName, language, pathGenerator.GenerateDocumentRoute());
-                        pathGenerator.ForLanguage(language);
-                        var website = new WebSite(documents);
-                        websitesCollection.Add(pathGenerator.GenerateMkdocsPath(), website);  
-                    }
-                }
+                await AddWebsitesFor(product, languages);
             }
             return websitesCollection;
+        }
+
+        private async Task AddWebsitesFor(Product product, List<string> languages) {
+            foreach (var version in product.Versions) {
+                pathGenerator.ForVersion(version.VersionName);
+                foreach (var language in languages) {
+                    var website = await CreateWebsiteWithAllDocumentsFor(product, version, language);
+                    websitesCollection.Add(pathGenerator.GenerateMkdocsPath(), website);
+                }
+            }
+        }
+
+        private async Task<WebSite> CreateWebsiteWithAllDocumentsFor(Product product, ProductVersion version, string language) {
+            var documentRoute = pathGenerator.GenerateDocumentRoute();
+            var documents = await topicRepo.GetAllDocumentsFor(product, version.VersionName, language, documentRoute);
+            pathGenerator.ForLanguage(language);
+            var website = new WebSite(documents);
+            return website;
         }
     }
 }
