@@ -32,23 +32,34 @@ namespace Papyrus.Tests.Business {
         public async Task construct_a_website_with_documents_associated_to_given_product_and_version() {
             pathGenerator.GenerateMkdocsPath().Returns("Route/Route"); 
             pathGenerator.GenerateDocumentRoute().Returns("DocumentRoute"); 
-            var versionsNames = new List<string>{ "15.11.27" };
-            var versions = new List<ProductVersion>{ new ProductVersion("AnyId", "15.11.27", DateTime.Today) };
-            var languages = new List<string>{ "es-ES" };
+            var versions = Versions("15.11.27");
+            var versionsNames = Names(versions);
             var opportunity = new Product("OpportunityId", "Opportunity", versions);
-            productRepo.GetProductForVersions("OpportunityId", versionsNames)
-                        .Returns(Task.FromResult(opportunity));
+            productRepo.GetProductForVersions(opportunity.Id, versionsNames)
+                .Returns(Task.FromResult(opportunity));
             var document = new ExportableDocument("Title", "Content", "DocumentRoute");
             topicRepo.GetAllDocumentsFor(opportunity, "15.11.27", "es-ES").Returns(Task.FromResult(new List<ExportableDocument> { document }));
 
-            var websites = await websiteConstructor.Construct(new List<string>{opportunity.Id}, versionsNames, languages);
+            var websites = await websiteConstructor.Construct(new List<string> { opportunity.Id }, versionsNames, Languages("es-ES"));
 
             ExportableDocument websiteDocument = websites["Route/Route"].Documents.First();
             websiteDocument.Content.Should().Be("Content");
             websiteDocument.Title.Should().Be("Title");
             websiteDocument.Route.Should().Be("DocumentRoute");
         }
-        
+
+        private List<string> Languages(string language) {
+            return new List<string>{ language };
+        }
+
+        private static List<string> Names(IEnumerable<ProductVersion> versions) {
+            return versions.Select(x => x.VersionName).ToList();
+        }
+
+        private static List<ProductVersion> Versions(string versionName) {
+            return new List<ProductVersion>{ new ProductVersion("AnyId", versionName, DateTime.Today) };
+        }
+
         [Test]
         public async Task construct_proper_keys_for_each_website() {
             var versionsNames = new List<string>{ "15.11.27" };
