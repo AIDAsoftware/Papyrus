@@ -20,7 +20,7 @@ namespace Papyrus.Business.Exporters {
             websitesCollection = new WebsiteCollection();
             foreach (var productId in products) {
                 var product = await productRepo.GetProductForVersions(productId, versions);
-                pathGenerator.ForProduct(product.Name);
+                RegistProduct(product);
                 await AddWebsitesFor(product, languages);
             }
             return websitesCollection;
@@ -28,10 +28,10 @@ namespace Papyrus.Business.Exporters {
 
         private async Task AddWebsitesFor(Product product, List<string> languages) {
             foreach (var version in product.Versions) {
-                pathGenerator.ForVersion(version.VersionName);
+                RegistVersion(version);
                 foreach (var language in languages) {
                     var website = await CreateWebsiteWithAllDocumentsFor(product, version, language);
-                    websitesCollection.Add(pathGenerator.GenerateMkdocsPath(), website);
+                    websitesCollection.Add(GeneratePathFromRegistrations(), website);
                 }
             }
         }
@@ -39,9 +39,25 @@ namespace Papyrus.Business.Exporters {
         private async Task<WebSite> CreateWebsiteWithAllDocumentsFor(Product product, ProductVersion version, string language) {
             var documentRoute = pathGenerator.GenerateDocumentRoute();
             var documents = await topicRepo.GetAllDocumentsFor(product, version.VersionName, language, documentRoute);
-            pathGenerator.ForLanguage(language);
+            RegistLanguage(language);
             var website = new WebSite(documents);
             return website;
+        }
+
+        private void RegistLanguage(string language) {
+            pathGenerator.ForLanguage(language);
+        }
+
+        private string GeneratePathFromRegistrations() {
+            return pathGenerator.GenerateMkdocsPath();
+        }
+
+        private void RegistVersion(ProductVersion version) {
+            pathGenerator.ForVersion(version.VersionName);
+        }
+
+        private void RegistProduct(Product product) {
+            pathGenerator.ForProduct(product.Name);
         }
     }
 }
