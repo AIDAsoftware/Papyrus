@@ -15,7 +15,7 @@ namespace Papyrus.Business.Exporters {
             this.productRepo = productRepo;
         }
 
-        public async Task<WebsiteCollection> Export(IEnumerable<string> products, List<string> versions, List<string> languages) {
+        public async Task<WebsiteCollection> Construct(IEnumerable<string> products, List<string> versions, List<string> languages) {
             var websitesCollection = new WebsiteCollection();
             foreach (var productId in products) {
                 var product = await productRepo.GetProductForVersions(productId, versions);

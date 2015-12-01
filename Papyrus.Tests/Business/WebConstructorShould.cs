@@ -41,7 +41,7 @@ namespace Papyrus.Tests.Business {
             var document = new ExportableDocument("Title", "Content", "DocumentRoute");
             topicRepo.GetAllDocumentsFor(opportunity, "15.11.27", "es-ES").Returns(Task.FromResult(new List<ExportableDocument> { document }));
 
-            var websites = await websiteConstructor.Export(new List<string>{opportunity.Id}, versionsNames, languages);
+            var websites = await websiteConstructor.Construct(new List<string>{opportunity.Id}, versionsNames, languages);
 
             ExportableDocument websiteDocument = websites["Route/Route"].Documents.First();
             websiteDocument.Content.Should().Be("Content");
@@ -60,7 +60,7 @@ namespace Papyrus.Tests.Business {
             var document = new ExportableDocument("Title", "Content", "DocumentRoute");
             topicRepo.GetAllDocumentsFor(opportunity, "15.11.27", "es-ES").Returns(Task.FromResult(new List<ExportableDocument>{ document }));
 
-            await websiteConstructor.Export(new List<string>{opportunity.Id}, versionsNames, languages);
+            await websiteConstructor.Construct(new List<string>{opportunity.Id}, versionsNames, languages);
 
             pathGenerator.Received().ForProduct(opportunity.Name);
             pathGenerator.Received().ForVersion("15.11.27");
