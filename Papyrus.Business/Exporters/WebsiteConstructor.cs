@@ -30,7 +30,7 @@ namespace Papyrus.Business.Exporters {
             foreach (var version in product.Versions) {
                 foreach (var language in languages) {
                     var website = await CreateWebsiteWithAllDocumentsFor(product, version, language);
-                    if (!website.Documents.Any()) return;
+                    if (website.HasNotDocuments()) return;
                     RegistToGenerator(product, version, language);
                     websitesCollection.Add(pathGenerator.GenerateMkdocsPath(), website);
                 }

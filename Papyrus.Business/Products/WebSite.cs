@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Topics;
 
@@ -12,6 +13,10 @@ namespace Papyrus.Business.Products {
 
         public void AddDocument(ExportableDocument document) {
             Documents.Add(document);
+        }
+
+        public bool HasNotDocuments() {
+            return !Documents.Any();
         }
     }
 }
