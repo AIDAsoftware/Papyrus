@@ -148,6 +148,25 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             (editableTopic.VersionRanges.First().ToVersion is LastProductVersion).Should().BeTrue();
         }
 
+        [Test]
+        public async Task exportable_topic_for_a_given_version_and_language() {
+            await InsertProductWithItsVersions();
+            var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
+            var firstVersionRange = new VersionRange(version1.VersionId, version1.VersionId).WithId("FirstVersionRangeId");
+            var secondVersionRange = new VersionRange(version2.VersionId, version2.VersionId).WithId("SecondVersionRangeId");
+            firstVersionRange.AddDocument(spanishDocument.WithId("AnyId"));
+            topic.AddVersionRange(firstVersionRange);
+            topic.AddVersionRange(secondVersionRange);
+            await sqlInserter.Insert(topic);
+
+            var documents = await topicRepository.GetAllDocumentsFor(ProductId, version1.VersionName, SpanishLanguage, "DocumentRoute");
+
+            var document = documents.First();
+            document.Title.Should().Be(spanishDocument.Title);
+            document.Content.Should().Be(spanishDocument.Content);
+            document.Route.Should().Be("DocumentRoute");
+        }
+
         private async Task InsertProductWithItsVersions() {
             await InsertProductWithAVersion();
             await InsertProductVersion(version2, ProductId);
