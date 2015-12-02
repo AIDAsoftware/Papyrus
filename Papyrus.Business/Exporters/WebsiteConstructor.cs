@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
@@ -19,45 +20,38 @@ namespace Papyrus.Business.Exporters {
         public async Task<WebsiteCollection> Construct(IEnumerable<string> products, List<string> versions, List<string> languages) {
             websitesCollection = new WebsiteCollection();
             foreach (var productId in products) {
-                var product = await productRepo.GetProductForVersions(productId, versions);
-                RegistProduct(product);
-                await AddWebsitesFor(product, languages);
+                var productWithVersions = await productRepo.GetProductForVersions(productId, versions);
+                await AddWebsitesFor(productWithVersions, languages);
             }
             return websitesCollection;
         }
 
         private async Task AddWebsitesFor(Product product, List<string> languages) {
             foreach (var version in product.Versions) {
-                RegistVersion(version);
                 foreach (var language in languages) {
                     var website = await CreateWebsiteWithAllDocumentsFor(product, version, language);
-                    websitesCollection.Add(GeneratePathFromRegistrations(), website);
+                    if (!website.Documents.Any()) return;
+                    RegistToGenerator(product, version, language);
+                    websitesCollection.Add(pathGenerator.GenerateMkdocsPath(), website);
                 }
             }
         }
 
         private async Task<WebSite> CreateWebsiteWithAllDocumentsFor(Product product, ProductVersion version, string language) {
             var documentRoute = pathGenerator.GenerateDocumentRoute();
-            var documents = await topicRepo.GetAllDocumentsFor(product, version.VersionName, language, documentRoute);
-            RegistLanguage(language);
-            var website = new WebSite(documents);
+            var documents = await topicRepo.GetAllDocumentsFor(product.Id, version.VersionName, language, documentRoute);
+            var website = new WebSite(RemoveEmptyDocuments(documents));
             return website;
         }
 
-        private void RegistLanguage(string language) {
-            pathGenerator.ForLanguage(language);
+        private static List<ExportableDocument> RemoveEmptyDocuments(List<ExportableDocument> documents) {
+            return documents.Where(d => !(d is NoDocument)).ToList();
         }
 
-        private string GeneratePathFromRegistrations() {
-            return pathGenerator.GenerateMkdocsPath();
-        }
-
-        private void RegistVersion(ProductVersion version) {
-            pathGenerator.ForVersion(version.VersionName);
-        }
-
-        private void RegistProduct(Product product) {
+        private void RegistToGenerator(Product product, ProductVersion version, string language) {
             pathGenerator.ForProduct(product.Name);
+            pathGenerator.ForVersion(version.VersionName);
+            pathGenerator.ForLanguage(language);
         }
     }
 }

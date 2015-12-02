@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
@@ -23,9 +24,6 @@ namespace Papyrus.Tests.Business {
         private string Spanish = "es-ES";
         private string LastVersionName = "15.11.27";
         private readonly ExportableDocument englishDocument = new ExportableDocument(EnglishTitle, EnglishContent, DocumentRoute);
-        // TODO:
-        //   - should construct a website with documents associated to given product, version and language
-        //   - should get the route to construct the website in the website collection using the given strategy
 
         [SetUp]
         public void SetUp() {
@@ -41,7 +39,7 @@ namespace Papyrus.Tests.Business {
             var opportunity = new Product("OpportunityId", "Opportunity", VersionsFrom(versionsNames));
             StubPathGeneratorToReturnAs(exportationPath: "Route/Route", documentRoute: DocumentRoute);
             RepositoryReturnsProductWhenAskingForVersions(opportunity, versionsNames);
-            topicRepo.GetAllDocumentsFor(opportunity, LastVersionName, Spanish, DocumentRoute)
+            topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish, DocumentRoute)
                 .Returns(AsyncDocumentsList(englishDocument));
 
             var websites = await websiteConstructor
@@ -57,8 +55,9 @@ namespace Papyrus.Tests.Business {
         public async Task construct_proper_keys_for_each_website() {
             var versionsNames = VersionNames(LastVersionName);
             var opportunity = new Product("OpportunityId", "Opportunity", VersionsFrom(versionsNames));
+            StubPathGeneratorToReturnAs(documentRoute: DocumentRoute, exportationPath:"AnyPath");
             RepositoryReturnsProductWhenAskingForVersions(opportunity, versionsNames);
-            topicRepo.GetAllDocumentsFor(opportunity, LastVersionName, Spanish, DocumentRoute)
+            topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish, DocumentRoute)
                 .Returns(AsyncDocumentsList(englishDocument));
 
             await websiteConstructor.Construct(new List<string> { opportunity.Id }, versionsNames, Languages(Spanish));
@@ -66,6 +65,25 @@ namespace Papyrus.Tests.Business {
             pathGenerator.Received().ForProduct(opportunity.Name);
             pathGenerator.Received().ForVersion(LastVersionName);
             pathGenerator.Received().ForLanguage(Spanish);
+        }
+
+        private void StubPathGeneratorToReturnAs(string documentRoute) {
+            StubPathGeneratorToReturnAs(documentRoute: documentRoute, exportationPath: null);
+        }
+
+        [Test]
+        public async Task not_create_website_when_there_are_no_document_available() {
+            var versionsNames = VersionNames(LastVersionName);
+            var opportunity = new Product("OpportunityId", "Opportunity", VersionsFrom(versionsNames));
+            StubPathGeneratorToReturnAs(documentRoute: DocumentRoute);
+            RepositoryReturnsProductWhenAskingForVersions(opportunity, versionsNames);
+            topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish, DocumentRoute)
+                .Returns(AsyncDocumentsList(new NoDocument()));
+
+            var websites = await websiteConstructor.Construct(new List<string> { opportunity.Id }, versionsNames, Languages(Spanish));
+
+            pathGenerator.DidNotReceive().GenerateMkdocsPath();
+            websites.Count.Should().Be(0);
         }
 
         private List<ProductVersion> VersionsFrom(List<string> versionsNames) {

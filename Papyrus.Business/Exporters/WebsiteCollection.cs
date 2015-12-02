@@ -3,7 +3,11 @@ using Papyrus.Business.Products;
 
 namespace Papyrus.Business.Exporters {
     public class WebsiteCollection {
-        private Dictionary<string, WebSite> websites;
+        private readonly Dictionary<string, WebSite> websites;
+
+        public int Count {
+            get { return websites.Count; }
+        }
 
         public WebSite this[string path] {
             get { return websites[path]; }

@@ -65,6 +65,7 @@
     <Compile Include="Exporters\ExportableDocument.cs" />
     <Compile Include="Exporters\FileWriter.cs" />
     <Compile Include="Exporters\MkdocsExporter.cs" />
+    <Compile Include="Exporters\NoDocument.cs" />
     <Compile Include="Exporters\PathByProductGenerator.cs" />
     <Compile Include="Exporters\PathByVersionGenerator.cs" />
     <Compile Include="Exporters\PathGenerator.cs" />
