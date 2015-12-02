@@ -49,28 +49,36 @@ namespace Papyrus.Business.Topics {
         }
 
         public async Task<List<ExportableDocument>> GetAllDocumentsFor(string product, string version, string language, string documentRoute) {
+            var documents = new List<ExportableDocument>();
             var resultVersion = (await connection.Query<dynamic>(@"SELECT VersionId, Release From ProductVersion 
                                                         WHERE ProductId = @ProductId AND VersionName = @VersionName", 
                                                         new {ProductId = product, VersionName = version})).First();
-            var versionRanges = await connection.Query<dynamic>(@"Select VersionRangeId, FromVersionId, ToVersionId FROM VersionRange
-                                                            JOIN Topic ON Topic.TopicId = VersionRange.TopicId 
-                                                            WHERE Topic.ProductId = @ProductId", new { ProductId = product });
-            foreach (var versionRange in versionRanges) {
-                var fromVersionRelease = (await connection.Query<DateTime>(@"SELECT Release From ProductVersion 
-                                                        WHERE VersionId = @VersionId",
-                                                        new { VersionId = versionRange.FromVersionId })).First();
-                var toVersionRelease = (await connection.Query<DateTime>(@"SELECT Release From ProductVersion 
-                                                        WHERE VersionId = @VersionId",
-                                                        new { VersionId = versionRange.ToVersionId })).First();
-                if (fromVersionRelease <= resultVersion.Release && resultVersion.Release <= toVersionRelease) {
-                    var documents = await connection.Query<dynamic>(@"SELECT Title, Content FROM Document 
+            var topicsForProduct = (await connection.Query<string>(@"Select TopicId FROM Topic
+                                                            WHERE Topic.ProductId = @ProductId", new { ProductId = product }))
+                                                            .ToList();
+            foreach (var topicId in topicsForProduct) {
+                var versionRanges = (await connection.Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
+                                                            FROM VersionRange WHERE TopicId = @TopicId",
+                                                            new { TopicId = topicId })).ToList();
+                foreach (var versionRange in versionRanges) {
+                    var fromVersionRelease = (await connection.Query<DateTime>(@"SELECT Release FROM ProductVersion
+                                                                                WHERE VersionId = @VersionId",
+                                                                                new {VersionId = versionRange.FromVersionId})).First();
+                    var toVersionRelease = (await connection.Query<DateTime>(@"SELECT Release FROM ProductVersion
+                                                                                WHERE VersionId = @VersionId",
+                                                                                new { VersionId = versionRange.ToVersionId })).First();
+                    if (fromVersionRelease <= resultVersion.Release && 
+                            resultVersion.Release <= toVersionRelease) {
+                        var document = (await connection.Query<dynamic>(@"SELECT Title, Content FROM Document 
                                                                     WHERE VersionRangeId = @VersionRangeId
                                                                     AND Language = @Language",
-                        new {VersionRangeId = versionRange.VersionRangeId, Language = language});
-                    return documents.Select(d => new ExportableDocument(d.Title, d.Content, documentRoute)).ToList();
+                            new { VersionRangeId = versionRange.VersionRangeId, Language = language }))
+                            .First();
+                        documents.Add(new ExportableDocument(document.Title, document.Content, documentRoute));
+                    }
                 }
             }
-            return new List<ExportableDocument>();
+            return documents;
         }
 
         private static List<TopicSummary> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics) {
