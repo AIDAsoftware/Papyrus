@@ -68,8 +68,16 @@ namespace Papyrus.Business.Products {
                                                             ORDER BY Release DESC", new { ProductId = productId })).First();
         }
 
-        public Task<Product> GetProductForVersions(string productId, List<string> versionsNames) {
-            throw new NotImplementedException();
+        public async Task<Product> GetProductForVersions(Product product, List<string> versionsNames) {
+            var versions = new List<ProductVersion>();
+            foreach (var versionsName in versionsNames) {
+                var version = (await connection.Query<ProductVersion>(@"SELECT VersionId, VersionName, Release
+                                                                     FROM ProductVersion
+                                                                     WHERE ProductId = @ProductId AND VersionName = @VersionName",
+                                                                    new {ProductId = product.Id, VersionName = versionsName})).First();
+                versions.Add(version);
+            }
+            return new Product(product.Id, product.Name, versions);
         }
 
         private async Task<List<ProductVersion>> ProducVersionsForProduct(string productId) {

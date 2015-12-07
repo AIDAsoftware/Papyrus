@@ -43,7 +43,7 @@ namespace Papyrus.Tests.Business {
                 .Returns(AsyncDocumentsList(englishDocument));
 
             var websites = await websiteConstructor
-                .Construct(ProductsIdsList(opportunity), versionsNames, Languages(Spanish));
+                .Construct(ProductsList(opportunity), versionsNames, Languages(Spanish));
 
             ExportableDocument websiteDocument = websites["Route/Route"].Documents.First();
             websiteDocument.Content.Should().Be(EnglishContent);
@@ -60,7 +60,7 @@ namespace Papyrus.Tests.Business {
             topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish, DocumentRoute)
                 .Returns(AsyncDocumentsList(englishDocument));
 
-            await websiteConstructor.Construct(new List<string> { opportunity.Id }, versionsNames, Languages(Spanish));
+            await websiteConstructor.Construct(ProductsList(opportunity), versionsNames, Languages(Spanish));
 
             pathGenerator.Received().ForProduct(opportunity.Name);
             pathGenerator.Received().ForVersion(LastVersionName);
@@ -80,7 +80,7 @@ namespace Papyrus.Tests.Business {
             topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish, DocumentRoute)
                 .Returns(AsyncDocumentsList(new NoDocument()));
 
-            var websites = await websiteConstructor.Construct(new List<string> { opportunity.Id }, versionsNames, Languages(Spanish));
+            var websites = await websiteConstructor.Construct(ProductsList(opportunity), versionsNames, Languages(Spanish));
 
             pathGenerator.DidNotReceive().GenerateMkdocsPath();
             websites.Count.Should().Be(0);
@@ -98,7 +98,7 @@ namespace Papyrus.Tests.Business {
 
 
         private void RepositoryReturnsProductWhenAskingForVersions(Product opportunity, List<string> versionsNames) {
-            productRepo.GetProductForVersions(opportunity.Id, versionsNames)
+            productRepo.GetProductForVersions(opportunity, versionsNames)
                 .Returns(Task.FromResult(opportunity));
         }
 
@@ -110,8 +110,8 @@ namespace Papyrus.Tests.Business {
             return languages.ToList();
         }
 
-        private static List<string> ProductsIdsList(Product opportunity) {
-            return new List<string> { opportunity.Id };
+        private static List<Product> ProductsList(Product opportunity) {
+            return new List<Product> { opportunity };
         }
 
         private void StubPathGeneratorToReturnAs(string exportationPath, string documentRoute) {

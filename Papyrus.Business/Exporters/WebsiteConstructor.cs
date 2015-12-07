@@ -17,10 +17,10 @@ namespace Papyrus.Business.Exporters {
             this.productRepo = productRepo;
         }
 
-        public async Task<WebsiteCollection> Construct(IEnumerable<string> products, List<string> versions, List<string> languages) {
+        public async Task<WebsiteCollection> Construct(IEnumerable<Product> products, List<string> versions, List<string> languages) {
             websitesCollection = new WebsiteCollection();
-            foreach (var productId in products) {
-                var productWithVersions = await productRepo.GetProductForVersions(productId, versions);
+            foreach (var product in products) {
+                var productWithVersions = await productRepo.GetProductForVersions(product, versions);
                 await AddWebsitesFor(productWithVersions, languages);
             }
             return websitesCollection;
