@@ -155,12 +155,14 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var firstVersionRange = new VersionRange(version1.VersionId, version1.VersionId).WithId("FirstVersionRangeId");
             var secondVersionRange = new VersionRange(version2.VersionId, version2.VersionId).WithId("SecondVersionRangeId");
             firstVersionRange.AddDocument(spanishDocument.WithId("AnyId"));
+            secondVersionRange.AddDocument(new Document("Título", "Descripción", "Contenido", "es-ES").WithId("AnotherId"));
             topic.AddVersionRange(firstVersionRange);
             topic.AddVersionRange(secondVersionRange);
             await sqlInserter.Insert(topic);
 
             var documents = await topicRepository.GetAllDocumentsFor(ProductId, version1.VersionName, SpanishLanguage, "DocumentRoute");
 
+            documents.Should().HaveCount(1);
             var document = documents.First();
             document.Title.Should().Be(spanishDocument.Title);
             document.Content.Should().Be(spanishDocument.Content);
