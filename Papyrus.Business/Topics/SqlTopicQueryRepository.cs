@@ -50,10 +50,9 @@ namespace Papyrus.Business.Topics {
 
         public async Task<List<ExportableDocument>> GetAllDocumentsFor(string product, string version, string language, string documentRoute) {
             var documents = new List<ExportableDocument>();
-            var dateOfWishedVersion = (await connection.Query<DateTime>(@"SELECT Release From ProductVersion 
-                                                        WHERE ProductId = @ProductId AND VersionName = @VersionName", 
-                                                        new {ProductId = product, VersionName = version})).First();
+            var dateOfWishedVersion = await GetReleaseFor(product, version);
             var topicsForProduct = await SelectTopicsIdsFor(product);
+            
             foreach (var topicId in topicsForProduct) {
                 var versionRanges = await GetDynamicVersionRangeBy(topicId);
                 foreach (var versionRange in versionRanges) {
@@ -67,6 +66,12 @@ namespace Papyrus.Business.Topics {
                 }
             }
             return documents;
+        }
+
+        private async Task<DateTime> GetReleaseFor(string product, string version) {
+            return (await connection.Query<DateTime>(@"SELECT Release From ProductVersion 
+                                                        WHERE ProductId = @ProductId AND VersionName = @VersionName", 
+                new {ProductId = product, VersionName = version})).First();
         }
 
         private async Task<List<string>> SelectTopicsIdsFor(string product) {
