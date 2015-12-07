@@ -1,9 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
@@ -44,7 +44,20 @@ namespace Papyrus.Desktop.Features.Topics {
             TopicsToList = new ObservableCollection<TopicSummary>();
             Products = new ObservableCollection<DisplayableProduct>();
             RefreshTopics = RelayAsyncSimpleCommand.Create(LoadAllTopics, CanLoadAllTopics);
+            ExportProductToMkDocs = RelayAsyncSimpleCommand.Create(ExportProduct, () => true);
             DefaultDirectoryPath = Directory.GetCurrentDirectory();
+        }
+
+        private async Task ExportProduct() {
+            var constructor = new WebsiteConstructor(new PathByProductGenerator(), topicRepository, productRepository);
+            var products = new List<Product> {new Product(SelectedProduct.ProductId, SelectedProduct.ProductName, new List<ProductVersion>())};
+            var productVersions = (await productRepository.GetLastVersionForProduct(SelectedProduct.ProductId)).VersionName;
+            var languages = new List<string>{ "es-ES", "en-GB" };
+            var websites = await constructor.Construct(products, new List<string>{productVersions}, languages);
+            var exporter = new MkdocsExporter();
+            foreach (var pair in websites) {
+                await exporter.Export(pair.Website, Path.Combine(DefaultDirectoryPath, pair.Path));
+            }
         }
 
         public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository) : this()
