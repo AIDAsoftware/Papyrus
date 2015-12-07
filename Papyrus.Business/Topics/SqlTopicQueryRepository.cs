@@ -50,7 +50,7 @@ namespace Papyrus.Business.Topics {
 
         public async Task<List<ExportableDocument>> GetAllDocumentsFor(string product, string version, string language, string documentRoute) {
             var documents = new List<ExportableDocument>();
-            var wishedVersion = (await connection.Query<dynamic>(@"SELECT VersionId, Release From ProductVersion 
+            var dateOfWishedVersion = (await connection.Query<DateTime>(@"SELECT Release From ProductVersion 
                                                         WHERE ProductId = @ProductId AND VersionName = @VersionName", 
                                                         new {ProductId = product, VersionName = version})).First();
             var topicsForProduct = await SelectTopicsIdsFor(product);
@@ -59,8 +59,8 @@ namespace Papyrus.Business.Topics {
                 foreach (var versionRange in versionRanges) {
                     var fromVersionRelease = await SelectProductVersionById(versionRange.FromVersionId);
                     var toVersionRelease = await SelectProductVersionById(versionRange.ToVersionId);
-                    if (fromVersionRelease.Release <= wishedVersion.Release && 
-                            wishedVersion.Release <= toVersionRelease.Release) {
+                    if (fromVersionRelease.Release <= dateOfWishedVersion && 
+                            dateOfWishedVersion <= toVersionRelease.Release) {
                         var document = await GetTitleAndContentOfADocumentBy(language, versionRange);
                         documents.Add(new ExportableDocument(document.Title, document.Content, documentRoute));
                     }
