@@ -50,27 +50,35 @@ namespace Papyrus.Business.Topics {
 
         public async Task<List<ExportableDocument>> GetAllDocumentsFor(string product, string version, string language, string documentRoute) {
             var documents = new List<ExportableDocument>();
-            var resultVersion = (await connection.Query<dynamic>(@"SELECT VersionId, Release From ProductVersion 
+            var wishedVersion = (await connection.Query<dynamic>(@"SELECT VersionId, Release From ProductVersion 
                                                         WHERE ProductId = @ProductId AND VersionName = @VersionName", 
                                                         new {ProductId = product, VersionName = version})).First();
-            var topicsForProduct = (await connection.Query<string>(@"Select TopicId FROM Topic
-                                                            WHERE Topic.ProductId = @ProductId", new { ProductId = product }))
-                                                            .ToList();
+            var topicsForProduct = await SelectTopicsIdsFor(product);
             foreach (var topicId in topicsForProduct) {
-                var versionRanges = (await connection.Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
-                                                            FROM VersionRange WHERE TopicId = @TopicId",
-                                                            new { TopicId = topicId })).ToList();
+                var versionRanges = await GetDynamicVersionRangeBy(topicId);
                 foreach (var versionRange in versionRanges) {
                     var fromVersionRelease = await SelectProductVersionById(versionRange.FromVersionId);
                     var toVersionRelease = await SelectProductVersionById(versionRange.ToVersionId);
-                    if (fromVersionRelease.Release <= resultVersion.Release && 
-                            resultVersion.Release <= toVersionRelease.Release) {
+                    if (fromVersionRelease.Release <= wishedVersion.Release && 
+                            wishedVersion.Release <= toVersionRelease.Release) {
                         var document = await GetTitleAndContentOfADocumentBy(language, versionRange);
                         documents.Add(new ExportableDocument(document.Title, document.Content, documentRoute));
                     }
                 }
             }
             return documents;
+        }
+
+        private async Task<List<string>> SelectTopicsIdsFor(string product) {
+            return (await connection.Query<string>(@"Select TopicId FROM Topic
+                                                            WHERE Topic.ProductId = @ProductId", new { ProductId = product }))
+                .ToList();
+        }
+
+        private async Task<List<dynamic>> GetDynamicVersionRangeBy(string topicId) {
+            return (await connection.Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
+                                                            FROM VersionRange WHERE TopicId = @TopicId",
+                new { TopicId = topicId })).ToList();
         }
 
         private async Task<dynamic> GetTitleAndContentOfADocumentBy(string language, dynamic versionRange) {
