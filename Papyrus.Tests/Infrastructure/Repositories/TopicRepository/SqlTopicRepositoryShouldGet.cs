@@ -168,6 +168,20 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             document.Content.Should().Be(spanishDocument.Content);
             document.Route.Should().Be("DocumentRoute");
         }
+        
+        [Test]
+        public async Task get_empty_list_if_there_are_no_documents() {
+            await InsertProductWithItsVersions();
+            var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
+            var firstVersionRange = new VersionRange(version1.VersionId, version1.VersionId).WithId("FirstVersionRangeId");
+            firstVersionRange.AddDocument(spanishDocument.WithId("AnyId"));
+            topic.AddVersionRange(firstVersionRange);
+            await sqlInserter.Insert(topic);
+
+            var documents = await topicRepository.GetAllDocumentsFor(ProductId, version1.VersionName, EnglishLanguage, "DocumentRoute");
+
+            documents.Should().HaveCount(0);
+        }
 
         private async Task InsertProductWithItsVersions() {
             await InsertProductWithAVersion();
