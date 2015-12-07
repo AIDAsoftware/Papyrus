@@ -29,9 +29,9 @@ namespace Papyrus.Business.Exporters {
         private async Task AddWebsitesFor(Product product, List<string> languages) {
             foreach (var version in product.Versions) {
                 foreach (var language in languages) {
+                    RegistToGenerator(product, version, language);
                     var website = await CreateWebsiteWithAllDocumentsFor(product, version, language);
                     if (website.HasNotDocuments()) return;
-                    RegistToGenerator(product, version, language);
                     websitesCollection.Add(pathGenerator.GenerateMkdocsPath(), website);
                 }
             }
