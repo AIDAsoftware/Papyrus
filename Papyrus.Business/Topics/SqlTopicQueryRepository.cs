@@ -54,7 +54,7 @@ namespace Papyrus.Business.Topics {
             var topicsForProduct = await SelectTopicsIdsFor(product);
             
             foreach (var topicId in topicsForProduct) {
-                var versionRanges = await GetDynamicVersionRangeBy(topicId);
+                var versionRanges = await GetDynamicVersionRangesBy(topicId);
                 foreach (var versionRange in versionRanges) {
                     var fromVersionRelease = await SelectProductVersionById(versionRange.FromVersionId);
                     var toVersionRelease = await SelectProductVersionById(versionRange.ToVersionId);
@@ -80,7 +80,7 @@ namespace Papyrus.Business.Topics {
                 .ToList();
         }
 
-        private async Task<List<dynamic>> GetDynamicVersionRangeBy(string topicId) {
+        private async Task<List<dynamic>> GetDynamicVersionRangesBy(string topicId) {
             return (await connection.Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
                                                             FROM VersionRange WHERE TopicId = @TopicId",
                 new { TopicId = topicId })).ToList();
