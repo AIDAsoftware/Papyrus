@@ -61,24 +61,24 @@ namespace Papyrus.Business.Topics {
                                                             FROM VersionRange WHERE TopicId = @TopicId",
                                                             new { TopicId = topicId })).ToList();
                 foreach (var versionRange in versionRanges) {
-                    var fromVersionRelease = (await connection.Query<DateTime>(@"SELECT Release FROM ProductVersion
-                                                                                WHERE VersionId = @VersionId",
-                                                                                new {VersionId = versionRange.FromVersionId})).First();
-                    var toVersionRelease = (await connection.Query<DateTime>(@"SELECT Release FROM ProductVersion
-                                                                                WHERE VersionId = @VersionId",
-                                                                                new { VersionId = versionRange.ToVersionId })).First();
-                    if (fromVersionRelease <= resultVersion.Release && 
-                            resultVersion.Release <= toVersionRelease) {
-                        var document = (await connection.Query<dynamic>(@"SELECT Title, Content FROM Document 
-                                                                    WHERE VersionRangeId = @VersionRangeId
-                                                                    AND Language = @Language",
-                            new { VersionRangeId = versionRange.VersionRangeId, Language = language }))
-                            .First();
+                    var fromVersionRelease = await SelectProductVersionById(versionRange.FromVersionId);
+                    var toVersionRelease = await SelectProductVersionById(versionRange.ToVersionId);
+                    if (fromVersionRelease.Release <= resultVersion.Release && 
+                            resultVersion.Release <= toVersionRelease.Release) {
+                        var document = await GetTitleAndContentOfADocumentBy(language, versionRange);
                         documents.Add(new ExportableDocument(document.Title, document.Content, documentRoute));
                     }
                 }
             }
             return documents;
+        }
+
+        private async Task<dynamic> GetTitleAndContentOfADocumentBy(string language, dynamic versionRange) {
+            return (await connection.Query<dynamic>(@"SELECT Title, Content FROM Document 
+                                                                    WHERE VersionRangeId = @VersionRangeId
+                                                                    AND Language = @Language",
+                new { VersionRangeId = versionRange.VersionRangeId, Language = language }))
+                .First();
         }
 
         private static List<TopicSummary> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics) {
