@@ -182,6 +182,19 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             documents.Should().HaveCount(0);
         }
+        
+        [Test]
+        public async Task get_empty_exportable_document_list_if_there_given_version_does_not_exist() {
+            await InsertProductWithItsVersions();
+            var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
+            var firstVersionRange = new VersionRange(version1.VersionId, version1.VersionId).WithId("FirstVersionRangeId");
+            topic.AddVersionRange(firstVersionRange);
+            await sqlInserter.Insert(topic);
+
+            var documents = await topicRepository.GetAllDocumentsFor(ProductId, "No existing Version", EnglishLanguage, "DocumentRoute");
+
+            documents.Should().HaveCount(0);
+        }
 
         private async Task InsertProductWithItsVersions() {
             await InsertProductWithAVersion();
