@@ -80,6 +80,10 @@ namespace Papyrus.Business.Products {
             return new Product(product.Id, product.Name, versions);
         }
 
+        public async Task<List<string>> GetAllVersionsNamesDistinctingByName() {
+            throw new NotImplementedException();
+        }
+
         private async Task<List<ProductVersion>> ProducVersionsForProduct(string productId) {
             const string selectVersionSqlQuery = @"Select VersionId, VersionName, Release
                                             FROM [ProductVersion] WHERE ProductId = @ProductId;";

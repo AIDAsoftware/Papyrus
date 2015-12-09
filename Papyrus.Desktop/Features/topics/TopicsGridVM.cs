@@ -14,6 +14,8 @@ using Papyrus.Desktop.Util.Command;
 namespace Papyrus.Desktop.Features.Topics {
     public class TopicsGridVM : INotifyPropertyChanged
     {
+        private readonly MkdocsExporter exporter;
+        private readonly WebsiteConstructor websiteConstructor;
         private readonly TopicQueryRepository topicRepository;
         private readonly ProductRepository productRepository;
         public ObservableCollection<TopicSummary> TopicsToList { get; protected set; }
@@ -45,19 +47,27 @@ namespace Papyrus.Desktop.Features.Topics {
             Products = new ObservableCollection<DisplayableProduct>();
             RefreshTopics = RelayAsyncSimpleCommand.Create(LoadAllTopics, CanLoadAllTopics);
             ExportProductToMkDocs = RelayAsyncSimpleCommand.Create(ExportProduct, () => true);
+            ExportAllProducts = RelayAsyncSimpleCommand.Create(ExportAllProductsDocumentation, () => true);
             DefaultDirectoryPath = Directory.GetCurrentDirectory();
         }
 
-        private async Task ExportProduct() {
-            var constructor = new WebsiteConstructor(new PathByProductGenerator(), topicRepository, productRepository);
-            var products = new List<Product> {new Product(SelectedProduct.ProductId, SelectedProduct.ProductName, new List<ProductVersion>())};
-            var productVersions = (await productRepository.GetLastVersionForProduct(SelectedProduct.ProductId)).VersionName;
-            var languages = new List<string>{ "es-ES", "en-GB" };
-            var websites = await constructor.Construct(products, new List<string>{productVersions}, languages);
-            var exporter = new MkdocsExporter();
-            foreach (var pair in websites) {
-                await exporter.Export(pair.Website, Path.Combine(DefaultDirectoryPath, pair.Path));
+        public TopicsGridVM(TopicQueryRepository topicRepo, ProductRepository productRepo, MkdocsExporter exporter, WebsiteConstructor websiteConstructor)
+            : this(topicRepo, productRepo) {
+            this.exporter = exporter;
+            this.websiteConstructor = websiteConstructor;
+        }
+
+        private async Task ExportAllProductsDocumentation() {
+            var products = Products.Select(p => new Product(p.ProductId, p.ProductName, new List<ProductVersion>()));
+            var allVersionNames = await productRepository.GetAllVersionsNamesDistinctingByName();
+            var websiteCollection = await websiteConstructor.Construct(products, allVersionNames, new List<string>{ "es-ES", "en-GB" });
+            foreach (var element in websiteCollection) {
+                await exporter.Export(element.Website, element.Path);
             }
+        }
+
+        private async Task ExportProduct() {
+            
         }
 
         public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository) : this()

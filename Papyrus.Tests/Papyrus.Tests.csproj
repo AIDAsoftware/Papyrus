@@ -159,6 +159,10 @@
       <Project>{7a99ddc4-a4cc-45db-ace6-5a8d10d66db7}</Project>
       <Name>Papyrus.Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Papyrus.Desktop\Papyrus.Desktop.csproj">
+      <Project>{483c609b-26f5-441b-9fc5-d77b8365ed9b}</Project>
+      <Name>Papyrus.Desktop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Papyrus.Infrastructure.Core\Papyrus.Infrastructure.Core.csproj">
       <Project>{efa054e5-3390-41f7-a683-c74ef1b0f384}</Project>
       <Name>Papyrus.Infrastructure.Core</Name>

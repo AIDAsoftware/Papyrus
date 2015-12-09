@@ -8,7 +8,7 @@ namespace Papyrus.Business.Exporters {
         private const string MarkDownExtension = ".md";
         private const string MkdocsTheme = "theme: readthedocs";
 
-        public async Task Export(WebSite webSite, string path) {
+        public virtual async Task Export(WebSite webSite, string path) {
             var docsPath = Path.Combine(path, "docs");
             var docsDirectory = Directory.CreateDirectory(docsPath);
             foreach (var document in webSite.Documents) {
