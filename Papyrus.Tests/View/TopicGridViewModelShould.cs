@@ -93,7 +93,7 @@ namespace Papyrus.Tests.View {
         }
 
         private void StubOutProductRepoToReturnAsAllVersions(List<string> versions) {
-            productRepo.GetAllVersionsNamesDistinctingByName().Returns(Task.FromResult(versions));
+            productRepo.GetAllVersionNames().Returns(Task.FromResult(versions));
         }
     }
 }

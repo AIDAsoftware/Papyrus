@@ -80,7 +80,7 @@ namespace Papyrus.Business.Products {
             return new Product(product.Id, product.Name, versions);
         }
 
-        public async Task<List<string>> GetAllVersionsNamesDistinctingByName() {
+        public async Task<List<string>> GetAllVersionNames() {
             throw new NotImplementedException();
         }
 
