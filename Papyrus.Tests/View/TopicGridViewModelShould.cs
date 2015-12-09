@@ -53,7 +53,7 @@ namespace Papyrus.Tests.View {
 
             await ExecuteExportAllProductsCommandFrom(viewModel);
 
-            exporter.Received().Export(WebsiteWithADocument, "Any/Path");
+            exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")));
         }
 
         private static async Task ExecuteExportAllProductsCommandFrom(TopicsGridVM viewModel) {
