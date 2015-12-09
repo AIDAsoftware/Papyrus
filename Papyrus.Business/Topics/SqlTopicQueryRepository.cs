@@ -57,10 +57,20 @@ namespace Papyrus.Business.Topics {
             foreach (var topicId in topicsForProduct) {
                 var versionRanges = await GetDynamicVersionRangesBy(topicId);
                 foreach (var versionRange in versionRanges) {
-                    var fromVersionRelease = await SelectProductVersionById(versionRange.FromVersionId);
-                    var toVersionRelease = await SelectProductVersionById(versionRange.ToVersionId);
-                    if (fromVersionRelease.Release <= dateOfWishedVersion && 
-                            dateOfWishedVersion <= toVersionRelease.Release) {
+                    var fromVersion = await SelectProductVersionById(versionRange.FromVersionId);
+                    ProductVersion toVersion;
+                    if (versionRange.ToVersionId == "*") {
+                        toVersion = (await connection.Query<ProductVersion>(@"SELECT TOP 1 VersionId,                                     VersionName, Release
+                                                            FROM ProductVersion
+                                                            WHERE ProductId = @ProductId
+                                                            ORDER BY Release DESC", 
+                                                new { ProductId = product })).First();
+                    }
+                    else {
+                        toVersion = await SelectProductVersionById(versionRange.ToVersionId); 
+                    }
+                    if (fromVersion.Release <= dateOfWishedVersion && 
+                            dateOfWishedVersion <= toVersion.Release) {
                         var document = await GetTitleAndContentOfADocumentBy(language, versionRange);
                         if (!(document is NoDocument))
                             documents.Add(new ExportableDocument(document.Title, document.Content, documentRoute));
