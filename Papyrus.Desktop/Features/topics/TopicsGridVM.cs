@@ -58,12 +58,18 @@ namespace Papyrus.Desktop.Features.Topics {
         }
 
         private async Task ExportAllProductsDocumentation() {
-            var products = Products.Select(p => new Product(p.ProductId, p.ProductName, new List<ProductVersion>()));
+            var products = MapDisplayableProductsToProducts(Products);
             var allVersionNames = await productRepository.GetAllVersionNames();
-            var websiteCollection = await websiteConstructor.Construct(new PathByVersionGenerator(), products, allVersionNames, new List<string>{ "es-ES", "en-GB" });
+            var websiteCollection = await websiteConstructor.Construct(
+                new PathByVersionGenerator(), products, allVersionNames, languages
+            );
             foreach (var element in websiteCollection) {
                 await exporter.Export(element.Website, element.Path);
             }
+        }
+
+        private IEnumerable<Product> MapDisplayableProductsToProducts(ObservableCollection<DisplayableProduct> products) {
+            return products.Select(p => new Product(p.ProductId, p.ProductName, new List<ProductVersion>()));
         }
 
         private async Task ExportProduct() {
@@ -121,6 +127,8 @@ namespace Papyrus.Desktop.Features.Topics {
         }
 
         private bool canLoadTopics;
+        private readonly List<string> languages = new List<string>{ "es-ES", "en-GB" };
+
         private bool CanLoadAllTopics()
         {
             return canLoadTopics;
