@@ -71,11 +71,11 @@ namespace Papyrus.Business.Products {
         public async Task<Product> GetProductForVersions(Product product, List<string> versionsNames) {
             var versions = new List<ProductVersion>();
             foreach (var versionsName in versionsNames) {
-                var version = (await connection.Query<ProductVersion>(@"SELECT VersionId, VersionName, Release
+                var version = (await connection.Query<ProductVersion>(@"SELECT VersionId,                                                         VersionName, Release
                                                                      FROM ProductVersion
                                                                      WHERE ProductId = @ProductId AND VersionName = @VersionName",
-                                                                    new {ProductId = product.Id, VersionName = versionsName})).First();
-                versions.Add(version);
+                                                                    new {ProductId = product.Id, VersionName = versionsName})).FirstOrDefault();
+                if (version != null) versions.Add(version);
             }
             return new Product(product.Id, product.Name, versions);
         }
