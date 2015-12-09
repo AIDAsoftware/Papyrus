@@ -29,7 +29,7 @@ namespace Papyrus.Tests.View {
         private ProductRepository productRepo;
         private WebsiteConstructor websiteConstructor;
         private MkdocsExporter exporter;
-        private readonly List<string> spanishAndEnlgishLanguages = new List<string>{"es-ES", "en-GB"};
+        private readonly List<string> languages = new List<string>{"es-ES", "en-GB"};
         private readonly WebSite WebsiteWithADocument = WebsiteWith(new ExportableDocument("Title", "content", ""));
         private const string OpportunityId = "OpportunityId";
 
@@ -46,8 +46,8 @@ namespace Papyrus.Tests.View {
             StubOutProductRepoToReturnAsAllVersions(versions);
             StubOutProductRepoToReturnAsAllProducts(allProducts);
             var websiteCollection = new WebsiteCollection {{"Any/Path", WebsiteWithADocument}};
-            WhenWebConstructorIsCalledWithVersionPathStrategyAnd(
-                allProducts, versions, spanishAndEnlgishLanguages
+            WhenWebConstructorIsCalledWith(
+                Arg.Any<PathByVersionGenerator>(), allProducts, versions, languages
             ).Returns(Task.FromResult(websiteCollection));
             var viewModel = await InitializeTopicGridVMWith(topicRepo, productRepo, exporter, websiteConstructor);
 
@@ -66,9 +66,9 @@ namespace Papyrus.Tests.View {
             return viewModel;
         }
 
-        private async Task<WebsiteCollection> WhenWebConstructorIsCalledWithVersionPathStrategyAnd(List<DisplayableProduct> products, List<string> versions, List<string> languages) {
+        private async Task<WebsiteCollection> WhenWebConstructorIsCalledWith(PathByVersionGenerator aPathByVersionGenerator, List<DisplayableProduct> products, List<string> versions, List<string> languages) {
             return await websiteConstructor.Construct(
-                Arg.Any<PathByVersionGenerator>(), 
+                aPathByVersionGenerator, 
                 Arg.Is<IEnumerable<Product>>(ps => AreEquivalent(ps, products)),
                 versions, 
                 Arg.Is<List<string>>(ls => ls.SequenceEqual(languages)));
