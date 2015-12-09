@@ -148,6 +148,19 @@ namespace Papyrus.Tests.Infrastructure.Repositories {
             filteredProduct.Versions.Should().Contain(v => v.VersionName == "1");
         }
 
+        [Test]
+        public async Task get_all_versions_names() {
+            var version1 = new ProductVersion("AnyID", "1", DateTime.Today.AddDays(-20));
+            var version2 = new ProductVersion("AnyOtherID", "2", DateTime.Today);
+            var versions = new List<ProductVersion> { version1, version2 };
+            var product = new Product("OpportunityID", "Opportunity", versions);
+            await InsertProduct(product);
+
+            var versionsNames = await sqlProductRepository.GetAllVersionNames();
+
+            versionsNames.Should().BeEquivalentTo(versions.Select(v => v.VersionName));
+        }
+
         private async Task InsertProduct(Product product) {
             await dbConnection.Execute(@"INSERT INTO Product(ProductId, ProductName) 
                                 VALUES (@ProductId, @ProductName);",

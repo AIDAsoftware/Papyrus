@@ -81,7 +81,8 @@ namespace Papyrus.Business.Products {
         }
 
         public async Task<List<string>> GetAllVersionNames() {
-            throw new NotImplementedException();
+            return (await connection.Query<string>(@"SELECT DISTINCT VersionName 
+                                                FROM ProductVersion")).ToList();
         }
 
         private async Task<List<ProductVersion>> ProducVersionsForProduct(string productId) {
