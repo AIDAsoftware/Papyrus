@@ -30,7 +30,7 @@ namespace Papyrus.Tests.Business {
             topicRepo = Substitute.For<TopicQueryRepository>();
             productRepo = Substitute.For<ProductRepository>();
             pathGenerator = Substitute.For<PathGenerator>();
-            websiteConstructor = new WebsiteConstructor(pathGenerator, topicRepo, productRepo);
+            websiteConstructor = new WebsiteConstructor(topicRepo, productRepo);
         }
         
         [Test]
@@ -43,7 +43,7 @@ namespace Papyrus.Tests.Business {
                 .Returns(AsyncDocumentsList(englishDocument));
 
             var websites = await websiteConstructor
-                .Construct(ProductsList(opportunity), versionsNames, Languages(Spanish));
+                .Construct(pathGenerator, ProductsList(opportunity), versionsNames, Languages(Spanish));
 
             ExportableDocument websiteDocument = websites["Route/Route"].Documents.First();
             websiteDocument.Content.Should().Be(EnglishContent);
@@ -60,7 +60,7 @@ namespace Papyrus.Tests.Business {
             topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish, DocumentRoute)
                 .Returns(AsyncDocumentsList(englishDocument));
 
-            await websiteConstructor.Construct(ProductsList(opportunity), versionsNames, Languages(Spanish));
+            await websiteConstructor.Construct(pathGenerator, ProductsList(opportunity), versionsNames, Languages(Spanish));
 
             pathGenerator.Received().ForProduct(opportunity.Name);
             pathGenerator.Received().ForVersion(LastVersionName);
@@ -80,7 +80,7 @@ namespace Papyrus.Tests.Business {
             topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish, DocumentRoute)
                 .Returns(AsyncDocumentsList(new NoDocument()));
 
-            var websites = await websiteConstructor.Construct(ProductsList(opportunity), versionsNames, Languages(Spanish));
+            var websites = await websiteConstructor.Construct(pathGenerator, ProductsList(opportunity), versionsNames, Languages(Spanish));
 
             pathGenerator.DidNotReceive().GenerateMkdocsPath();
             websites.Count.Should().Be(0);

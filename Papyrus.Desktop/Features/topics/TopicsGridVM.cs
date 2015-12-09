@@ -60,7 +60,7 @@ namespace Papyrus.Desktop.Features.Topics {
         private async Task ExportAllProductsDocumentation() {
             var products = Products.Select(p => new Product(p.ProductId, p.ProductName, new List<ProductVersion>()));
             var allVersionNames = await productRepository.GetAllVersionsNamesDistinctingByName();
-            var websiteCollection = await websiteConstructor.Construct(products, allVersionNames, new List<string>{ "es-ES", "en-GB" });
+            var websiteCollection = await websiteConstructor.Construct(new PathByVersionGenerator(), products, allVersionNames, new List<string>{ "es-ES", "en-GB" });
             foreach (var element in websiteCollection) {
                 await exporter.Export(element.Website, element.Path);
             }

@@ -30,14 +30,13 @@ namespace Papyrus.Tests.View {
                 new DisplayableProduct {ProductId = "OpportunityId", ProductName = "Any"}
             }));
             var exporter = Substitute.For<MkdocsExporter>();
-            var pathGenerator = Substitute.For<PathGenerator>();
-            var websiteConstructor = Substitute.For<WebsiteConstructor>(pathGenerator, topicRepo, productRepo);
+            var websiteConstructor = Substitute.For<WebsiteConstructor>(topicRepo, productRepo);
             var websiteCollection = new WebsiteCollection();
             var webSite = new WebSite(new List<ExportableDocument> {
                 new ExportableDocument("Title", "content", "")
             });
             websiteCollection.Add("Any/Path", webSite);
-            websiteConstructor.Construct(Arg.Is<IEnumerable<Product>>(ps => ps.Any(p => p.Id == "OpportunityId")), allVersions, Arg.Is<List<string>>(ls => ls.Contains("es-ES") && ls.Contains("en-GB") && ls.Count == 2)).Returns(Task.FromResult(websiteCollection));
+            websiteConstructor.Construct(Arg.Any<PathByVersionGenerator>(), Arg.Is<IEnumerable<Product>>(ps => ps.Any(p => p.Id == "OpportunityId")), allVersions, Arg.Is<List<string>>(ls => ls.Contains("es-ES") && ls.Contains("en-GB") && ls.Count == 2)).Returns(Task.FromResult(websiteCollection));
             var viewModel = new TopicsGridVM(topicRepo, productRepo, exporter, websiteConstructor);
             await viewModel.Initialize();
 

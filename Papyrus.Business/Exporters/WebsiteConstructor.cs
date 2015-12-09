@@ -6,39 +6,37 @@ using Papyrus.Business.Topics;
 
 namespace Papyrus.Business.Exporters {
     public class WebsiteConstructor {
-        private readonly PathGenerator pathGenerator;
         private readonly TopicQueryRepository topicRepo;
         private readonly ProductRepository productRepo;
         private WebsiteCollection websitesCollection;
 
-        public WebsiteConstructor(PathGenerator pathGenerator, TopicQueryRepository topicRepo, ProductRepository productRepo) {
-            this.pathGenerator = pathGenerator;
+        public WebsiteConstructor(TopicQueryRepository topicRepo, ProductRepository productRepo) {
             this.topicRepo = topicRepo;
             this.productRepo = productRepo;
         }
 
-        public virtual async Task<WebsiteCollection> Construct(IEnumerable<Product> products, List<string> versions, List<string> languages) {
+        public virtual async Task<WebsiteCollection> Construct(PathGenerator pathGenerator, IEnumerable<Product> products, List<string> versions, List<string> languages) {
             websitesCollection = new WebsiteCollection();
             foreach (var product in products) {
                 var productWithVersions = await productRepo.GetProductForVersions(product, versions);
-                await AddWebsitesFor(productWithVersions, languages);
+                await AddWebsitesFor(pathGenerator, productWithVersions, languages);
             }
             return websitesCollection;
         }
 
-        private async Task AddWebsitesFor(Product product, List<string> languages) {
+        private async Task AddWebsitesFor(PathGenerator generator, Product product, List<string> languages) {
             foreach (var version in product.Versions) {
                 foreach (var language in languages) {
-                    RegistToGenerator(product, version, language);
-                    var website = await CreateWebsiteWithAllDocumentsFor(product, version, language);
+                    RegistToGenerator(generator, product, version, language);
+                    var website = await CreateWebsiteWithAllDocumentsFor(generator, product, version, language);
                     if (website.HasNotDocuments()) return;
-                    websitesCollection.Add(pathGenerator.GenerateMkdocsPath(), website);
+                    websitesCollection.Add(generator.GenerateMkdocsPath(), website);
                 }
             }
         }
 
-        private async Task<WebSite> CreateWebsiteWithAllDocumentsFor(Product product, ProductVersion version, string language) {
-            var documentRoute = pathGenerator.GenerateDocumentRoute();
+        private async Task<WebSite> CreateWebsiteWithAllDocumentsFor(PathGenerator generator, Product product, ProductVersion version, string language) {
+            var documentRoute = generator.GenerateDocumentRoute();
             var documents = await topicRepo.GetAllDocumentsFor(product.Id, version.VersionName, language, documentRoute);
             return new WebSite(RemoveEmptyDocuments(documents));
         }
@@ -47,10 +45,10 @@ namespace Papyrus.Business.Exporters {
             return documents.Where(d => !(d is NoDocument)).ToList();
         }
 
-        private void RegistToGenerator(Product product, ProductVersion version, string language) {
-            pathGenerator.ForProduct(product.Name);
-            pathGenerator.ForVersion(version.VersionName);
-            pathGenerator.ForLanguage(language);
+        private void RegistToGenerator(PathGenerator generator, Product product, ProductVersion version, string language) {
+            generator.ForProduct(product.Name);
+            generator.ForVersion(version.VersionName);
+            generator.ForLanguage(language);
         }
     }
 }
