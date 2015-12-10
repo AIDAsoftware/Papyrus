@@ -47,8 +47,18 @@ namespace Papyrus.Desktop.Features.Topics {
             Products = new ObservableCollection<DisplayableProduct>();
             RefreshTopics = RelayAsyncSimpleCommand.Create(LoadAllTopics, CanLoadAllTopics);
             ExportProductToMkDocs = RelayAsyncSimpleCommand.Create(ExportProduct, () => true);
+            ExportLastVersionToMkDocs = RelayAsyncSimpleCommand.Create(ExportLastVersion, () => true);
             ExportAllProducts = RelayAsyncSimpleCommand.Create(ExportAllProductsDocumentation, () => true);
             DefaultDirectoryPath = Directory.GetCurrentDirectory();
+        }
+
+        private async Task ExportLastVersion() {
+            var product = CastToProductType(SelectedProduct);
+            var versionName = (await productRepository.GetLastVersionForProduct(product.Id)).VersionName;
+            var websiteCollection = await websiteConstructor.Construct(
+                new PathByProductGenerator(), new List<Product> { product }, new List<string>{versionName}, languages
+            );
+            await Export(websiteCollection);
         }
 
         public TopicsGridVM(TopicQueryRepository topicRepo, ProductRepository productRepo, MkdocsExporter exporter, WebsiteConstructor websiteConstructor)
@@ -62,6 +72,15 @@ namespace Papyrus.Desktop.Features.Topics {
             var allVersionNames = await productRepository.GetAllVersionNames();
             var websiteCollection = await websiteConstructor.Construct(
                 new PathByVersionGenerator(), products, allVersionNames, languages
+            );
+            await Export(websiteCollection);
+        }
+
+        private async Task ExportProduct() {
+            var product = CastToProductType(SelectedProduct);
+            var versionsNames = (await productRepository.GetAllVersionsFor(product.Id)).Select(v => v.VersionName).ToList();
+            var websiteCollection = await websiteConstructor.Construct(
+                new PathByProductGenerator(), new List<Product> { product }, versionsNames, languages
             );
             await Export(websiteCollection);
         }
@@ -81,15 +100,6 @@ namespace Papyrus.Desktop.Features.Topics {
 
         private static Product CastToProductType(DisplayableProduct p) {
             return new Product(p.ProductId, p.ProductName, new List<ProductVersion>());
-        }
-
-        private async Task ExportProduct() {
-            var product = CastToProductType(SelectedProduct);
-            var versionsNames = (await productRepository.GetAllVersionsFor(product.Id)).Select(v => v.VersionName).ToList();
-            var websiteCollection = await websiteConstructor.Construct(
-                new PathByProductGenerator(), new List<Product>{product}, versionsNames, languages 
-            );
-            await Export(websiteCollection);
         }
 
         public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository) : this()

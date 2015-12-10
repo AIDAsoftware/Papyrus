@@ -72,6 +72,31 @@ namespace Papyrus.Tests.View {
 
             exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")));
         }
+        
+        [Test]
+        public async Task export_documentation_for_last_version_of_selected_product_in_spanish_and_english() {
+            StubOutProductRepoToReturnAsAllProducts(allProducts);
+            StubOutProductRepoToReturnAsLastVersionWhenIsCalledWithProduct("15.11.27", OpportunityId);
+            var viewModel = await InitializeTopicGridVMWith(topicRepo, productRepo, exporter, websiteConstructor);
+            viewModel.SelectedProduct = viewModel.Products.First(p => p.ProductId == OpportunityId);
+            var websiteCollection = new WebsiteCollection { { "Any/Path", WebsiteWithADocument } };
+            WhenWebConstructorIsCalledWith(
+                Arg.Any<PathByProductGenerator>(), new List<DisplayableProduct>{ viewModel.SelectedProduct }, 
+                new List<string>{"15.11.27"}, languages
+            ).Returns(Task.FromResult(websiteCollection));
+
+            await ExecuteExportLastVersionForSelectedProductCommandFrom(viewModel);
+
+            exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")));
+        }
+
+        private static async Task ExecuteExportLastVersionForSelectedProductCommandFrom(TopicsGridVM viewModel) {
+            await viewModel.ExportLastVersionToMkDocs.ExecuteAsync(new object());
+        }
+
+        private void StubOutProductRepoToReturnAsLastVersionWhenIsCalledWithProduct(string lastVersion, string productId) {
+            productRepo.GetLastVersionForProduct(productId).Returns(Task.FromResult(new ProductVersion(lastVersion, lastVersion, DateTime.Today)));
+        }
 
         private void StubOutProductRepoToReturnAsAllVersionsWhenIsCalledWithProduct(List<string> versions, string productId) {
             productRepo.GetAllVersionsFor(productId).Returns(
