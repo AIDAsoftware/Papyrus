@@ -60,7 +60,17 @@ namespace Papyrus.Tests.Business {
             await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
 
             var documentPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
-            GetFileContentFrom(documentPath).Should().Be("theme: readthedocs");
+            GetFileContentFrom(documentPath).Should().Contain("theme: readthedocs");
+        }
+        
+        [Test]
+        public async Task write_the_site_name_in_the_yml_file() {
+            var webSite = WebSiteWithDocument(AnyDocument());
+
+            await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
+
+            var documentPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
+            GetFileContentFrom(documentPath).Should().Contain("site_name: SIMA Documentation");
         }
 
         private string GetAnyExportationPath() {
