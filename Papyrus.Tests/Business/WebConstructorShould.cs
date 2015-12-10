@@ -45,7 +45,7 @@ namespace Papyrus.Tests.Business {
             var websites = await websiteConstructor
                 .Construct(pathGenerator, ProductsList(opportunity), versionsNames, Languages(Spanish));
 
-            ExportableDocument websiteDocument = websites["Route/Route"].Documents.First();
+            ExportableDocument websiteDocument = websites["Route/Route"].First().Documents.First();
             websiteDocument.Content.Should().Be(EnglishContent);
             websiteDocument.Title.Should().Be(EnglishTitle);
             websiteDocument.Route.Should().Be(DocumentRoute);
