@@ -38,11 +38,7 @@ namespace Papyrus.Business.Exporters {
         private async Task<WebSite> CreateWebsiteWithAllDocumentsFor(PathGenerator generator, Product product, ProductVersion version, string language) {
             var documentRoute = generator.GenerateDocumentRoute();
             var documents = await topicRepo.GetAllDocumentsFor(product.Id, version.VersionName, language, documentRoute);
-            return new WebSite(RemoveEmptyDocuments(documents));
-        }
-
-        private static List<ExportableDocument> RemoveEmptyDocuments(List<ExportableDocument> documents) {
-            return documents.Where(d => !(d is NoDocument)).ToList();
+            return new WebSite(documents);
         }
 
         private void RegistToGenerator(PathGenerator generator, Product product, ProductVersion version, string language) {
