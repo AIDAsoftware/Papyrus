@@ -79,7 +79,7 @@ namespace Papyrus.Tests.Business {
             StubPathGeneratorToReturnAs(documentRoute: DocumentRoute);
             RepositoryReturnsProductWhenAskingForVersions(opportunity, versionsNames);
             topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish, DocumentRoute)
-                .Returns(AsyncDocumentsList(new NoDocument()));
+                .Returns(Task.FromResult(new List<ExportableDocument>()));
 
             var websites = await websiteConstructor.Construct(pathGenerator, ProductsList(opportunity), versionsNames, Languages(Spanish));
 
