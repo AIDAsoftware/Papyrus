@@ -136,18 +136,18 @@ namespace Papyrus.Tests.Infrastructure.Repositories {
         }
 
         [Test]
-        public async Task get_product_with_wished_versions() {
-            var version1 = new ProductVersion("AnyID", "1", DateTime.Today.AddDays(-20));
-            var version2 = new ProductVersion("AnyOtherID", "2", DateTime.Today);
+        public async Task get_product_with_available_wished_versions() {
+            var version1 = new ProductVersion("firstID", "1", DateTime.Today.AddDays(-20));
+            var version2 = new ProductVersion("secondID", "2", DateTime.Today);
             var product = new Product("OpportunityID", "Opportunity", new List<ProductVersion>{ version1, version2});
             await InsertProduct(product);
 
-            var filteredProduct = await sqlProductRepository.GetProductForVersions(product, new List<string> {"1"});
+            var filteredProduct = await sqlProductRepository.GetProductForVersions(product, new List<string> {"1", "No Available Version"});
 
             filteredProduct.Versions.Should().HaveCount(1);
             filteredProduct.Versions.Should().Contain(v => v.VersionName == "1");
         }
-
+        
         [Test]
         public async Task get_all_versions_names() {
             var version1 = new ProductVersion("AnyID", "1", DateTime.Today.AddDays(-20));
