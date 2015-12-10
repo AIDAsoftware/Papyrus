@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NSubstitute;
@@ -55,6 +56,31 @@ namespace Papyrus.Tests.View {
 
             exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")));
         }
+        
+        [Test]
+        public async Task export_all_documentation_for_selected_product_in_spanish_and_english() {
+            StubOutProductRepoToReturnAsAllProducts(allProducts);
+            StubOutProductRepoToReturnAsAllVersionsWhenIsCalledWithProduct(versions, OpportunityId);
+            var viewModel = await InitializeTopicGridVMWith(topicRepo, productRepo, exporter, websiteConstructor);
+            viewModel.SelectedProduct = viewModel.Products.First(p => p.ProductId == OpportunityId);
+            var websiteCollection = new WebsiteCollection { { "Any/Path", WebsiteWithADocument } };
+            WhenWebConstructorIsCalledWith(
+                Arg.Any<PathByProductGenerator>(), new List<DisplayableProduct>{ viewModel.SelectedProduct }, versions, languages
+            ).Returns(Task.FromResult(websiteCollection));
+
+            await ExecuteExportSelectedProductCommandFrom(viewModel);
+
+            exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")));
+        }
+
+        private void StubOutProductRepoToReturnAsAllVersionsWhenIsCalledWithProduct(List<string> versions, string productId) {
+            productRepo.GetAllVersionsFor(productId).Returns(
+                Task.FromResult(versions.Select(v => new ProductVersion(v, v, DateTime.Today)).ToList()));
+        }
+
+        private static async Task ExecuteExportSelectedProductCommandFrom(TopicsGridVM viewModel) {
+            await viewModel.ExportProductToMkDocs.ExecuteAsync(new object());
+        }
 
         private static async Task ExecuteExportAllProductsCommandFrom(TopicsGridVM viewModel) {
             await viewModel.ExportAllProducts.ExecuteAsync(new object());
@@ -66,11 +92,11 @@ namespace Papyrus.Tests.View {
             return viewModel;
         }
 
-        private async Task<WebsiteCollection> WhenWebConstructorIsCalledWith(PathByVersionGenerator aPathByVersionGenerator, List<DisplayableProduct> products, List<string> versions, List<string> languages) {
+        private async Task<WebsiteCollection> WhenWebConstructorIsCalledWith(PathGenerator aPathByVersionGenerator, List<DisplayableProduct> products, List<string> versions, List<string> languages) {
             return await websiteConstructor.Construct(
                 aPathByVersionGenerator, 
                 Arg.Is<IEnumerable<Product>>(ps => AreEquivalent(ps, products)),
-                versions, 
+                Arg.Is<List<string>>(vs => vs.SequenceEqual(versions)), 
                 Arg.Is<List<string>>(ls => ls.SequenceEqual(languages)));
         }
 

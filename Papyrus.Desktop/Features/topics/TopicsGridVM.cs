@@ -72,11 +72,25 @@ namespace Papyrus.Desktop.Features.Topics {
         }
 
         private IEnumerable<Product> MapDisplayableProductsToProducts(ObservableCollection<DisplayableProduct> products) {
-            return products.Select(p => new Product(p.ProductId, p.ProductName, new List<ProductVersion>()));
+            return products.Select(p => CastToProductType(p));
+        }
+
+        private static Product CastToProductType(DisplayableProduct p) {
+            return new Product(p.ProductId, p.ProductName, new List<ProductVersion>());
         }
 
         private async Task ExportProduct() {
-            
+            var product = CastToProductType(SelectedProduct);
+            var versionsNames = (await productRepository.GetAllVersionsFor(product.Id)).Select(v => v.VersionName).ToList();
+            var websiteCollection = await websiteConstructor.Construct(
+                new PathByProductGenerator(), new List<Product>{product}, versionsNames, languages 
+            );
+            foreach (var element in websiteCollection) {
+                var fullPath = Path.Combine(DefaultDirectoryPath, element.Path);
+                foreach (var website in element.Websites) {
+                    await exporter.Export(website, fullPath);
+                }
+            }
         }
 
         public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository) : this()
