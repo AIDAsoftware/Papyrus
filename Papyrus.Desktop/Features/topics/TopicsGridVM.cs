@@ -63,10 +63,14 @@ namespace Papyrus.Desktop.Features.Topics {
             var websiteCollection = await websiteConstructor.Construct(
                 new PathByVersionGenerator(), products, allVersionNames, languages
             );
+            await Export(websiteCollection);
+        }
+
+        private async Task Export(WebsiteCollection websiteCollection) {
             foreach (var element in websiteCollection) {
                 var fullPath = Path.Combine(DefaultDirectoryPath, element.Path);
                 foreach (var website in element.Websites) {
-                    await exporter.Export(website, fullPath);                    
+                    await exporter.Export(website, fullPath);
                 }
             }
         }
@@ -85,12 +89,7 @@ namespace Papyrus.Desktop.Features.Topics {
             var websiteCollection = await websiteConstructor.Construct(
                 new PathByProductGenerator(), new List<Product>{product}, versionsNames, languages 
             );
-            foreach (var element in websiteCollection) {
-                var fullPath = Path.Combine(DefaultDirectoryPath, element.Path);
-                foreach (var website in element.Websites) {
-                    await exporter.Export(website, fullPath);
-                }
-            }
+            await Export(websiteCollection);
         }
 
         public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository) : this()
