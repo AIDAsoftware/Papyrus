@@ -2,25 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Papyrus.Business.Products;
+using Papyrus.Business.Topics;
 
 namespace Papyrus.Business.Exporters {
     public class WebsiteCollection : IEnumerable {
-        private readonly Dictionary<string, WebSite> websites;
+        private readonly Dictionary<string, List<WebSite>> websites;
 
         public int Count {
             get { return websites.Count; }
         }
 
-        public WebSite this[string path] {
+        public List<WebSite> this[string path] {
             get { return websites[path]; }
         }
 
         public WebsiteCollection() {
-            websites = new Dictionary<string, WebSite>();
+            websites = new Dictionary<string, List<WebSite>>();
         }
 
         public void Add(string generateMkdocsPath, WebSite website) {
-            websites.Add(generateMkdocsPath, website);
+            if (websites.ContainsKey(generateMkdocsPath))
+                websites[generateMkdocsPath].Add(website);
+            else 
+                websites.Add(generateMkdocsPath, new List<WebSite>{website});
         }
 
         public IEnumerator<WebsitePathPair> GetEnumerator() {
@@ -33,11 +37,11 @@ namespace Papyrus.Business.Exporters {
     }
 
     public class WebsitePathPair {
-        public WebSite Website { get; private set; }
+        public List<WebSite> Websites { get; private set; }
         public string Path { get; private set; }
 
-        public WebsitePathPair(WebSite website, string path) {
-            Website = website;
+        public WebsitePathPair(List<WebSite> websites, string path) {
+            Websites = websites;
             Path = path;
         }
     }

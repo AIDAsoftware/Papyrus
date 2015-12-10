@@ -64,7 +64,10 @@ namespace Papyrus.Desktop.Features.Topics {
                 new PathByVersionGenerator(), products, allVersionNames, languages
             );
             foreach (var element in websiteCollection) {
-                await exporter.Export(element.Website, element.Path);
+                var fullPath = Path.Combine(DefaultDirectoryPath, element.Path);
+                foreach (var website in element.Websites) {
+                    await exporter.Export(website, fullPath);                    
+                }
             }
         }
 
