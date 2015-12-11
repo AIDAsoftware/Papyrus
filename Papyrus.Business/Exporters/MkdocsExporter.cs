@@ -8,10 +8,12 @@ namespace Papyrus.Business.Exporters {
         private const string MarkDownExtension = ".md";
         private static readonly string MkdocsTheme = "theme: readthedocs" + System.Environment.NewLine;
         private static readonly string SiteNAme = "site_name: SIMA Documentation" + System.Environment.NewLine;
+        public const string IndexContent = "SIMA Documentation";
 
         public virtual async Task Export(WebSite webSite, string path) {
             var docsPath = Path.Combine(path, "docs");
             var docsDirectory = Directory.CreateDirectory(docsPath);
+            await FileWriter.WriteFileWithContent(Path.Combine(docsDirectory.FullName, "index.md"), IndexContent);
             foreach (var document in webSite.Documents) {
                 await ExportDocumentIn(document, docsDirectory);
             }

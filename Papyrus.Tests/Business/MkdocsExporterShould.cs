@@ -72,6 +72,15 @@ namespace Papyrus.Tests.Business {
             var documentPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
             GetFileContentFrom(documentPath).Should().Contain("site_name: SIMA Documentation");
         }
+        
+        [Test]
+        public async Task write_the_index_file_into_docs_directory() {
+            var webSite = WebSiteWithDocument(AnyDocument());
+
+            await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
+
+            GetDocsFrom(GetAnyExportationPath()).Should().Contain(d => d.Name == "index.md");
+        }
 
         private string GetAnyExportationPath() {
             return Path.Combine(testDirectory.FullName, AnyMkdocsPath);
