@@ -13,7 +13,7 @@ namespace Papyrus.Business.Exporters {
         public virtual async Task Export(WebSite webSite, string path) {
             var docsPath = Path.Combine(path, "docs");
             var docsDirectory = Directory.CreateDirectory(docsPath);
-            await FileWriter.WriteFileWithContent(Path.Combine(docsDirectory.FullName, "index.md"), IndexContent);
+            await WriteFileIn(Path.Combine(docsDirectory.FullName, "index.md"), IndexContent);
             foreach (var document in webSite.Documents) {
                 await ExportDocumentIn(document, docsDirectory);
             }
@@ -22,13 +22,17 @@ namespace Papyrus.Business.Exporters {
 
         private static async Task WriteYmlFileIn(string path) {
             var ymlPath = Path.Combine(path, YmlFileName);
-            await FileWriter.WriteFileWithContent(ymlPath, MkdocsTheme + SiteNAme);
+            await WriteFileIn(ymlPath, MkdocsTheme + SiteNAme);
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, DirectoryInfo directory) {
             var documentDirectory = Directory.CreateDirectory(Path.Combine(directory.FullName, document.Route));
             var documentPath = Path.Combine(documentDirectory.FullName, document.Title + MarkDownExtension);
-            await FileWriter.WriteFileWithContent(documentPath, document.Content);
+            await WriteFileIn(documentPath, document.Content);
+        }
+
+        private static async Task WriteFileIn(string documentPath, string content) {
+            await FileWriter.WriteFileWithContent(documentPath, content);
         }
     }
 }
