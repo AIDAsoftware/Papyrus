@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Papyrus.Infrastructure.Core.Database;
 
-namespace Papyrus.Tests.Infrastructure.Repositories.helpers
+namespace Papyrus.Tests.Infrastructure.Repositories.Helpers
 {
     public class DataBaseTruncator
     {

@@ -37,12 +37,6 @@ namespace Papyrus.Desktop.Features.Topics
             }
         }
 
-
-        private void ExportToFolderButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         private async void TopicRow_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var topicId = ViewModel.SelectedTopic.TopicId;

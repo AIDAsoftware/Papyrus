@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Papyrus.Business.Products;
@@ -44,6 +45,7 @@ namespace Papyrus.Business.Topics
 
         private ProductVersion GetVersionById(string versionId)
         {
+            if (versionId == LastProductVersion.Id) return new LastProductVersion();
             return Versions.First(vr => vr.VersionId == versionId);
         }
     }

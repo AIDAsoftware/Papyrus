@@ -89,5 +89,24 @@ namespace Papyrus.Tests.Business
             collisions.Should().BeEmpty();
         }
 
+        [Test]
+        public async Task detect_collision_when_to_version_is_defined_with_wildcard() {
+            var topic = new Topic(ProductId);
+            topic.AddVersionRange(new VersionRange("version3", "version4"));
+            topic.AddVersionRange(new VersionRange("version4", LastProductVersion.Id));
+
+            var collision = await versionRangeCollisionDetector.CollisionsFor(topic);
+
+            var expectedCollisions = new List<Collision>
+            {
+                new Collision(
+                    new EditableVersionRange { FromVersion = version3, ToVersion = version4 },
+                    new EditableVersionRange { FromVersion = version4, ToVersion = new LastProductVersion()}
+                )
+            };
+
+            collision.ShouldBeEquivalentTo(expectedCollisions);
+        }
+
     }
 }

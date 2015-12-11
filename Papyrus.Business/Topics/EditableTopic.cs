@@ -25,6 +25,11 @@ namespace Papyrus.Business.Topics
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public EditableTopic()
+        {
+            VersionRanges = new ObservableCollection<EditableVersionRange>();
+        }
+
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             if (PropertyChanged != null)

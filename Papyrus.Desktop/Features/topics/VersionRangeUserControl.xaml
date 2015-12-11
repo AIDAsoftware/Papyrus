@@ -14,7 +14,7 @@
                 <Label Width="Auto">FromVersion</Label>
                 <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
                             AncestorType={x:Type topics1:TopicWindow}}, 
-                            Path=ViewModel.Versions}" DisplayMemberPath="VersionName" 
+                            Path=ViewModel.FromVersions}" DisplayMemberPath="VersionName" 
                           SelectedValue="{Binding VersionRange.FromVersion}" 
                           Width="100" Margin="0,0,0,0"></ComboBox>
             </StackPanel>
@@ -22,7 +22,7 @@
                 <Label>ToVersion</Label>
                 <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
                             AncestorType={x:Type topics1:TopicWindow}}, 
-                            Path=ViewModel.Versions}" DisplayMemberPath="VersionName" 
+                            Path=ViewModel.ToVersions}" DisplayMemberPath="VersionName" 
                             SelectedValue="{Binding VersionRange.ToVersion}" 
                             Width="100"></ComboBox>
             </StackPanel>

@@ -62,9 +62,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exporters\MkDocsExporter.cs" />
+    <Compile Include="Exporters\ExportableDocument.cs" />
+    <Compile Include="Exporters\FileWriter.cs" />
+    <Compile Include="Exporters\MkdocsExporter.cs" />
+    <Compile Include="Exporters\NoDocument.cs" />
+    <Compile Include="Exporters\PathByProductGenerator.cs" />
+    <Compile Include="Exporters\PathByVersionGenerator.cs" />
+    <Compile Include="Exporters\PathGenerator.cs" />
+    <Compile Include="Exporters\WebsiteCollection.cs" />
+    <Compile Include="Exporters\WebsiteConstructor.cs" />
     <Compile Include="Products\FullVersionRange.cs" />
     <Compile Include="Products\ProductVersion.cs" />
+    <Compile Include="Products\WebSite.cs" />
     <Compile Include="Topics\Collision.cs" />
     <Compile Include="Topics\Documents.cs" />
     <Compile Include="Topics\EditableDocument.cs" />
@@ -74,7 +83,8 @@
     <Compile Include="Topics\Exceptions\CannotDeleteTopicsWithoutTopicIdAssignedException.cs" />
     <Compile Include="Topics\Exceptions\VersionRangesCollisionException.cs" />
     <Compile Include="Topics\RangeWithAllVersions.cs" />
-    <Compile Include="Topics\SqlTopicRepository.cs" />
+    <Compile Include="Topics\SqlTopicCommandRepository.cs" />
+    <Compile Include="Topics\SqlTopicQueryRepository.cs" />
     <Compile Include="Topics\Document.cs" />
     <Compile Include="Topics\Exceptions\CannotUpdateTopicsWithNoVersionRangesException.cs" />
     <Compile Include="Topics\Exceptions\CannotSaveTopicsWithDefinedTopicIdException.cs" />
@@ -88,7 +98,8 @@
     <Compile Include="Products\SqlProductRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Topics\Topic.cs" />
-    <Compile Include="Topics\TopicRepository.cs" />
+    <Compile Include="Topics\TopicCommandRepository.cs" />
+    <Compile Include="Topics\TopicQueryRepository.cs" />
     <Compile Include="Topics\TopicService.cs" />
     <Compile Include="Topics\VersionRange.cs" />
     <Compile Include="Topics\VersionRangeCollisionDetector.cs" />

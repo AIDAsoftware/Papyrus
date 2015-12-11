@@ -1,8 +1,6 @@
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Annotations;
 
@@ -10,8 +8,6 @@ namespace Papyrus.Desktop.Features.Topics
 {
     public class VersionRangeVM : INotifyPropertyChanged
     {
-        public ObservableCollection<ProductVersion> ProductVersions { get; private set; }
-
         private EditableDocument selectedDocument;
         public EditableDocument SelectedDocument
         {
@@ -22,7 +18,7 @@ namespace Papyrus.Desktop.Features.Topics
             set
             {
                 selectedDocument = value;
-                OnPropertyChanged("SelectedDocument");
+                OnPropertyChanged();
             }
         }
 
@@ -36,17 +32,13 @@ namespace Papyrus.Desktop.Features.Topics
             set
             {
                 versionRange = value;
-                OnPropertyChanged("VersionRange");
+                OnPropertyChanged();
                 SelectDefaultDocument();
             }
         }
 
-        public VersionRangeVM()
-        {
-            ProductVersions = new ObservableCollection<ProductVersion>();
-        }
-
-        public VersionRangeVM(EditableVersionRange editableVersionRange) : this()
+        public VersionRangeVM() { }
+        public VersionRangeVM(EditableVersionRange editableVersionRange)
         {
             VersionRange = editableVersionRange;
         }

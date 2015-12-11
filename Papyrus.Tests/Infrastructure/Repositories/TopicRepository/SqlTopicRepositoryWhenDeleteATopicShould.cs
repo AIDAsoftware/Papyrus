@@ -4,19 +4,19 @@ using FluentAssertions;
 using NUnit.Framework;
 using Papyrus.Business.Topics;
 using Papyrus.Infrastructure.Core.Database;
-using Papyrus.Tests.Infrastructure.Repositories.helpers;
+using Papyrus.Tests.Infrastructure.Repositories.Helpers;
 
 namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 {        
     [TestFixture]
     public class SqlTopicRepositoryWhenDeleteATopicShould : SqlTest
     {
-        private SqlTopicRepository topicRepository;
+        private SqlTopicCommandRepository topicRepository;
 
         [SetUp]
         public void Initialize()
         {
-            topicRepository = new SqlTopicRepository(dbConnection);
+            topicRepository = new SqlTopicCommandRepository(dbConnection);
             new DataBaseTruncator(dbConnection).TruncateDataBase().GetAwaiter().GetResult();
         }
 

@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 
 namespace Papyrus.Business.Topics
 {
-    public interface TopicRepository
+    public interface TopicQueryRepository
     {
-        Task Save(Topic topic);
-        Task Update(Topic topic);
         Task<List<TopicSummary>> GetAllTopicsSummaries();
         Task<EditableTopic> GetEditableTopicById(string topicId);
-        Task Delete(Topic topic);
+        Task<List<ExportableDocument>> GetAllDocumentsFor(string product, string version, string language, string documentRoute);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Features.Topics;
@@ -6,9 +7,10 @@ using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Desktop {
     public static class ViewModelsFactory {
-        public static TopicsGridVM TopicsGrid()
-        {
-            return new TopicsGridVM(RepositoriesFactory.Topic(), RepositoriesFactory.Product());
+        public static TopicsGridVM TopicsGrid() {
+            var topicQueryRepository = RepositoriesFactory.QueryTopic();
+            var productRepository = RepositoriesFactory.Product();
+            return new TopicsGridVM(topicQueryRepository, productRepository, new MkdocsExporter(), new WebsiteConstructor(topicQueryRepository, productRepository));
         }
 
         public static TopicVM Topic(EditableTopic topic)
@@ -48,9 +50,14 @@ namespace Papyrus.Desktop {
             return new SqlProductRepository(CreateConnection());
         }
 
-        public static TopicRepository Topic()
+        public static TopicCommandRepository Topic()
         {
-            return new SqlTopicRepository(CreateConnection());
+            return new SqlTopicCommandRepository(CreateConnection());
+        }
+
+        public static TopicQueryRepository QueryTopic()
+        {
+            return new SqlTopicQueryRepository(CreateConnection());
         }
     }
 

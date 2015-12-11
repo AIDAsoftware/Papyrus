@@ -1,8 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Annotations;
@@ -11,11 +14,14 @@ using Papyrus.Desktop.Util.Command;
 namespace Papyrus.Desktop.Features.Topics {
     public class TopicsGridVM : INotifyPropertyChanged
     {
-        private readonly TopicRepository topicRepository;
+        private readonly MkdocsExporter exporter;
+        private readonly WebsiteConstructor websiteConstructor;
+        private readonly TopicQueryRepository topicRepository;
         private readonly ProductRepository productRepository;
         public ObservableCollection<TopicSummary> TopicsToList { get; protected set; }
         public ObservableCollection<DisplayableProduct> Products { get; private set; }
         public TopicSummary SelectedTopic { get; set; }
+        private string DefaultDirectoryPath { get; set; }
 
         private DisplayableProduct selectedProduct;
         public DisplayableProduct SelectedProduct
@@ -29,16 +35,74 @@ namespace Papyrus.Desktop.Features.Topics {
             }
         }
 
-        public IAsyncCommand RefreshTopics { get; set; }
+        public IAsyncCommand RefreshTopics { get; private set; }
+        public IAsyncCommand ExportProductToMkDocs { get; private set; }
+        public IAsyncCommand ExportLastVersionToMkDocs { get; private set; }
+        public IAsyncCommand ExportAllProducts { get; private set; }
+
 
         protected TopicsGridVM()
         {
             TopicsToList = new ObservableCollection<TopicSummary>();
             Products = new ObservableCollection<DisplayableProduct>();
             RefreshTopics = RelayAsyncSimpleCommand.Create(LoadAllTopics, CanLoadAllTopics);
+            ExportProductToMkDocs = RelayAsyncSimpleCommand.Create(ExportProduct, () => true);
+            ExportLastVersionToMkDocs = RelayAsyncSimpleCommand.Create(ExportLastVersion, () => true);
+            ExportAllProducts = RelayAsyncSimpleCommand.Create(ExportAllProductsDocumentation, () => true);
+            DefaultDirectoryPath = Directory.GetCurrentDirectory();
         }
 
-        public TopicsGridVM(TopicRepository topicRepository, ProductRepository productRepository) : this()
+        private async Task ExportLastVersion() {
+            var product = CastToProductType(SelectedProduct);
+            var versionName = (await productRepository.GetLastVersionForProduct(product.Id)).VersionName;
+            var websiteCollection = await websiteConstructor.Construct(
+                new PathByProductGenerator(), new List<Product> { product }, new List<string>{versionName}, languages
+            );
+            await Export(websiteCollection);
+        }
+
+        public TopicsGridVM(TopicQueryRepository topicRepo, ProductRepository productRepo, MkdocsExporter exporter, WebsiteConstructor websiteConstructor)
+            : this(topicRepo, productRepo) {
+            this.exporter = exporter;
+            this.websiteConstructor = websiteConstructor;
+        }
+
+        private async Task ExportAllProductsDocumentation() {
+            var products = MapDisplayableProductsToProducts(Products);
+            var allVersionNames = await productRepository.GetAllVersionNames();
+            var websiteCollection = await websiteConstructor.Construct(
+                new PathByVersionGenerator(), products, allVersionNames, languages
+            );
+            await Export(websiteCollection);
+        }
+
+        private async Task ExportProduct() {
+            var product = CastToProductType(SelectedProduct);
+            var versionsNames = (await productRepository.GetAllVersionsFor(product.Id)).Select(v => v.VersionName).ToList();
+            var websiteCollection = await websiteConstructor.Construct(
+                new PathByProductGenerator(), new List<Product> { product }, versionsNames, languages
+            );
+            await Export(websiteCollection);
+        }
+
+        private async Task Export(WebsiteCollection websiteCollection) {
+            foreach (var element in websiteCollection) {
+                var fullPath = Path.Combine(DefaultDirectoryPath, element.Path);
+                foreach (var website in element.Websites) {
+                    await exporter.Export(website, fullPath);
+                }
+            }
+        }
+
+        private IEnumerable<Product> MapDisplayableProductsToProducts(ObservableCollection<DisplayableProduct> products) {
+            return products.Select(p => CastToProductType(p));
+        }
+
+        private static Product CastToProductType(DisplayableProduct p) {
+            return new Product(p.ProductId, p.ProductName, new List<ProductVersion>());
+        }
+
+        public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository) : this()
         {
             this.topicRepository = topicRepository;
             this.productRepository = productRepository;
@@ -47,8 +111,7 @@ namespace Papyrus.Desktop.Features.Topics {
         public async Task Initialize()
         {
             await LoadAllProducts();
-            SelectedProduct = Products[0];
-            await LoadAllTopics();
+            SelectedProduct = Products.FirstOrDefault();
         }
 
         public async void RefreshTopicsForCurrentProduct()
@@ -72,7 +135,6 @@ namespace Papyrus.Desktop.Features.Topics {
             };
         }
 
-
         private async Task LoadAllProducts()
         {
             var products = await productRepository.GetAllDisplayableProducts();
@@ -91,6 +153,8 @@ namespace Papyrus.Desktop.Features.Topics {
         }
 
         private bool canLoadTopics;
+        private readonly List<string> languages = new List<string>{ "es-ES", "en-GB" };
+
         private bool CanLoadAllTopics()
         {
             return canLoadTopics;

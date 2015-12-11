@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,11 @@ namespace Papyrus.Business.Topics
         {
             get { return documents.FirstOrDefault(d => d.Language == language); }
         }
+
+        public List<TResult> Select<TResult>(Func<Document, TResult> function)
+        {
+            return documents.Select(function).ToList();
+        } 
 
         public IEnumerator<Document> GetEnumerator()
         {

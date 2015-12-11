@@ -26,4 +26,10 @@ namespace Papyrus.Business.Products
             return false;
         }
     }
+
+    public class LastProductVersion : ProductVersion {
+        public const string Name = "Last version";
+        public const string Id = "*";
+        public LastProductVersion() : base(Id, Name, DateTime.MaxValue) {}
+    }
 }

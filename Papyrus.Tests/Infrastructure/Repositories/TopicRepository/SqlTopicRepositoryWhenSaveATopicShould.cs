@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Papyrus.Business.Topics;
 using Papyrus.Infrastructure.Core.Database;
-using Papyrus.Tests.Infrastructure.Repositories.helpers;
+using Papyrus.Tests.Infrastructure.Repositories.Helpers;
 
 namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 {
@@ -11,7 +11,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
     public class SqlTopicWhenSaveATopicShould : SqlTest
     {
         private Topic anyTopic;
-        private SqlTopicRepository topicRepository;
+        private SqlTopicCommandRepository topicRepository;
         private const string ProductId = "OpportunityId";
         private const string FirstVersionId = "FirstVersionId";
 
@@ -19,7 +19,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         public async void Initialize()
         {
             anyTopic = new Topic(ProductId).WithId("AnyTopicId");
-            topicRepository = new SqlTopicRepository(dbConnection);
+            topicRepository = new SqlTopicCommandRepository(dbConnection);
             await new DataBaseTruncator(dbConnection).TruncateDataBase();
         }
 
