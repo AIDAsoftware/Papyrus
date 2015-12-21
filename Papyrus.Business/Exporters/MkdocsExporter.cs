@@ -48,9 +48,5 @@ namespace Papyrus.Business.Exporters {
         private static async Task WriteFileIn(string documentPath, string content) {
             await FileWriter.WriteFileWithContent(documentPath, content + NewLine);
         }
-
-        private string GetFileContentFrom(string documentPath) {
-            return File.ReadAllText(documentPath);
-        }
     }
 }
