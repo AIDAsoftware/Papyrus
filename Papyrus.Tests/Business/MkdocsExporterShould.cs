@@ -41,7 +41,7 @@ namespace Papyrus.Tests.Business {
             await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
 
             var content = GetFileContentFrom(Path.Combine(GetAnyExportationPath(), "docs/Title.md"));
-            content.Should().Be("Content");
+            content.Should().Be("Content" + System.Environment.NewLine);
         }
         
         [Test]

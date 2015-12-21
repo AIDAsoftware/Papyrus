@@ -6,8 +6,9 @@ namespace Papyrus.Business.Exporters {
     public class MkdocsExporter {
         private const string YmlFileName = "mkdocs.yml";
         private const string MarkDownExtension = ".md";
-        private readonly string mkdocsTheme = "theme: readthedocs" + System.Environment.NewLine;
-        private readonly string siteName = "site_name: SIMA Documentation" + System.Environment.NewLine;
+        private readonly string mkdocsTheme = "theme: readthedocs";
+        private readonly string siteName = "site_name: SIMA Documentation";
+        private static readonly string NewLine = System.Environment.NewLine;
         public const string IndexContent = "SIMA Documentation";
         private const string Tab = "\t";
 
@@ -27,14 +28,15 @@ namespace Papyrus.Business.Exporters {
         private async Task WriteYmlFileIn(string path, ExportableDocument document) {
             var ymlPath = Path.Combine(path, YmlFileName);
             if (!File.Exists(ymlPath)) {
-                await WriteFileIn(ymlPath, mkdocsTheme + siteName);
-                await WriteFileIn(ymlPath, "pages:" + System.Environment.NewLine);                
+                await WriteFileIn(ymlPath, mkdocsTheme);
+                await WriteFileIn(ymlPath, siteName);
+                await WriteFileIn(ymlPath, "pages:");                
             }
             await WriteFileIn(ymlPath, MkdocsPagePresentationFor(document));
         }
 
         private static string MkdocsPagePresentationFor(ExportableDocument document) {
-            return Tab + document.ExportableTitle + ": " + document.Title + System.Environment.NewLine;
+            return Tab + document.ExportableTitle + ": " + document.Title;
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, DirectoryInfo directory) {
@@ -44,7 +46,7 @@ namespace Papyrus.Business.Exporters {
         }
 
         private static async Task WriteFileIn(string documentPath, string content) {
-            await FileWriter.WriteFileWithContent(documentPath, content);
+            await FileWriter.WriteFileWithContent(documentPath, content + NewLine);
         }
 
         private string GetFileContentFrom(string documentPath) {
