@@ -18,7 +18,7 @@ namespace Papyrus.Business.Exporters {
         public virtual async Task Export(WebSite webSite, string path) {
             var docsPath = Path.Combine(path, "docs");
             var docsDirectory = Directory.CreateDirectory(docsPath);
-            await WriteFileIn(Path.Combine(docsDirectory.FullName, "index.md"), IndexContent);
+            await WriteInFile(Path.Combine(docsDirectory.FullName, "index.md"), IndexContent);
             foreach (var document in webSite.Documents) {
                 await ExportDocumentIn(document, docsDirectory);
                 await WriteYmlFileIn(path, document);
@@ -28,15 +28,15 @@ namespace Papyrus.Business.Exporters {
         private async Task WriteYmlFileIn(string path, ExportableDocument document) {
             var ymlPath = Path.Combine(path, YmlFileName);
             if (!File.Exists(ymlPath)) {
-                await CreateMkdocsYmlFile(ymlPath);
+                await InitializeMkdocsYmlFile(ymlPath);
             }
-            await WriteFileIn(ymlPath, MkdocsPagePresentationFor(document));
+            await WriteInFile(ymlPath, MkdocsPagePresentationFor(document));
         }
 
-        private async Task CreateMkdocsYmlFile(string ymlPath) {
-            await WriteFileIn(ymlPath, mkdocsTheme);
-            await WriteFileIn(ymlPath, siteName);
-            await WriteFileIn(ymlPath, "pages:");
+        private async Task InitializeMkdocsYmlFile(string ymlPath) {
+            await WriteInFile(ymlPath, mkdocsTheme);
+            await WriteInFile(ymlPath, siteName);
+            await WriteInFile(ymlPath, "pages:");
         }
 
         private static string MkdocsPagePresentationFor(ExportableDocument document) {
@@ -46,10 +46,10 @@ namespace Papyrus.Business.Exporters {
         private static async Task ExportDocumentIn(ExportableDocument document, DirectoryInfo directory) {
             var documentDirectory = Directory.CreateDirectory(Path.Combine(directory.FullName, document.Route));
             var documentPath = Path.Combine(documentDirectory.FullName, document.ExportableTitle + MarkDownExtension);
-            await WriteFileIn(documentPath, document.Content);
+            await WriteInFile(documentPath, document.Content);
         }
 
-        private static async Task WriteFileIn(string documentPath, string content) {
+        private static async Task WriteInFile(string documentPath, string content) {
             await FileWriter.WriteFileWithContent(documentPath, content + NewLine);
         }
     }
