@@ -28,11 +28,15 @@ namespace Papyrus.Business.Exporters {
         private async Task WriteYmlFileIn(string path, ExportableDocument document) {
             var ymlPath = Path.Combine(path, YmlFileName);
             if (!File.Exists(ymlPath)) {
-                await WriteFileIn(ymlPath, mkdocsTheme);
-                await WriteFileIn(ymlPath, siteName);
-                await WriteFileIn(ymlPath, "pages:");                
+                await CreateMkdocsYmlFile(ymlPath);
             }
             await WriteFileIn(ymlPath, MkdocsPagePresentationFor(document));
+        }
+
+        private async Task CreateMkdocsYmlFile(string ymlPath) {
+            await WriteFileIn(ymlPath, mkdocsTheme);
+            await WriteFileIn(ymlPath, siteName);
+            await WriteFileIn(ymlPath, "pages:");
         }
 
         private static string MkdocsPagePresentationFor(ExportableDocument document) {
