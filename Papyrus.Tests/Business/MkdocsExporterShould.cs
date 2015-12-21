@@ -82,6 +82,17 @@ namespace Papyrus.Tests.Business {
             GetDocsFrom(GetAnyExportationPath()).Should().Contain(d => d.Name == "index.md");
         }
 
+        [Test]
+        public async Task replace_unavailabe_characters_for_a_file_for_available_ones() {
+            var website = WebSiteWithDocument(new ExportableDocument("this/is|the*Title", "AnyContent", ""));
+
+            await new MkdocsExporter().Export(website, GetAnyExportationPath());
+
+            var ymlPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
+            GetFileContentFrom(ymlPath).Should().Contain("pages:");
+            GetFileContentFrom(ymlPath).Should().Contain("this-is-the-Title: this/is|the*Title");
+        }
+
         private string GetAnyExportationPath() {
             return Path.Combine(testDirectory.FullName, AnyMkdocsPath);
         }
