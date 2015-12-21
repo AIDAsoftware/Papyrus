@@ -9,6 +9,7 @@ namespace Papyrus.Business.Exporters {
         private readonly string mkdocsTheme = "theme: readthedocs" + System.Environment.NewLine;
         private readonly string siteName = "site_name: SIMA Documentation" + System.Environment.NewLine;
         public const string IndexContent = "SIMA Documentation";
+        private const string Tab = "\t";
 
         public MkdocsExporter() {
         }
@@ -29,7 +30,11 @@ namespace Papyrus.Business.Exporters {
                 await WriteFileIn(ymlPath, mkdocsTheme + siteName);
                 await WriteFileIn(ymlPath, "pages:" + System.Environment.NewLine);                
             }
-            await WriteFileIn(ymlPath, "\t" + document.ExportableTitle + ": " + document.Title + System.Environment.NewLine);
+            await WriteFileIn(ymlPath, MkdocsPagePresentationFor(document));
+        }
+
+        private static string MkdocsPagePresentationFor(ExportableDocument document) {
+            return Tab + document.ExportableTitle + ": " + document.Title + System.Environment.NewLine;
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, DirectoryInfo directory) {
