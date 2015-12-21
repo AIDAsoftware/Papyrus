@@ -27,7 +27,7 @@ namespace Papyrus.Tests.Business {
 
         [Test]
         public async Task generate_mkdocs_yml_file_in_the_given_path() {
-            var webSite = WebSiteWithDocument(AnyDocument());
+            var webSite = WebSiteWithDocuments(AnyDocument());
 
             await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
 
@@ -36,7 +36,7 @@ namespace Papyrus.Tests.Business {
 
         [Test]
         public async Task generate_documents_in_docs_file() {
-            var webSite = WebSiteWithDocument(new ExportableDocument("Title", "Content", ""));
+            var webSite = WebSiteWithDocuments(new ExportableDocument("Title", "Content", ""));
 
             await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
 
@@ -46,7 +46,7 @@ namespace Papyrus.Tests.Business {
         
         [Test]
         public async Task generate_docs_folder_in_the_given_folder() {
-            var webSite = WebSiteWithDocument(AnyDocument());
+            var webSite = WebSiteWithDocuments(AnyDocument());
 
             await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
 
@@ -55,7 +55,7 @@ namespace Papyrus.Tests.Business {
 
         [Test]
         public async Task write_the_theme_in_the_yml_file() {
-            var webSite = WebSiteWithDocument(AnyDocument());
+            var webSite = WebSiteWithDocuments(AnyDocument());
 
             await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
 
@@ -65,7 +65,7 @@ namespace Papyrus.Tests.Business {
         
         [Test]
         public async Task write_the_site_name_in_the_yml_file() {
-            var webSite = WebSiteWithDocument(AnyDocument());
+            var webSite = WebSiteWithDocuments(AnyDocument());
 
             await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
 
@@ -75,7 +75,7 @@ namespace Papyrus.Tests.Business {
         
         [Test]
         public async Task write_the_index_file_into_docs_directory() {
-            var webSite = WebSiteWithDocument(AnyDocument());
+            var webSite = WebSiteWithDocuments(AnyDocument());
 
             await new MkdocsExporter().Export(webSite, GetAnyExportationPath());
 
@@ -84,13 +84,17 @@ namespace Papyrus.Tests.Business {
 
         [Test]
         public async Task replace_unavailabe_characters_for_a_file_for_available_ones() {
-            var website = WebSiteWithDocument(new ExportableDocument("this/is|the*Title", "AnyContent", ""));
+            var website = WebSiteWithDocuments(
+                new ExportableDocument("this/is|the*Title", "AnyContent", ""),
+                new ExportableDocument("another>file?", "AnotherContent", ""));
 
             await new MkdocsExporter().Export(website, GetAnyExportationPath());
 
             var ymlPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
-            GetFileContentFrom(ymlPath).Should().Contain("pages:");
-            GetFileContentFrom(ymlPath).Should().Contain("this-is-the-Title: this/is|the*Title");
+            GetFileContentFrom(ymlPath).Should().Contain(
+                "pages:" + Environment.NewLine + 
+                "\tthis-is-the-Title: this/is|the*Title" + Environment.NewLine +
+                "\tanother-file-: another>file?");
         }
 
         private string GetAnyExportationPath() {
@@ -118,8 +122,8 @@ namespace Papyrus.Tests.Business {
             return new ExportableDocument("AnyTitle", "AnyContent", "/AnyWebsitePath");
         }
 
-        private static WebSite WebSiteWithDocument(ExportableDocument exportableDocument) {
-            return new WebSite(new List<ExportableDocument> { exportableDocument });
+        private static WebSite WebSiteWithDocuments(params ExportableDocument[] exportableDocuments) {
+            return new WebSite(exportableDocuments);
         }
     }
 }

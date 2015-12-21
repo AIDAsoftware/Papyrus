@@ -25,9 +25,11 @@ namespace Papyrus.Business.Exporters {
 
         private async Task WriteYmlFileIn(string path, ExportableDocument document) {
             var ymlPath = Path.Combine(path, YmlFileName);
-            await WriteFileIn(ymlPath, mkdocsTheme + siteName);
-            await WriteFileIn(ymlPath, "pages:" + System.Environment.NewLine);
-            await WriteFileIn(ymlPath, document.ExportableTitle + ": " + document.Title);
+            if (!File.Exists(ymlPath)) {
+                await WriteFileIn(ymlPath, mkdocsTheme + siteName);
+                await WriteFileIn(ymlPath, "pages:" + System.Environment.NewLine);                
+            }
+            await WriteFileIn(ymlPath, "\t" + document.ExportableTitle + ": " + document.Title + System.Environment.NewLine);
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, DirectoryInfo directory) {
@@ -38,6 +40,10 @@ namespace Papyrus.Business.Exporters {
 
         private static async Task WriteFileIn(string documentPath, string content) {
             await FileWriter.WriteFileWithContent(documentPath, content);
+        }
+
+        private string GetFileContentFrom(string documentPath) {
+            return File.ReadAllText(documentPath);
         }
     }
 }
