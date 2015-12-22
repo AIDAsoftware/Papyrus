@@ -13,14 +13,18 @@ namespace Papyrus.Business.Exporters {
         private const string NewListItem = "- ";
 
         public virtual async Task Export(WebSite webSite, string path) {
+            await InitializeMkdocsStructure(path);
+            foreach (var document in webSite.Documents) {
+                await ExportDocumentIn(document, Path.Combine(path, "docs"));
+                await GenerateDocInYml(document, Path.Combine(path, YmlFileName));
+            }
+        }
+
+        private async Task InitializeMkdocsStructure(string path) {
             var docsPath = Path.Combine(path, "docs");
             var docsDirectory = Directory.CreateDirectory(docsPath);
             await WriteInFile(Path.Combine(docsDirectory.FullName, "index.md"), IndexContent);
             await InitializeYmlFileIn(path);
-            foreach (var document in webSite.Documents) {
-                await ExportDocumentIn(document, docsDirectory);
-                await GenerateDocInYml(document, Path.Combine(path, YmlFileName));
-            }
         }
 
         private async Task InitializeYmlFileIn(string path) {
@@ -55,8 +59,8 @@ namespace Papyrus.Business.Exporters {
                 Path.Combine(document.Route, document.ExportableTitle) + MarkDownExtension;
         }
 
-        private static async Task ExportDocumentIn(ExportableDocument document, DirectoryInfo directory) {
-            var documentDirectory = Directory.CreateDirectory(Path.Combine(directory.FullName, document.Route));
+        private static async Task ExportDocumentIn(ExportableDocument document, string directoryPath) {
+            var documentDirectory = Directory.CreateDirectory(Path.Combine(directoryPath, document.Route));
             var documentPath = Path.Combine(documentDirectory.FullName, document.ExportableTitle + MarkDownExtension);
             await WriteInFile(documentPath, document.Content);
         }
