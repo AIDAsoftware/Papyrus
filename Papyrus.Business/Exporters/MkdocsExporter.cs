@@ -31,16 +31,23 @@ namespace Papyrus.Business.Exporters {
         }
 
         private static async Task GenerateDocInYml(ExportableDocument document, string ymlPath) {
+            var docReference = MkdocsPagePresentationFor(document);
             if (string.IsNullOrEmpty(document.Route)) {
-                await WriteInFile(ymlPath, MkdocsPagePresentationFor(document));
+                await WriteInFile(ymlPath, docReference);
                 return;
             }
-            if (File.ReadAllText(ymlPath).Contains("- " + document.Route)) {
-                await WriteInFile(ymlPath, "\t" + MkdocsPagePresentationFor(document));
-                return;
+            if (!ReadContentOf(ymlPath).Contains(document.Route)) {
+                await WriteInFile(ymlPath, NewListItemWith(document.Route));
             }
-            await WriteInFile(ymlPath, NewListItem + document.Route + ":");
-            await WriteInFile(ymlPath, "\t" + MkdocsPagePresentationFor(document));
+            await WriteInFile(ymlPath, "\t" + docReference);
+        }
+
+        private static string ReadContentOf(string ymlPath) {
+            return File.ReadAllText(ymlPath);
+        }
+
+        private static string NewListItemWith(string itemContent) {
+            return NewListItem + itemContent + ":";
         }
 
         private static string MkdocsPagePresentationFor(ExportableDocument document) {
