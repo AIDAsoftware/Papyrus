@@ -101,12 +101,14 @@ namespace Papyrus.Tests.Business {
         
         [Test]
         public async Task replace_unavailabe_characters_for_a_file_for_available_ones_when_have_a_route_in_each_document() {
-            var website = WebSiteWithDocuments(
+            var firstWebsite = WebSiteWithDocuments(
                 new ExportableDocument("first-file", "AnyContent", "first-route"),
-                new ExportableDocument("second>file", "AnotherContent", "first-route"),
+                new ExportableDocument("second>file", "AnotherContent", "first-route"));
+            var secondWebsite = WebSiteWithDocuments(
                 new ExportableDocument("third>file", "MoreContent", "second-route"));
 
-            await new MkdocsExporter().Export(website, GetAnyExportationPath());
+            await new MkdocsExporter().Export(firstWebsite, GetAnyExportationPath());
+            await new MkdocsExporter().Export(secondWebsite, GetAnyExportationPath());
 
             var ymlPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
             GetFileContentFrom(ymlPath).Should().Contain(
