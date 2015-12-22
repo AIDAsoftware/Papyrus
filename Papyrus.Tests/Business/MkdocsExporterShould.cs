@@ -93,8 +93,23 @@ namespace Papyrus.Tests.Business {
             var ymlPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
             GetFileContentFrom(ymlPath).Should().Contain(
                 "pages:" + Environment.NewLine + 
-                "\tthis-is-the-Title: this/is|the*Title" + Environment.NewLine +
-                "\tanother-file-: another>file?");
+                "- this-is-the-Title: this/is|the*Title" + Environment.NewLine +
+                "- another-file-: another>file?");
+        }
+        
+        [Test]
+        public async Task replace_unavailabe_characters_for_a_file_for_available_ones_when_have_a_route_in_each_document() {
+            var website = WebSiteWithDocuments(
+                new ExportableDocument("a-file", "AnyContent", "AnyRoute"),
+                new ExportableDocument("another>file", "AnotherContent", "AnotherRoute"));
+
+            await new MkdocsExporter().Export(website, GetAnyExportationPath());
+
+            var ymlPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
+            GetFileContentFrom(ymlPath).Should().Contain(
+                "pages:" + Environment.NewLine + 
+                "- this-is-the-Title: this/is|the*Title" + Environment.NewLine +
+                "- another-file-: another>file?");
         }
 
         private string GetAnyExportationPath() {

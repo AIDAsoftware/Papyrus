@@ -10,10 +10,7 @@ namespace Papyrus.Business.Exporters {
         private readonly string siteName = "site_name: SIMA Documentation";
         private static readonly string NewLine = System.Environment.NewLine;
         public const string IndexContent = "SIMA Documentation";
-        private const string Tab = "\t";
-
-        public MkdocsExporter() {
-        }
+        private const string NewListItem = "- ";
 
         public virtual async Task Export(WebSite webSite, string path) {
             var docsPath = Path.Combine(path, "docs");
@@ -40,7 +37,7 @@ namespace Papyrus.Business.Exporters {
         }
 
         private static string MkdocsPagePresentationFor(ExportableDocument document) {
-            return Tab + document.ExportableTitle + ": " + document.Title;
+            return NewListItem + document.ExportableTitle + ": " + document.Title;
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, DirectoryInfo directory) {
