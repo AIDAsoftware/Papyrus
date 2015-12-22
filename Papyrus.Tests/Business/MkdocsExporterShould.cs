@@ -94,8 +94,9 @@ namespace Papyrus.Tests.Business {
             var ymlPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
             GetFileContentFrom(ymlPath).Should().Contain(
                 "pages:" + newLine +
-                "- this/is|the*Title: this-is-the-Title.md" + newLine +
-                "- another>file?: another-file-.md");
+                "- 'Home': 'index.md'" + newLine +
+                "- 'this/is|the*Title': 'this-is-the-Title.md'" + newLine +
+                "- 'another>file?': 'another-file-.md'");
         }
         
         [Test]
@@ -109,12 +110,13 @@ namespace Papyrus.Tests.Business {
 
             var ymlPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
             GetFileContentFrom(ymlPath).Should().Contain(
-                "pages:" + newLine + 
-                "- first-route:" + newLine +
-                "\t- first-file: first-route\\first-file.md" + newLine +
-                "\t- second>file: first-route\\second-file.md" + newLine +
-                "- second-route:" + newLine + 
-                "\t- third>file: second-route\\third-file.md");
+                "pages:" + newLine +
+                "- 'Home': 'index.md'" + newLine +
+                "- 'first-route':" + newLine +
+                "    - 'first-file': 'first-route\\first-file.md'" + newLine +
+                "    - 'second>file': 'first-route\\second-file.md'" + newLine +
+                "- 'second-route':" + newLine + 
+                "    - 'third>file': 'second-route\\third-file.md'");
         }
 
         private string GetAnyExportationPath() {

@@ -28,10 +28,12 @@ namespace Papyrus.Business.Exporters {
         }
 
         private async Task InitializeYmlFileIn(string path) {
+            if (File.Exists(Path.Combine(path, YmlFileName))) return;
             var ymlPath = Path.Combine(path, YmlFileName);
             await WriteInFile(ymlPath, mkdocsTheme);
             await WriteInFile(ymlPath, siteName);
             await WriteInFile(ymlPath, "pages:");
+            await WriteInFile(ymlPath, "- 'Home': 'index.md'");
         }
 
         private static async Task GenerateDocInYml(ExportableDocument document, string ymlPath) {
@@ -43,7 +45,7 @@ namespace Papyrus.Business.Exporters {
             if (!ReadContentOf(ymlPath).Contains(document.Route)) {
                 await WriteInFile(ymlPath, NewListItemWith(document.Route));
             }
-            await WriteInFile(ymlPath, "\t" + docReference);
+            await WriteInFile(ymlPath, "    " + docReference);
         }
 
         private static string ReadContentOf(string ymlPath) {
@@ -51,12 +53,12 @@ namespace Papyrus.Business.Exporters {
         }
 
         private static string NewListItemWith(string itemContent) {
-            return NewListItem + itemContent + ":";
+            return NewListItem + "'" + itemContent + "':";
         }
 
         private static string MkdocsPagePresentationFor(ExportableDocument document) {
-            return NewListItem + document.Title + ": " + 
-                Path.Combine(document.Route, document.ExportableTitle) + MarkDownExtension;
+            return NewListItem + "'" + document.Title + "': '" + 
+                Path.Combine(document.Route, document.ExportableTitle) + MarkDownExtension + "'";
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, string directoryPath) {
