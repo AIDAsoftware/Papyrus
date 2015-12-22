@@ -27,7 +27,16 @@ namespace Papyrus.Business.Exporters {
             if (!File.Exists(ymlPath)) {
                 await InitializeMkdocsYmlFile(ymlPath);
             }
-            await WriteInFile(ymlPath, MkdocsPagePresentationFor(document));
+            if (string.IsNullOrEmpty(document.Route)) {
+                await WriteInFile(ymlPath, MkdocsPagePresentationFor(document));
+                return;
+            }
+            if (File.ReadAllText(ymlPath).Contains("- " + document.Route)) {
+                await WriteInFile(ymlPath, "\t" + MkdocsPagePresentationFor(document));
+                return;
+            }
+            await WriteInFile(ymlPath, NewListItem + document.Route + ":");
+            await WriteInFile(ymlPath, "\t" + MkdocsPagePresentationFor(document));
         }
 
         private async Task InitializeMkdocsYmlFile(string ymlPath) {
@@ -37,7 +46,7 @@ namespace Papyrus.Business.Exporters {
         }
 
         private static string MkdocsPagePresentationFor(ExportableDocument document) {
-            return NewListItem + document.Title + ": " + document.ExportableTitle + MarkDownExtension;
+            return NewListItem + document.Title + ": " + Path.Combine(document.Route, document.ExportableTitle) + MarkDownExtension;
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, DirectoryInfo directory) {
