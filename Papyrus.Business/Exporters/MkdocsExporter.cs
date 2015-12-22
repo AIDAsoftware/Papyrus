@@ -16,17 +16,21 @@ namespace Papyrus.Business.Exporters {
             var docsPath = Path.Combine(path, "docs");
             var docsDirectory = Directory.CreateDirectory(docsPath);
             await WriteInFile(Path.Combine(docsDirectory.FullName, "index.md"), IndexContent);
+            await InitializeYmlFileIn(path);
             foreach (var document in webSite.Documents) {
                 await ExportDocumentIn(document, docsDirectory);
-                await WriteYmlFileIn(path, document);
+                await GenerateDocInYml(document, Path.Combine(path, YmlFileName));
             }
         }
 
-        private async Task WriteYmlFileIn(string path, ExportableDocument document) {
+        private async Task InitializeYmlFileIn(string path) {
             var ymlPath = Path.Combine(path, YmlFileName);
-            if (!File.Exists(ymlPath)) {
-                await InitializeMkdocsYmlFile(ymlPath);
-            }
+            await WriteInFile(ymlPath, mkdocsTheme);
+            await WriteInFile(ymlPath, siteName);
+            await WriteInFile(ymlPath, "pages:");
+        }
+
+        private static async Task GenerateDocInYml(ExportableDocument document, string ymlPath) {
             if (string.IsNullOrEmpty(document.Route)) {
                 await WriteInFile(ymlPath, MkdocsPagePresentationFor(document));
                 return;
@@ -39,14 +43,9 @@ namespace Papyrus.Business.Exporters {
             await WriteInFile(ymlPath, "\t" + MkdocsPagePresentationFor(document));
         }
 
-        private async Task InitializeMkdocsYmlFile(string ymlPath) {
-            await WriteInFile(ymlPath, mkdocsTheme);
-            await WriteInFile(ymlPath, siteName);
-            await WriteInFile(ymlPath, "pages:");
-        }
-
         private static string MkdocsPagePresentationFor(ExportableDocument document) {
-            return NewListItem + document.Title + ": " + Path.Combine(document.Route, document.ExportableTitle) + MarkDownExtension;
+            return NewListItem + document.Title + ": " + 
+                Path.Combine(document.Route, document.ExportableTitle) + MarkDownExtension;
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, DirectoryInfo directory) {
