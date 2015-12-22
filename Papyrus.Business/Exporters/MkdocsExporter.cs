@@ -37,7 +37,7 @@ namespace Papyrus.Business.Exporters {
         }
 
         private static string MkdocsPagePresentationFor(ExportableDocument document) {
-            return NewListItem + document.ExportableTitle + ": " + document.Title;
+            return NewListItem + document.Title + ": " + document.ExportableTitle + MarkDownExtension;
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, DirectoryInfo directory) {
