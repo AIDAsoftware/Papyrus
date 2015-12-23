@@ -87,7 +87,7 @@ namespace Papyrus.Tests.Business {
         public async Task replace_unavailabe_characters_for_a_file_for_available_ones() {
             var website = WebSiteWithDocuments(
                 new ExportableDocument("this/is|the*Title", "AnyContent", ""),
-                new ExportableDocument("another>file?", "AnotherContent", ""));
+                new ExportableDocument("otro>título?ñ", "AnotherContent", ""));
 
             await new MkdocsExporter().Export(website, GetAnyExportationPath());
 
@@ -96,7 +96,7 @@ namespace Papyrus.Tests.Business {
                 "pages:" + newLine +
                 "- 'Home': 'index.md'" + newLine +
                 "- 'this/is|the*Title': 'this-is-the-Title.md'" + newLine +
-                "- 'another>file?': 'another-file-.md'");
+                "- 'otro>título?ñ': 'otro-titulo-n.md'");
         }
         
         [Test]
