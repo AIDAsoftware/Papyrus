@@ -2,8 +2,8 @@ using System.IO;
 
 namespace Papyrus.Business.Exporters {
     public class MkdocsFileNameConverter {
-        const string InvalidLetters = "áàäéèëíìïóòöúùuÁÀÄÉÈËÍÌÏÓÒÖÚÙÜçÇñ";
-        const string ValidLetters = "aaaeeeiiiooouuuAAAEEEIIIOOOUUUcCn";
+        private const string InvalidLetters = "áàäéèëíìïóòöúùuÁÀÄÉÈËÍÌÏÓÒÖÚÙÜçÇñ";
+        private const string ValidLetters = "aaaeeeiiiooouuuAAAEEEIIIOOOUUUcCn";
         private const string ValidChar = "-";
 
         public static string ConvertToValidFileName(string title) {
