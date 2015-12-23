@@ -58,17 +58,21 @@ namespace Papyrus.Business.Exporters {
 
         private static string MkdocsPagePresentationFor(ExportableDocument document) {
             return NewListItem + "'" + document.Title + "': '" + 
-                Path.Combine(document.Route, document.ExportableTitle) + MarkDownExtension + "'";
+                Path.Combine(document.Route, ConvertToValidFileName(document.Title)) + MarkDownExtension + "'";
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, string directoryPath) {
             var documentDirectory = Directory.CreateDirectory(Path.Combine(directoryPath, document.Route));
-            var documentPath = Path.Combine(documentDirectory.FullName, document.ExportableTitle + MarkDownExtension);
+            var documentPath = Path.Combine(documentDirectory.FullName, ConvertToValidFileName(document.Title) + MarkDownExtension);
             await WriteInFile(documentPath, document.Content);
         }
 
         private static async Task WriteInFile(string documentPath, string content) {
             await FileWriter.WriteFileWithContent(documentPath, content + NewLine);
+        }
+
+        private static string ConvertToValidFileName(string title) {
+            return MkdocsFileNameConverter.ConvertToValidFileName(title);
         }
     }
 }
