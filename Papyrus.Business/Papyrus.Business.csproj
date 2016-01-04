@@ -75,6 +75,7 @@
     <Compile Include="Products\FullVersionRange.cs" />
     <Compile Include="Products\ProductVersion.cs" />
     <Compile Include="Products\WebSite.cs" />
+    <Compile Include="Topics\CannotCreateDocumentsWithoutTitleException.cs" />
     <Compile Include="Topics\Collision.cs" />
     <Compile Include="Topics\Documents.cs" />
     <Compile Include="Topics\EditableDocument.cs" />

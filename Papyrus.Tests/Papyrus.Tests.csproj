@@ -122,6 +122,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\DocumentShould.cs" />
     <Compile Include="Business\EditableTopicShould.cs" />
     <Compile Include="Business\MkdocsExporterShould.cs" />
     <Compile Include="Business\PathByVersionGeneratorShould.cs" />
