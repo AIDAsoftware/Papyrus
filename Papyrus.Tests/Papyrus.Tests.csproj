@@ -141,6 +141,7 @@
     <Compile Include="Infrastructure\Repositories\TopicRepository\SqlTopicRepositoryWhenUpdateATopicShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\TopicGridViewModelShould.cs" />
+    <Compile Include="View\TopicViewModelShould.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

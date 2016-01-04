@@ -15,7 +15,7 @@ namespace Papyrus.Desktop {
 
         public static TopicVM Topic(EditableTopic topic)
         {
-            return new TopicVM(ServicesFactory.Topic(), RepositoriesFactory.Product(), topic);
+            return new TopicVM(ServicesFactory.Topic(), RepositoriesFactory.Product(), topic, new NotificationSender());
         }
 
         public static MainWindowVM MainWindow()

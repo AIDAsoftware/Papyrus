@@ -19,6 +19,7 @@ namespace Papyrus.Desktop.Features.Topics
     {
         private readonly TopicService topicService;
         private readonly ProductRepository productRepository;
+        private readonly NotificationSender notificationSender;
         public EditableTopic EditableTopic { get; protected set; }
 
         public IAsyncCommand SaveTopic { get; set; }
@@ -35,15 +36,11 @@ namespace Papyrus.Desktop.Features.Topics
             ToVersions = new ObservableCollection<ProductVersion>();
         }
 
-        private TopicVM(TopicService topicService, ProductRepository productRepository) : this()
+        public TopicVM(TopicService topicService, ProductRepository productRepository, EditableTopic topic, NotificationSender notificationSender) : this()
         {
             this.topicService = topicService;
             this.productRepository = productRepository;
-        }
-
-        public TopicVM(TopicService topicService, ProductRepository productRepository, EditableTopic topic) 
-            : this(topicService, productRepository)
-        {
+            this.notificationSender = notificationSender;
             EditableTopic = topic;
         }
 
@@ -52,6 +49,10 @@ namespace Papyrus.Desktop.Features.Topics
             try
             {
                 await SaveCurrentTopic();
+            }
+            catch (CannotCreateDocumentsWithoutTitleException) {
+                notificationSender.SendNotification("No pueden existir documentos sin títulos. \n" +
+                                                    "Compruebe que todos sus documentos lo tienen.");
             }
             catch (Exception exception)
             {

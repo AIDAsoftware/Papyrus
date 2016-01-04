@@ -160,6 +160,7 @@
     <Compile Include="Markdown\MarkdownEditor.xaml.cs">
       <DependentUpon>MarkdownEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NotificationSender.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Util\Command\IAsyncCommand.cs" />
     <Compile Include="Util\Command\NotifyTaskCompletion.cs" />
