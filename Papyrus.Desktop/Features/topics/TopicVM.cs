@@ -79,9 +79,8 @@ namespace Papyrus.Desktop.Features.Topics
         //TODO: How to make it not void? It could be a trouble if product can't be deleted in backend
         private async void DeleteCurrentTopic(Window window)
         {
-            var topic = EditableTopic.ToTopic();
             try {
-                await topicService.Delete(topic);
+                await topicService.Delete(EditableTopic.TopicId);
             }
             catch (CannotDeleteTopicsWithoutTopicIdAssignedException) {
                 EventBus.Send(new OnUserMessageRequest("No se puede borrar un topic no guardado"));

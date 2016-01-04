@@ -26,14 +26,14 @@ namespace Papyrus.Business.Topics
 
         public async Task Update(Topic topic)
         {
-            await DeleteVersionRangesOf(topic);
+            await DeleteVersionRangesOf(topic.TopicId);
             await InsertVersionRangesOf(topic);
         }
 
-        public async Task Delete(Topic topic)
+        public async Task Delete(string topicId)
         {
-            await connection.Execute(@"DELETE FROM Topic WHERE TopicId=@TopicId", new { TopicId = topic.TopicId });
-            await DeleteVersionRangesOf(topic);
+            await connection.Execute(@"DELETE FROM Topic WHERE TopicId=@TopicId", new { TopicId = topicId });
+            await DeleteVersionRangesOf(topicId);
         }
 
         private async Task InsertVersionRangesOf(Topic topic)
@@ -81,13 +81,13 @@ namespace Papyrus.Business.Topics
                 });
         }
 
-        private async Task DeleteVersionRangesOf(Topic topic)
+        private async Task DeleteVersionRangesOf(string topicId)
         {
             var versionRangeIds = await connection.Query<string>(@"SELECT VersionRangeId FROM VersionRange
                                                                     WHERE TopicId = @TopicId",
-                                                                    new { TopicId = topic.TopicId });
+                                                                    new { TopicId = topicId });
             await connection.Execute(@"DELETE FROM VersionRange WHERE TopicId = @TopicId",
-                new { TopicId = topic.TopicId });
+                new { TopicId = topicId });
             await DeleteDocumentsForEachVersionRangeIn(versionRangeIds);
         }
 

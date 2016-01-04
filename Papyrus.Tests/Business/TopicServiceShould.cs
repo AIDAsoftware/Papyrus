@@ -157,9 +157,9 @@ namespace Papyrus.Tests.Business
         {
             var topic = new Topic(anyProductId).WithId("AnyTopicId");
 
-            await topicService.Delete(topic);
+            await topicService.Delete(topic.TopicId);
 
-            topicRepo.Received().Delete(topic);
+            topicRepo.Received().Delete(topic.TopicId);
         }
 
         [Test]
@@ -167,7 +167,7 @@ namespace Papyrus.Tests.Business
         public async Task fail_when_try_to_delete_a_topic_without_topic_id_assigned()
         {
             var topic = new Topic(anyProductId);
-            await topicService.Delete(topic);
+            await topicService.Delete(topic.TopicId);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topic = new Topic("OpportunityId").WithId(topicId);
             await new SqlInserter(dbConnection).Insert(topic);
             
-            await topicRepository.Delete(topic);
+            await topicRepository.Delete(topic.TopicId);
 
             var topicFromDataBase = (await dbConnection.Query<object>(@"SELECT * FROM Topic 
                                                                         WHERE TopicId = @TopicId",
@@ -46,7 +46,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             topic.AddVersionRange(versionRange);
             await new SqlInserter(dbConnection).Insert(topic);
             
-            await topicRepository.Delete(topic);
+            await topicRepository.Delete(topic.TopicId);
 
             var versionFromDataBase = (await dbConnection.Query<object>(@"SELECT * FROM VersionRange 
                                                                         WHERE VersionRangeId = @VersionRangeId",
@@ -67,7 +67,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             topic.AddVersionRange(versionRange);
             await new SqlInserter(dbConnection).Insert(topic);
             
-            await topicRepository.Delete(topic);
+            await topicRepository.Delete(topic.TopicId);
 
             var documentFromDataBase = (await dbConnection.Query<object>(@"SELECT * FROM Document 
                                                                         WHERE DocumentId = @DocumentId",
