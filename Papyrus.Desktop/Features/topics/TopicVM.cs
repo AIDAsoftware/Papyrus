@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Business.Topics.Exceptions;
 using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
 using Papyrus.Infrastructure.Core;
@@ -78,7 +79,13 @@ namespace Papyrus.Desktop.Features.Topics
         private async void DeleteCurrentTopic(Window window)
         {
             var topic = EditableTopic.ToTopic();
-            await topicService.Delete(topic);
+            try {
+                await topicService.Delete(topic);
+            }
+            catch (CannotDeleteTopicsWithoutTopicIdAssignedException) {
+                EventBus.Send(new OnUserMessageRequest("No se puede borrar un topic no guardado"));
+            }
+            
             window.Close();
         }
 
