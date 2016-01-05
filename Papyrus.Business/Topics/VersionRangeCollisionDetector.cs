@@ -63,14 +63,8 @@ namespace Papyrus.Business.Topics
 
         private List<ProductVersion> AllVersionsContainedIn(VersionRange versionRange)
         {
-            return Versions.Where(v => ReleaseFor(versionRange.FromVersionId) <= v.Release &&
-                                       v.Release <= ReleaseFor(versionRange.ToVersionId)).ToList();
-        }
-
-        private DateTime ReleaseFor(string versionId)
-        {
-            if (versionId == LastProductVersion.Id) return DateTime.MaxValue;
-            return Versions.First(vr => versionId == vr.VersionId).Release;
+            return Versions.Where(v => versionRange.FromVersion.Release <= v.Release &&
+                                       v.Release <= versionRange.ToVersion.Release).ToList();
         }
     }
 }

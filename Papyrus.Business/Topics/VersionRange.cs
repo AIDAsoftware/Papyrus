@@ -5,15 +5,17 @@ namespace Papyrus.Business.Topics
 {
     public class VersionRange
     {
-        public string FromVersionId { get; private set; }
-        public string ToVersionId { get; private set; }
+        public ProductVersion FromVersion { get; private set; }
+        public ProductVersion ToVersion { get; private set; }
+        public string FromVersionId { get { return FromVersion.VersionId; } }
+        public string ToVersionId { get { return ToVersion.VersionId; } }
         public string VersionRangeId { get; private set; }
 
         public Documents Documents { get; private set; }
 
         public VersionRange(ProductVersion fromVersion, ProductVersion toVersion) {
-            FromVersionId = fromVersion.VersionId;
-            ToVersionId = toVersion.VersionId;
+            FromVersion = fromVersion;
+            ToVersion = toVersion;
             Documents = new Documents();
         }
 
