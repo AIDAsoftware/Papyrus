@@ -1,5 +1,6 @@
 using System;
 using Papyrus.Business.Products;
+using Papyrus.Business.Topics.Exceptions;
 
 namespace Papyrus.Business.Topics
 {
@@ -14,6 +15,7 @@ namespace Papyrus.Business.Topics
         public Documents Documents { get; private set; }
 
         public VersionRange(ProductVersion fromVersion, ProductVersion toVersion) {
+            if (fromVersion.Release > toVersion.Release) throw new VersionRangeCannotBeDescendentException();
             FromVersion = fromVersion;
             ToVersion = toVersion;
             Documents = new Documents();
