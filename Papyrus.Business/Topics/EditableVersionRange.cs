@@ -16,7 +16,7 @@ namespace Papyrus.Business.Topics
 
         public void ToVersionRange(Topic topic)
         {
-            var versionRange = new VersionRange(FromVersion.VersionId, ToVersion.VersionId);
+            var versionRange = new VersionRange(FromVersion, ToVersion);
             topic.AddVersionRange(versionRange);
             foreach (var editableDocument in Documents)
             {

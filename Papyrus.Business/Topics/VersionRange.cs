@@ -1,4 +1,5 @@
 using System;
+using Papyrus.Business.Products;
 
 namespace Papyrus.Business.Topics
 {
@@ -10,10 +11,9 @@ namespace Papyrus.Business.Topics
 
         public Documents Documents { get; private set; }
 
-        public VersionRange(string fromVersionId, string toVersionId)
-        {
-            FromVersionId = fromVersionId;
-            ToVersionId = toVersionId;
+        public VersionRange(ProductVersion fromVersion, ProductVersion toVersion) {
+            FromVersionId = fromVersion.VersionId;
+            ToVersionId = toVersion.VersionId;
             Documents = new Documents();
         }
 

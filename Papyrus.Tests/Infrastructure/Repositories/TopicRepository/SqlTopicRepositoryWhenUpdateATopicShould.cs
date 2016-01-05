@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Infrastructure.Core.Database;
 using Papyrus.Tests.Infrastructure.Repositories.Helpers;
@@ -13,6 +15,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
     {
         private SqlInserter sqlInserter;
         private SqlTopicCommandRepository sqlTopicRepository;
+        private ProductVersion version1 = new ProductVersion("FirstPapyrusVersionId", "1.0", DateTime.Today.AddDays(-2));
+        private ProductVersion version2 = new ProductVersion("SecondPapyrusVersionId", "2.0", DateTime.Today);
 
         [SetUp]
         public void Initialize()
@@ -25,7 +29,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         public async Task removes_old_version_ranges_for_given_topic()
         {
             var topic = new Topic("PapyrusId").WithId("TopicId");
-            var versionRange = new VersionRange("FirstPapyrusVersionId", "SecondPapyrusVersionId")
+            var versionRange = new VersionRange(version1, version2)
                                                 .WithId("VersionRangeId");
             topic.AddVersionRange(versionRange);
             await sqlInserter.Insert(topic);
@@ -33,18 +37,18 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topicToUpdate = new Topic("PapyrusId").WithId("TopicId");
             await sqlTopicRepository.Update(topicToUpdate);
 
-            var oldVersionRange = (await dbConnection.Query<VersionRange>(@"SELECT FromVersionId, ToVersionId  
+            var oldVersionRanges = (await dbConnection.Query<dynamic>(@"SELECT FromVersionId, ToVersionId  
                                             FROM VersionRange 
                                             WHERE VersionRangeId = @VersionRangeId",
-                                            new {VersionRangeId = "VersionRangeId"})).FirstOrDefault();
-            oldVersionRange.Should().BeNull();
+                                            new {VersionRangeId = "VersionRangeId"}));
+            oldVersionRanges.Should().BeEmpty();
         }
 
         [Test]
         public async Task removes_old_documents_for_given_topic()
         {
             var topic = new Topic("PapyrusId").WithId("TopicId");
-            var versionRange = new VersionRange("FirstPapyrusVersionId", "SecondPapyrusVersionId")
+            var versionRange = new VersionRange(version1, version2)
                                                 .WithId("VersionRangeId");
             var document = new Document("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId");
             versionRange.AddDocument(document);
@@ -67,15 +71,15 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topic = new Topic("PapyrusId").WithId("TopicId");
             await sqlInserter.Insert(topic);
 
-            topic.AddVersionRange(new VersionRange("FirstVersion", "SecondVersion").WithId("VersionRangeId"));
+            topic.AddVersionRange(new VersionRange(version1, version2).WithId("VersionRangeId"));
             await sqlTopicRepository.Update(topic);
 
-            var newVersionRange = (await dbConnection.Query<VersionRange>(@"SELECT FromVersionId, ToVersionId  
+            var newVersionRange = (await dbConnection.Query<dynamic>(@"SELECT FromVersionId, ToVersionId  
                                             FROM VersionRange 
                                             WHERE TopicId = @TopicId",
                                             new { TopicId = "TopicId" })).FirstOrDefault();
-            newVersionRange.FromVersionId.Should().Be("FirstVersion");
-            newVersionRange.ToVersionId.Should().Be("SecondVersion");
+            Assert.That(newVersionRange.FromVersionId, Is.EqualTo(version1.VersionId));
+            Assert.That(newVersionRange.ToVersionId, Is.EqualTo(version2.VersionId));
         }
 
         [Test]
@@ -84,7 +88,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topic = new Topic("PapyrusId").WithId("TopicId");
             await sqlInserter.Insert(topic);
 
-            var versionRange = new VersionRange("FirstVersion", "SecondVersion").WithId("VersionRangeId");
+            var versionRange = new VersionRange(version1, version2).WithId("VersionRangeId");
             versionRange.AddDocument(new Document("Título", "Descripción", "Contenido", "es-ES").WithId("DocumentId"));
             topic.AddVersionRange(versionRange);
             await sqlTopicRepository.Update(topic);

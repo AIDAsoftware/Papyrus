@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentAssertions;
 using NUnit.Framework;
+using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 
 namespace Papyrus.Tests.Business
@@ -34,8 +35,8 @@ namespace Papyrus.Tests.Business
         public void get_corresponding_document_for_a_given_language()
         {
             var versionRange = new VersionRange(
-                fromVersionId: "SecondVersionId",
-                toVersionId: "FourthVersionId"
+                fromVersion: new ProductVersion("SecondVersionId", "2.0", DateTime.Today.AddDays(-2)), 
+                toVersion: new ProductVersion("FourthVersionId", "4.0", DateTime.Today)
             );
             versionRange.AddDocument(spanishDocument);
             versionRange.AddDocument(englishDocument);

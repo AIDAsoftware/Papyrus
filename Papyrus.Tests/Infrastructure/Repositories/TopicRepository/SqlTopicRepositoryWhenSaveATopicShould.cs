@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Infrastructure.Core.Database;
 using Papyrus.Tests.Infrastructure.Repositories.Helpers;
@@ -14,6 +16,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         private SqlTopicCommandRepository topicRepository;
         private const string ProductId = "OpportunityId";
         private const string FirstVersionId = "FirstVersionId";
+        private ProductVersion version1 = new ProductVersion(FirstVersionId, "1.0", DateTime.Today);
 
         [SetUp]
         public async void Initialize()
@@ -35,7 +38,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [Test]
         public async void save_version_ranges_of_a_topic()
         {
-            var versionRange = new VersionRange(fromVersionId: FirstVersionId, toVersionId: FirstVersionId).WithId("FirstVersionRangeId");
+            var versionRange = new VersionRange(fromVersion: version1, toVersion: version1).WithId("FirstVersionRangeId");
             anyTopic.AddVersionRange(versionRange);
 
             await topicRepository.Save(anyTopic);
@@ -49,7 +52,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         [Test]
         public async void save_documents_foreach_version_range_in_a_topic()
         {
-            var versionRange = new VersionRange(fromVersionId: FirstVersionId, toVersionId: FirstVersionId).WithId("AnyVersionRangeId");
+            var versionRange = new VersionRange(fromVersion: version1, toVersion: version1).WithId("AnyVersionRangeId");
             anyTopic.AddVersionRange(versionRange);
             versionRange.AddDocument(
                 new Document("AnyTitle", "AnyDescription", "AnyContent", "es-ES").WithId("AnyDocumentId")

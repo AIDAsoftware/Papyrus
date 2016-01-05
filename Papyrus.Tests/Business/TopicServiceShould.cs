@@ -18,6 +18,7 @@ namespace Papyrus.Tests.Business
         private TopicService topicService;
         private VersionRange anyVersionRange;
         private string anyProductId;
+        private readonly ProductVersion anyVersion = new ProductVersion("Any", "Any", DateTime.MaxValue);
 
         [SetUp]
         public void SetUp()
@@ -26,7 +27,7 @@ namespace Papyrus.Tests.Business
             var productRepository = Substitute.For<ProductRepository>();
             collisionDetector = Substitute.For<VersionRangeCollisionDetector>(productRepository);
             topicService = new TopicService(topicRepo, collisionDetector);
-            anyVersionRange = new VersionRange(fromVersionId: null, toVersionId: null);
+            anyVersionRange = new VersionRange(fromVersion: anyVersion, toVersion: anyVersion);
             anyProductId = "AnyProductId";
         }
 
