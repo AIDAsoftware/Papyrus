@@ -49,17 +49,9 @@ namespace Papyrus.Desktop.Features.Topics
             try {
                 await SaveCurrentTopic();
             }
-            catch (VersionRangeCannotBeDescendentException) {
-                notificationSender.SendNotification("No pueden existir rangos de versiones descendientes. \n" +
-                                                    "Compruebe que todos los rangos para este topic son ascendientes.");
-            }
-            catch (CannotCreateDocumentsWithoutTitleException) {
-                notificationSender.SendNotification("No pueden existir documentos sin títulos. \n" +
-                                                    "Compruebe que todos sus documentos lo tienen.");
-            }
             catch (Exception exception)
             {
-                EventBus.Send(new OnUserMessageRequest(exception.Message));
+                notificationSender.SendNotification(exception.Message);
             }
         }
 
