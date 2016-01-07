@@ -145,7 +145,7 @@ namespace Papyrus.Desktop.Features.Topics {
         {
             canLoadTopics = false;
             TopicsToList.Clear();
-            (await topicRepository.GetAllTopicsSummaries())
+            (await topicRepository.GetAllTopicsSummariesFor("es-ES"))
                 .Where(t => t.Product.ProductId == SelectedProduct.ProductId)
                 .ToList()
                 .ForEach(topic => TopicsToList.Add(topic));

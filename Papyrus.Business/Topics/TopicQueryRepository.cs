@@ -7,7 +7,7 @@ namespace Papyrus.Business.Topics
 {
     public interface TopicQueryRepository
     {
-        Task<List<TopicSummary>> GetAllTopicsSummaries();
+        Task<List<TopicSummary>> GetAllTopicsSummariesFor(string language);
         Task<EditableTopic> GetEditableTopicById(string topicId);
         Task<List<ExportableDocument>> GetAllDocumentsFor(string product, string version, string language, string documentRoute);
     }

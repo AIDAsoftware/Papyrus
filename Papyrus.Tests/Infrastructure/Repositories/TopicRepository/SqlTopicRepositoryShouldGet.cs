@@ -52,7 +52,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             topic.AddVersionRange(secondVersionRange);
             await sqlInserter.Insert(topic);
 
-            var topicSummaries = await topicRepository.GetAllTopicsSummaries();
+            var topicSummaries = await topicRepository.GetAllTopicsSummariesFor("es-ES");
 
             topicSummaries.Should().HaveCount(1);
             topicSummaries.Should().Contain(t => t.TopicId == "AnyTopicId" && 
@@ -73,7 +73,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             topic.AddVersionRange(firstVersionRange);
             await sqlInserter.Insert(topic);
 
-            var topicSummaries = await topicRepository.GetAllTopicsSummaries();
+            var topicSummaries = await topicRepository.GetAllTopicsSummariesFor("es-ES");
 
             topicSummaries.First().VersionName.Should().Be(LastProductVersion.Name);
         }
