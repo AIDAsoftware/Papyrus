@@ -21,7 +21,7 @@ namespace Papyrus.Business.Topics
             set
             {
                 product = value;
-                OnPropertyChanged("Product");
+                OnPropertyChanged();
             }
         }
 
