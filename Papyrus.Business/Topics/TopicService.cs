@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Papyrus.Business.Topics.Exceptions;
 using Papyrus.Business.VersionRanges;
+using Papyrus.Business.VersionRanges.Exceptions;
 
 namespace Papyrus.Business.Topics
 {

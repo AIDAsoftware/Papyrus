@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Papyrus.Business.VersionRanges;
 
-namespace Papyrus.Business.Topics
+namespace Papyrus.Business.Documents
 {
     public class EditableDocument : INotifyPropertyChanged
     {

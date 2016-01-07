@@ -1,4 +1,6 @@
-﻿namespace Papyrus.Business.Topics
+﻿using Papyrus.Business.Documents;
+
+namespace Papyrus.Business.Topics
 {
     public class TopicSummary
     {

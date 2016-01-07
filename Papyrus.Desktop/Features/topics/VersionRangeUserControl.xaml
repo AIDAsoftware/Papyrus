@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:topics="clr-namespace:Papyrus.Business.Topics;assembly=Papyrus.Business"
              xmlns:topics1="clr-namespace:Papyrus.Desktop.Features.Topics"
+             xmlns:documents="clr-namespace:Papyrus.Business.Documents;assembly=Papyrus.Business"
              mc:Ignorable="d" 
              d:DesignHeight="496" d:DesignWidth="889" 
              d:DataContext="{d:DesignInstance Type=topics1:DesignModeVersionRangeVM, IsDesignTimeCreatable=True}">
@@ -35,12 +36,12 @@
                             ItemsSource="{Binding VersionRange.Documents}"
                             SelectedItem="{Binding SelectedDocument}">
             <TabControl.ItemTemplate>
-                <DataTemplate DataType="topics:EditableDocument">
+                <DataTemplate DataType="documents:EditableDocument">
                     <TextBlock Text="{Binding Language}"></TextBlock>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
-                <DataTemplate DataType="topics:EditableDocument">
+                <DataTemplate DataType="documents:EditableDocument">
                     <topics1:DocumentUserControl HorizontalAlignment="Stretch" DataContext="{Binding}"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>

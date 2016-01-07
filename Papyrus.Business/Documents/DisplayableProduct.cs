@@ -1,8 +1,7 @@
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Papyrus.Business.Topics
+namespace Papyrus.Business.Documents
 {
     public class DisplayableProduct : INotifyPropertyChanged
     {

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Topics;
 using Papyrus.Business.VersionRanges;
 using Papyrus.Infrastructure.Core.Database;

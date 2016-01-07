@@ -1,7 +1,9 @@
 using System;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Business.Topics.Exceptions;
+using Papyrus.Business.VersionRanges.Exceptions;
 
 namespace Papyrus.Business.VersionRanges
 {
@@ -13,13 +15,13 @@ namespace Papyrus.Business.VersionRanges
         public string ToVersionId { get { return ToVersion.VersionId; } }
         public string VersionRangeId { get; private set; }
 
-        public Documents Documents { get; private set; }
+        public Documents.Documents Documents { get; private set; }
 
         public VersionRange(ProductVersion fromVersion, ProductVersion toVersion) {
             if (fromVersion.Release > toVersion.Release) throw new VersionRangeCannotBeDescendentException();
             FromVersion = fromVersion;
             ToVersion = toVersion;
-            Documents = new Documents();
+            Documents = new Documents.Documents();
         }
 
         public void AddDocument(Document document)

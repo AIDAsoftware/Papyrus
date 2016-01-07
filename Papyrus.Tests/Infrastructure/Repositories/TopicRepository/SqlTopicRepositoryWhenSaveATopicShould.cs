@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Business.VersionRanges;

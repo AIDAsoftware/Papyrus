@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;

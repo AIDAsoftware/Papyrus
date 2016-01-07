@@ -1,6 +1,6 @@
 using System;
 
-namespace Papyrus.Business.Topics
+namespace Papyrus.Business.Documents
 {
     public class Document
     {

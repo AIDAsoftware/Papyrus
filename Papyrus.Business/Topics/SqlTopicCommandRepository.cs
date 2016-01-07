@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Papyrus.Business.Documents;
 using Papyrus.Business.VersionRanges;
 using Papyrus.Infrastructure.Core.Database;
 

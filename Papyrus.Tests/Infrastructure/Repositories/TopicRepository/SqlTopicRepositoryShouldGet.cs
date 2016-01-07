@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;

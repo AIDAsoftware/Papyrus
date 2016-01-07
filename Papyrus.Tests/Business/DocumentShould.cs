@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentAssertions;
 using NUnit.Framework;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Topics;
 
 namespace Papyrus.Tests.Business {

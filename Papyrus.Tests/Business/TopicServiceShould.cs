@@ -8,6 +8,7 @@ using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Business.Topics.Exceptions;
 using Papyrus.Business.VersionRanges;
+using Papyrus.Business.VersionRanges.Exceptions;
 
 namespace Papyrus.Tests.Business
 {

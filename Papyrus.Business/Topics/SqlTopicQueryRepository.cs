@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.VersionRanges;
