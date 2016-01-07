@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Papyrus.Business.Topics.Exceptions;
+using Papyrus.Business.VersionRanges;
 
 namespace Papyrus.Business.Topics
 {

@@ -1,8 +1,9 @@
 using System;
 using Papyrus.Business.Products;
+using Papyrus.Business.Topics;
 using Papyrus.Business.Topics.Exceptions;
 
-namespace Papyrus.Business.Topics
+namespace Papyrus.Business.VersionRanges
 {
     public class VersionRange
     {

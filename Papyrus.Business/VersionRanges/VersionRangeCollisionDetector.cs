@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
+using Papyrus.Business.Topics;
 
-namespace Papyrus.Business.Topics
+namespace Papyrus.Business.VersionRanges
 {
     public class VersionRangeCollisionDetector
     {

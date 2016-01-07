@@ -1,7 +1,8 @@
 using System.Collections.ObjectModel;
 using Papyrus.Business.Products;
+using Papyrus.Business.Topics;
 
-namespace Papyrus.Business.Topics
+namespace Papyrus.Business.VersionRanges
 {
     public class EditableVersionRange
     {

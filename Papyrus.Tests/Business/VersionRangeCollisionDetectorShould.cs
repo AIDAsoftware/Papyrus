@@ -6,6 +6,7 @@ using NSubstitute;
 using NUnit.Framework;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Business.VersionRanges;
 
 namespace Papyrus.Tests.Business
 {

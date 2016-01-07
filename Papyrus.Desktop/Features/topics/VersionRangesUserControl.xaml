@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:topics="clr-namespace:Papyrus.Desktop.Features.Topics"
              xmlns:topics1="clr-namespace:Papyrus.Business.Topics;assembly=Papyrus.Business"
+             xmlns:versionRanges="clr-namespace:Papyrus.Business.VersionRanges;assembly=Papyrus.Business"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=topics:DesignModeVersionRangesVM, IsDesignTimeCreatable=True}">
@@ -29,7 +30,7 @@
                         SelectedValue="{Binding SelectedVersionRange}"
                         >
                 <TabControl.ItemTemplate>
-                    <DataTemplate DataType="topics1:EditableVersionRange">
+                    <DataTemplate DataType="versionRanges:EditableVersionRange">
                         <TextBlock>
                             <Run Text="{Binding FromVersion.VersionName}"/>
                             <Run Text=" -- "/>
@@ -38,7 +39,7 @@
                     </DataTemplate>
                 </TabControl.ItemTemplate>
                 <TabControl.ContentTemplate>
-                    <DataTemplate DataType="topics1:EditableVersionRange">
+                    <DataTemplate DataType="versionRanges:EditableVersionRange">
                         <topics:VersionRangeUserControl 
                             DataContext="{Binding RelativeSource={RelativeSource FindAncestor, 
                             AncestorType={x:Type topics:VersionRangesUserControl}}, Converter={StaticResource VersionRangeToVmConverter}, 

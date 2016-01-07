@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Papyrus.Business.Topics;
+using Papyrus.Business.VersionRanges;
 using Papyrus.Desktop.Annotations;
 
 namespace Papyrus.Desktop.Features.Topics

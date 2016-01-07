@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Business.Topics.Exceptions;
+using Papyrus.Business.VersionRanges;
 
 namespace Papyrus.Tests.Business
 {

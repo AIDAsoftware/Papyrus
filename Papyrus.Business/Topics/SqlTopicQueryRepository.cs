@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
+using Papyrus.Business.VersionRanges;
 using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Business.Topics {
