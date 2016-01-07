@@ -12,8 +12,7 @@ using Papyrus.Desktop.Features.Topics;
 using Papyrus.Infrastructure.Core.DomainEvents;
 
 namespace Papyrus.Desktop {
-    public partial class App : Application
-    {
+    public partial class App : Application {
         public App() {
             var userMessageRequestSubscription = EventBus.AsObservable<OnUserMessageRequest>().Subscribe(Handle);
             var addImageRequestSubcription = EventBus.AsObservable<SelectingImages>().Subscribe(Handle);
@@ -32,7 +31,7 @@ namespace Papyrus.Desktop {
             }
         }
 
-        public void Handle(OnUserMessageRequest domainEvent)
+        private void Handle(OnUserMessageRequest domainEvent)
         {
             MessageBox.Show(domainEvent.Message, "Aviso");
         }
