@@ -59,7 +59,7 @@ namespace Papyrus.Desktop.Features.Topics
         {
             if (VersionRanges.Count == 1)
             {
-                EventBus.Send(new OnUserMessageRequest("A topic must have at least one version range"));
+                EventBus.Send(new OnUserMessageRequest("No se puede eliminar el único version range de un topic.\nModifique el ya existente o elemine el topic si es lo que deseae"));
                 return;
             } 
             VersionRanges.Remove(SelectedVersionRange);
