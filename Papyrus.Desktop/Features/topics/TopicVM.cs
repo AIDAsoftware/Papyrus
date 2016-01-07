@@ -77,6 +77,7 @@ namespace Papyrus.Desktop.Features.Topics
         {
             try {
                 await topicService.Delete(EditableTopic.TopicId);
+                EventBus.Send(new OnTopicRemoved());
             }
             catch (CannotDeleteTopicsWithoutTopicIdAssignedException) {
                 EventBus.Send(new OnUserMessageRequest("No se puede borrar un topic no guardado"));

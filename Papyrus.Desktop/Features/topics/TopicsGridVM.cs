@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -12,6 +13,8 @@ using Papyrus.Business.Topics;
 using Papyrus.Business.VersionRanges;
 using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
+using Papyrus.Infrastructure.Core.DomainEvents;
+
 
 namespace Papyrus.Desktop.Features.Topics {
     public class TopicsGridVM : INotifyPropertyChanged
@@ -52,6 +55,12 @@ namespace Papyrus.Desktop.Features.Topics {
             ExportLastVersionToMkDocs = RelayAsyncSimpleCommand.Create(ExportLastVersion, () => true);
             ExportAllProducts = RelayAsyncSimpleCommand.Create(ExportAllProductsDocumentation, () => true);
             DefaultDirectoryPath = Directory.GetCurrentDirectory();
+            EventBus.AsObservable<OnTopicRemoved>().Subscribe(Handle);
+        }
+
+        //TODO: should it return a task?
+        private async void Handle(OnTopicRemoved domainEvent) {
+            await LoadAllTopics();
         }
 
         private async Task ExportLastVersion() {
@@ -189,6 +198,8 @@ namespace Papyrus.Desktop.Features.Topics {
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
+    public class OnTopicRemoved {}
 
     public class DesignModeTopicsGridVM : TopicsGridVM
     {
