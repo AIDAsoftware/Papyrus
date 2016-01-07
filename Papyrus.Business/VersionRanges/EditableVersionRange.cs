@@ -16,14 +16,14 @@ namespace Papyrus.Business.VersionRanges
             Documents = new ObservableCollection<EditableDocument>();
         }
 
-        public void ToVersionRange(Topic topic)
+        public VersionRange ToVersionRange()
         {
             var versionRange = new VersionRange(FromVersion, ToVersion);
-            topic.AddVersionRange(versionRange);
             foreach (var editableDocument in Documents)
             {
-                editableDocument.ToDocument(versionRange);
+                versionRange.Documents.Add(editableDocument.ToDocument());
             }
+            return versionRange;
         }
     }
 }

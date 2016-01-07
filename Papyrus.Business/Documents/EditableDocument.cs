@@ -53,14 +53,14 @@ namespace Papyrus.Business.Documents
             }
         }
 
-        public void ToDocument(VersionRange versionRange)
+        public Document ToDocument()
         {
-            versionRange.AddDocument(new Document(
+            return new Document(
                 title: Title,
                 description: Description,
                 content: Content,
                 language: Language
-                ));
+                );
         }
     }
 }

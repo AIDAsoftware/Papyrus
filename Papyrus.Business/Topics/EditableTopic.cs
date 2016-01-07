@@ -41,7 +41,7 @@ namespace Papyrus.Business.Topics
             var topic = new Topic(Product.ProductId).WithId(TopicId);
             foreach (var editableVersionRange in VersionRanges)
             {
-                editableVersionRange.ToVersionRange(topic);
+                topic.AddVersionRange(editableVersionRange.ToVersionRange());
             }
             return topic;
         }
