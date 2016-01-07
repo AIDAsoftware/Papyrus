@@ -1,7 +1,8 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Papyrus.Business.VersionRanges;
 
-namespace Papyrus.Business.Topics
+namespace Papyrus.Business.Documents
 {
     public class EditableDocument : INotifyPropertyChanged
     {
@@ -52,14 +53,14 @@ namespace Papyrus.Business.Topics
             }
         }
 
-        public void ToDocument(VersionRange versionRange)
+        public Document ToDocument()
         {
-            versionRange.AddDocument(new Document(
+            return new Document(
                 title: Title,
                 description: Description,
                 content: Content,
                 language: Language
-                ));
+                );
         }
     }
 }

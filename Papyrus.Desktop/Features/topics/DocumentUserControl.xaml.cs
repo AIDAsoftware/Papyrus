@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Topics;
 using Papyrus.Infrastructure.Core.DomainEvents;
 

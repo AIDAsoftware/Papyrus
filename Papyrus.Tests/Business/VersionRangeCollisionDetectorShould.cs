@@ -6,6 +6,7 @@ using NSubstitute;
 using NUnit.Framework;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Business.VersionRanges;
 
 namespace Papyrus.Tests.Business
 {
@@ -42,9 +43,9 @@ namespace Papyrus.Tests.Business
         public async Task detect_collision_when_toversion_of_a_version_range_is_equal_to_fromversion_in_any_other_range()
         {
             var topic = new Topic(ProductId);
-            topic.AddVersionRange(new VersionRange("version1", "version2"));
-            topic.AddVersionRange(new VersionRange("version3", "version4"));
-            topic.AddVersionRange(new VersionRange("version4", "version5"));
+            topic.AddVersionRange(new VersionRange(version1, version2));
+            topic.AddVersionRange(new VersionRange(version3, version4));
+            topic.AddVersionRange(new VersionRange(version4, version5));
 
             var collisions = await versionRangeCollisionDetector.CollisionsFor(topic);
 
@@ -61,8 +62,8 @@ namespace Papyrus.Tests.Business
         public async Task detect_collision_when_fromversion_of_a_version_range_is_contained_by_other_range()
         {
             var topic = new Topic(ProductId);
-            topic.AddVersionRange(new VersionRange("version1", "version3"));
-            topic.AddVersionRange(new VersionRange("version2", "version4"));
+            topic.AddVersionRange(new VersionRange(version1, version3));
+            topic.AddVersionRange(new VersionRange(version2, version4));
 
             var collisions = await versionRangeCollisionDetector.CollisionsFor(topic);
 
@@ -80,9 +81,9 @@ namespace Papyrus.Tests.Business
         public async Task not_detect_collision_no_ranges_use_same_product_version()
         {
             var topic = new Topic(ProductId);
-            topic.AddVersionRange(new VersionRange("version1", "version2"));
-            topic.AddVersionRange(new VersionRange("version3", "version4"));
-            topic.AddVersionRange(new VersionRange("version5", "version5"));
+            topic.AddVersionRange(new VersionRange(version1, version2));
+            topic.AddVersionRange(new VersionRange(version3, version4));
+            topic.AddVersionRange(new VersionRange(version5, version5));
 
             var collisions = await versionRangeCollisionDetector.CollisionsFor(topic);
 
@@ -92,8 +93,8 @@ namespace Papyrus.Tests.Business
         [Test]
         public async Task detect_collision_when_to_version_is_defined_with_wildcard() {
             var topic = new Topic(ProductId);
-            topic.AddVersionRange(new VersionRange("version3", "version4"));
-            topic.AddVersionRange(new VersionRange("version4", LastProductVersion.Id));
+            topic.AddVersionRange(new VersionRange(version3, version4));
+            topic.AddVersionRange(new VersionRange(version4, new LastProductVersion()));
 
             var collision = await versionRangeCollisionDetector.CollisionsFor(topic);
 

@@ -3,8 +3,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Business.VersionRanges;
 
 namespace Papyrus.Tests.Business
 {

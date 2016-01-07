@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Topics;
 
 namespace Papyrus.Desktop.Features.Topics

@@ -1,6 +1,6 @@
 using System;
 
-namespace Papyrus.Business.Topics
+namespace Papyrus.Business.Documents
 {
     public class Document
     {
@@ -10,8 +10,8 @@ namespace Papyrus.Business.Topics
         public string DocumentId { get; private set; }
         public string Language { get; private set; }
 
-        public Document(string title, string description, string content, string language)
-        {
+        public Document(string title, string description, string content, string language) {
+            if (string.IsNullOrEmpty(title)) throw new CannotCreateDocumentsWithoutTitleException();
             Title = title;
             Description = description;
             Content = content;

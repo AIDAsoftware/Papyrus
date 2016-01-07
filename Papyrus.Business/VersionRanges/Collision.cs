@@ -1,4 +1,4 @@
-namespace Papyrus.Business.Topics
+namespace Papyrus.Business.VersionRanges
 {
     public class Collision
     {

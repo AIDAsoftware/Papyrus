@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Papyrus.Business.Products;
 
-namespace Papyrus.Business.Topics
+namespace Papyrus.Business.VersionRanges
 {
     public class RangeWithAllVersions
     {
@@ -18,7 +17,7 @@ namespace Papyrus.Business.Topics
 
         public bool Intersect(RangeWithAllVersions rangeWithAllVersions)
         {
-            return this.Versions.Intersect(rangeWithAllVersions.Versions).Any();
+            return Versions.Intersect(rangeWithAllVersions.Versions).Any();
         }
 
         public List<Collision> CollissionsWith(IEnumerable<RangeWithAllVersions> otherRanges)
@@ -38,15 +37,9 @@ namespace Papyrus.Business.Topics
         {
             return new EditableVersionRange
             {
-                FromVersion = GetVersionById(VersionRange.FromVersionId),
-                ToVersion = GetVersionById(VersionRange.ToVersionId)
+                FromVersion = VersionRange.FromVersion,
+                ToVersion = VersionRange.ToVersion
             };
-        }
-
-        private ProductVersion GetVersionById(string versionId)
-        {
-            if (versionId == LastProductVersion.Id) return new LastProductVersion();
-            return Versions.First(vr => vr.VersionId == versionId);
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using Papyrus.Business.Topics.Exceptions;
+using Papyrus.Business.Documents;
+using Papyrus.Business.VersionRanges;
 
 namespace Papyrus.Business.Topics
 {
@@ -19,7 +19,7 @@ namespace Papyrus.Business.Topics
             set
             {
                 product = value;
-                OnPropertyChanged("Product");
+                OnPropertyChanged();
             }
         }
 
@@ -41,7 +41,7 @@ namespace Papyrus.Business.Topics
             var topic = new Topic(Product.ProductId).WithId(TopicId);
             foreach (var editableVersionRange in VersionRanges)
             {
-                editableVersionRange.ToVersionRange(topic);
+                topic.AddVersionRange(editableVersionRange.ToVersionRange());
             }
             return topic;
         }

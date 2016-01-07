@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Data;
 using Papyrus.Business.Topics;
+using Papyrus.Business.VersionRanges;
 
 namespace Papyrus.Desktop.Features.Topics
 {

@@ -62,6 +62,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Documents\CannotCreateDocumentsWithoutTitleException.cs" />
+    <Compile Include="Documents\DisplayableProduct.cs" />
+    <Compile Include="Documents\Document.cs" />
+    <Compile Include="Documents\Documents.cs" />
+    <Compile Include="Documents\EditableDocument.cs" />
     <Compile Include="Exporters\ExportableDocument.cs" />
     <Compile Include="Exporters\FileWriter.cs" />
     <Compile Include="Exporters\MkdocsExporter.cs" />
@@ -75,18 +80,10 @@
     <Compile Include="Products\FullVersionRange.cs" />
     <Compile Include="Products\ProductVersion.cs" />
     <Compile Include="Products\WebSite.cs" />
-    <Compile Include="Topics\Collision.cs" />
-    <Compile Include="Topics\Documents.cs" />
-    <Compile Include="Topics\EditableDocument.cs" />
-    <Compile Include="Topics\DisplayableProduct.cs" />
     <Compile Include="Topics\EditableTopic.cs" />
-    <Compile Include="Topics\EditableVersionRange.cs" />
     <Compile Include="Topics\Exceptions\CannotDeleteTopicsWithoutTopicIdAssignedException.cs" />
-    <Compile Include="Topics\Exceptions\VersionRangesCollisionException.cs" />
-    <Compile Include="Topics\RangeWithAllVersions.cs" />
     <Compile Include="Topics\SqlTopicCommandRepository.cs" />
     <Compile Include="Topics\SqlTopicQueryRepository.cs" />
-    <Compile Include="Topics\Document.cs" />
     <Compile Include="Topics\Exceptions\CannotUpdateTopicsWithNoVersionRangesException.cs" />
     <Compile Include="Topics\Exceptions\CannotSaveTopicsWithDefinedTopicIdException.cs" />
     <Compile Include="Topics\Exceptions\CannotSaveTopicsWithNoVersionRangesException.cs" />
@@ -102,10 +99,15 @@
     <Compile Include="Topics\TopicCommandRepository.cs" />
     <Compile Include="Topics\TopicQueryRepository.cs" />
     <Compile Include="Topics\TopicService.cs" />
-    <Compile Include="Topics\VersionRange.cs" />
-    <Compile Include="Topics\VersionRangeCollisionDetector.cs" />
-    <Compile Include="Topics\VersionRanges.cs" />
     <Compile Include="Topics\TopicSummary.cs" />
+    <Compile Include="VersionRanges\Collision.cs" />
+    <Compile Include="VersionRanges\EditableVersionRange.cs" />
+    <Compile Include="VersionRanges\Exceptions\VersionRangeCannotBeDescendentException.cs" />
+    <Compile Include="VersionRanges\Exceptions\VersionRangesCollisionException.cs" />
+    <Compile Include="VersionRanges\RangeWithAllVersions.cs" />
+    <Compile Include="VersionRanges\VersionRange.cs" />
+    <Compile Include="VersionRanges\VersionRangeCollisionDetector.cs" />
+    <Compile Include="VersionRanges\VersionRanges.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Papyrus.Infrastructure.Core\Papyrus.Infrastructure.Core.csproj">
@@ -116,6 +118,7 @@
   <ItemGroup>
     <Content Include="TechnicalDebt.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

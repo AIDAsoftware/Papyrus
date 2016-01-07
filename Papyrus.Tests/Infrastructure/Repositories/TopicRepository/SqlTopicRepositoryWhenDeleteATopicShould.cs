@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using Papyrus.Business.Documents;
+using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Business.VersionRanges;
 using Papyrus.Infrastructure.Core.Database;
 using Papyrus.Tests.Infrastructure.Repositories.Helpers;
 
@@ -12,6 +16,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
     public class SqlTopicRepositoryWhenDeleteATopicShould : SqlTest
     {
         private SqlTopicCommandRepository topicRepository;
+        private ProductVersion anyVersion = new ProductVersion("Any", "Any", DateTime.MinValue);
+        private ProductVersion anotherVersion = new ProductVersion("Another", "Another", DateTime.MaxValue);
 
         [SetUp]
         public void Initialize()
@@ -27,7 +33,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             var topic = new Topic("OpportunityId").WithId(topicId);
             await new SqlInserter(dbConnection).Insert(topic);
             
-            await topicRepository.Delete(topic);
+            await topicRepository.Delete(topic.TopicId);
 
             var topicFromDataBase = (await dbConnection.Query<object>(@"SELECT * FROM Topic 
                                                                         WHERE TopicId = @TopicId",
@@ -40,13 +46,13 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         public async Task delete_its_product_versions_from_database()
         {
             var versionRangeId = "VersionRangeId";
-            var versionRange = new VersionRange("AnyProductVersionId", "AnotherProductVersionId")
+            var versionRange = new VersionRange(anyVersion, anotherVersion)
                                 .WithId(versionRangeId);
             var topic = new Topic("OpportunityId").WithId("TopicId");
             topic.AddVersionRange(versionRange);
             await new SqlInserter(dbConnection).Insert(topic);
             
-            await topicRepository.Delete(topic);
+            await topicRepository.Delete(topic.TopicId);
 
             var versionFromDataBase = (await dbConnection.Query<object>(@"SELECT * FROM VersionRange 
                                                                         WHERE VersionRangeId = @VersionRangeId",
@@ -60,14 +66,14 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         {
             var documentId = "DocumentId";
             var document = new Document("Título", "Descripción", "Contenido", "es-ES").WithId(documentId);
-            var versionRange = new VersionRange("AnyProductVersionId", "AnotherProductVersionId")
+            var versionRange = new VersionRange(anyVersion, anotherVersion)
                                 .WithId("VersionRangeId");
             versionRange.AddDocument(document);
             var topic = new Topic("OpportunityId").WithId("TopicId");
             topic.AddVersionRange(versionRange);
             await new SqlInserter(dbConnection).Insert(topic);
             
-            await topicRepository.Delete(topic);
+            await topicRepository.Delete(topic.TopicId);
 
             var documentFromDataBase = (await dbConnection.Query<object>(@"SELECT * FROM Document 
                                                                         WHERE DocumentId = @DocumentId",

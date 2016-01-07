@@ -8,6 +8,7 @@ using System.Windows;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Business.Topics.Exceptions;
+using Papyrus.Business.VersionRanges;
 using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
 using Papyrus.Infrastructure.Core;
@@ -19,6 +20,7 @@ namespace Papyrus.Desktop.Features.Topics
     {
         private readonly TopicService topicService;
         private readonly ProductRepository productRepository;
+        private readonly NotificationSender notificationSender;
         public EditableTopic EditableTopic { get; protected set; }
 
         public IAsyncCommand SaveTopic { get; set; }
@@ -35,27 +37,22 @@ namespace Papyrus.Desktop.Features.Topics
             ToVersions = new ObservableCollection<ProductVersion>();
         }
 
-        private TopicVM(TopicService topicService, ProductRepository productRepository) : this()
+        public TopicVM(TopicService topicService, ProductRepository productRepository, EditableTopic topic, NotificationSender notificationSender) : this()
         {
             this.topicService = topicService;
             this.productRepository = productRepository;
-        }
-
-        public TopicVM(TopicService topicService, ProductRepository productRepository, EditableTopic topic) 
-            : this(topicService, productRepository)
-        {
+            this.notificationSender = notificationSender;
             EditableTopic = topic;
         }
 
         private async Task TryToSaveCurrentTopic()
         {
-            try
-            {
+            try {
                 await SaveCurrentTopic();
             }
             catch (Exception exception)
             {
-                EventBus.Send(new OnUserMessageRequest(exception.Message));
+                notificationSender.SendNotification(exception.Message);
             }
         }
 
@@ -78,9 +75,9 @@ namespace Papyrus.Desktop.Features.Topics
         //TODO: How to make it not void? It could be a trouble if product can't be deleted in backend
         private async void DeleteCurrentTopic(Window window)
         {
-            var topic = EditableTopic.ToTopic();
             try {
-                await topicService.Delete(topic);
+                await topicService.Delete(EditableTopic.TopicId);
+                EventBus.Send(new OnTopicRemoved());
             }
             catch (CannotDeleteTopicsWithoutTopicIdAssignedException) {
                 EventBus.Send(new OnUserMessageRequest("No se puede borrar un topic no guardado"));

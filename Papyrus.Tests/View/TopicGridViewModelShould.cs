@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
@@ -11,11 +12,6 @@ using Papyrus.Desktop.Features.Topics;
 using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Tests.View {
-    
-    //TODO:
-    // - export all documentation for all products
-    // - export only last version for selected product
-    // - export all documentation for selected product
     
     [TestFixture]
     public class TopicGridViewModelShould {

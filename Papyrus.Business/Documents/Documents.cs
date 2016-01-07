@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Papyrus.Business.Topics
+namespace Papyrus.Business.Documents
 {
     public class Documents : IEnumerable
     {

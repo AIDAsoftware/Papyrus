@@ -4,8 +4,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Business.VersionRanges;
 using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
 using Papyrus.Infrastructure.Core.DomainEvents;
@@ -29,7 +31,6 @@ namespace Papyrus.Desktop.Features.Topics
 
         public IAsyncCommand DeleteVersionRange { get; private set; }
         public IAsyncCommand CreateVersionRange { get; private set; }
-        public DisplayableProduct SelectedProduct { get; set; }
 
         public VersionRangesVM()
         {
@@ -59,7 +60,7 @@ namespace Papyrus.Desktop.Features.Topics
         {
             if (VersionRanges.Count == 1)
             {
-                EventBus.Send(new OnUserMessageRequest("A topic must have at least one version range"));
+                EventBus.Send(new OnUserMessageRequest("No se puede eliminar el único version range de un topic.\nModifique el ya existente o elemine el topic si es lo que deseae"));
                 return;
             } 
             VersionRanges.Remove(SelectedVersionRange);
@@ -68,7 +69,6 @@ namespace Papyrus.Desktop.Features.Topics
         public VersionRangesVM(EditableTopic editableTopic) : this()
         {
             VersionRanges = editableTopic.VersionRanges;
-            SelectedProduct = editableTopic.Product;
         }
 
         public void Initialize()

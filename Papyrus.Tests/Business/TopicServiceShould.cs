@@ -7,6 +7,8 @@ using NUnit.Framework;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Business.Topics.Exceptions;
+using Papyrus.Business.VersionRanges;
+using Papyrus.Business.VersionRanges.Exceptions;
 
 namespace Papyrus.Tests.Business
 {
@@ -18,6 +20,7 @@ namespace Papyrus.Tests.Business
         private TopicService topicService;
         private VersionRange anyVersionRange;
         private string anyProductId;
+        private readonly ProductVersion anyVersion = new ProductVersion("Any", "Any", DateTime.MaxValue);
 
         [SetUp]
         public void SetUp()
@@ -26,7 +29,7 @@ namespace Papyrus.Tests.Business
             var productRepository = Substitute.For<ProductRepository>();
             collisionDetector = Substitute.For<VersionRangeCollisionDetector>(productRepository);
             topicService = new TopicService(topicRepo, collisionDetector);
-            anyVersionRange = new VersionRange(fromVersionId: null, toVersionId: null);
+            anyVersionRange = new VersionRange(fromVersion: anyVersion, toVersion: anyVersion);
             anyProductId = "AnyProductId";
         }
 
@@ -157,9 +160,9 @@ namespace Papyrus.Tests.Business
         {
             var topic = new Topic(anyProductId).WithId("AnyTopicId");
 
-            await topicService.Delete(topic);
+            await topicService.Delete(topic.TopicId);
 
-            topicRepo.Received().Delete(topic);
+            topicRepo.Received().Delete(topic.TopicId);
         }
 
         [Test]
@@ -167,7 +170,7 @@ namespace Papyrus.Tests.Business
         public async Task fail_when_try_to_delete_a_topic_without_topic_id_assigned()
         {
             var topic = new Topic(anyProductId);
-            await topicService.Delete(topic);
+            await topicService.Delete(topic.TopicId);
         }
     }
 }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Papyrus.Business.Topics.Exceptions;
+using Papyrus.Business.VersionRanges;
+using Papyrus.Business.VersionRanges.Exceptions;
 
 namespace Papyrus.Business.Topics
 {
@@ -50,13 +52,13 @@ namespace Papyrus.Business.Topics
             }
         }
 
-        public async Task Delete(Topic topic)
+        public async Task Delete(string topicId)
         {
-            if (string.IsNullOrWhiteSpace(topic.TopicId))
+            if (string.IsNullOrWhiteSpace(topicId))
             {
                 throw new CannotDeleteTopicsWithoutTopicIdAssignedException();
             }
-            await TopicRepository.Delete(topic);
+            await TopicRepository.Delete(topicId);
         }
 
         private async Task ValidateToSave(Topic topic)

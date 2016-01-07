@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Papyrus.Business.Topics.Exceptions
+namespace Papyrus.Business.VersionRanges.Exceptions
 {
     public class VersionRangesCollisionException : Exception
     {

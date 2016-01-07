@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
+using Papyrus.Business.VersionRanges;
 using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Business.Topics {
@@ -15,14 +17,15 @@ namespace Papyrus.Business.Topics {
             this.connection = connection;
         }
 
-        public async Task<List<TopicSummary>> GetAllTopicsSummaries() {
+        public async Task<List<TopicSummary>> GetAllTopicsSummariesFor(string language) {
             var resultset = (await connection.Query<dynamic>(
                 @"SELECT Topic.TopicId, Product.ProductName, Product.ProductId, VersionRange.ToVersionId, Document.Title, Document.Description
                     FROM Topic
                     JOIN Product ON Product.ProductId = Topic.ProductId
                     JOIN VersionRange ON VersionRange.TopicId = Topic.TopicId
-                    JOIN Document ON Document.VersionRangeId = VersionRange.VersionRangeId"
-                )).ToList();
+                    JOIN Document ON Document.VersionRangeId = VersionRange.VersionRangeId
+                                        and Document.Language = @Language"
+                , new{Language = language})).ToList();
             foreach (var topic in resultset) {
                 if (topic.ToVersionId == LastProductVersion.Id) {
                     topic.VersionName = LastProductVersion.Name;

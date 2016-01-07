@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Business.VersionRanges;
 using Papyrus.Infrastructure.Core.Database;
 using Papyrus.Tests.Infrastructure.Repositories.Helpers;
 
@@ -44,15 +46,15 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         {
             await InsertProductWithItsVersions();
             var topic = new Topic(ProductId).WithId("AnyTopicId");
-            var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("AnyRangeId");
-            var secondVersionRange = new VersionRange(SecondVersionId, SecondVersionId).WithId("AnotherRangeId");
+            var firstVersionRange = new VersionRange(version1, version1).WithId("AnyRangeId");
+            var secondVersionRange = new VersionRange(version2, version2).WithId("AnotherRangeId");
             firstVersionRange.AddDocument(englishDocument.WithId("AnyDocumentId"));
             secondVersionRange.AddDocument(spanishDocument.WithId("AnotherDocumentId"));
             topic.AddVersionRange(firstVersionRange);
             topic.AddVersionRange(secondVersionRange);
             await sqlInserter.Insert(topic);
 
-            var topicSummaries = await topicRepository.GetAllTopicsSummaries();
+            var topicSummaries = await topicRepository.GetAllTopicsSummariesFor("es-ES");
 
             topicSummaries.Should().HaveCount(1);
             topicSummaries.Should().Contain(t => t.TopicId == "AnyTopicId" && 
@@ -68,12 +70,12 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         {
             await InsertProductWithItsVersions();
             var topic = new Topic(ProductId).WithId("AnyTopicId");
-            var firstVersionRange = new VersionRange(FirstVersionId, LastProductVersion.Id).WithId("AnyRangeId");
+            var firstVersionRange = new VersionRange(version1, new LastProductVersion()).WithId("AnyRangeId");
             firstVersionRange.AddDocument(spanishDocument.WithId("AnyDocumentId"));
             topic.AddVersionRange(firstVersionRange);
             await sqlInserter.Insert(topic);
 
-            var topicSummaries = await topicRepository.GetAllTopicsSummaries();
+            var topicSummaries = await topicRepository.GetAllTopicsSummariesFor("es-ES");
 
             topicSummaries.First().VersionName.Should().Be(LastProductVersion.Name);
         }
@@ -97,7 +99,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         {
             await InsertProductWithAVersion();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
-            var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
+            var firstVersionRange = new VersionRange(version1, version1).WithId("FirstVersionRangeId");
             topic.AddVersionRange(firstVersionRange);
             await sqlInserter.Insert(topic);
 
@@ -116,7 +118,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         {
             await InsertProductWithAVersion();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
-            var firstVersionRange = new VersionRange(FirstVersionId, FirstVersionId).WithId("FirstVersionRangeId");
+            var firstVersionRange = new VersionRange(version1, version1).WithId("FirstVersionRangeId");
             spanishDocument.WithId("DocumentId");
             firstVersionRange.AddDocument(spanishDocument);
             topic.AddVersionRange(firstVersionRange);
@@ -137,9 +139,9 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         public async Task editable_topic_when_to_version_is_a_wildcard() {
             await InsertProduct(ProductId, "any Product");
             var fromVersionId = "anyId";
-            await InsertProductVersion(new ProductVersion(fromVersionId, "Any Name", DateTime.Today), ProductId);
+            await InsertProductVersion(version1, ProductId);
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
-            var firstVersionRange = new VersionRange(fromVersionId, LastProductVersion.Id).WithId("FirstVersionRangeId");
+            var firstVersionRange = new VersionRange(version1, new LastProductVersion()).WithId("FirstVersionRangeId");
             topic.AddVersionRange(firstVersionRange);
             await sqlInserter.Insert(topic);
 
@@ -152,8 +154,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         public async Task exportable_topic_for_a_given_version_and_language() {
             await InsertProductWithItsVersions();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
-            var firstVersionRange = new VersionRange(version1.VersionId, version1.VersionId).WithId("FirstVersionRangeId");
-            var secondVersionRange = new VersionRange(version2.VersionId, "*").WithId("SecondVersionRangeId");
+            var firstVersionRange = new VersionRange(version1, version1).WithId("FirstVersionRangeId");
+            var secondVersionRange = new VersionRange(version2, new LastProductVersion()).WithId("SecondVersionRangeId");
             firstVersionRange.AddDocument(spanishDocument.WithId("AnyId"));
             secondVersionRange.AddDocument(new Document("Título", "Descripción", "Contenido", "es-ES").WithId("AnotherId"));
             topic.AddVersionRange(firstVersionRange);
@@ -173,7 +175,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         public async Task get_empty_list_if_there_are_no_documents() {
             await InsertProductWithItsVersions();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
-            var firstVersionRange = new VersionRange(version1.VersionId, version1.VersionId).WithId("FirstVersionRangeId");
+            var firstVersionRange = new VersionRange(version1, version1).WithId("FirstVersionRangeId");
             firstVersionRange.AddDocument(spanishDocument.WithId("AnyId"));
             topic.AddVersionRange(firstVersionRange);
             await sqlInserter.Insert(topic);
@@ -187,7 +189,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         public async Task get_empty_exportable_document_list_if_there_given_version_does_not_exist() {
             await InsertProductWithItsVersions();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
-            var firstVersionRange = new VersionRange(version1.VersionId, version1.VersionId).WithId("FirstVersionRangeId");
+            var firstVersionRange = new VersionRange(version1, version1).WithId("FirstVersionRangeId");
             topic.AddVersionRange(firstVersionRange);
             await sqlInserter.Insert(topic);
 

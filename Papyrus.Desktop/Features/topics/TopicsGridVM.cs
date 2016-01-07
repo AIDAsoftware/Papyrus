@@ -1,15 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Business.VersionRanges;
 using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
+using Papyrus.Infrastructure.Core.DomainEvents;
+
 
 namespace Papyrus.Desktop.Features.Topics {
     public class TopicsGridVM : INotifyPropertyChanged
@@ -50,6 +55,12 @@ namespace Papyrus.Desktop.Features.Topics {
             ExportLastVersionToMkDocs = RelayAsyncSimpleCommand.Create(ExportLastVersion, () => true);
             ExportAllProducts = RelayAsyncSimpleCommand.Create(ExportAllProductsDocumentation, () => true);
             DefaultDirectoryPath = Directory.GetCurrentDirectory();
+            EventBus.AsObservable<OnTopicRemoved>().Subscribe(Handle);
+        }
+
+        //TODO: should it return a task?
+        private async void Handle(OnTopicRemoved domainEvent) {
+            await LoadAllTopics();
         }
 
         private async Task ExportLastVersion() {
@@ -145,7 +156,7 @@ namespace Papyrus.Desktop.Features.Topics {
         {
             canLoadTopics = false;
             TopicsToList.Clear();
-            (await topicRepository.GetAllTopicsSummaries())
+            (await topicRepository.GetAllTopicsSummariesFor("es-ES"))
                 .Where(t => t.Product.ProductId == SelectedProduct.ProductId)
                 .ToList()
                 .ForEach(topic => TopicsToList.Add(topic));
@@ -187,6 +198,8 @@ namespace Papyrus.Desktop.Features.Topics {
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
+    public class OnTopicRemoved {}
 
     public class DesignModeTopicsGridVM : TopicsGridVM
     {

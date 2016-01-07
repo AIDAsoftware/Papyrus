@@ -6,6 +6,6 @@ namespace Papyrus.Business.Topics
     {
         Task Save(Topic topic);
         Task Update(Topic topic);
-        Task Delete(Topic topic);
+        Task Delete(string topicId);
     }
 }
