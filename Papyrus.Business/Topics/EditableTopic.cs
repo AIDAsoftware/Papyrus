@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using Papyrus.Business.Documents;
-using Papyrus.Business.Topics.Exceptions;
 using Papyrus.Business.VersionRanges;
 
 namespace Papyrus.Business.Topics
