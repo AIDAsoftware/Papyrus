@@ -31,7 +31,6 @@ namespace Papyrus.Desktop.Features.Topics
 
         public IAsyncCommand DeleteVersionRange { get; private set; }
         public IAsyncCommand CreateVersionRange { get; private set; }
-        public DisplayableProduct SelectedProduct { get; set; }
 
         public VersionRangesVM()
         {
@@ -70,7 +69,6 @@ namespace Papyrus.Desktop.Features.Topics
         public VersionRangesVM(EditableTopic editableTopic) : this()
         {
             VersionRanges = editableTopic.VersionRanges;
-            SelectedProduct = editableTopic.Product;
         }
 
         public void Initialize()
