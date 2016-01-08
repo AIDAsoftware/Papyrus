@@ -6,14 +6,19 @@
              xmlns:topics="clr-namespace:Papyrus.Desktop.Features.Topics"
              xmlns:topics1="clr-namespace:Papyrus.Business.Topics;assembly=Papyrus.Business"
              xmlns:versionRanges="clr-namespace:Papyrus.Business.VersionRanges;assembly=Papyrus.Business"
+             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=topics:DesignModeVersionRangesVM, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <topics:VersionRangeToVmConverter x:Key="VersionRangeToVmConverter" />
+        <CollectionViewSource x:Key="SortedRangesByRelease" Source="{Binding VersionRanges}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="FromVersion.Release" Direction="Descending"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
     </UserControl.Resources>
     <Grid>
-
         <DockPanel Height="Auto" HorizontalAlignment="Stretch">
             <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                 <Button Command="{Binding DeleteVersionRange}" HorizontalAlignment="Right" Height="23" Width="100" MinHeight="30"
@@ -26,7 +31,7 @@
                         VerticalAlignment="Stretch"
                         TabStripPlacement = "Left"
 		                Margin="0,0,0,0"
-                        ItemsSource="{Binding VersionRanges}"
+                        ItemsSource="{Binding Source={StaticResource SortedRangesByRelease}}"
                         SelectedValue="{Binding SelectedVersionRange}"
                         >
                 <TabControl.ItemTemplate>
