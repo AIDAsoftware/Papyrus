@@ -8,6 +8,7 @@ using Papyrus.Business.Documents;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
+using Papyrus.Business.Topics.Exceptions;
 using Papyrus.Business.VersionRanges;
 using Papyrus.Infrastructure.Core.Database;
 using Papyrus.Tests.Infrastructure.Repositories.Helpers;
@@ -45,13 +46,15 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         public async void a_topics_list_to_show_distincting_by_topic_with_infomation_of_its_last_version()
         {
             await InsertProductWithItsVersions();
-            var topic = new Topic(ProductId).WithId("AnyTopicId");
-            var firstVersionRange = new VersionRange(version1, version1).WithId("AnyRangeId");
-            var secondVersionRange = new VersionRange(version2, version2).WithId("AnotherRangeId");
-            firstVersionRange.AddDocument(englishDocument.WithId("AnyDocumentId"));
-            secondVersionRange.AddDocument(spanishDocument.WithId("AnotherDocumentId"));
-            topic.AddVersionRange(firstVersionRange);
-            topic.AddVersionRange(secondVersionRange);
+            var topic = new TopicBuilder(ProductId, "AnyTopicId")
+                                .WithVersionRanges(
+                                    new VersionRangeBuilder("AnyRangeId", version1, version1)
+                                            .WithDocuments(
+                                                new Document("Any", "Any", "Any", "es-ES").WithId("AnyDocumentId")),
+                                    new VersionRangeBuilder("AnotherRangeId", version2, version2)
+                                            .WithDocuments(
+                                                spanishDocument.WithId("AnotherDocumentId"))
+                                ).Build();
             await sqlInserter.Insert(topic);
 
             var topicSummaries = await topicRepository.GetAllTopicsSummariesFor("es-ES");
@@ -63,6 +66,58 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
                                                t.VersionName == SecondVersionName &&
                                                t.LastDocumentTitle == "Título" &&
                                                t.LastDocumentDescription == "Descripción");
+        }
+
+        public class TopicBuilder {
+            private string productId;
+            private string topicId;
+            private readonly List<VersionRange> versionRanges;
+
+            public TopicBuilder(string productId, string topicId) {
+                this.productId = productId;
+                this.topicId = topicId;
+                versionRanges = new List<VersionRange>();
+            }
+
+            public TopicBuilder WithVersionRanges(params VersionRangeBuilder[] versionRanges) {
+                this.versionRanges.AddRange(versionRanges.Select(x => x.Build()));
+                return this;
+            }
+
+            public Topic Build() {
+                var topic = new Topic(productId).WithId(topicId);
+                foreach (var versionRange in versionRanges) {
+                    topic.AddVersionRange(versionRange);
+                }
+                return topic;
+            }
+        }
+
+        public class VersionRangeBuilder {
+            private readonly string id;
+            private readonly ProductVersion firstVersion;
+            private readonly ProductVersion lastVersion;
+            private List<Document> documents;
+
+            public VersionRangeBuilder(string id, ProductVersion firstVersion, ProductVersion lastVersion) {
+                this.id = id;
+                this.firstVersion = firstVersion;
+                this.lastVersion = lastVersion;
+                this.documents = new List<Document>();
+            }
+
+            public VersionRangeBuilder WithDocuments(params Document[] documents) {
+                this.documents.AddRange(documents);
+                return this;
+            }
+
+            public VersionRange Build() {
+                var versionRange = new VersionRange(firstVersion, lastVersion).WithId(id);
+                foreach (var document in documents) {
+                    versionRange.AddDocument(document);
+                }
+                return versionRange;
+            }
         }
         
         [Test]
