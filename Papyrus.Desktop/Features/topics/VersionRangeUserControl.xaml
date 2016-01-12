@@ -6,9 +6,17 @@
              xmlns:topics="clr-namespace:Papyrus.Business.Topics;assembly=Papyrus.Business"
              xmlns:topics1="clr-namespace:Papyrus.Desktop.Features.Topics"
              xmlns:documents="clr-namespace:Papyrus.Business.Documents;assembly=Papyrus.Business"
+             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              d:DesignHeight="496" d:DesignWidth="889" 
              d:DataContext="{d:DesignInstance Type=topics1:DesignModeVersionRangeVM, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="SortedLanguages" Source="{Binding VersionRange.Documents}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="Language" Direction="Descending"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
         <DockPanel DockPanel.Dock="Top" Height="35" VerticalAlignment="Top" HorizontalAlignment="Center" LastChildFill="True">
             <StackPanel Orientation="Horizontal">
@@ -33,7 +41,7 @@
                             TabStripPlacement = "Top"
 		                    VerticalAlignment="Stretch"
                             Height="Auto"
-                            ItemsSource="{Binding VersionRange.Documents}"
+                            ItemsSource="{Binding Source={StaticResource SortedLanguages}}"
                             SelectedItem="{Binding SelectedDocument}">
             <TabControl.ItemTemplate>
                 <DataTemplate DataType="documents:EditableDocument">
