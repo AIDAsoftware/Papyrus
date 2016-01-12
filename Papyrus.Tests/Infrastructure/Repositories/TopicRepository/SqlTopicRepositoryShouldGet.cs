@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -11,6 +10,7 @@ using Papyrus.Business.Topics;
 using Papyrus.Business.Topics.Exceptions;
 using Papyrus.Business.VersionRanges;
 using Papyrus.Infrastructure.Core.Database;
+using Papyrus.Tests.Builders;
 using Papyrus.Tests.Infrastructure.Repositories.Helpers;
 
 namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
@@ -85,58 +85,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             topicSummaries.Should().Contain(t => t.VersionName == "3.0");
         }
 
-        public class TopicBuilder {
-            private string productId;
-            private string topicId;
-            private readonly List<VersionRange> versionRanges;
-
-            public TopicBuilder(string productId, string topicId) {
-                this.productId = productId;
-                this.topicId = topicId;
-                versionRanges = new List<VersionRange>();
-            }
-
-            public TopicBuilder WithVersionRanges(params VersionRangeBuilder[] versionRanges) {
-                this.versionRanges.AddRange(versionRanges.Select(x => x.Build()));
-                return this;
-            }
-
-            public Topic Build() {
-                var topic = new Topic(productId).WithId(topicId);
-                foreach (var versionRange in versionRanges) {
-                    topic.AddVersionRange(versionRange);
-                }
-                return topic;
-            }
-        }
-
-        public class VersionRangeBuilder {
-            private readonly string id;
-            private readonly ProductVersion firstVersion;
-            private readonly ProductVersion lastVersion;
-            private List<Document> documents;
-
-            public VersionRangeBuilder(string id, ProductVersion firstVersion, ProductVersion lastVersion) {
-                this.id = id;
-                this.firstVersion = firstVersion;
-                this.lastVersion = lastVersion;
-                this.documents = new List<Document>();
-            }
-
-            public VersionRangeBuilder WithDocuments(params Document[] documents) {
-                this.documents.AddRange(documents);
-                return this;
-            }
-
-            public VersionRange Build() {
-                var versionRange = new VersionRange(firstVersion, lastVersion).WithId(id);
-                foreach (var document in documents) {
-                    versionRange.AddDocument(document);
-                }
-                return versionRange;
-            }
-        }
-        
         [Test]
         public async void a_list_with_topics_with_wildcard_as_to_version()
         {
