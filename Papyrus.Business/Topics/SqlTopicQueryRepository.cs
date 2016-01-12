@@ -27,21 +27,25 @@ namespace Papyrus.Business.Topics {
                                         and Document.Language = @Language"
                 , new{Language = language})).ToList();
             foreach (var topic in resultset) {
-                if (topic.ToVersionId == LastProductVersion.Id) {
-                    topic.VersionName = LastProductVersion.Name;
-                    topic.Release = DateTime.MaxValue.ToString("yyyyMMdd");
-                }
-                else {
-                    var version = (await connection.Query<dynamic>(
-                        @"SELECT VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId"
-                        , new { VersionId = topic.ToVersionId })).First();
-                    topic.VersionName = version.VersionName;
-                    topic.Release = version.Release.ToString("yyyyMMdd");
-                }
+                await SetLastVersionDependingOnVersionRangeFor(topic);
             }
             var orderedResultSet = resultset.OrderByDescending(t => t.Release).ToList();
             var topicsToShow = DistinctByTopicChoosingTheRowWithLatestDocumentAdded(orderedResultSet);
             return topicsToShow;
+        }
+
+        private async Task SetLastVersionDependingOnVersionRangeFor(dynamic topic) {
+            if (topic.ToVersionId == LastProductVersion.Id) {
+                topic.VersionName = LastProductVersion.Name;
+                topic.Release = DateTime.MaxValue.ToString("yyyyMMdd");
+            }
+            else {
+                var version = (await connection.Query<dynamic>(
+                    @"SELECT VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId"
+                    , new {VersionId = topic.ToVersionId})).First();
+                topic.VersionName = version.VersionName;
+                topic.Release = version.Release.ToString("yyyyMMdd");
+            }
         }
 
         public async Task<EditableTopic> GetEditableTopicById(string topicId) {
