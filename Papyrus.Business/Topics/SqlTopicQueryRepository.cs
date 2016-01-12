@@ -29,14 +29,17 @@ namespace Papyrus.Business.Topics {
             foreach (var topic in resultset) {
                 if (topic.ToVersionId == LastProductVersion.Id) {
                     topic.VersionName = LastProductVersion.Name;
+                    topic.Release = DateTime.MaxValue.ToString("yyyyMMdd");
                 }
                 else {
-                    topic.VersionName = (await connection.Query<string>(
+                    var version = (await connection.Query<dynamic>(
                         @"SELECT VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId"
                         , new { VersionId = topic.ToVersionId })).First();
+                    topic.VersionName = version.VersionName;
+                    topic.Release = version.Release.ToString("yyyyMMdd");
                 }
             }
-            var orderedResultSet = resultset.OrderBy(t => t.Release);
+            var orderedResultSet = resultset.OrderByDescending(t => t.Release).ToList();
             var topicsToShow = DistinctByTopicChoosingTheRowWithLatestDocumentAdded(orderedResultSet);
             return topicsToShow;
         }

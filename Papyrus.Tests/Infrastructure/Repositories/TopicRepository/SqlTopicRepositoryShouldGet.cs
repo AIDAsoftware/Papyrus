@@ -29,7 +29,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         private const string SecondVersionName = "2.0";
         private Document spanishDocument;
         private Document englishDocument;
-        private static ProductVersion version2 = new ProductVersion(SecondVersionId, SecondVersionName, DateTime.Today);
+        private static ProductVersion version2 = new ProductVersion(SecondVersionId, SecondVersionName, DateTime.Today.AddDays(-10));
         private ProductVersion version1 = new ProductVersion(FirstVersionId, FirstVersionName, DateTime.Today.AddDays(-20));
 
         [SetUp]
@@ -43,29 +43,46 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async void a_topics_list_to_show_distincting_by_topic_with_infomation_of_its_last_version()
+        public async void a_topic_summary_list()
         {
             await InsertProductWithItsVersions();
             var topic = new TopicBuilder(ProductId, "AnyTopicId")
                                 .WithVersionRanges(
                                     new VersionRangeBuilder("AnyRangeId", version1, version1)
-                                            .WithDocuments(
-                                                new Document("Any", "Any", "Any", "es-ES").WithId("AnyDocumentId")),
-                                    new VersionRangeBuilder("AnotherRangeId", version2, version2)
-                                            .WithDocuments(
-                                                spanishDocument.WithId("AnotherDocumentId"))
+                                        .WithDocuments(
+                                            new Document("Título", "Descripción", "Any", "es-ES").WithId("AnyDocumentId"))
                                 ).Build();
             await sqlInserter.Insert(topic);
 
             var topicSummaries = await topicRepository.GetAllTopicsSummariesFor("es-ES");
 
-            topicSummaries.Should().HaveCount(1);
             topicSummaries.Should().Contain(t => t.TopicId == "AnyTopicId" && 
                                                t.Product.ProductName == "Opportunity" &&
                                                t.Product.ProductId == ProductId &&
-                                               t.VersionName == SecondVersionName &&
+                                               t.VersionName == FirstVersionName &&
                                                t.LastDocumentTitle == "Título" &&
                                                t.LastDocumentDescription == "Descripción");
+        }
+
+        [Test]
+        public async Task a_topic_summary_list_distincting_by_topic_showing_last_valid_version_name() {
+            await InsertProductWithItsVersions();
+            var version3 = new ProductVersion("thirdVersion", "3.0", DateTime.Today);
+            await InsertProductVersion(version3, ProductId);
+            var topic = new TopicBuilder(ProductId, "AnyTopicId")
+                                .WithVersionRanges(
+                                    new VersionRangeBuilder("FirstRange", version1, version2)
+                                            .WithDocuments(
+                                                spanishDocument.WithId("FirstDocument")),
+                                    new VersionRangeBuilder("SecondRange", version3, version3)
+                                            .WithDocuments(
+                                                new Document("Any", "Any", "Any", "es-ES").WithId("ThirdDocument"))
+                                ).Build();
+            await sqlInserter.Insert(topic);
+
+            var topicSummaries = await topicRepository.GetAllTopicsSummariesFor("es-ES");
+
+            topicSummaries.Should().Contain(t => t.VersionName == "3.0");
         }
 
         public class TopicBuilder {
