@@ -29,9 +29,8 @@ namespace Papyrus.Business.Topics {
             foreach (var topic in resultset) {
                 await SetLastVersionDependingOnVersionRangeFor(topic);
             }
-            var orderedResultSet = resultset.OrderByDescending(t => t.Release).ToList();
-            var topicsToShow = DistinctByTopicChoosingTheRowWithLatestDocumentAdded(orderedResultSet);
-            return topicsToShow;
+            var distinctedResulset = FilterSummariesForMostRecentVersion(resultset);
+            return distinctedResulset.Select(TopicSummaryFromDynamic).ToList();
         }
 
         private async Task SetLastVersionDependingOnVersionRangeFor(dynamic topic) {
@@ -118,10 +117,10 @@ namespace Papyrus.Business.Topics {
             return document;
         }
 
-        private static List<TopicSummary> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics) {
-            return dynamicTopics.GroupBy(topic => topic.TopicId)
+        private static List<dynamic> FilterSummariesForMostRecentVersion(IEnumerable<dynamic> dynamicTopics) {
+            return dynamicTopics.OrderByDescending(t => t.Release)
+                .GroupBy(topic => topic.TopicId)
                 .Select(topics => topics.First())
-                .Select(TopicSummaryFromDynamic)
                 .ToList();
         }
 
