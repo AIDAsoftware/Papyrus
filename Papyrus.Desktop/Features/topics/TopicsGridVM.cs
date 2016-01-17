@@ -99,6 +99,7 @@ namespace Papyrus.Desktop.Features.Topics {
         private async Task Export(WebsiteCollection websiteCollection) {
             foreach (var element in websiteCollection) {
                 var fullPath = Path.Combine(DefaultDirectoryPath, element.Path);
+                Directory.CreateDirectory(fullPath).Delete(true);
                 foreach (var website in element.Websites) {
                     await exporter.Export(website, fullPath);
                 }
