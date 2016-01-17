@@ -69,7 +69,7 @@ namespace Papyrus.Desktop.Features.Topics
                 await topicService.Update(topic);
             }
 
-            EventBus.Send(new OnUserMessageRequest("Topic Saved!"));
+            notificationSender.SendNotification("El topic se ha guardado correctamente");
         }
 
         //TODO: How to make it not void? It could be a trouble if product can't be deleted in backend
@@ -80,7 +80,7 @@ namespace Papyrus.Desktop.Features.Topics
                 EventBus.Send(new OnTopicRemoved());
             }
             catch (CannotDeleteTopicsWithoutTopicIdAssignedException) {
-                EventBus.Send(new OnUserMessageRequest("No se puede borrar un topic no guardado"));
+                notificationSender.SendNotification("No se puede borrar un topic no guardado"));
             }
             
             window.Close();
