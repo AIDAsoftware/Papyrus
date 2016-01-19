@@ -69,7 +69,7 @@ namespace Papyrus.Desktop.Features.Topics
                 await topicService.Update(topic);
             }
 
-            notificationSender.SendNotification("El topic se ha guardado correctamente");
+            EventBus.Send(new OnTopicSaved());
         }
 
         //TODO: How to make it not void? It could be a trouble if product can't be deleted in backend
@@ -110,6 +110,9 @@ namespace Papyrus.Desktop.Features.Topics
             ToVersions.AddRange(versions);
             ToVersions.Add(new LastProductVersion());
         }
+    }
+
+    internal class OnTopicSaved {
     }
 
     public class DesignModeTopicVM : TopicVM
