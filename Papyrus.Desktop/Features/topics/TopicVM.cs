@@ -80,7 +80,7 @@ namespace Papyrus.Desktop.Features.Topics
                 EventBus.Send(new OnTopicRemoved());
             }
             catch (CannotDeleteTopicsWithoutTopicIdAssignedException) {
-                notificationSender.SendNotification("No se puede borrar un topic no guardado"));
+                notificationSender.SendNotification("No se puede borrar un topic no guardado");
             }
             
             window.Close();
