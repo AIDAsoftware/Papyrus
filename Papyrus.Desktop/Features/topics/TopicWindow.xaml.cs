@@ -32,16 +32,14 @@ namespace Papyrus.Desktop.Features.Topics
             ViewModel.Initialize();
         }
 
-        //TODO: should it return a task?
+        // TODO: should it return a task?
         private async void Handle(OnTopicSaved domainEvent) {
             // Get a toast XML template
             var toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText04);
 
             // Fill in the text elements
             var stringElements = toastXml.GetElementsByTagName("text");
-            for (int i = 0; i < stringElements.Length; i++) {
-                stringElements[i].AppendChild(toastXml.CreateTextNode("Line " + i));
-            }
+            stringElements[1].AppendChild(toastXml.CreateTextNode("Topic Guardado"));
 
             // Specify the absolute path to an image
             String imagePath = "file:///" + Path.GetFullPath("toastImageAndText.png");
