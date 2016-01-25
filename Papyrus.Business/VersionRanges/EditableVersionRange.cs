@@ -46,5 +46,14 @@ namespace Papyrus.Business.VersionRanges
                 return hashCode;
             }
         }
+
+        public EditableVersionRange Clone() {
+            return new EditableVersionRange {
+                Documents = new ObservableCollection<EditableDocument>(
+                                Documents.Select(x => x.Clone())),
+                FromVersion = FromVersion.Clone(),
+                ToVersion = ToVersion.Clone()
+            };
+        }
     }
 }

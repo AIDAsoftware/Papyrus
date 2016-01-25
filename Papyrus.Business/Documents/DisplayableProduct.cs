@@ -33,5 +33,12 @@ namespace Papyrus.Business.Documents
                 return ((ProductId != null ? ProductId.GetHashCode() : 0)*397) ^ (ProductName != null ? ProductName.GetHashCode() : 0);
             }
         }
+
+        public DisplayableProduct Clone() {
+            return new DisplayableProduct {
+                ProductId = ProductId,
+                ProductName = ProductName
+            };
+        }
     }
 }

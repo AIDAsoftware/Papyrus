@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Papyrus.Business.Documents;
+using Papyrus.Business.Products;
 using Papyrus.Business.VersionRanges;
 
 namespace Papyrus.Business.Topics
@@ -65,6 +66,20 @@ namespace Papyrus.Business.Topics
                 hashCode = (hashCode*397) ^ (VersionRanges != null ? VersionRanges.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public EditableTopic Clone() {
+            var newTopic = new EditableTopic {
+                Product = Product.Clone(),
+                TopicId = TopicId,
+            };
+            var versionRanges = new ObservableCollection<EditableVersionRange>();
+            foreach (var range in VersionRanges) {
+                var copy = range.Clone();
+                versionRanges.Add(copy);
+            }
+            newTopic.VersionRanges = versionRanges;
+            return newTopic;
         }
     }
 }

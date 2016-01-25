@@ -83,5 +83,14 @@ namespace Papyrus.Business.Documents
                 return hashCode;
             }
         }
+
+        public EditableDocument Clone() {
+            return new EditableDocument {
+                Title = Title,
+                Content = Content,
+                Language = Language,
+                Description = Description
+            };
+        }
     }
 }
