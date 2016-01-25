@@ -11,7 +11,7 @@ namespace Papyrus.Desktop.Features.Topics {
             var toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText04);
 
             var stringElements = toastXml.GetElementsByTagName("text");
-            stringElements[1].AppendChild(toastXml.CreateTextNode("Topic Guardado"));
+            stringElements[1].AppendChild(toastXml.CreateTextNode(message));
 
             ToastNotification toast = new ToastNotification(toastXml);
 
