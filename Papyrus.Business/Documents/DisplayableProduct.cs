@@ -16,5 +16,22 @@ namespace Papyrus.Business.Documents
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        protected bool Equals(DisplayableProduct other) {
+            return string.Equals(ProductId, other.ProductId) && string.Equals(ProductName, other.ProductName);
+        }
+
+        public override bool Equals(object obj) {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DisplayableProduct) obj);
+        }
+
+        public override int GetHashCode() {
+            unchecked {
+                return ((ProductId != null ? ProductId.GetHashCode() : 0)*397) ^ (ProductName != null ? ProductName.GetHashCode() : 0);
+            }
+        }
     }
 }

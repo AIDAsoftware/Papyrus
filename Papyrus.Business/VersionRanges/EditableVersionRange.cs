@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Linq;
 using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
@@ -7,7 +8,7 @@ namespace Papyrus.Business.VersionRanges
 {
     public class EditableVersionRange
     {
-        public ObservableCollection<EditableDocument> Documents { get; private set; }
+        public ObservableCollection<EditableDocument> Documents { get; set; }
         public ProductVersion FromVersion { get; set; }
         public ProductVersion ToVersion { get; set; }
 
@@ -24,6 +25,26 @@ namespace Papyrus.Business.VersionRanges
                 versionRange.Documents.Add(editableDocument.ToDocument());
             }
             return versionRange;
+        }
+
+        protected bool Equals(EditableVersionRange other) {
+            return Documents.SequenceEqual(other.Documents) && Equals(FromVersion, other.FromVersion) && Equals(ToVersion, other.ToVersion);
+        }
+
+        public override bool Equals(object obj) {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((EditableVersionRange) obj);
+        }
+
+        public override int GetHashCode() {
+            unchecked {
+                var hashCode = (Documents != null ? Documents.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (FromVersion != null ? FromVersion.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (ToVersion != null ? ToVersion.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

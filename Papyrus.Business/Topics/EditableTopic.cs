@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Papyrus.Business.Documents;
 using Papyrus.Business.VersionRanges;
@@ -44,6 +45,26 @@ namespace Papyrus.Business.Topics
                 topic.AddVersionRange(editableVersionRange.ToVersionRange());
             }
             return topic;
+        }
+
+        protected bool Equals(EditableTopic other) {
+            return Equals(product, other.product) && string.Equals(TopicId, other.TopicId) && VersionRanges.SequenceEqual(other.VersionRanges);
+        }
+
+        public override bool Equals(object obj) {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((EditableTopic) obj);
+        }
+
+        public override int GetHashCode() {
+            unchecked {
+                var hashCode = (product != null ? product.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (TopicId != null ? TopicId.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (VersionRanges != null ? VersionRanges.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }
