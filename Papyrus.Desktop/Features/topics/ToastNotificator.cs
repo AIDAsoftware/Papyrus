@@ -16,9 +16,9 @@ namespace Papyrus.Desktop.Features.Topics {
             stringElements[1].AppendChild(toastXml.CreateTextNode("Topic Guardado"));
 
             // Specify the absolute path to an image
-            String imagePath = "file:///" + Path.GetFullPath("toastImageAndText.png");
-            XmlNodeList imageElements = toastXml.GetElementsByTagName("image");
-            imageElements[0].Attributes.GetNamedItem("src").NodeValue = imagePath;
+//            String imagePath = "file:///" + Path.GetFullPath("toastImageAndText.png");
+//            XmlNodeList imageElements = toastXml.GetElementsByTagName("image");
+//            imageElements[0].Attributes.GetNamedItem("src").NodeValue = imagePath;
 
             // Create the toast and attach event listeners
             ToastNotification toast = new ToastNotification(toastXml);
