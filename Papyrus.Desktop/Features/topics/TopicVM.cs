@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Business.Topics.Exceptions;
@@ -22,6 +24,7 @@ namespace Papyrus.Desktop.Features.Topics
         private readonly ProductRepository productRepository;
         private readonly NotificationSender notificationSender;
         public EditableTopic EditableTopic { get; protected set; }
+        public EditableTopic LastTopicSaved { get; private set; }
 
         public IAsyncCommand SaveTopic { get; set; }
         public RelayCommand<Window> DeleteTopic { get; set; }
@@ -43,6 +46,7 @@ namespace Papyrus.Desktop.Features.Topics
             this.productRepository = productRepository;
             this.notificationSender = notificationSender;
             EditableTopic = topic;
+            LastTopicSaved = topic.Clone();
         }
 
         private async Task TryToSaveCurrentTopic()
@@ -69,6 +73,7 @@ namespace Papyrus.Desktop.Features.Topics
                 await topicService.Update(topic);
             }
 
+            LastTopicSaved = EditableTopic.Clone();
             EventBus.Send(new OnTopicSaved());
         }
 
