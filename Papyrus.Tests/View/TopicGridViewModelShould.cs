@@ -9,7 +9,6 @@ using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Features.Topics;
-using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Tests.View {
     
