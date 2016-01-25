@@ -27,11 +27,10 @@ namespace Papyrus.Desktop.Features.Topics
         }
 
         private void OnClosing(object sender, CancelEventArgs e) {
-            if (!ViewModel.EditableTopic.Equals(ViewModel.LastTopicSaved)) {
-                var messageBoxResult = MessageBox.Show(ExitWithoutSaveMessage, "Aviso", MessageBoxButton.YesNo);
-                if (messageBoxResult == MessageBoxResult.Yes) {
-                    ViewModel.SaveTopic.ExecuteAsync(null);
-                }
+            if (ViewModel.TopicIsSaved()) return;
+            var messageBoxResult = MessageBox.Show(ExitWithoutSaveMessage, "Aviso", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes) {
+                ViewModel.SaveTopic.ExecuteAsync(null);
             }
         }
 

@@ -115,6 +115,10 @@ namespace Papyrus.Desktop.Features.Topics
             ToVersions.AddRange(versions);
             ToVersions.Add(new LastProductVersion());
         }
+
+        public bool TopicIsSaved() {
+            return EditableTopic.Equals(LastTopicSaved);
+        }
     }
 
     internal class OnTopicSaved {
