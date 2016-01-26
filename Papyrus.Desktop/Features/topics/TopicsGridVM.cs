@@ -35,7 +35,7 @@ namespace Papyrus.Desktop.Features.Topics {
             set
             {
                 selectedProduct = value;
-                OnPropertyChanged("SelectedProduct");
+                OnPropertyChanged();
                 RefreshTopicsForCurrentProduct();
             }
         }
@@ -107,13 +107,13 @@ namespace Papyrus.Desktop.Features.Topics {
                 }
                 ToastNotificator.NotifyMessage("Exportación realizada con éxito");
             }
-            catch (Exception e) {
-                EventBus.Send(new OnUserMessageRequest("Ha ocurrido un erro en la exportación"));
+            catch (Exception) {
+                EventBus.Send(new OnUserMessageRequest("Ha ocurrido un error en la exportación"));
             }
         }
 
         private IEnumerable<Product> MapDisplayableProductsToProducts(ObservableCollection<DisplayableProduct> products) {
-            return products.Select(p => CastToProductType(p));
+            return products.Select(CastToProductType);
         }
 
         private static Product CastToProductType(DisplayableProduct p) {
