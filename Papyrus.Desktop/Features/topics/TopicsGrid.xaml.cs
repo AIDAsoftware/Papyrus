@@ -1,9 +1,7 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Papyrus.Business.Documents;
-using Papyrus.Business.Topics;
 
 namespace Papyrus.Desktop.Features.Topics
 {
@@ -21,7 +19,7 @@ namespace Papyrus.Desktop.Features.Topics
             InitializeComponent();
 
             DataContext = ViewModelsFactory.TopicsGrid();
-            this.Loaded += TopicGrid_Loaded;
+            Loaded += TopicGrid_Loaded;
         }
 
         private async void TopicGrid_Loaded(object sender, RoutedEventArgs e)
