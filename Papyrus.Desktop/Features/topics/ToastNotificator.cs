@@ -1,11 +1,8 @@
-using System;
-using System.IO;
-using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 
 namespace Papyrus.Desktop.Features.Topics {
     public class ToastNotificator {
-        private const String APP_ID = "Microsoft.Samples.DesktopToastsSample";
+        private const string AppId = "Microsoft.Samples.DesktopToastsSample";
 
         public static void NotifyMessage(string message) {
             var toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText04);
@@ -15,7 +12,7 @@ namespace Papyrus.Desktop.Features.Topics {
 
             ToastNotification toast = new ToastNotification(toastXml);
 
-            ToastNotificationManager.CreateToastNotifier(APP_ID).Show(toast);
+            ToastNotificationManager.CreateToastNotifier(AppId).Show(toast);
         }
     }
 }
