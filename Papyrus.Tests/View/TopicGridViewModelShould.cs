@@ -9,7 +9,6 @@ using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Desktop.Features.Topics;
-using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Tests.View {
     
@@ -25,7 +24,7 @@ namespace Papyrus.Tests.View {
         private TopicQueryRepository topicRepo;
         private ProductRepository productRepo;
         private WebsiteConstructor websiteConstructor;
-        private MkdocsExporter exporter;
+        private MkDocsExporter exporter;
         private readonly List<string> languages = new List<string>{"es-ES", "en-GB"};
         private readonly WebSite WebsiteWithADocument = WebsiteWith(new ExportableDocument("Title", "content", ""));
         private const string OpportunityId = "OpportunityId";
@@ -35,7 +34,7 @@ namespace Papyrus.Tests.View {
             topicRepo = Substitute.For<TopicQueryRepository>();
             productRepo = Substitute.For<ProductRepository>();
             websiteConstructor = Substitute.For<WebsiteConstructor>(topicRepo, productRepo);
-            exporter = Substitute.For<MkdocsExporter>();
+            exporter = Substitute.For<MkDocsExporter>(new object[] {null});
         }
 
         [Test]
@@ -50,7 +49,7 @@ namespace Papyrus.Tests.View {
 
             await ExecuteExportAllProductsCommandFrom(viewModel);
 
-            exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")));
+            exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")), "ImagesFolderForTests");
         }
         
         [Test]
@@ -66,8 +65,7 @@ namespace Papyrus.Tests.View {
 
             await ExecuteExportSelectedProductCommandFrom(viewModel);
 
-            exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")));
-        }
+            exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")), "ImagesFolderForTests");}
         
         [Test]
         public async Task export_documentation_for_last_version_of_selected_product_in_spanish_and_english() {
@@ -83,7 +81,7 @@ namespace Papyrus.Tests.View {
 
             await ExecuteExportLastVersionForSelectedProductCommandFrom(viewModel);
 
-            exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")));
+            exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")), "ImagesFolderForTests");
         }
 
         private static async Task ExecuteExportLastVersionForSelectedProductCommandFrom(TopicsGridVM viewModel) {
@@ -107,7 +105,7 @@ namespace Papyrus.Tests.View {
             await viewModel.ExportAllProducts.ExecuteAsync(new object());
         }
 
-        private async Task<TopicsGridVM> InitializeTopicGridVMWith(TopicQueryRepository topicRepo, ProductRepository productRepo, MkdocsExporter exporter, WebsiteConstructor constructor) {
+        private async Task<TopicsGridVM> InitializeTopicGridVMWith(TopicQueryRepository topicRepo, ProductRepository productRepo, MkDocsExporter exporter, WebsiteConstructor constructor) {
             var viewModel = new TopicsGridVM(topicRepo, productRepo, exporter, constructor);
             await viewModel.Initialize();
             return viewModel;

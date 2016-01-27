@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,8 +43,7 @@ namespace Papyrus.Desktop.Markdown {
             var settings = CommonMarkSettings.Default.Clone();
             settings.RenderSoftLineBreaksAsLineBreaks = true;
             var htmlResult = CommonMarkConverter.Convert(markdown, settings);
-            var imagesFolder = ConfigurationManager.AppSettings["ImagesFolder"];
-            var imagesUri = new Uri(imagesFolder);
+            var imagesContainerPath = GetImagesContainerPath();
             htmlResult = string.Format(@"
                                             <!DOCTYPE html>
                                             <html>
@@ -57,8 +57,15 @@ namespace Papyrus.Desktop.Markdown {
                                                 <body>
                                                     {1}
                                                 </body>
-                                            </html>", imagesUri.AbsoluteUri, htmlResult);
+                                            </html>", imagesContainerPath.AbsoluteUri, htmlResult);
             return htmlResult;
+        }
+
+        private static Uri GetImagesContainerPath() {
+            var imagesFolder = ConfigurationManager.AppSettings["ImagesFolder"];
+            var imagesFolderParent = Directory.GetParent(imagesFolder).FullName;
+            var imagesUri = new Uri(imagesFolderParent);
+            return imagesUri;
         }
     }
 }

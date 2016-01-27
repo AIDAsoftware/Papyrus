@@ -132,6 +132,7 @@
     <Compile Include="Business\PathByProductGeneratorShould.cs" />
     <Compile Include="Business\WebConstructorShould.cs" />
     <Compile Include="Infrastructure\Database\DatabaseConnectionShould.cs" />
+    <Compile Include="Infrastructure\FileSystemImageCopierShould.cs" />
     <Compile Include="Infrastructure\Repositories\helpers\DataBaseTruncator.cs" />
     <Compile Include="Infrastructure\Repositories\SqlProductRepositoryShould.cs" />
     <Compile Include="Infrastructure\Repositories\helpers\SqlInserter.cs" />

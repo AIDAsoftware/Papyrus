@@ -1,23 +1,32 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
+using Papyrus.Infrastructure.Core;
 
 namespace Papyrus.Business.Exporters {
-    public class MkdocsExporter {
+    public class MkDocsExporter {
         private const string YmlFileName = "mkdocs.yml";
         private const string MarkDownExtension = ".md";
         private readonly string mkdocsTheme = "theme: readthedocs";
         private readonly string siteName = "site_name: SIMA Documentation";
         private static readonly string NewLine = System.Environment.NewLine;
+        private readonly FileSystemImagesCopier imagesCopier;
         public const string IndexContent = "SIMA Documentation";
         private const string NewListItem = "- ";
 
-        public virtual async Task Export(WebSite webSite, string path) {
+        public MkDocsExporter(FileSystemImagesCopier imagesCopier) {
+            this.imagesCopier = imagesCopier;
+        }
+
+        public virtual async Task Export(WebSite webSite, string path, string imagesFolder) {
             await InitializeMkdocsStructure(path);
+            var docsPath = Path.Combine(path, "docs");
             foreach (var document in webSite.Documents) {
-                await ExportDocumentIn(document, Path.Combine(path, "docs"));
+                await ExportDocumentIn(document, docsPath);
                 await GenerateDocInYml(document, Path.Combine(path, YmlFileName));
             }
+            var imagesFolderDirectoryName = (new DirectoryInfo(imagesFolder)).Name;
+            imagesCopier.CopyFolder(imagesFolder, Path.Combine(docsPath, imagesFolderDirectoryName));
         }
 
         private async Task InitializeMkdocsStructure(string path) {
