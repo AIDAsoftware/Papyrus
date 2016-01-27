@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Business.Topics.Exceptions;
@@ -22,6 +24,7 @@ namespace Papyrus.Desktop.Features.Topics
         private readonly ProductRepository productRepository;
         private readonly NotificationSender notificationSender;
         public EditableTopic EditableTopic { get; protected set; }
+        public EditableTopic LastTopicSaved { get; private set; }
 
         public IAsyncCommand SaveTopic { get; set; }
         public RelayCommand<Window> DeleteTopic { get; set; }
@@ -43,6 +46,7 @@ namespace Papyrus.Desktop.Features.Topics
             this.productRepository = productRepository;
             this.notificationSender = notificationSender;
             EditableTopic = topic;
+            LastTopicSaved = topic.Clone();
         }
 
         private async Task TryToSaveCurrentTopic()
@@ -69,7 +73,8 @@ namespace Papyrus.Desktop.Features.Topics
                 await topicService.Update(topic);
             }
 
-            EventBus.Send(new OnUserMessageRequest("Topic Saved!"));
+            LastTopicSaved = EditableTopic.Clone();
+            EventBus.Send(new OnTopicSaved());
         }
 
         //TODO: How to make it not void? It could be a trouble if product can't be deleted in backend
@@ -80,7 +85,7 @@ namespace Papyrus.Desktop.Features.Topics
                 EventBus.Send(new OnTopicRemoved());
             }
             catch (CannotDeleteTopicsWithoutTopicIdAssignedException) {
-                EventBus.Send(new OnUserMessageRequest("No se puede borrar un topic no guardado"));
+                notificationSender.SendNotification("No se puede borrar un topic no guardado");
             }
             
             window.Close();
@@ -110,6 +115,13 @@ namespace Papyrus.Desktop.Features.Topics
             ToVersions.AddRange(versions);
             ToVersions.Add(new LastProductVersion());
         }
+
+        public bool TopicIsSaved() {
+            return EditableTopic.Equals(LastTopicSaved);
+        }
+    }
+
+    internal class OnTopicSaved {
     }
 
     public class DesignModeTopicVM : TopicVM

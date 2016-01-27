@@ -25,6 +25,10 @@ namespace Papyrus.Business.Products
             }
             return false;
         }
+
+        public ProductVersion Clone() {
+            return new ProductVersion(VersionId, VersionName, Release);
+        }
     }
 
     public class LastProductVersion : ProductVersion {

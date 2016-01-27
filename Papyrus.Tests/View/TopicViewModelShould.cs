@@ -31,8 +31,7 @@ namespace Papyrus.Tests.View {
 
             await ExecuteSaveTopicCommand(viewModel);
 
-            notificationSender.Received(1).SendNotification("No pueden existir documentos sin títulos. \n" +
-                                                            "Compruebe que todos sus documentos lo tienen.");
+            notificationSender.Received(1).SendNotification("Debe facilitar un título para todos los documentos de este version range.");
         }
         
         [Test]

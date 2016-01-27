@@ -27,18 +27,24 @@ namespace Papyrus.Business.Topics {
                                         and Document.Language = @Language"
                 , new{Language = language})).ToList();
             foreach (var topic in resultset) {
-                if (topic.ToVersionId == LastProductVersion.Id) {
-                    topic.VersionName = LastProductVersion.Name;
-                }
-                else {
-                    topic.VersionName = (await connection.Query<string>(
-                        @"SELECT VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId"
-                        , new { VersionId = topic.ToVersionId })).First();
-                }
+                await SetLastVersionDependingOnVersionRangeFor(topic);
             }
-            var orderedResultSet = resultset.OrderBy(t => t.Release);
-            var topicsToShow = DistinctByTopicChoosingTheRowWithLatestDocumentAdded(orderedResultSet);
-            return topicsToShow;
+            var distinctedResulset = FilterSummariesForMostRecentVersion(resultset);
+            return distinctedResulset.Select(TopicSummaryFromDynamic).ToList();
+        }
+
+        private async Task SetLastVersionDependingOnVersionRangeFor(dynamic topic) {
+            if (topic.ToVersionId == LastProductVersion.Id) {
+                topic.VersionName = LastProductVersion.Name;
+                topic.Release = DateTime.MaxValue.ToString("yyyyMMdd");
+            }
+            else {
+                var version = (await connection.Query<dynamic>(
+                    @"SELECT VersionName, Release FROM ProductVersion WHERE VersionId = @VersionId"
+                    , new {VersionId = topic.ToVersionId})).First();
+                topic.VersionName = version.VersionName;
+                topic.Release = version.Release.ToString("yyyyMMdd");
+            }
         }
 
         public async Task<EditableTopic> GetEditableTopicById(string topicId) {
@@ -111,10 +117,10 @@ namespace Papyrus.Business.Topics {
             return document;
         }
 
-        private static List<TopicSummary> DistinctByTopicChoosingTheRowWithLatestDocumentAdded(IEnumerable<dynamic> dynamicTopics) {
-            return dynamicTopics.GroupBy(topic => topic.TopicId)
+        private static List<dynamic> FilterSummariesForMostRecentVersion(IEnumerable<dynamic> dynamicTopics) {
+            return dynamicTopics.OrderByDescending(t => t.Release)
+                .GroupBy(topic => topic.TopicId)
                 .Select(topics => topics.First())
-                .Select(TopicSummaryFromDynamic)
                 .ToList();
         }
 

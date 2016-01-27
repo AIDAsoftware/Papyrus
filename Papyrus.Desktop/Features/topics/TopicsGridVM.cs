@@ -36,7 +36,7 @@ namespace Papyrus.Desktop.Features.Topics {
             set
             {
                 selectedProduct = value;
-                OnPropertyChanged("SelectedProduct");
+                OnPropertyChanged();
                 RefreshTopicsForCurrentProduct();
             }
         }
@@ -98,17 +98,23 @@ namespace Papyrus.Desktop.Features.Topics {
         }
 
         private async Task Export(WebsiteCollection websiteCollection) {
-            foreach (var element in websiteCollection) {
-                var fullPath = Path.Combine(DefaultDirectoryPath, element.Path);
-                foreach (var website in element.Websites) {
-                    await exporter.Export(website, fullPath, ConfigurationManager.AppSettings["ImagesFolder"]);
+            try {
+                foreach (var element in websiteCollection) {
+                    var fullPath = Path.Combine(DefaultDirectoryPath, element.Path);
+                    Directory.CreateDirectory(fullPath).Delete(true);
+                    foreach (var website in element.Websites) {
+                        await exporter.Export(website, fullPath, ConfigurationManager.AppSettings["ImagesFolder"]);
+                    }
                 }
+                ToastNotificator.NotifyMessage("Exportación realizada con éxito");
             }
-
+            catch (Exception) {
+                EventBus.Send(new OnUserMessageRequest("Ha ocurrido un error en la exportación"));
+            }
         }
 
         private IEnumerable<Product> MapDisplayableProductsToProducts(ObservableCollection<DisplayableProduct> products) {
-            return products.Select(p => CastToProductType(p));
+            return products.Select(CastToProductType);
         }
 
         private static Product CastToProductType(DisplayableProduct p) {
