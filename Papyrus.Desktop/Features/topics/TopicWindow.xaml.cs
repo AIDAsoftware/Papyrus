@@ -23,7 +23,6 @@ namespace Papyrus.Desktop.Features.Topics
             DataContext = ViewModelsFactory.Topic(topic);
             this.Loaded += OnLoad;
             this.Closing += OnClosing;
-            EventBus.AsObservable<OnTopicSaved>().Subscribe(Handle);
         }
 
         private void OnClosing(object sender, CancelEventArgs e) {
@@ -37,11 +36,6 @@ namespace Papyrus.Desktop.Features.Topics
         private void OnLoad(object sender, RoutedEventArgs e)
         {
             ViewModel.Initialize();
-        }
-
-        // TODO: should it return a task?
-        private async void Handle(OnTopicSaved domainEvent) {
-            ToastNotificator.NotifyMessage("Topic Guardado");
         }
     }
 }

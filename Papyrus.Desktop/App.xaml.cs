@@ -16,6 +16,7 @@ namespace Papyrus.Desktop {
         public App() {
             var userMessageRequestSubscription = EventBus.AsObservable<OnUserMessageRequest>().Subscribe(Handle);
             var addImageRequestSubcription = EventBus.AsObservable<SelectingImages>().Subscribe(Handle);
+            EventBus.AsObservable<OnTopicSaved>().Subscribe(Handle);
             Exit += (sender, args) => userMessageRequestSubscription.Dispose();
             Exit += (sender, args) => addImageRequestSubcription.Dispose();
         }
@@ -29,6 +30,11 @@ namespace Papyrus.Desktop {
             if (openFileDialog.ShowDialog() == true) {
                 EventBus.Send(new SelectedDiskImagesToInsertIn(request.Document, openFileDialog.FileNames));
             }
+        }
+
+        // TODO: should it return a task?
+        private void Handle(OnTopicSaved domainEvent) {
+            ToastNotificator.NotifyMessage("Topic Guardado");
         }
 
         private void Handle(OnUserMessageRequest domainEvent)
