@@ -59,15 +59,6 @@ namespace Papyrus.Business.Topics
             return Equals((EditableTopic) obj);
         }
 
-        public override int GetHashCode() {
-            unchecked {
-                var hashCode = (product != null ? product.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (TopicId != null ? TopicId.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (VersionRanges != null ? VersionRanges.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
-
         public EditableTopic Clone() {
             var newTopic = new EditableTopic {
                 Product = Product.Clone(),

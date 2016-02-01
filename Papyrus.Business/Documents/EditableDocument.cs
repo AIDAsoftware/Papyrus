@@ -16,7 +16,7 @@ namespace Papyrus.Business.Documents
             set
             {
                 title = value;
-                OnPropertyChanged("Title");
+                OnPropertyChanged();
             }
         }
 
@@ -28,7 +28,7 @@ namespace Papyrus.Business.Documents
             set
             {
                 description = value;
-                OnPropertyChanged("Description");
+                OnPropertyChanged();
             }
         }
 
@@ -40,7 +40,7 @@ namespace Papyrus.Business.Documents
             set
             {
                 content = value;
-                OnPropertyChanged("Content");
+                OnPropertyChanged();
             }
         }
 
@@ -72,16 +72,6 @@ namespace Papyrus.Business.Documents
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
             return Equals((EditableDocument) obj);
-        }
-
-        public override int GetHashCode() {
-            unchecked {
-                var hashCode = (title != null ? title.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (description != null ? description.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (content != null ? content.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (Language != null ? Language.GetHashCode() : 0);
-                return hashCode;
-            }
         }
 
         public EditableDocument Clone() {

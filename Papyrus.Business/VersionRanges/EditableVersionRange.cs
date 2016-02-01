@@ -38,15 +38,6 @@ namespace Papyrus.Business.VersionRanges
             return Equals((EditableVersionRange) obj);
         }
 
-        public override int GetHashCode() {
-            unchecked {
-                var hashCode = (Documents != null ? Documents.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (FromVersion != null ? FromVersion.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (ToVersion != null ? ToVersion.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
-
         public EditableVersionRange Clone() {
             return new EditableVersionRange {
                 Documents = new ObservableCollection<EditableDocument>(

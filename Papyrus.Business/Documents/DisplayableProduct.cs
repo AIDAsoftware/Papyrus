@@ -28,12 +28,6 @@ namespace Papyrus.Business.Documents
             return Equals((DisplayableProduct) obj);
         }
 
-        public override int GetHashCode() {
-            unchecked {
-                return ((ProductId != null ? ProductId.GetHashCode() : 0)*397) ^ (ProductName != null ? ProductName.GetHashCode() : 0);
-            }
-        }
-
         public DisplayableProduct Clone() {
             return new DisplayableProduct {
                 ProductId = ProductId,
