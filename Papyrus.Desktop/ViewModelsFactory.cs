@@ -4,6 +4,7 @@ using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Business.VersionRanges;
 using Papyrus.Desktop.Features.Topics;
+using Papyrus.Infrastructure.Core;
 using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Desktop {
@@ -11,7 +12,7 @@ namespace Papyrus.Desktop {
         public static TopicsGridVM TopicsGrid() {
             var topicQueryRepository = RepositoriesFactory.QueryTopic();
             var productRepository = RepositoriesFactory.Product();
-            return new TopicsGridVM(topicQueryRepository, productRepository, new MkdocsExporter(), new WebsiteConstructor(topicQueryRepository, productRepository));
+            return new TopicsGridVM(topicQueryRepository, productRepository, new MkDocsExporter(new FileSystemImagesCopier()), new WebsiteConstructor(topicQueryRepository, productRepository));
         }
 
         public static TopicVM Topic(EditableTopic topic)

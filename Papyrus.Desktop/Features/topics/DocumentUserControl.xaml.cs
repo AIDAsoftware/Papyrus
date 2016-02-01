@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
+using System.IO;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,7 +47,7 @@ namespace Papyrus.Desktop.Features.Topics
 
         private static string CalculateRelativePath(string fileName) {
             var basePath = ConfigurationManager.AppSettings["ImagesFolder"];
-            var baseUri = new Uri(basePath);
+            var baseUri = new Uri(Directory.GetParent(basePath).FullName);
             var absoluteUri = new Uri(fileName);
             var relativeUri = baseUri.MakeRelativeUri(absoluteUri);
             return relativeUri.ToString();

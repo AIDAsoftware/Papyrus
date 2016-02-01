@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -19,7 +20,7 @@ using Papyrus.Infrastructure.Core.DomainEvents;
 namespace Papyrus.Desktop.Features.Topics {
     public class TopicsGridVM : INotifyPropertyChanged
     {
-        private readonly MkdocsExporter exporter;
+        private readonly MkDocsExporter exporter;
         private readonly WebsiteConstructor websiteConstructor;
         private readonly TopicQueryRepository topicRepository;
         private readonly ProductRepository productRepository;
@@ -72,7 +73,7 @@ namespace Papyrus.Desktop.Features.Topics {
             await Export(websiteCollection);
         }
 
-        public TopicsGridVM(TopicQueryRepository topicRepo, ProductRepository productRepo, MkdocsExporter exporter, WebsiteConstructor websiteConstructor)
+        public TopicsGridVM(TopicQueryRepository topicRepo, ProductRepository productRepo, MkDocsExporter exporter, WebsiteConstructor websiteConstructor)
             : this(topicRepo, productRepo) {
             this.exporter = exporter;
             this.websiteConstructor = websiteConstructor;
@@ -102,7 +103,7 @@ namespace Papyrus.Desktop.Features.Topics {
                     var fullPath = Path.Combine(DefaultDirectoryPath, element.Path);
                     Directory.CreateDirectory(fullPath).Delete(true);
                     foreach (var website in element.Websites) {
-                        await exporter.Export(website, fullPath);
+                        await exporter.Export(website, fullPath, ConfigurationManager.AppSettings["ImagesFolder"]);
                     }
                 }
                 ToastNotificator.NotifyMessage("Exportación realizada con éxito");
