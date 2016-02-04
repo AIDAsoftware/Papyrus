@@ -136,7 +136,6 @@ namespace Papyrus.Tests.Business {
             imagesCopier.Received(1).CopyFolder(AnyImagesPath, Path.Combine(anyExportationPath, "docs", AnyImagesPath));
         }
 
-
         private string GetAnyExportationPath() {
             return Path.Combine(testDirectory.FullName, AnyMkdocsPath);
         }

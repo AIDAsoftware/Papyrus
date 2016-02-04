@@ -26,7 +26,10 @@ namespace Papyrus.Business.Exporters {
                 await GenerateDocInYml(document, Path.Combine(path, YmlFileName));
             }
             var imagesFolderDirectoryName = (new DirectoryInfo(imagesFolder)).Name;
-            imagesCopier.CopyFolder(imagesFolder, Path.Combine(docsPath, imagesFolderDirectoryName));
+            var newImagesDestination = Path.Combine(docsPath, imagesFolderDirectoryName);
+            if (!Directory.Exists(newImagesDestination)) {
+                imagesCopier.CopyFolder(imagesFolder, newImagesDestination);
+            }
         }
 
         private async Task InitializeMkdocsStructure(string path) {
