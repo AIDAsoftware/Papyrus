@@ -43,9 +43,6 @@ namespace Papyrus.Desktop.Features.Topics {
 
         public IAsyncCommand RefreshTopics { get; private set; }
         public IAsyncCommand ExportProductToMkDocs { get; private set; }
-        public IAsyncCommand ExportLastVersionToMkDocs { get; private set; }
-        public IAsyncCommand ExportAllProducts { get; private set; }
-
 
         protected TopicsGridVM()
         {
@@ -53,8 +50,6 @@ namespace Papyrus.Desktop.Features.Topics {
             Products = new ObservableCollection<DisplayableProduct>();
             RefreshTopics = RelayAsyncSimpleCommand.Create(LoadAllTopics, CanLoadAllTopics);
             ExportProductToMkDocs = RelayAsyncSimpleCommand.Create(ExportProduct, () => true);
-            ExportLastVersionToMkDocs = RelayAsyncSimpleCommand.Create(ExportLastVersion, () => true);
-            ExportAllProducts = RelayAsyncSimpleCommand.Create(ExportAllProductsDocumentation, () => true);
             DefaultDirectoryPath = Directory.GetCurrentDirectory();
             EventBus.AsObservable<OnTopicRemoved>().Subscribe(Handle);
         }
@@ -64,28 +59,10 @@ namespace Papyrus.Desktop.Features.Topics {
             await LoadAllTopics();
         }
 
-        private async Task ExportLastVersion() {
-            var product = CastToProductType(SelectedProduct);
-            var versionName = (await productRepository.GetLastVersionForProduct(product.Id)).VersionName;
-            var websiteCollection = await websiteConstructor.Construct(
-                new PathByProductGenerator(), new List<Product> { product }, new List<string>{versionName}, languages
-            );
-            await Export(websiteCollection);
-        }
-
         public TopicsGridVM(TopicQueryRepository topicRepo, ProductRepository productRepo, MkDocsExporter exporter, WebsiteConstructor websiteConstructor)
             : this(topicRepo, productRepo) {
             this.exporter = exporter;
             this.websiteConstructor = websiteConstructor;
-        }
-
-        private async Task ExportAllProductsDocumentation() {
-            var products = MapDisplayableProductsToProducts(Products);
-            var allVersionNames = await productRepository.GetAllVersionNames();
-            var websiteCollection = await websiteConstructor.Construct(
-                new PathByVersionGenerator(), products, allVersionNames, languages
-            );
-            await Export(websiteCollection);
         }
 
         private async Task ExportProduct() {
