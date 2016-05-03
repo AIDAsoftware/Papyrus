@@ -38,21 +38,6 @@ namespace Papyrus.Tests.View {
         }
 
         [Test]
-        public async Task export_All_documentation_for_all_products_in_spanish_and_english() {
-            StubOutProductRepoToReturnAsAllVersions(versions);
-            StubOutProductRepoToReturnAsAllProducts(allProducts);
-            var websiteCollection = new WebsiteCollection {{"Any/Path", WebsiteWithADocument}};
-            WhenWebConstructorIsCalledWith(
-                Arg.Any<PathByVersionGenerator>(), allProducts, versions, languages
-            ).Returns(Task.FromResult(websiteCollection));
-            var viewModel = await InitializeTopicGridVMWith(topicRepo, productRepo, exporter, websiteConstructor);
-
-            await ExecuteExportAllProductsCommandFrom(viewModel);
-
-            exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")), "ImagesFolderForTests");
-        }
-        
-        [Test]
         public async Task export_all_documentation_for_selected_product_in_spanish_and_english() {
             StubOutProductRepoToReturnAsAllProducts(allProducts);
             StubOutProductRepoToReturnAsAllVersionsWhenIsCalledWithProduct(versions, OpportunityId);
@@ -65,27 +50,7 @@ namespace Papyrus.Tests.View {
 
             await ExecuteExportSelectedProductCommandFrom(viewModel);
 
-            exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")), "ImagesFolderForTests");}
-        
-        [Test]
-        public async Task export_documentation_for_last_version_of_selected_product_in_spanish_and_english() {
-            StubOutProductRepoToReturnAsAllProducts(allProducts);
-            StubOutProductRepoToReturnAsLastVersionWhenIsCalledWithProduct("15.11.27", OpportunityId);
-            var viewModel = await InitializeTopicGridVMWith(topicRepo, productRepo, exporter, websiteConstructor);
-            viewModel.SelectedProduct = viewModel.Products.First(p => p.ProductId == OpportunityId);
-            var websiteCollection = new WebsiteCollection { { "Any/Path", WebsiteWithADocument } };
-            WhenWebConstructorIsCalledWith(
-                Arg.Any<PathByProductGenerator>(), new List<DisplayableProduct>{ viewModel.SelectedProduct }, 
-                new List<string>{"15.11.27"}, languages
-            ).Returns(Task.FromResult(websiteCollection));
-
-            await ExecuteExportLastVersionForSelectedProductCommandFrom(viewModel);
-
             exporter.Received().Export(WebsiteWithADocument, Arg.Is<string>(x => x.EndsWith("Any/Path")), "ImagesFolderForTests");
-        }
-
-        private static async Task ExecuteExportLastVersionForSelectedProductCommandFrom(TopicsGridVM viewModel) {
-            await viewModel.ExportLastVersionToMkDocs.ExecuteAsync(new object());
         }
 
         private void StubOutProductRepoToReturnAsLastVersionWhenIsCalledWithProduct(string lastVersion, string productId) {
@@ -99,10 +64,6 @@ namespace Papyrus.Tests.View {
 
         private static async Task ExecuteExportSelectedProductCommandFrom(TopicsGridVM viewModel) {
             await viewModel.ExportProductToMkDocs.ExecuteAsync(new object());
-        }
-
-        private static async Task ExecuteExportAllProductsCommandFrom(TopicsGridVM viewModel) {
-            await viewModel.ExportAllProducts.ExecuteAsync(new object());
         }
 
         private async Task<TopicsGridVM> InitializeTopicGridVMWith(TopicQueryRepository topicRepo, ProductRepository productRepo, MkDocsExporter exporter, WebsiteConstructor constructor) {
