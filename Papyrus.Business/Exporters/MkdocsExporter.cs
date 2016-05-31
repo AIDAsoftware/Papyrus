@@ -98,7 +98,6 @@ namespace Papyrus.Business.Exporters {
     }
 
     internal class MkdocsConfiguration {
-        private string YmlPath { get; set; }
         public string Theme { get; set; }
         public string SiteName { get; set; }
         private readonly Dictionary<string, string> pages = new Dictionary<string, string>();  
