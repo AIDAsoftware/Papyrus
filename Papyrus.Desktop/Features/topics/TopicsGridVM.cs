@@ -90,10 +90,6 @@ namespace Papyrus.Desktop.Features.Topics {
             }
         }
 
-        private IEnumerable<Product> MapDisplayableProductsToProducts(ObservableCollection<DisplayableProduct> products) {
-            return products.Select(CastToProductType);
-        }
-
         private static Product CastToProductType(DisplayableProduct p) {
             return new Product(p.ProductId, p.ProductName, new List<ProductVersion>());
         }
