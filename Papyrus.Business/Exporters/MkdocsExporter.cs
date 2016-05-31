@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
 using Papyrus.Infrastructure.Core;
@@ -19,7 +21,8 @@ namespace Papyrus.Business.Exporters {
         }
 
         public virtual async Task Export(WebSite webSite, string path, string imagesFolder) {
-            await InitializeMkdocsStructure(path);
+            var configuration = new MkdocsConfiguration();
+            await InitializeMkdocsStructure(path, configuration);
             var docsPath = Path.Combine(path, "docs");
             foreach (var document in webSite.Documents) {
                 await ExportDocumentIn(document, docsPath);
@@ -32,20 +35,26 @@ namespace Papyrus.Business.Exporters {
             }
         }
 
-        private async Task InitializeMkdocsStructure(string path) {
+        private async Task InitializeMkdocsStructure(string path, MkdocsConfiguration configuration) {
             var docsPath = Path.Combine(path, "docs");
             var docsDirectory = Directory.CreateDirectory(docsPath);
             await WriteInFile(Path.Combine(docsDirectory.FullName, "index.md"), IndexContent);
-            await InitializeYmlFileIn(path);
+            await InitializeYmlFileIn(path, configuration);
         }
 
-        private async Task InitializeYmlFileIn(string path) {
+        private async Task InitializeYmlFileIn(string path, MkdocsConfiguration configuration) {
             if (File.Exists(Path.Combine(path, YmlFileName))) return;
             var ymlPath = Path.Combine(path, YmlFileName);
-            await WriteInFile(ymlPath, mkdocsTheme);
-            await WriteInFile(ymlPath, siteName);
-            await WriteInFile(ymlPath, "pages:");
-            await WriteInFile(ymlPath, "- 'Home': 'index.md'");
+
+            configuration.Theme = "readthedocs";
+            configuration.SiteName = "SIMA Documentation";
+            configuration.AddPage("Home", "index.md");
+
+            await WriteInFile(ymlPath, configuration.ToString());
+//            await WriteInFile(ymlPath, mkdocsTheme);
+//            await WriteInFile(ymlPath, siteName);
+//            await WriteInFile(ymlPath, "pages:");
+//            await WriteInFile(ymlPath, "- 'Home': 'index.md'");
         }
 
         private static async Task GenerateDocInYml(ExportableDocument document, string ymlPath) {
@@ -85,6 +94,27 @@ namespace Papyrus.Business.Exporters {
 
         private static string ConvertToValidFileName(string title) {
             return MkdocsFileNameConverter.ConvertToValidFileName(title);
+        }
+    }
+
+    internal class MkdocsConfiguration {
+        private string YmlPath { get; set; }
+        public string Theme { get; set; }
+        public string SiteName { get; set; }
+        private readonly Dictionary<string, string> pages = new Dictionary<string, string>();  
+
+        public void AddPage(string pageName, string fileName) {
+            pages.Add(pageName, fileName);
+        }
+
+        public override string ToString() {
+            var themeLine = "theme: " + Theme + Environment.NewLine;
+            var siteNameLine = "site_name: " + SiteName + Environment.NewLine;
+            var pagesLines = "pages:" + Environment.NewLine;
+            foreach (var page in pages) {
+                pagesLines += "- '" + page.Key + "': " + "'" + page.Value + "'"; 
+            }
+            return themeLine + siteNameLine + pagesLines;
         }
     }
 }
