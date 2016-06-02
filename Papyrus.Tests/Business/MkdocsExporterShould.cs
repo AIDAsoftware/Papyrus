@@ -105,28 +105,6 @@ namespace Papyrus.Tests.Business {
         }
         
         [Test]
-        public async Task replace_unavailabe_characters_for_a_file_for_available_ones_when_have_a_route_in_each_document() {
-            var firstWebsite = WebSiteWithDocuments(
-                new ExportableDocument("first-file", "AnyContent", "first-route"),
-                new ExportableDocument("second>file", "AnotherContent", "first-route"));
-            var secondWebsite = WebSiteWithDocuments(
-                new ExportableDocument("third>file", "MoreContent", "second-route"));
-
-            await new MkDocsExporter(imagesCopier).Export(firstWebsite, GetAnyExportationPath(), AnyImagesPath);
-            await new MkDocsExporter(imagesCopier).Export(secondWebsite, GetAnyExportationPath(), AnyImagesPath);
-
-            var ymlPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
-            GetFileContentFrom(ymlPath).Should().Contain(
-                "pages:" + newLine +
-                "- 'Home': 'index.md'" + newLine +
-                "- 'first-route':" + newLine +
-                "    - 'first-file': 'first-route\\first-file.md'" + newLine +
-                "    - 'second>file': 'first-route\\second-file.md'" + newLine +
-                "- 'second-route':" + newLine + 
-                "    - 'third>file': 'second-route\\third-file.md'");
-        }
-
-        [Test]
         public async Task copy_images_to_website_folder() {
             var webSite = WebSiteWithDocuments(AnyDocument());
 

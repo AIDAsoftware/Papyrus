@@ -80,6 +80,7 @@ namespace Papyrus.Desktop.Features.Topics {
                     var fullPath = Path.Combine(DefaultDirectoryPath, element.Path);
                     Directory.CreateDirectory(fullPath).Delete(true);
                     foreach (var website in element.Websites) {
+                        //TODO: calculate website settings to pass them to the exporter 
                         await exporter.Export(website, fullPath, ConfigurationManager.AppSettings["ImagesFolder"]);
                     }
                 }

@@ -26,7 +26,7 @@ namespace Papyrus.Business.Exporters {
             var docsPath = Path.Combine(path, "docs");
             foreach (var document in webSite.Documents) {
                 await ExportDocumentIn(document, docsPath);
-                await GenerateDocInYml(document, Path.Combine(path, YmlFileName));
+                await GenerateDocInYml(document, Path.Combine(path, YmlFileName), configuration);
             }
             var imagesFolderDirectoryName = (new DirectoryInfo(imagesFolder)).Name;
             var newImagesDestination = Path.Combine(docsPath, imagesFolderDirectoryName);
@@ -44,40 +44,21 @@ namespace Papyrus.Business.Exporters {
 
         private async Task InitializeYmlFileIn(string path, MkdocsConfiguration configuration) {
             if (File.Exists(Path.Combine(path, YmlFileName))) return;
-            var ymlPath = Path.Combine(path, YmlFileName);
 
             configuration.Theme = "readthedocs";
             configuration.SiteName = "SIMA Documentation";
             configuration.AddPage("Home", "index.md");
-
+            var ymlPath = Path.Combine(path, YmlFileName);
             await WriteInFile(ymlPath, configuration.ToString());
-//            await WriteInFile(ymlPath, mkdocsTheme);
-//            await WriteInFile(ymlPath, siteName);
-//            await WriteInFile(ymlPath, "pages:");
-//            await WriteInFile(ymlPath, "- 'Home': 'index.md'");
         }
 
-        private static async Task GenerateDocInYml(ExportableDocument document, string ymlPath) {
-            var docReference = MkdocsPagePresentationFor(document);
-            if (string.IsNullOrEmpty(document.Route)) {
-                await WriteInFile(ymlPath, docReference);
-                return;
-            }
-            if (!ReadContentOf(ymlPath).Contains(document.Route)) {
-                await WriteInFile(ymlPath, NewListItemWith(document.Route));
-            }
-            await WriteInFile(ymlPath, "    " + docReference);
+        private static async Task GenerateDocInYml(ExportableDocument document, string ymlPath, MkdocsConfiguration configuration) {
+            var docReference = MkdocsPagePresentationFor(document, configuration);
+            await WriteInFile(ymlPath, docReference);
         }
 
-        private static string ReadContentOf(string ymlPath) {
-            return File.ReadAllText(ymlPath);
-        }
-
-        private static string NewListItemWith(string itemContent) {
-            return NewListItem + "'" + itemContent + "':";
-        }
-
-        private static string MkdocsPagePresentationFor(ExportableDocument document) {
+        private static string MkdocsPagePresentationFor(ExportableDocument document, MkdocsConfiguration configuration) {
+            configuration.AddPage(document.Title, Path.Combine(document.Route, ConvertToValidFileName(document.Title)) + MarkDownExtension);
             return NewListItem + "'" + document.Title + "': '" + 
                 Path.Combine(document.Route, ConvertToValidFileName(document.Title)) + MarkDownExtension + "'";
         }
