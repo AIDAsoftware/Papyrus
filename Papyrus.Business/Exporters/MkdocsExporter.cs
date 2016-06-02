@@ -26,8 +26,10 @@ namespace Papyrus.Business.Exporters {
             var docsPath = Path.Combine(path, "docs");
             foreach (var document in webSite.Documents) {
                 await ExportDocumentIn(document, docsPath);
-                await GenerateDocInYml(document, Path.Combine(path, YmlFileName), configuration);
+                await AddDocumentToTheConfiguration(document, configuration);
             }
+            var ymlPath = Path.Combine(path, YmlFileName);
+            await WriteInFile(ymlPath, configuration.ToString());
             var imagesFolderDirectoryName = (new DirectoryInfo(imagesFolder)).Name;
             var newImagesDestination = Path.Combine(docsPath, imagesFolderDirectoryName);
             if (!Directory.Exists(newImagesDestination)) {
@@ -43,24 +45,17 @@ namespace Papyrus.Business.Exporters {
         }
 
         private async Task InitializeYmlFileIn(string path, MkdocsConfiguration configuration) {
-            if (File.Exists(Path.Combine(path, YmlFileName))) return;
+            if (File.Exists(Path.Combine(path, YmlFileName))) {
+                return;
+            }
 
             configuration.Theme = "readthedocs";
             configuration.SiteName = "SIMA Documentation";
             configuration.AddPage("Home", "index.md");
-            var ymlPath = Path.Combine(path, YmlFileName);
-            await WriteInFile(ymlPath, configuration.ToString());
         }
 
-        private static async Task GenerateDocInYml(ExportableDocument document, string ymlPath, MkdocsConfiguration configuration) {
-            var docReference = MkdocsPagePresentationFor(document, configuration);
-            await WriteInFile(ymlPath, docReference);
-        }
-
-        private static string MkdocsPagePresentationFor(ExportableDocument document, MkdocsConfiguration configuration) {
+        private static async Task AddDocumentToTheConfiguration(ExportableDocument document, MkdocsConfiguration configuration) {
             configuration.AddPage(document.Title, Path.Combine(document.Route, ConvertToValidFileName(document.Title)) + MarkDownExtension);
-            return NewListItem + "'" + document.Title + "': '" + 
-                Path.Combine(document.Route, ConvertToValidFileName(document.Title)) + MarkDownExtension + "'";
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, string directoryPath) {
@@ -92,7 +87,7 @@ namespace Papyrus.Business.Exporters {
             var siteNameLine = "site_name: " + SiteName + Environment.NewLine;
             var pagesLines = "pages:" + Environment.NewLine;
             foreach (var page in pages) {
-                pagesLines += "- '" + page.Key + "': " + "'" + page.Value + "'"; 
+                pagesLines += "- '" + page.Key + "': " + "'" + page.Value + "'" + Environment.NewLine; 
             }
             return themeLine + siteNameLine + pagesLines;
         }
