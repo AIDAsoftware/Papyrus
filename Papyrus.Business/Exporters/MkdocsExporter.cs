@@ -45,10 +45,6 @@ namespace Papyrus.Business.Exporters {
         }
 
         private async Task InitializeYmlFileIn(string path, MkdocsConfiguration configuration) {
-            if (File.Exists(Path.Combine(path, YmlFileName))) {
-                return;
-            }
-
             configuration.Theme = "readthedocs";
             configuration.SiteName = "SIMA Documentation";
             configuration.AddPage("Home", "index.md");
