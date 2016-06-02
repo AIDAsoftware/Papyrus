@@ -41,10 +41,10 @@ namespace Papyrus.Business.Exporters {
             var docsPath = Path.Combine(path, "docs");
             var docsDirectory = Directory.CreateDirectory(docsPath);
             await WriteInFile(Path.Combine(docsDirectory.FullName, "index.md"), IndexContent);
-            await InitializeYmlFileIn(path, configuration);
+            await InitializeYmlFileIn(configuration);
         }
 
-        private async Task InitializeYmlFileIn(string path, MkdocsConfiguration configuration) {
+        private static async Task InitializeYmlFileIn(MkdocsConfiguration configuration) {
             configuration.Theme = "readthedocs";
             configuration.SiteName = "SIMA Documentation";
             configuration.AddPage("Home", "index.md");
