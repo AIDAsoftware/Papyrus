@@ -69,6 +69,7 @@
     <Compile Include="Documents\EditableDocument.cs" />
     <Compile Include="Exporters\ExportableDocument.cs" />
     <Compile Include="Exporters\FileWriter.cs" />
+    <Compile Include="Exporters\MkdocsConfiguration.cs" />
     <Compile Include="Exporters\MkdocsExporter.cs" />
     <Compile Include="Exporters\MkdocsFileNameConverter.cs" />
     <Compile Include="Exporters\NoDocument.cs" />

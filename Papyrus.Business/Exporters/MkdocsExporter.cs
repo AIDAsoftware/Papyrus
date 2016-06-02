@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
 using Papyrus.Infrastructure.Core;
@@ -41,12 +39,10 @@ namespace Papyrus.Business.Exporters {
             var docsPath = Path.Combine(path, "docs");
             var docsDirectory = Directory.CreateDirectory(docsPath);
             await WriteInFile(Path.Combine(docsDirectory.FullName, "index.md"), IndexContent);
-            await InitializeYmlFileIn(configuration);
+            AddIndexPageTo(configuration);
         }
 
-        private static async Task InitializeYmlFileIn(MkdocsConfiguration configuration) {
-            configuration.Theme = "readthedocs";
-            configuration.SiteName = "SIMA Documentation";
+        private static void AddIndexPageTo(MkdocsConfiguration configuration) {
             configuration.AddPage("Home", "index.md");
         }
 
@@ -66,26 +62,6 @@ namespace Papyrus.Business.Exporters {
 
         private static string ConvertToValidFileName(string title) {
             return MkdocsFileNameConverter.ConvertToValidFileName(title);
-        }
-    }
-
-    internal class MkdocsConfiguration {
-        public string Theme { get; set; }
-        public string SiteName { get; set; }
-        private readonly Dictionary<string, string> pages = new Dictionary<string, string>();  
-
-        public void AddPage(string pageName, string fileName) {
-            pages.Add(pageName, fileName);
-        }
-
-        public override string ToString() {
-            var themeLine = "theme: " + Theme + Environment.NewLine;
-            var siteNameLine = "site_name: " + SiteName + Environment.NewLine;
-            var pagesLines = "pages:" + Environment.NewLine;
-            foreach (var page in pages) {
-                pagesLines += "- '" + page.Key + "': " + "'" + page.Value + "'" + Environment.NewLine; 
-            }
-            return themeLine + siteNameLine + pagesLines;
         }
     }
 }
