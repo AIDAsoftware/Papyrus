@@ -62,12 +62,12 @@ namespace Papyrus.Tests.View {
                 Task.FromResult(versions.Select(v => new ProductVersion(v, v, DateTime.Today)).ToList()));
         }
 
-        private static async Task ExecuteExportSelectedProductCommandFrom(TopicsGridVM viewModel) {
+        private static async Task ExecuteExportSelectedProductCommandFrom(TopicsGridVm viewModel) {
             await viewModel.ExportProductToMkDocs.ExecuteAsync(new object());
         }
 
-        private async Task<TopicsGridVM> InitializeTopicGridVMWith(TopicQueryRepository topicRepo, ProductRepository productRepo, MkDocsExporter exporter, WebsiteConstructor constructor) {
-            var viewModel = new TopicsGridVM(topicRepo, productRepo, exporter, constructor);
+        private async Task<TopicsGridVm> InitializeTopicGridVMWith(TopicQueryRepository topicRepo, ProductRepository productRepo, MkDocsExporter exporter, WebsiteConstructor constructor) {
+            var viewModel = new TopicsGridVm(topicRepo, productRepo, exporter, constructor);
             await viewModel.Initialize();
             return viewModel;
         }

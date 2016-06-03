@@ -6,7 +6,7 @@
              xmlns:topics="clr-namespace:Papyrus.Desktop.Features.Topics"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="400"
-             d:DataContext="{d:DesignInstance Type=topics:DesignModeTopicsGridVM, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance Type=topics:DesignModeTopicsGridVm, IsDesignTimeCreatable=True}"
              DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
     <Grid>
         <DockPanel>

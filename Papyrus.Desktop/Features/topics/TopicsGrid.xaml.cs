@@ -5,8 +5,8 @@ using Papyrus.Business.Documents;
 
 namespace Papyrus.Desktop.Features.Topics {
     public partial class TopicsGrid : UserControl {
-        public TopicsGridVM ViewModel {
-            get { return (TopicsGridVM)DataContext; }
+        public TopicsGridVm ViewModel {
+            get { return (TopicsGridVm)DataContext; }
         }
 
         public DisplayableProduct SelectedProduct { get; set; }

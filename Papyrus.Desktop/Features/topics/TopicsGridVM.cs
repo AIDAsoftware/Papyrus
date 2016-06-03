@@ -18,7 +18,7 @@ using Papyrus.Infrastructure.Core.DomainEvents;
 
 
 namespace Papyrus.Desktop.Features.Topics {
-    public class TopicsGridVM : INotifyPropertyChanged
+    public class TopicsGridVm : INotifyPropertyChanged
     {
         private readonly MkDocsExporter exporter;
         private readonly WebsiteConstructor websiteConstructor;
@@ -44,7 +44,7 @@ namespace Papyrus.Desktop.Features.Topics {
         public IAsyncCommand RefreshTopics { get; private set; }
         public IAsyncCommand ExportProductToMkDocs { get; private set; }
 
-        protected TopicsGridVM()
+        protected TopicsGridVm()
         {
             TopicsToList = new ObservableCollection<TopicSummary>();
             Products = new ObservableCollection<DisplayableProduct>();
@@ -59,7 +59,7 @@ namespace Papyrus.Desktop.Features.Topics {
             await LoadAllTopics();
         }
 
-        public TopicsGridVM(TopicQueryRepository topicRepo, ProductRepository productRepo, MkDocsExporter exporter, WebsiteConstructor websiteConstructor)
+        public TopicsGridVm(TopicQueryRepository topicRepo, ProductRepository productRepo, MkDocsExporter exporter, WebsiteConstructor websiteConstructor)
             : this(topicRepo, productRepo) {
             this.exporter = exporter;
             this.websiteConstructor = websiteConstructor;
@@ -86,7 +86,7 @@ namespace Papyrus.Desktop.Features.Topics {
                 }
                 ToastNotificator.NotifyMessage("Exportación realizada con éxito");
             }
-            catch (Exception ex) {
+            catch (Exception) {
                 EventBus.Send(new OnUserMessageRequest("Ha ocurrido un error en la exportación"));
             }
         }
@@ -95,7 +95,7 @@ namespace Papyrus.Desktop.Features.Topics {
             return new Product(p.ProductId, p.ProductName, new List<ProductVersion>());
         }
 
-        public TopicsGridVM(TopicQueryRepository topicRepository, ProductRepository productRepository) : this()
+        public TopicsGridVm(TopicQueryRepository topicRepository, ProductRepository productRepository) : this()
         {
             this.topicRepository = topicRepository;
             this.productRepository = productRepository;
@@ -183,9 +183,9 @@ namespace Papyrus.Desktop.Features.Topics {
 
     public class OnTopicRemoved {}
 
-    public class DesignModeTopicsGridVM : TopicsGridVM
+    public class DesignModeTopicsGridVm : TopicsGridVm
     {
-        public DesignModeTopicsGridVM()
+        public DesignModeTopicsGridVm()
         {
             TopicsToList = new ObservableCollection<TopicSummary>
             {

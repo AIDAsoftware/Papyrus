@@ -9,10 +9,10 @@ using Papyrus.Infrastructure.Core.Database;
 
 namespace Papyrus.Desktop {
     public static class ViewModelsFactory {
-        public static TopicsGridVM TopicsGrid() {
+        public static TopicsGridVm TopicsGrid() {
             var topicQueryRepository = RepositoriesFactory.QueryTopic();
             var productRepository = RepositoriesFactory.Product();
-            return new TopicsGridVM(topicQueryRepository, productRepository, new MkDocsExporter(new FileSystemImagesCopier()), new WebsiteConstructor(topicQueryRepository, productRepository));
+            return new TopicsGridVm(topicQueryRepository, productRepository, new MkDocsExporter(new FileSystemImagesCopier()), new WebsiteConstructor(topicQueryRepository, productRepository));
         }
 
         public static TopicVM Topic(EditableTopic topic)
