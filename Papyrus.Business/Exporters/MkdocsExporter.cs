@@ -7,12 +7,9 @@ namespace Papyrus.Business.Exporters {
     public class MkDocsExporter {
         private const string YmlFileName = "mkdocs.yml";
         private const string MarkDownExtension = ".md";
-        private readonly string mkdocsTheme = "theme: readthedocs";
-        private readonly string siteName = "site_name: SIMA Documentation";
         private static readonly string NewLine = System.Environment.NewLine;
         private readonly FileSystemImagesCopier imagesCopier;
         public const string IndexContent = "SIMA Documentation";
-        private const string NewListItem = "- ";
 
         public MkDocsExporter(FileSystemImagesCopier imagesCopier) {
             this.imagesCopier = imagesCopier;
