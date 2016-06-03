@@ -1,7 +1,7 @@
 namespace Papyrus.Business.Exporters {
     public class PathByProductGenerator : PathGenerator {
         public override string GenerateMkdocsPath() {
-            var separator = "/";
+            const string separator = "/";
             return Version + separator + Product + separator + Language;
         }
 
