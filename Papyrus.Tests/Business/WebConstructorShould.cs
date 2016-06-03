@@ -24,7 +24,7 @@ namespace Papyrus.Tests.Business {
         private string Spanish = "es-ES";
         private string English = "en-GB";
         private string LastVersionName = "15.11.27";
-        private readonly ExportableDocument englishDocument = new ExportableDocument(EnglishTitle, EnglishContent, DocumentRoute);
+        private readonly ExportableDocument englishDocument = new ExportableDocument(EnglishTitle, EnglishContent);
 
         [SetUp]
         public void SetUp() {
@@ -38,9 +38,9 @@ namespace Papyrus.Tests.Business {
         public async Task construct_a_website_with_documents_associated_to_given_product_and_version() {
             var versionsNames = VersionNames(LastVersionName);
             var opportunity = new Product("OpportunityId", "Opportunity", VersionsFrom(versionsNames));
-            StubPathGeneratorToReturnAs(exportationPath: "Route/Route", documentRoute: DocumentRoute);
+            StubExportationPathTo(exportationPath: "Route/Route");
             RepositoryReturnsProductWhenAskingForVersions(opportunity, versionsNames);
-            topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish, DocumentRoute)
+            topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish)
                 .Returns(AsyncDocumentsList(englishDocument));
 
             var websites = await websiteConstructor
@@ -49,16 +49,15 @@ namespace Papyrus.Tests.Business {
             ExportableDocument websiteDocument = websites["Route/Route"].First().Documents.First();
             websiteDocument.Content.Should().Be(EnglishContent);
             websiteDocument.Title.Should().Be(EnglishTitle);
-            websiteDocument.Route.Should().Be(DocumentRoute);
         }
 
         [Test]
         public async Task construct_proper_keys_for_each_website() {
             var versionsNames = VersionNames(LastVersionName);
             var opportunity = new Product("OpportunityId", "Opportunity", VersionsFrom(versionsNames));
-            StubPathGeneratorToReturnAs(documentRoute: DocumentRoute, exportationPath:"AnyPath");
+            StubExportationPathTo(exportationPath:"AnyPath");
             RepositoryReturnsProductWhenAskingForVersions(opportunity, versionsNames);
-            topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish, DocumentRoute)
+            topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish)
                 .Returns(AsyncDocumentsList(englishDocument));
 
             await websiteConstructor.Construct(pathGenerator, ProductsList(opportunity), versionsNames, Languages(Spanish));
@@ -68,17 +67,12 @@ namespace Papyrus.Tests.Business {
             pathGenerator.Received().ForLanguage(Spanish);
         }
 
-        private void StubPathGeneratorToReturnAs(string documentRoute) {
-            StubPathGeneratorToReturnAs(documentRoute: documentRoute, exportationPath: null);
-        }
-
         [Test]
         public async Task not_create_website_when_there_are_no_document_available() {
             var versionsNames = VersionNames(LastVersionName);
             var opportunity = new Product("OpportunityId", "Opportunity", VersionsFrom(versionsNames));
-            StubPathGeneratorToReturnAs(documentRoute: DocumentRoute);
             RepositoryReturnsProductWhenAskingForVersions(opportunity, versionsNames);
-            topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish, DocumentRoute)
+            topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish)
                 .Returns(Task.FromResult(new List<ExportableDocument>()));
 
             var websites = await websiteConstructor.Construct(pathGenerator, ProductsList(opportunity), versionsNames, Languages(Spanish));
@@ -92,12 +86,12 @@ namespace Papyrus.Tests.Business {
             var versionsNames = VersionNames(LastVersionName);
             var opportunity = new Product("OpportunityId", "Opportunity", VersionsFrom(versionsNames));
             var papyrus = new Product("PapyrusId", "Papyrus", VersionsFrom(versionsNames));
-            StubPathGeneratorToReturnAs(documentRoute: DocumentRoute, exportationPath: "Any/Path");
+            StubExportationPathTo("Any/Path");
             RepositoryReturnsProductWhenAskingForVersions(opportunity, versionsNames);
             RepositoryReturnsProductWhenAskingForVersions(papyrus, versionsNames);
-            topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, English, DocumentRoute)
+            topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, English)
                 .Returns(AsyncDocumentsList(englishDocument));
-            topicRepo.GetAllDocumentsFor(papyrus.Id, LastVersionName, English, DocumentRoute)
+            topicRepo.GetAllDocumentsFor(papyrus.Id, LastVersionName, English)
                 .Returns(AsyncDocumentsList(englishDocument));
 
             var websites = await websiteConstructor.Construct(pathGenerator, ProductsList(opportunity, papyrus), versionsNames, Languages(English));
@@ -134,9 +128,8 @@ namespace Papyrus.Tests.Business {
             return products.ToList();
         }
 
-        private void StubPathGeneratorToReturnAs(string exportationPath, string documentRoute) {
+        private void StubExportationPathTo(string exportationPath) {
             pathGenerator.GenerateMkdocsPath().Returns(exportationPath);
-            pathGenerator.GenerateDocumentRoute().Returns(documentRoute);
         }
     }
 }

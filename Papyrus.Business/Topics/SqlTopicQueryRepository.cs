@@ -57,7 +57,7 @@ namespace Papyrus.Business.Topics {
             };
         }
 
-        public async Task<List<ExportableDocument>> GetAllDocumentsFor(string product, string version, string language, string documentRoute) {
+        public async Task<List<ExportableDocument>> GetAllDocumentsFor(string product, string version, string language) {
             var documents = new List<ExportableDocument>();
             var dateOfWishedVersion = await GetReleaseFor(product, version);
             if (dateOfWishedVersion == default(DateTime)) return documents;
@@ -82,7 +82,7 @@ namespace Papyrus.Business.Topics {
                             dateOfWishedVersion <= toVersion.Release) {
                         var document = await GetTitleAndContentOfADocumentBy(language, versionRange);
                         if (!(document is NoDocument))
-                            documents.Add(new ExportableDocument(document.Title, document.Content, documentRoute));
+                            documents.Add(new ExportableDocument(document.Title, document.Content));
                     }
                 }
             }

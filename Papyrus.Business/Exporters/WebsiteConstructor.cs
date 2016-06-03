@@ -35,12 +35,11 @@ namespace Papyrus.Business.Exporters {
         }
 
         private async Task<WebSite> CreateWebsiteWithAllDocumentsFor(PathGenerator generator, Product product, ProductVersion version, string language) {
-            var documentRoute = generator.GenerateDocumentRoute();
-            var documents = await topicRepo.GetAllDocumentsFor(product.Id, version.VersionName, language, documentRoute);
+            var documents = await topicRepo.GetAllDocumentsFor(product.Id, version.VersionName, language);
             return new WebSite(documents);
         }
 
-        private void RegistToGenerator(PathGenerator generator, Product product, ProductVersion version, string language) {
+        private static void RegistToGenerator(PathGenerator generator, Product product, ProductVersion version, string language) {
             generator.ForProduct(product.Name);
             generator.ForVersion(version.VersionName);
             generator.ForLanguage(language);

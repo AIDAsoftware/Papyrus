@@ -182,13 +182,12 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             topic.AddVersionRange(secondVersionRange);
             await sqlInserter.Insert(topic);
 
-            var documents = await topicRepository.GetAllDocumentsFor(ProductId, version1.VersionName, SpanishLanguage, "DocumentRoute");
+            var documents = await topicRepository.GetAllDocumentsFor(ProductId, version1.VersionName, SpanishLanguage);
 
             documents.Should().HaveCount(1);
             var document = documents.First();
             document.Title.Should().Be(spanishDocument.Title);
             document.Content.Should().Be(spanishDocument.Content);
-            document.Route.Should().Be("DocumentRoute");
         }
         
         [Test]
@@ -200,7 +199,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             topic.AddVersionRange(firstVersionRange);
             await sqlInserter.Insert(topic);
 
-            var documents = await topicRepository.GetAllDocumentsFor(ProductId, version1.VersionName, EnglishLanguage, "DocumentRoute");
+            var documents = await topicRepository.GetAllDocumentsFor(ProductId, version1.VersionName, EnglishLanguage);
 
             documents.Should().HaveCount(0);
         }
@@ -213,7 +212,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             topic.AddVersionRange(firstVersionRange);
             await sqlInserter.Insert(topic);
 
-            var documents = await topicRepository.GetAllDocumentsFor(ProductId, "No existing Version", EnglishLanguage, "DocumentRoute");
+            var documents = await topicRepository.GetAllDocumentsFor(ProductId, "No existing Version", EnglishLanguage);
 
             documents.Should().HaveCount(0);
         }

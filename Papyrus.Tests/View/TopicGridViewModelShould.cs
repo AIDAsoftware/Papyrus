@@ -26,7 +26,7 @@ namespace Papyrus.Tests.View {
         private WebsiteConstructor websiteConstructor;
         private MkDocsExporter exporter;
         private readonly List<string> languages = new List<string>{"es-ES", "en-GB"};
-        private readonly WebSite WebsiteWithADocument = WebsiteWith(new ExportableDocument("Title", "content", ""));
+        private readonly WebSite WebsiteWithADocument = WebsiteWith(new ExportableDocument("Title", "content"));
         private const string OpportunityId = "OpportunityId";
 
         [SetUp]

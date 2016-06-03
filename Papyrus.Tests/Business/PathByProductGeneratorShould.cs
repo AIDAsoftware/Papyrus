@@ -19,12 +19,5 @@ namespace Papyrus.Tests.Business {
 
             path.Should().Be("15.11.20/Opportunity/es-ES");
         }
-
-        [Test]
-        public void gets_empty_document_route() {
-            var generator = new PathByProductGenerator();
-            var documentRoute = generator.GenerateDocumentRoute();
-            documentRoute.Should().Be("");
-        }
     }
 }

@@ -64,11 +64,11 @@ namespace Papyrus.Business.Exporters {
         }
 
         private static async Task AddDocumentToTheConfiguration(ExportableDocument document, MkdocsConfiguration configuration) {
-            configuration.AddPage(document.Title, Path.Combine(document.Route, ConvertToValidFileName(document.Title)) + MarkDownExtension);
+            configuration.AddPage(document.Title, ConvertToValidFileName(document.Title) + MarkDownExtension);
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, string directoryPath) {
-            var documentDirectory = Directory.CreateDirectory(Path.Combine(directoryPath, document.Route));
+            var documentDirectory = Directory.CreateDirectory(directoryPath);
             var documentPath = Path.Combine(documentDirectory.FullName, ConvertToValidFileName(document.Title) + MarkDownExtension);
             await WriteInFile(documentPath, document.Content);
         }

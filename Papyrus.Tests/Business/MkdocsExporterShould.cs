@@ -42,7 +42,7 @@ namespace Papyrus.Tests.Business {
 
         [Test]
         public async Task generate_documents_in_docs_file() {
-            var webSite = WebSiteWithDocuments(new ExportableDocument("Title", "Content", ""));
+            var webSite = WebSiteWithDocuments(new ExportableDocument("Title", "Content"));
 
             await new MkDocsExporter(imagesCopier).Export(webSite, GetAnyExportationPath(), AnyImagesPath);
 
@@ -91,8 +91,8 @@ namespace Papyrus.Tests.Business {
         [Test]
         public async Task replace_unavailabe_characters_for_a_file_for_available_ones() {
             var website = WebSiteWithDocuments(
-                new ExportableDocument("this/is|the*Title", "AnyContent", ""),
-                new ExportableDocument("otro>título?ñ", "AnotherContent", ""));
+                new ExportableDocument("this/is|the*Title", "AnyContent"),
+                new ExportableDocument("otro>título?ñ", "AnotherContent"));
 
             await new MkDocsExporter(imagesCopier).Export(website, GetAnyExportationPath(), AnyImagesPath);
 
@@ -136,7 +136,7 @@ namespace Papyrus.Tests.Business {
         }
 
         private static ExportableDocument AnyDocument() {
-            return new ExportableDocument("AnyTitle", "AnyContent", "/AnyWebsitePath");
+            return new ExportableDocument("AnyTitle", "AnyContent");
         }
 
         private static WebSite WebSiteWithDocuments(params ExportableDocument[] exportableDocuments) {
