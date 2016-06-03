@@ -4,9 +4,5 @@ namespace Papyrus.Business.Exporters {
             const string separator = "/";
             return Version + separator + Product + separator + Language;
         }
-
-        public override string GenerateDocumentRoute() {
-            return string.Empty;
-        }
     }
 }
