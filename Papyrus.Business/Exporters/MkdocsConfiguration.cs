@@ -7,6 +7,8 @@ namespace Papyrus.Business.Exporters {
         private const string SimaSiteName = "SIMA Documentation";
         private const string DefaultTheme = "readthedocs";
         private const string KeyValueSeparator = ": ";
+        private static readonly string NewLine = Environment.NewLine;
+        
         public string Theme { get; set; }
         public string SiteName { get; set; }
         private readonly Dictionary<string, string> pages = new Dictionary<string, string>();
@@ -21,15 +23,15 @@ namespace Papyrus.Business.Exporters {
         }
 
         public override string ToString() {
-            var themeLine = "theme" + KeyValueSeparator + Theme + Environment.NewLine;
-            var siteNameLine = "site_name" + KeyValueSeparator + SiteName + Environment.NewLine;
-            var pagesLines = "pages" + KeyValueSeparator + Environment.NewLine;
+            var themeLine = "theme" + KeyValueSeparator + Theme + NewLine;
+            var siteNameLine = "site_name" + KeyValueSeparator + SiteName + NewLine;
+            var pagesLines = "pages" + KeyValueSeparator + NewLine;
             pagesLines = pages.Aggregate(pagesLines, (current, page) => current + ToMkdocsPageFormat(page));
             return themeLine + siteNameLine + pagesLines;
         }
 
         private static string ToMkdocsPageFormat(KeyValuePair<string, string> page) {
-            return "- " + "'" + page.Key + "'" + KeyValueSeparator + "'" + page.Value + "'" + Environment.NewLine;
+            return "- " + "'" + page.Key + "'" + KeyValueSeparator + "'" + page.Value + "'" + NewLine;
         }
     }
 }
