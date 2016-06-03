@@ -98,7 +98,7 @@ namespace Papyrus.Tests.Business {
 
             var ymlPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
             GetFileContentFrom(ymlPath).Should().Contain(
-                "pages:" + newLine +
+                "pages: " + newLine +
                 "- 'Home': 'index.md'" + newLine +
                 "- 'this/is|the*Title': 'this-is-the-Title.md'" + newLine +
                 "- 'otro>título?ñ': 'otro-titulo-n.md'");
