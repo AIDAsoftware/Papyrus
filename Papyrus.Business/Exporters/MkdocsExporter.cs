@@ -26,11 +26,20 @@ namespace Papyrus.Business.Exporters {
                 await AddDocumentToTheConfiguration(document, configuration);
             }
             await WriteConfigurationYmlInPath(configuration, path);
-            var imagesFolderDirectoryName = (new DirectoryInfo(imagesFolder)).Name;
-            var newImagesDestination = Path.Combine(DocsPathIn(path), imagesFolderDirectoryName);
+            CopyImagesInTheSite(path, imagesFolder);
+        }
+
+        private void CopyImagesInTheSite(string path, string imagesFolder) {
+            var newImagesDestination = ConstructNewImagesDestination(path, imagesFolder);
             if (!Directory.Exists(newImagesDestination)) {
                 imagesCopier.CopyFolder(imagesFolder, newImagesDestination);
             }
+        }
+
+        private static string ConstructNewImagesDestination(string path, string imagesFolder) {
+            var imagesFolderDirectoryName = (new DirectoryInfo(imagesFolder)).Name;
+            var newImagesDestination = Path.Combine(DocsPathIn(path), imagesFolderDirectoryName);
+            return newImagesDestination;
         }
 
         private static string DocsPathIn(string path) {
