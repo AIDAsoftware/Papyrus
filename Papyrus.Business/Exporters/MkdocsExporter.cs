@@ -19,20 +19,31 @@ namespace Papyrus.Business.Exporters {
         }
 
         public virtual async Task Export(WebSite webSite, string path, string imagesFolder) {
-            var configuration = new MkdocsConfiguration();
+            var configuration = CreateConfiguration();
             await InitializeMkdocsStructure(path, configuration);
-            var docsPath = Path.Combine(path, "docs");
             foreach (var document in webSite.Documents) {
-                await ExportDocumentIn(document, docsPath);
+                await ExportDocumentIn(document, DocsPathIn(path));
                 await AddDocumentToTheConfiguration(document, configuration);
             }
-            var ymlPath = Path.Combine(path, YmlFileName);
-            await WriteInFile(ymlPath, configuration.ToString());
+            await WriteConfigurationYmlInPath(configuration, path);
             var imagesFolderDirectoryName = (new DirectoryInfo(imagesFolder)).Name;
-            var newImagesDestination = Path.Combine(docsPath, imagesFolderDirectoryName);
+            var newImagesDestination = Path.Combine(DocsPathIn(path), imagesFolderDirectoryName);
             if (!Directory.Exists(newImagesDestination)) {
                 imagesCopier.CopyFolder(imagesFolder, newImagesDestination);
             }
+        }
+
+        private static string DocsPathIn(string path) {
+            return Path.Combine(path, "docs");
+        }
+
+        private static MkdocsConfiguration CreateConfiguration() {
+            return new MkdocsConfiguration();
+        }
+
+        private static async Task WriteConfigurationYmlInPath(MkdocsConfiguration configuration, string path) {
+            var ymlPath = Path.Combine(path, YmlFileName);
+            await WriteInFile(ymlPath, configuration.ToString());
         }
 
         private async Task InitializeMkdocsStructure(string path, MkdocsConfiguration configuration) {
