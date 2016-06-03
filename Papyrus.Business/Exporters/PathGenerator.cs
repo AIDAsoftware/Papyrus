@@ -5,17 +5,17 @@
         protected string Version;
 
         public virtual PathGenerator ForLanguage(string language) {
-            this.Language = language;
+            Language = language;
             return this;
         }
 
         public virtual PathGenerator ForProduct(string product) {
-            this.Product = product;
+            Product = product;
             return this;
         }
 
         public virtual PathGenerator ForVersion(string version) {
-            this.Version = version;
+            Version = version;
             return this;
         }
 
