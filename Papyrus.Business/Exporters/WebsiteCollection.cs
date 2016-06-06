@@ -20,11 +20,11 @@ namespace Papyrus.Business.Exporters {
             websites = new Dictionary<string, List<WebSite>>();
         }
 
-        public void Add(string generateMkdocsPath, WebSite website) {
-            if (websites.ContainsKey(generateMkdocsPath))
-                websites[generateMkdocsPath].Add(website);
+        public void Add(string path, WebSite website) {
+            if (websites.ContainsKey(path))
+                websites[path].Add(website);
             else 
-                websites.Add(generateMkdocsPath, new List<WebSite>{website});
+                websites.Add(path, new List<WebSite>{website});
         }
 
         public IEnumerator<WebsitePathPair> GetEnumerator() {
