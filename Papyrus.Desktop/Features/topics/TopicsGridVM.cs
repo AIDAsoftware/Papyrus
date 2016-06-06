@@ -69,7 +69,7 @@ namespace Papyrus.Desktop.Features.Topics {
             var product = CastToProductType(SelectedProduct);
             var versionsNames = (await productRepository.GetAllVersionsFor(product.Id)).Select(v => v.VersionName).ToList();
             var websiteCollection = await websiteConstructor.Construct(
-                new PathByProductGenerator(), new List<Product> { product }, versionsNames, languages
+                new PathGenerator(), new List<Product> { product }, versionsNames, languages
             );
             await Export(websiteCollection);
         }

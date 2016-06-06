@@ -10,7 +10,7 @@ namespace Papyrus.Tests.Business {
 
         [Test]
         public void gets_product_path() {
-            var generator = new PathByProductGenerator();
+            var generator = new PathGenerator();
             
             var path = generator.ForLanguage("es-ES")
                 .ForProduct("Opportunity")

@@ -45,7 +45,7 @@ namespace Papyrus.Tests.View {
             viewModel.SelectedProduct = viewModel.Products.First(p => p.ProductId == OpportunityId);
             var websiteCollection = new WebsiteCollection { { "Any/Path", WebsiteWithADocument } };
             WhenWebConstructorIsCalledWith(
-                Arg.Any<PathByProductGenerator>(), new List<DisplayableProduct>{ viewModel.SelectedProduct }, versions, languages
+                Arg.Any<PathGenerator>(), new List<DisplayableProduct>{ viewModel.SelectedProduct }, versions, languages
             ).Returns(Task.FromResult(websiteCollection));
 
             await ExecuteExportSelectedProductCommandFrom(viewModel);

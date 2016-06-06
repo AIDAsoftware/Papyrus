@@ -1,8 +1,8 @@
 ﻿namespace Papyrus.Business.Exporters {
-    public abstract class PathGenerator {
-        protected string Language;
-        protected string Product;
-        protected string Version;
+    public class PathGenerator {
+        private string Language;
+        private string Product;
+        private string Version;
 
         public virtual PathGenerator ForLanguage(string language) {
             Language = language;
@@ -19,6 +19,9 @@
             return this;
         }
 
-        public abstract string GenerateMkdocsPath();
+        public virtual string GenerateMkdocsPath() {
+            const string separator = "/";
+            return Version + separator + Product + separator + Language;
+        }
     }
 }
