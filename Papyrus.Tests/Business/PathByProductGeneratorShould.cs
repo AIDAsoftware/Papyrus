@@ -5,9 +5,6 @@ using Papyrus.Business.Exporters;
 namespace Papyrus.Tests.Business {
     [TestFixture]
     public class PathByProductGeneratorShould {
-        // TODO
-        //   gets the structure /Version/Product/language
-
         [Test]
         public void gets_product_path() {
             var generator = new PathGenerator();
