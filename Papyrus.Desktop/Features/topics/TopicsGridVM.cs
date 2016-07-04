@@ -76,18 +76,24 @@ namespace Papyrus.Desktop.Features.Topics {
 
         private async Task Export(WebsiteCollection websiteCollection) {
             try {
-                foreach (var element in websiteCollection) {
-                    var fullPath = Path.Combine(DefaultDirectoryPath, element.Path);
-                    Directory.CreateDirectory(fullPath).Delete(true);
-                    foreach (var website in element.Websites) {
-                        //TODO: calculate website settings to pass them to the exporter 
-                        await exporter.Export(website, fullPath, ConfigurationManager.AppSettings["ImagesFolder"]);
-                    }
-                }
+                await TryExportation(websiteCollection);
                 ToastNotificator.NotifyMessage("Exportación realizada con éxito");
             }
             catch (Exception) {
                 EventBus.Send(new OnUserMessageRequest("Ha ocurrido un error en la exportación"));
+            }
+        }
+
+        private async Task TryExportation(WebsiteCollection websiteCollection) {
+            foreach (var element in websiteCollection) {
+                var fullPath = Path.Combine(DefaultDirectoryPath, element.Path);
+                Directory.CreateDirectory(fullPath).Delete(true);
+                foreach (var website in element.Websites) {
+                    //TODO: calculate website settings to pass them to the exporter 
+                    string imagesFolder = ConfigurationManager.AppSettings["ImagesFolder"];
+                    await exporter.Export(website,
+                        new ConfigurationPaths(fullPath, imagesFolder));
+                }
             }
         }
 

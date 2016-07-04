@@ -15,15 +15,19 @@ namespace Papyrus.Business.Exporters {
             this.imagesCopier = imagesCopier;
         }
 
-        public virtual async Task Export(WebSite webSite, string path, string imagesFolder) {
+        public virtual async Task Export(WebSite webSite, ConfigurationPaths configurationPaths) {
             var configuration = CreateConfiguration();
-            await InitializeMkdocsStructure(path, configuration);
+            await InitializeMkdocsStructure(
+                configurationPaths.ExportationPath, configuration);
             foreach (var document in webSite.Documents) {
-                await ExportDocumentIn(document, DocsPathIn(path));
+                await ExportDocumentIn(document, 
+                    DocsPathIn(configurationPaths.ExportationPath));
                 await AddDocumentToTheConfiguration(document, configuration);
             }
-            await WriteConfigurationYmlInPath(configuration, path);
-            CopyImagesInTheSite(path, imagesFolder);
+            await WriteConfigurationYmlInPath(configuration, configurationPaths.ExportationPath);
+            CopyImagesInTheSite(
+                configurationPaths.ExportationPath, 
+                configurationPaths.ImagesFolder);
         }
 
         private void CopyImagesInTheSite(string path, string imagesFolder) {
@@ -79,6 +83,19 @@ namespace Papyrus.Business.Exporters {
 
         private static string ConvertToValidFileName(string title) {
             return MkdocsFileNameConverter.ConvertToValidFileName(title);
+        }
+    }
+
+    public class ConfigurationPaths {
+        private readonly string exportationPath;
+        private readonly string imagesFolder;
+
+        public string ExportationPath {get { return exportationPath; }}
+        public string ImagesFolder { get { return imagesFolder; } }
+
+        public ConfigurationPaths(string exportationPath, string imagesFolder) {
+            this.exportationPath = exportationPath;
+            this.imagesFolder = imagesFolder;
         }
     }
 }
