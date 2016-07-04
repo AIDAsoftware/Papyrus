@@ -116,7 +116,7 @@ namespace Papyrus.Tests.Business {
                 Languages(English)
             );
 
-            websites["Any/Path"].First().ProductName.Should().Be("Papyrus");
+            websites["Any/Path"].First().ProductName.Should().Be(papyrus.Name);
         }
 
         private List<ProductVersion> VersionsFrom(List<string> versionsNames) {
