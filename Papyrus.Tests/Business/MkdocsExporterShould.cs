@@ -140,7 +140,7 @@ namespace Papyrus.Tests.Business {
         }
 
         private static WebSite WebSiteWithDocuments(params ExportableDocument[] exportableDocuments) {
-            return new WebSite(exportableDocuments);
+            return new WebSite(exportableDocuments, "AnyProductName");
         }
     }
 }

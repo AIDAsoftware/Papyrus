@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Papyrus.Business.Products;
-using Papyrus.Business.Topics;
 
 namespace Papyrus.Business.Exporters {
     public class WebsiteCollection : IEnumerable {

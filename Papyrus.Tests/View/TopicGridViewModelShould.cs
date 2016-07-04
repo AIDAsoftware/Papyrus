@@ -90,7 +90,7 @@ namespace Papyrus.Tests.View {
         private static WebSite WebsiteWith(ExportableDocument document) {
             var webSite = new WebSite(new List<ExportableDocument> {
                 document
-            });
+            }, "AnyProductName");
             return webSite;
         }
 
