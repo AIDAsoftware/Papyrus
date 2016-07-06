@@ -27,16 +27,16 @@ namespace Papyrus.Business.Exporters {
             foreach (var version in product.Versions) {
                 foreach (var language in languages) {
                     RegistToGenerator(generator, product, version, language);
-                    var website = await CreateWebsiteWithAllDocumentsFor(generator, product, version, language);
+                    var website = await CreateWebsiteWithAllDocumentsFor(product, version, language);
                     if (website.HasNotDocuments()) continue;
                     websitesCollection.Add(generator.GenerateMkdocsPath(), website);
                 }
             }
         }
 
-        private async Task<WebSite> CreateWebsiteWithAllDocumentsFor(PathGenerator generator, Product product, ProductVersion version, string language) {
+        private async Task<WebSite> CreateWebsiteWithAllDocumentsFor(Product product, ProductVersion version, string language) {
             var documents = await topicRepo.GetAllDocumentsFor(product.Id, version.VersionName, language);
-            return new WebSite(documents, product.Name);
+            return new WebSite(documents, product.Name, language);
         }
 
         private static void RegistToGenerator(PathGenerator generator, Product product, ProductVersion version, string language) {

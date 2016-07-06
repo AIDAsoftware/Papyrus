@@ -86,13 +86,14 @@ namespace Papyrus.Desktop.Features.Topics {
 
         private async Task TryExportation(WebsiteCollection websiteCollection) {
             foreach (var element in websiteCollection) {
-                var fullPath = Path.Combine(DefaultDirectoryPath, element.Path);
-                Directory.CreateDirectory(fullPath).Delete(true);
+                var exportationPath = Path.Combine(DefaultDirectoryPath, element.Path);
+                Directory.CreateDirectory(exportationPath).Delete(true);
                 foreach (var website in element.Websites) {
                     //TODO: calculate website settings to pass them to the exporter 
-                    string imagesFolder = ConfigurationManager.AppSettings["ImagesFolder"];
+                    var imagesFolder = ConfigurationManager.AppSettings["ImagesFolder"];
+                    var siteDir = Path.Combine(DefaultDirectoryPath, website.ProductName, website.Language);
                     await exporter.Export(website,
-                        new ConfigurationPaths(fullPath, imagesFolder));
+                        new ConfigurationPaths(exportationPath, imagesFolder, siteDir));
                 }
             }
         }
@@ -151,9 +152,9 @@ namespace Papyrus.Desktop.Features.Topics {
             canLoadTopics = true;
         }
 
-        private bool canLoadTopics;
         private readonly List<string> languages = new List<string>{ "es-ES", "en-GB" };
 
+        private bool canLoadTopics;
         private bool CanLoadAllTopics()
         {
             return canLoadTopics;
@@ -188,28 +189,4 @@ namespace Papyrus.Desktop.Features.Topics {
     }
 
     public class OnTopicRemoved {}
-
-    public class DesignModeTopicsGridVm : TopicsGridVm
-    {
-        public DesignModeTopicsGridVm()
-        {
-            TopicsToList = new ObservableCollection<TopicSummary>
-            {
-                new TopicSummary
-                {
-                    LastDocumentTitle = "Login",
-                    LastDocumentDescription = "Explicación",
-                    VersionName = "2.0",
-                    Product = new DisplayableProduct {ProductId = "ProductId", ProductName = "Opportunity"}
-                },
-                new TopicSummary
-                {
-                    LastDocumentTitle = "Llamadas",
-                    LastDocumentDescription = "Explicación",
-                    VersionName = "3.0",
-                    Product = new DisplayableProduct {ProductId = "ProductId", ProductName = "Opportunity"}
-                }
-            };
-        }
-    }
 }

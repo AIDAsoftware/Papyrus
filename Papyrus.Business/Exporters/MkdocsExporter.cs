@@ -16,7 +16,7 @@ namespace Papyrus.Business.Exporters {
         }
 
         public virtual async Task Export(WebSite webSite, ConfigurationPaths configurationPaths) {
-            var configuration = CreateConfiguration();
+            var configuration = CreateConfiguration(configurationPaths.SiteDir);
             await InitializeMkdocsStructure(
                 configurationPaths.ExportationPath, configuration);
             foreach (var document in webSite.Documents) {
@@ -47,8 +47,8 @@ namespace Papyrus.Business.Exporters {
             return Path.Combine(path, "docs");
         }
 
-        private static MkdocsConfiguration CreateConfiguration() {
-            return new MkdocsConfiguration();
+        private static MkdocsConfiguration CreateConfiguration(string siteDir) {
+            return new MkdocsConfiguration(siteDir);
         }
 
         private static async Task WriteConfigurationYmlInPath(MkdocsConfiguration configuration, string path) {
@@ -89,13 +89,16 @@ namespace Papyrus.Business.Exporters {
     public class ConfigurationPaths {
         private readonly string exportationPath;
         private readonly string imagesFolder;
+        private readonly string siteDir;
 
         public string ExportationPath {get { return exportationPath; }}
         public string ImagesFolder { get { return imagesFolder; } }
+        public string SiteDir { get { return siteDir; } }
 
-        public ConfigurationPaths(string exportationPath, string imagesFolder) {
+        public ConfigurationPaths(string exportationPath, string imagesFolder, string siteDir = "") {
             this.exportationPath = exportationPath;
             this.imagesFolder = imagesFolder;
+            this.siteDir = siteDir;
         }
     }
 }

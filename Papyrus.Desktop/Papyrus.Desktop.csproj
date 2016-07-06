@@ -133,6 +133,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Features\Topics\DesignModeTopicsGridVm.cs" />
     <Compile Include="Features\Topics\DocumentUserControl.xaml.cs">
       <DependentUpon>DocumentUserControl.xaml</DependentUpon>
     </Compile>

@@ -9,13 +9,15 @@ namespace Papyrus.Business.Exporters {
         private const string KeyValueSeparator = ": ";
         private static readonly string NewLine = Environment.NewLine;
         
-        public string Theme { get; set; }
-        public string SiteName { get; set; }
+        public string Theme { get; private set; }
+        public string SiteName { get; private set; }
+        public string SiteDir { get; private set; }
         private readonly Dictionary<string, string> pages = new Dictionary<string, string>();
 
-        public MkdocsConfiguration() {
+        public MkdocsConfiguration(string siteDir) {
             Theme = DefaultTheme;
             SiteName = SimaSiteName;
+            SiteDir = siteDir;
         }
 
         public void AddPage(string pageName, string fileName) {
@@ -25,9 +27,10 @@ namespace Papyrus.Business.Exporters {
         public override string ToString() {
             var themeLine = "theme" + KeyValueSeparator + Theme + NewLine;
             var siteNameLine = "site_name" + KeyValueSeparator + SiteName + NewLine;
+            var siteDir = "site_dir" + KeyValueSeparator + SiteDir + NewLine;
             var pagesLines = "pages" + KeyValueSeparator + NewLine;
             pagesLines = pages.Aggregate(pagesLines, (current, page) => current + ToMkdocsPageFormat(page));
-            return themeLine + siteNameLine + pagesLines;
+            return themeLine + siteNameLine + siteDir + pagesLines;
         }
 
         private static string ToMkdocsPageFormat(KeyValuePair<string, string> page) {
