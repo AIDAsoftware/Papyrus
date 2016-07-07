@@ -36,7 +36,7 @@ namespace Papyrus.Business.Exporters {
 
         private async Task<WebSite> CreateWebsiteWithAllDocumentsFor(Product product, ProductVersion version, string language) {
             var documents = await topicRepo.GetAllDocumentsFor(product.Id, version.VersionName, language);
-            return new WebSite(documents, product.Name, language);
+            return new WebSite(documents, product.Name, language, version.VersionName);
         }
 
         private static void RegistToGenerator(PathGenerator generator, Product product, ProductVersion version, string language) {
