@@ -93,7 +93,7 @@ namespace Papyrus.Desktop.Features.Topics {
                     var imagesFolder = ConfigurationManager.AppSettings["ImagesFolder"];
                     var siteDir = Path.Combine(DefaultDirectoryPath, website.ProductName, website.Version, website.Language);
                     await exporter.Export(website,
-                        new ConfigurationPaths(exportationPath, imagesFolder, siteDir));
+                        new ConfigurationPaths(DefaultDirectoryPath, imagesFolder, siteDir));
                 }
             }
         }
