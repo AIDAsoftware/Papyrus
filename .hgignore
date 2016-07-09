@@ -209,5 +209,4 @@ Papyrus.Web/Tests/.idea/
 Papyrus.Web/.idea/
 *.ncrunchproject
 *.csproj
-*.cs
 *.ncrunchsolution
