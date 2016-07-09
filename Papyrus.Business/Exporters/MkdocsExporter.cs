@@ -106,5 +106,31 @@ namespace Papyrus.Business.Exporters {
             this.imagesFolder = imagesFolder;
             this.siteDir = siteDir;
         }
+
+        protected bool Equals(ConfigurationPaths other)
+        {
+            return string.Equals(exportationPath, other.exportationPath) && 
+                string.Equals(imagesFolder, other.imagesFolder) && 
+                string.Equals(siteDir, other.siteDir);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ConfigurationPaths) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (exportationPath != null ? exportationPath.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (imagesFolder != null ? imagesFolder.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (siteDir != null ? siteDir.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }
