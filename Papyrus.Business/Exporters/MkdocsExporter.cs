@@ -93,25 +93,21 @@ namespace Papyrus.Business.Exporters {
     }
 
     public class ConfigurationPaths {
-        private readonly string exportationPath;
-        private readonly string imagesFolder;
-        private readonly string siteDir;
-
-        public string ExportationPath {get { return exportationPath; }}
-        public string ImagesFolder { get { return imagesFolder; } }
-        public string SiteDir { get { return siteDir; } }
+        public string ExportationPath { get; }
+        public string ImagesFolder { get; }
+        public string SiteDir { get; }
 
         public ConfigurationPaths(string exportationPath, string imagesFolder, string siteDir = "") {
-            this.exportationPath = exportationPath;
-            this.imagesFolder = imagesFolder;
-            this.siteDir = siteDir;
+            this.ExportationPath = exportationPath;
+            this.ImagesFolder = imagesFolder;
+            this.SiteDir = siteDir;
         }
 
         protected bool Equals(ConfigurationPaths other)
         {
-            return string.Equals(exportationPath, other.exportationPath) && 
-                string.Equals(imagesFolder, other.imagesFolder) && 
-                string.Equals(siteDir, other.siteDir);
+            return string.Equals(ExportationPath, other.ExportationPath) && 
+                string.Equals(ImagesFolder, other.ImagesFolder) && 
+                string.Equals(SiteDir, other.SiteDir);
         }
 
         public override bool Equals(object obj)
@@ -126,9 +122,9 @@ namespace Papyrus.Business.Exporters {
         {
             unchecked
             {
-                var hashCode = (exportationPath != null ? exportationPath.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (imagesFolder != null ? imagesFolder.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (siteDir != null ? siteDir.GetHashCode() : 0);
+                var hashCode = (ExportationPath != null ? ExportationPath.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (ImagesFolder != null ? ImagesFolder.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (SiteDir != null ? SiteDir.GetHashCode() : 0);
                 return hashCode;
             }
         }
