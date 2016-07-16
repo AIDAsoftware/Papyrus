@@ -33,12 +33,10 @@ namespace Papyrus.Tests.Business {
         public async Task construct_a_website_with_documents_associated_to_given_product_and_version() {
             var versionsNames = VersionNames(LastVersionName);
             var opportunity = new Product("OpportunityId", "Opportunity", VersionsFrom(versionsNames));
-            RepositoryReturnsProductWhenAskingForVersions(opportunity, versionsNames);
             topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish)
                 .Returns(AsyncDocumentsList(englishDocument));
 
-            var websites = await websiteConstructor
-                .Construct(ProductsList(opportunity), versionsNames, Languages(Spanish));
+            var websites = await websiteConstructor.Construct(opportunity, Languages(Spanish));
 
             var websiteDocument = websites.First().Documents.First();
             websiteDocument.Content.Should().Be(EnglishContent);
@@ -49,44 +47,22 @@ namespace Papyrus.Tests.Business {
         public async Task not_create_website_when_there_are_no_document_available() {
             var versionsNames = VersionNames(LastVersionName);
             var opportunity = new Product("OpportunityId", "Opportunity", VersionsFrom(versionsNames));
-            RepositoryReturnsProductWhenAskingForVersions(opportunity, versionsNames);
             topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, Spanish)
                 .Returns(Task.FromResult(new List<ExportableDocument>()));
 
-            var websites = await websiteConstructor.Construct(ProductsList(opportunity), versionsNames, Languages(Spanish));
+            var websites = await websiteConstructor.Construct(opportunity, Languages(Spanish));
 
             websites.Should().BeEmpty();
         }
         
         [Test]
-        public async Task create_websites_when_there_more_than_one_website_in_same_directory() {
-            var versionsNames = VersionNames(LastVersionName);
-            var opportunity = new Product("OpportunityId", "Opportunity", VersionsFrom(versionsNames));
-            var papyrus = new Product("PapyrusId", "Papyrus", VersionsFrom(versionsNames));
-            RepositoryReturnsProductWhenAskingForVersions(opportunity, versionsNames);
-            RepositoryReturnsProductWhenAskingForVersions(papyrus, versionsNames);
-            topicRepo.GetAllDocumentsFor(opportunity.Id, LastVersionName, English)
-                .Returns(AsyncDocumentsList(englishDocument));
-            topicRepo.GetAllDocumentsFor(papyrus.Id, LastVersionName, English)
-                .Returns(AsyncDocumentsList(englishDocument));
-
-            var websites = await websiteConstructor.Construct(ProductsList(opportunity, papyrus), versionsNames, Languages(English));
-
-            websites.Should().HaveCount(2);
-        }
-
-        [Test]
         public async Task fill_product_name() {
             var versionsNames = VersionNames(LastVersionName);
             var papyrus = new Product("PapyrusId", "Papyrus", VersionsFrom(versionsNames));
-            RepositoryReturnsProductWhenAskingForVersions(papyrus, versionsNames);
             topicRepo.GetAllDocumentsFor(papyrus.Id, LastVersionName, English)
                 .Returns(AsyncDocumentsList(englishDocument));
 
-            var websites = await websiteConstructor.Construct(ProductsList(papyrus), 
-                versionsNames, 
-                Languages(English)
-            );
+            var websites = await websiteConstructor.Construct(papyrus, Languages(English));
 
             websites.First().ProductName.Should().Be(papyrus.Name);
         }
@@ -99,12 +75,6 @@ namespace Papyrus.Tests.Business {
 
         private static async Task<List<ExportableDocument>> AsyncDocumentsList(ExportableDocument document) {
             return new List<ExportableDocument>{ document };
-        }
-
-
-        private void RepositoryReturnsProductWhenAskingForVersions(Product product, List<string> versionsNames) {
-            productRepo.GetProductForVersions(product, versionsNames)
-                .Returns(Task.FromResult(product));
         }
 
         private List<string> Languages(string language) {

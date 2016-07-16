@@ -44,17 +44,13 @@ namespace Papyrus.Tests.View {
             var viewModel = await InitializeTopicGridVMWith(topicRepo, productRepo, exporter, websiteConstructor);
             viewModel.SelectedProduct = viewModel.Products.First(p => p.ProductId == OpportunityId);
             var websiteCollection = new WebsiteCollection { WebsiteWithADocument};
-            WhenWebConstructorIsCalledWith(new List<DisplayableProduct>{ viewModel.SelectedProduct }, versions, languages
-            ).Returns(Task.FromResult(websiteCollection));
+            List<DisplayableProduct> products = new List<DisplayableProduct>{ viewModel.SelectedProduct };
+            WhenWebConstructorIsCalledWith(products.First(), languages).Returns(Task.FromResult(websiteCollection));
 
             await ExecuteExportSelectedProductCommandFrom(viewModel);
 
             exporter.Received().Export(WebsiteWithADocument, 
                         Arg.Is<ConfigurationPaths>(c =>c.ImagesFolder == "ImagesFolderForTests"));
-        }
-
-        private void StubOutProductRepoToReturnAsLastVersionWhenIsCalledWithProduct(string lastVersion, string productId) {
-            productRepo.GetLastVersionForProduct(productId).Returns(Task.FromResult(new ProductVersion(lastVersion, lastVersion, DateTime.Today)));
         }
 
         private void StubOutProductRepoToReturnAsAllVersionsWhenIsCalledWithProduct(List<string> versions, string productId) {
@@ -72,17 +68,10 @@ namespace Papyrus.Tests.View {
             return viewModel;
         }
 
-        private async Task<WebsiteCollection> WhenWebConstructorIsCalledWith(List<DisplayableProduct> products, List<string> versions, List<string> languages) {
-            return await websiteConstructor.Construct(Arg.Is<IEnumerable<Product>>(ps => AreEquivalent(ps, products)),
-                Arg.Is<List<string>>(vs => vs.SequenceEqual(versions)), 
-                Arg.Is<List<string>>(ls => ls.SequenceEqual(languages)));
-        }
-
-        private bool AreEquivalent(IEnumerable<Product> products, List<DisplayableProduct> displayableProducts) {
-            return products
-                .Select(x => x.Id)
-                .SequenceEqual(displayableProducts
-                                .Select(x => x.ProductId));
+        private async Task<WebsiteCollection> WhenWebConstructorIsCalledWith(DisplayableProduct product, List<string> languages)
+        {
+            return await websiteConstructor.Construct(
+                Arg.Is<Product>(p => p.Id == product.ProductId), Arg.Is<List<string>>(ls => ls.SequenceEqual(languages)));
         }
 
         private static WebSite WebsiteWith(ExportableDocument document) {

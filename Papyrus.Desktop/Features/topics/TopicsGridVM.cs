@@ -66,13 +66,11 @@ namespace Papyrus.Desktop.Features.Topics {
         }
 
         private async Task ExportProduct() {
-            var product = CastToProductType(SelectedProduct);
-            var versionsNames = (await productRepository.GetAllVersionsFor(product.Id)).Select(v => v.VersionName).ToList();
-            var websiteCollection = await websiteConstructor.Construct(new List<Product> { product }, versionsNames, languages
-            );
+            var product = await productRepository.GetProduct(SelectedProduct.ProductId);
+            var websiteCollection = await websiteConstructor.Construct(product, languages);
             await Export(websiteCollection);
         }
-
+        
         private async Task Export(WebsiteCollection websiteCollection) {
             try {
                 await TryExportation(websiteCollection);

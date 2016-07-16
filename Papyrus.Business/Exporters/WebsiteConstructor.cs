@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
@@ -14,13 +15,17 @@ namespace Papyrus.Business.Exporters {
             this.productRepo = productRepo;
         }
 
-        public virtual async Task<WebsiteCollection> Construct(IEnumerable<Product> products, List<string> versions, List<string> languages) {
-            websitesCollection = new WebsiteCollection();
-            foreach (var product in products) {
-                var productWithVersions = await productRepo.GetProductForVersions(product, versions);
-                await AddWebsitesFor(productWithVersions, languages);
+        public virtual async Task<WebsiteCollection> Construct(Product product, List<string> languages)
+        {
+            var websites = new WebsiteCollection();
+            foreach (var version in product.Versions) {
+                foreach (var language in languages) {
+                    var website = await CreateWebsiteWithAllDocumentsFor(product, version, language);
+                    if (website.HasNotDocuments()) continue;
+                    websites.Add(website);
+                }
             }
-            return websitesCollection;
+            return websites;
         }
 
         private async Task AddWebsitesFor(Product product, List<string> languages) {
