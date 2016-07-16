@@ -4,30 +4,23 @@ using System.Linq;
 using Papyrus.Business.Products;
 
 namespace Papyrus.Business.Exporters {
-    public class WebsiteCollection : IEnumerable {
-        private readonly List<List<WebSite>> websites;
-
-        public int Count => websites.Count;
+    public class WebsiteCollection : IEnumerable<WebSite> {
+        private readonly List<WebSite> websites;
 
         public WebsiteCollection() {
-            websites = new List<List<WebSite>>();
+            websites = new List<WebSite>();
         }
 
         public void Add(WebSite website) {
-            websites.Add(new List<WebSite> {website});
+            websites.Add(website);
         }
 
-        public IEnumerator<List<WebSite>> GetEnumerator() {
+        public IEnumerator<WebSite> GetEnumerator() {
             return websites.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
-        }
-
-        public List<WebSite> First()
-        {
-            return websites.First();
         }
     }
 
