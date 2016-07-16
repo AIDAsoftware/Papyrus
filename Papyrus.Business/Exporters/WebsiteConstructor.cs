@@ -14,19 +14,18 @@ namespace Papyrus.Business.Exporters {
             this.productRepo = productRepo;
         }
 
-        public virtual async Task<WebsiteCollection> Construct(PathGenerator pathGenerator, IEnumerable<Product> products, List<string> versions, List<string> languages) {
+        public virtual async Task<WebsiteCollection> Construct(IEnumerable<Product> products, List<string> versions, List<string> languages) {
             websitesCollection = new WebsiteCollection();
             foreach (var product in products) {
                 var productWithVersions = await productRepo.GetProductForVersions(product, versions);
-                await AddWebsitesFor(pathGenerator, productWithVersions, languages);
+                await AddWebsitesFor(productWithVersions, languages);
             }
             return websitesCollection;
         }
 
-        private async Task AddWebsitesFor(PathGenerator generator, Product product, List<string> languages) {
+        private async Task AddWebsitesFor(Product product, List<string> languages) {
             foreach (var version in product.Versions) {
                 foreach (var language in languages) {
-                    RegistToGenerator(generator, product, version, language);
                     var website = await CreateWebsiteWithAllDocumentsFor(product, version, language);
                     if (website.HasNotDocuments()) continue;
                     websitesCollection.Add(website);
@@ -37,12 +36,6 @@ namespace Papyrus.Business.Exporters {
         private async Task<WebSite> CreateWebsiteWithAllDocumentsFor(Product product, ProductVersion version, string language) {
             var documents = await topicRepo.GetAllDocumentsFor(product.Id, version.VersionName, language);
             return new WebSite(documents, product.Name, language, version.VersionName);
-        }
-
-        private static void RegistToGenerator(PathGenerator generator, Product product, ProductVersion version, string language) {
-            generator.ForProduct(product.Name);
-            generator.ForVersion(version.VersionName);
-            generator.ForLanguage(language);
         }
     }
 }

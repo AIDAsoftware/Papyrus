@@ -44,14 +44,13 @@ namespace Papyrus.Tests.View {
             var viewModel = await InitializeTopicGridVMWith(topicRepo, productRepo, exporter, websiteConstructor);
             viewModel.SelectedProduct = viewModel.Products.First(p => p.ProductId == OpportunityId);
             var websiteCollection = new WebsiteCollection { WebsiteWithADocument};
-            WhenWebConstructorIsCalledWith(
-                Arg.Any<PathGenerator>(), new List<DisplayableProduct>{ viewModel.SelectedProduct }, versions, languages
+            WhenWebConstructorIsCalledWith(new List<DisplayableProduct>{ viewModel.SelectedProduct }, versions, languages
             ).Returns(Task.FromResult(websiteCollection));
 
             await ExecuteExportSelectedProductCommandFrom(viewModel);
 
             exporter.Received().Export(WebsiteWithADocument, 
-                        Arg.Is<ConfigurationPaths>(c => c.ExportationPath.EndsWith("Any/Path")
+                        Arg.Is<ConfigurationPaths>(c => c.ExportationPath.Contains("Any/Path")
                                                         && c.ImagesFolder == "ImagesFolderForTests"));
         }
 
@@ -74,10 +73,8 @@ namespace Papyrus.Tests.View {
             return viewModel;
         }
 
-        private async Task<WebsiteCollection> WhenWebConstructorIsCalledWith(PathGenerator aPathByVersionGenerator, List<DisplayableProduct> products, List<string> versions, List<string> languages) {
-            return await websiteConstructor.Construct(
-                aPathByVersionGenerator, 
-                Arg.Is<IEnumerable<Product>>(ps => AreEquivalent(ps, products)),
+        private async Task<WebsiteCollection> WhenWebConstructorIsCalledWith(List<DisplayableProduct> products, List<string> versions, List<string> languages) {
+            return await websiteConstructor.Construct(Arg.Is<IEnumerable<Product>>(ps => AreEquivalent(ps, products)),
                 Arg.Is<List<string>>(vs => vs.SequenceEqual(versions)), 
                 Arg.Is<List<string>>(ls => ls.SequenceEqual(languages)));
         }

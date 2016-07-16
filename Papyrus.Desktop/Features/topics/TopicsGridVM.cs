@@ -68,8 +68,7 @@ namespace Papyrus.Desktop.Features.Topics {
         private async Task ExportProduct() {
             var product = CastToProductType(SelectedProduct);
             var versionsNames = (await productRepository.GetAllVersionsFor(product.Id)).Select(v => v.VersionName).ToList();
-            var websiteCollection = await websiteConstructor.Construct(
-                new PathGenerator(), new List<Product> { product }, versionsNames, languages
+            var websiteCollection = await websiteConstructor.Construct(new List<Product> { product }, versionsNames, languages
             );
             await Export(websiteCollection);
         }
@@ -87,7 +86,6 @@ namespace Papyrus.Desktop.Features.Topics {
 
         private async Task TryExportation(WebsiteCollection websiteCollection) {
             foreach (var webSite in websiteCollection) {
-                //TODO: calculate website settings to pass them to the exporter 
                 var imagesFolder = ConfigurationManager.AppSettings["ImagesFolder"];
                 var siteDir = Path.Combine(DefaultDirectoryPath, webSite.ProductName, webSite.Version, webSite.Language);
                 var exportationPath = DefaultDirectoryPath + GenerateMkdocsPath(webSite);
@@ -187,8 +185,7 @@ namespace Papyrus.Desktop.Features.Topics {
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

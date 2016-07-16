@@ -130,7 +130,6 @@
     <Compile Include="Business\TopicServiceShould.cs" />
     <Compile Include="Business\VersionRangeCollisionDetectorShould.cs" />
     <Compile Include="Business\VersionRangeShould.cs" />
-    <Compile Include="Business\PathByProductGeneratorShould.cs" />
     <Compile Include="Business\WebConstructorShould.cs" />
     <Compile Include="Infrastructure\Database\DatabaseConnectionShould.cs" />
     <Compile Include="Infrastructure\FileSystemImageCopierShould.cs" />

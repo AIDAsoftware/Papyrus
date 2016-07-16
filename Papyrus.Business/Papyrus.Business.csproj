@@ -74,8 +74,6 @@
     <Compile Include="Exporters\MkdocsExporter.cs" />
     <Compile Include="Exporters\MkdocsFileNameConverter.cs" />
     <Compile Include="Exporters\NoDocument.cs" />
-    <Compile Include="Exporters\PathByProductGenerator.cs" />
-    <Compile Include="Exporters\PathGenerator.cs" />
     <Compile Include="Exporters\WebsiteCollection.cs" />
     <Compile Include="Exporters\WebsiteConstructor.cs" />
     <Compile Include="Products\FullVersionRange.cs" />
