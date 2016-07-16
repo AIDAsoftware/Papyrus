@@ -23,14 +23,4 @@ namespace Papyrus.Business.Exporters {
             return GetEnumerator();
         }
     }
-
-    public class WebsitePathPair {
-        public List<WebSite> Websites { get; private set; }
-        public string Path { get; private set; }
-
-        public WebsitePathPair(List<WebSite> websites, string path) {
-            Websites = websites;
-            Path = path;
-        }
-    }
 }
