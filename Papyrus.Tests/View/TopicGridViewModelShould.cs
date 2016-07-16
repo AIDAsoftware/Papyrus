@@ -50,8 +50,7 @@ namespace Papyrus.Tests.View {
             await ExecuteExportSelectedProductCommandFrom(viewModel);
 
             exporter.Received().Export(WebsiteWithADocument, 
-                        Arg.Is<ConfigurationPaths>(c => c.ExportationPath.Contains("Any/Path")
-                                                        && c.ImagesFolder == "ImagesFolderForTests"));
+                        Arg.Is<ConfigurationPaths>(c =>c.ImagesFolder == "ImagesFolderForTests"));
         }
 
         private void StubOutProductRepoToReturnAsLastVersionWhenIsCalledWithProduct(string lastVersion, string productId) {

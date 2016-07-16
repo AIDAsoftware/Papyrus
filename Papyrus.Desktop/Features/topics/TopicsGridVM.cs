@@ -27,7 +27,7 @@ namespace Papyrus.Desktop.Features.Topics {
         public ObservableCollection<TopicSummary> TopicsToList { get; protected set; }
         public ObservableCollection<DisplayableProduct> Products { get; private set; }
         public TopicSummary SelectedTopic { get; set; }
-        private string DefaultDirectoryPath { get; set; }
+        private string DefaultDirectoryPath { get; }
 
         private DisplayableProduct selectedProduct;
         public DisplayableProduct SelectedProduct
