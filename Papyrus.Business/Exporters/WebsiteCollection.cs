@@ -7,13 +7,7 @@ namespace Papyrus.Business.Exporters {
     public class WebsiteCollection : IEnumerable {
         private readonly Dictionary<string, List<WebSite>> websites;
 
-        public int Count {
-            get { return websites.Count; }
-        }
-
-        public List<WebSite> this[string path] {
-            get { return websites[path]; }
-        }
+        public int Count => websites.Count;
 
         public WebsiteCollection() {
             websites = new Dictionary<string, List<WebSite>>();
@@ -32,6 +26,11 @@ namespace Papyrus.Business.Exporters {
 
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
+        }
+
+        public List<WebSite> First()
+        {
+            return websites.Values.First();
         }
     }
 

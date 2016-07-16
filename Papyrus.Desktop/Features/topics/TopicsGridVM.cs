@@ -79,7 +79,8 @@ namespace Papyrus.Desktop.Features.Topics {
                 await TryExportation(websiteCollection);
                 ToastNotificator.NotifyMessage("Exportación realizada con éxito");
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 EventBus.Send(new OnUserMessageRequest("Ha ocurrido un error en la exportación"));
             }
         }

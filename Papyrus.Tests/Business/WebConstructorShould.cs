@@ -46,7 +46,7 @@ namespace Papyrus.Tests.Business {
             var websites = await websiteConstructor
                 .Construct(pathGenerator, ProductsList(opportunity), versionsNames, Languages(Spanish));
 
-            var websiteDocument = websites["Route/Route"].First().Documents.First();
+            var websiteDocument = websites.First().First().Documents.First();
             websiteDocument.Content.Should().Be(EnglishContent);
             websiteDocument.Title.Should().Be(EnglishTitle);
         }
@@ -97,7 +97,7 @@ namespace Papyrus.Tests.Business {
             var websites = await websiteConstructor.Construct(pathGenerator, ProductsList(opportunity, papyrus), versionsNames, Languages(English));
 
             pathGenerator.Received(2).GenerateMkdocsPath();
-            websites["Any/Path"].Should().HaveCount(2);
+            websites.First().Should().HaveCount(2);
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace Papyrus.Tests.Business {
                 Languages(English)
             );
 
-            websites["Any/Path"].First().ProductName.Should().Be(papyrus.Name);
+            websites.First().First().ProductName.Should().Be(papyrus.Name);
         }
 
         private List<ProductVersion> VersionsFrom(List<string> versionsNames) {
