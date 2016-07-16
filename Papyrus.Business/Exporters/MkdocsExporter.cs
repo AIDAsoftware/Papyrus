@@ -86,42 +86,4 @@ namespace Papyrus.Business.Exporters {
             return MkdocsFileNameConverter.ConvertToValidFileName(title);
         }
     }
-
-    public class ConfigurationPaths {
-        public string ExportationPath { get; }
-        public string ImagesFolder { get; }
-        public string SiteDir { get; }
-
-        public ConfigurationPaths(string exportationPath, string imagesFolder, string siteDir = "") {
-            this.ExportationPath = exportationPath;
-            this.ImagesFolder = imagesFolder;
-            this.SiteDir = siteDir;
-        }
-
-        protected bool Equals(ConfigurationPaths other)
-        {
-            return string.Equals(ExportationPath, other.ExportationPath) && 
-                string.Equals(ImagesFolder, other.ImagesFolder) && 
-                string.Equals(SiteDir, other.SiteDir);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((ConfigurationPaths) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = (ExportationPath != null ? ExportationPath.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (ImagesFolder != null ? ImagesFolder.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (SiteDir != null ? SiteDir.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
-    }
 }
