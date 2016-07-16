@@ -1,0 +1,9 @@
+*.user
+
+.vs
+bin
+obj
+packages
+Spec/*
+*.ncrunchproject
+*.ncrunchsolution
