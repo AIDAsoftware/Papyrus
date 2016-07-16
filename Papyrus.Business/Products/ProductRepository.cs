@@ -14,7 +14,5 @@ namespace Papyrus.Business.Products
         Task<ProductVersion> GetVersion(string versionId);
         Task<FullVersionRange> GetFullVersionRangeForProduct(string productId);
         Task<List<ProductVersion>> GetAllVersionsFor(string productId);
-        Task<ProductVersion> GetLastVersionForProduct(string productId);
-        Task<List<string>> GetAllVersionNames();
     }
 }

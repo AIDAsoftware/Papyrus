@@ -84,9 +84,5 @@ namespace Papyrus.Tests.View {
         private void StubOutProductRepoToReturnAsAllProducts(List<DisplayableProduct> products) {
             productRepo.GetAllDisplayableProducts().Returns(Task.FromResult(products));
         }
-
-        private void StubOutProductRepoToReturnAsAllVersions(List<string> versions) {
-            productRepo.GetAllVersionNames().Returns(Task.FromResult(versions));
-        }
     }
 }
