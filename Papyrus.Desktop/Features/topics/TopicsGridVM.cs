@@ -92,10 +92,17 @@ namespace Papyrus.Desktop.Features.Topics {
                     //TODO: calculate website settings to pass them to the exporter 
                     var imagesFolder = ConfigurationManager.AppSettings["ImagesFolder"];
                     var siteDir = Path.Combine(DefaultDirectoryPath, website.ProductName, website.Version, website.Language);
+                    var exportationPath2 = DefaultDirectoryPath + GenerateMkdocsPath(website);
                     await exporter.Export(website,
-                        new ConfigurationPaths(DefaultDirectoryPath, imagesFolder, siteDir));
+                        new ConfigurationPaths(exportationPath2, imagesFolder, siteDir));
                 }
             }
+        }
+
+        public virtual string GenerateMkdocsPath(WebSite webSite)
+        {
+            const string separator = "/";
+            return webSite.Version + separator + webSite.ProductName + separator + webSite.Language;
         }
 
         private static Product CastToProductType(DisplayableProduct p) {

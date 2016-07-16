@@ -17,7 +17,7 @@ namespace Papyrus.Business.Exporters {
 
         public virtual async Task Export(WebSite webSite, ConfigurationPaths configurationPaths) {
             var configuration = CreateConfiguration(configurationPaths.SiteDir);
-            var exportationPath = Path.Combine(configurationPaths.ExportationPath, GenerateMkdocsPath(webSite));
+            var exportationPath = configurationPaths.ExportationPath;
             await InitializeMkdocsStructure(
                 exportationPath, configuration);
             foreach (var document in webSite.Documents) {
@@ -29,11 +29,6 @@ namespace Papyrus.Business.Exporters {
             CopyImagesInTheSite(
                 exportationPath, 
                 configurationPaths.ImagesFolder);
-        }
-
-        public virtual string GenerateMkdocsPath(WebSite webSite) {
-            const string separator = "/";
-            return webSite.Version + separator + webSite.ProductName + separator + webSite.Language;
         }
 
         private void CopyImagesInTheSite(string path, string imagesFolder) {
