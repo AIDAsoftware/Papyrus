@@ -88,7 +88,7 @@ namespace Papyrus.Desktop.Features.Topics {
             foreach (var webSite in websiteCollection) {
                 var imagesFolder = ConfigurationManager.AppSettings["ImagesFolder"];
                 var siteDir = Path.Combine(DefaultDirectoryPath, webSite.ProductName, webSite.Version, webSite.Language);
-                var exportationPath = DefaultDirectoryPath + GenerateMkdocsPath(webSite);
+                var exportationPath = DefaultDirectoryPath + "/" + GenerateMkdocsPath(webSite);
                 await exporter.Export(webSite,
                     new ConfigurationPaths(exportationPath, imagesFolder, siteDir));
             }
