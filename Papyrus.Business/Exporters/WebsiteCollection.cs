@@ -5,23 +5,20 @@ using Papyrus.Business.Products;
 
 namespace Papyrus.Business.Exporters {
     public class WebsiteCollection : IEnumerable {
-        private readonly Dictionary<string, List<WebSite>> websites;
+        private readonly List<List<WebSite>> websites;
 
         public int Count => websites.Count;
 
         public WebsiteCollection() {
-            websites = new Dictionary<string, List<WebSite>>();
+            websites = new List<List<WebSite>>();
         }
 
-        public void Add(string path, WebSite website) {
-            if (websites.ContainsKey(path))
-                websites[path].Add(website);
-            else 
-                websites.Add(path, new List<WebSite>{website});
+        public void Add(WebSite website) {
+            websites.Add(new List<WebSite> {website});
         }
 
         public IEnumerator<List<WebSite>> GetEnumerator() {
-            return websites.Values.GetEnumerator();
+            return websites.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
@@ -30,7 +27,7 @@ namespace Papyrus.Business.Exporters {
 
         public List<WebSite> First()
         {
-            return websites.Values.First();
+            return websites.First();
         }
     }
 

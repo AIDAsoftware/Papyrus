@@ -96,8 +96,7 @@ namespace Papyrus.Tests.Business {
 
             var websites = await websiteConstructor.Construct(pathGenerator, ProductsList(opportunity, papyrus), versionsNames, Languages(English));
 
-            pathGenerator.Received(2).GenerateMkdocsPath();
-            websites.First().Should().HaveCount(2);
+            websites.Should().HaveCount(2);
         }
 
         [Test]

@@ -29,7 +29,7 @@ namespace Papyrus.Business.Exporters {
                     RegistToGenerator(generator, product, version, language);
                     var website = await CreateWebsiteWithAllDocumentsFor(product, version, language);
                     if (website.HasNotDocuments()) continue;
-                    websitesCollection.Add(generator.GenerateMkdocsPath(), website);
+                    websitesCollection.Add(website);
                 }
             }
         }

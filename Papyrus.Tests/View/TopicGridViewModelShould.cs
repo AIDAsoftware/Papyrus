@@ -43,7 +43,7 @@ namespace Papyrus.Tests.View {
             StubOutProductRepoToReturnAsAllVersionsWhenIsCalledWithProduct(versions, OpportunityId);
             var viewModel = await InitializeTopicGridVMWith(topicRepo, productRepo, exporter, websiteConstructor);
             viewModel.SelectedProduct = viewModel.Products.First(p => p.ProductId == OpportunityId);
-            var websiteCollection = new WebsiteCollection { { "Any/Path", WebsiteWithADocument } };
+            var websiteCollection = new WebsiteCollection { WebsiteWithADocument};
             WhenWebConstructorIsCalledWith(
                 Arg.Any<PathGenerator>(), new List<DisplayableProduct>{ viewModel.SelectedProduct }, versions, languages
             ).Returns(Task.FromResult(websiteCollection));
