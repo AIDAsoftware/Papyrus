@@ -20,8 +20,8 @@ namespace Papyrus.Business.Exporters {
                 websites.Add(path, new List<WebSite>{website});
         }
 
-        public IEnumerator<WebsitePathPair> GetEnumerator() {
-            return websites.Select(website => new WebsitePathPair(website.Value, website.Key)).GetEnumerator();
+        public IEnumerator<List<WebSite>> GetEnumerator() {
+            return websites.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
