@@ -39,18 +39,18 @@ namespace Papyrus.Tests.View {
 
         [Test]
         public async Task export_all_documentation_for_selected_product_in_spanish_and_english() {
+            topicRepo.GetAllTopicsSummariesFor(Arg.Any<string>()).Returns(Task.FromResult(new List<TopicSummary>()));
+            productRepo.GetProduct(OpportunityId).Returns(Task.FromResult(new Product(OpportunityId, "", new List<ProductVersion>())));
             StubOutProductRepoToReturnAsAllProducts(allProducts);
             StubOutProductRepoToReturnAsAllVersionsWhenIsCalledWithProduct(versions, OpportunityId);
             var viewModel = await InitializeTopicGridVMWith(topicRepo, productRepo, exporter, websiteConstructor);
-            viewModel.SelectedProduct = viewModel.Products.First(p => p.ProductId == OpportunityId);
+            viewModel.SelectedProduct = new DisplayableProduct { ProductId = OpportunityId, ProductName = "Any" };
             var websiteCollection = new WebsiteCollection { WebsiteWithADocument};
-            List<DisplayableProduct> products = new List<DisplayableProduct>{ viewModel.SelectedProduct };
-            WhenWebConstructorIsCalledWith(products.First(), languages).Returns(Task.FromResult(websiteCollection));
+            WhenWebConstructorIsCalledWith(OpportunityId, languages).Returns(Task.FromResult(websiteCollection));
 
             await ExecuteExportSelectedProductCommandFrom(viewModel);
 
-            exporter.Received().Export(WebsiteWithADocument, 
-                        Arg.Is<ConfigurationPaths>(c =>c.ImagesFolder == "ImagesFolderForTests"));
+            exporter.Received().Export(WebsiteWithADocument, Arg.Any<ConfigurationPaths>());
         }
 
         private void StubOutProductRepoToReturnAsAllVersionsWhenIsCalledWithProduct(List<string> versions, string productId) {
@@ -68,10 +68,10 @@ namespace Papyrus.Tests.View {
             return viewModel;
         }
 
-        private async Task<WebsiteCollection> WhenWebConstructorIsCalledWith(DisplayableProduct product, List<string> languages)
+        private async Task<WebsiteCollection> WhenWebConstructorIsCalledWith(string productId, List<string> languages)
         {
             return await websiteConstructor.Construct(
-                Arg.Is<Product>(p => p.Id == product.ProductId), Arg.Is<List<string>>(ls => ls.SequenceEqual(languages)));
+                Arg.Is<Product>(p => p.Id == productId), Arg.Is<List<string>>(ls => ls.SequenceEqual(languages)));
         }
 
         private static WebSite WebsiteWith(ExportableDocument document) {
