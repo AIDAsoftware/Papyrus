@@ -86,6 +86,7 @@
     <Compile Include="Business\DocumentShould.cs" />
     <Compile Include="Business\EditableTopicShould.cs" />
     <Compile Include="Business\MkdocsExporterShould.cs" />
+    <Compile Include="Business\ProductShould.cs" />
     <Compile Include="Business\TopicServiceShould.cs" />
     <Compile Include="Business\VersionRangeCollisionDetectorShould.cs" />
     <Compile Include="Business\VersionRangeShould.cs" />

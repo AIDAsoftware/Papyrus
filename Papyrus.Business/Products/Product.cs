@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Papyrus.Business.Products
 {
@@ -15,6 +16,7 @@ namespace Papyrus.Business.Products
             Versions = new List<ProductVersion>();
         }
 
+        //TODO: check why we have 3 constructors
         public Product(string id)
         {
             Id = id;
@@ -30,6 +32,11 @@ namespace Papyrus.Business.Products
         private void GenerateAutomaticId()
         {
             Id = Guid.NewGuid().ToString();
+        }
+        
+        public ProductVersion FirstVersion()
+        {
+            return Versions.OrderBy(productVersion => productVersion.Release).First();
         }
     }
 }
