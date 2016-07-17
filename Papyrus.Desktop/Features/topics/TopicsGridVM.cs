@@ -162,11 +162,11 @@ namespace Papyrus.Desktop.Features.Topics {
 
         private async Task<EditableVersionRange> DefaultVersionRange()
         {
-            var fullVersionRange = await productRepository.GetFullVersionRangeForProduct(SelectedProduct.ProductId);
+            var product = await productRepository.GetProduct(SelectedProduct.ProductId);
             var editableVersionRange = new EditableVersionRange
             {
-                FromVersion = await productRepository.GetVersion(fullVersionRange.FirstVersionId),
-                ToVersion = await productRepository.GetVersion(fullVersionRange.LatestVersionId)
+                FromVersion = product.FirstVersion(),
+                ToVersion = product.LastVersion()
             };
             AddDocumentsForDefaultLanguages(editableVersionRange);
             return editableVersionRange;
