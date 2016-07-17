@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
@@ -34,33 +35,36 @@ namespace Papyrus.Tests.Business
         }
 
         [Test]
-        [ExpectedException(typeof(CannotSaveTopicsWithNoRelatedProductException))]
-        public async void fail_when_trying_to_save_topics_with_no_related_product()
+        public void fail_when_trying_to_save_topics_with_no_related_product()
         {
             var topic = new Topic(null);
             topic.AddVersionRange(anyVersionRange);
 
-            await topicService.Create(topic);
+            Func<Task> create = async () => await topicService.Create(topic);
+
+            create.ShouldThrow<CannotSaveTopicsWithNoRelatedProductException>();
         }
 
         [Test]
-        [ExpectedException(typeof(CannotSaveTopicsWithNoVersionRangesException))]
-        public async void fail_when_trying_to_save_topics_with_no_ranges()
+        public void fail_when_trying_to_save_topics_with_no_ranges()
         {
             var topic = new Topic(anyProductId);
 
-            await topicService.Create(topic);
+            Func<Task> create = async () => await topicService.Create(topic);
+
+            create.ShouldThrow<CannotSaveTopicsWithNoVersionRangesException>();
         }
 
         [Test]
-        [ExpectedException(typeof(CannotSaveTopicsWithDefinedTopicIdException))]
-        public async void fail_when_trying_to_save_topics_with_id()
+        public void fail_when_trying_to_save_topics_with_id()
         {
             var topic = new Topic(anyProductId)
                             .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
 
-            await topicService.Create(topic);
+            Func<Task> create = async () => await topicService.Create(topic);
+
+            create.ShouldThrow<CannotSaveTopicsWithDefinedTopicIdException>();
         }
 
         [Test]
@@ -87,11 +91,11 @@ namespace Papyrus.Tests.Business
 
 
         [Test]
-        public async void save_a_topic_when_it_is_created()
+        public async Task save_a_topic_when_it_is_created()
         {
             var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
-            collisionDetector.CollisionsFor(topic).Returns(Task.FromResult(new List<Collision>()));
+            collisionDetector.CollisionsFor(topic).Returns(new List<Collision>());
 
             await topicService.Create(topic);
 
@@ -100,23 +104,25 @@ namespace Papyrus.Tests.Business
         }
 
         [Test]
-        [ExpectedException(typeof(CannotUpdateTopicsWithoutTopicIdDeclaredException))]
         public async Task fail_when_trying_to_update_a_topic_without_id()
         {
             var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
 
-            await topicService.Update(topic);
+            Func<Task> update = async () => await topicService.Update(topic);
+
+            update.ShouldThrow<CannotUpdateTopicsWithoutTopicIdDeclaredException>();
         }
 
         [Test]
-        [ExpectedException(typeof(CannotUpdateTopicsWithNoVersionRangesException))]
         public async Task fail_when_trying_to_update_a_topic_with_no_ranges()
         {
             var topic = new Topic(anyProductId)
                 .WithId("AnyTopicId");
 
-            await topicService.Update(topic);
+            Func<Task> update = async () => await topicService.Update(topic);
+
+            update.ShouldThrow<CannotUpdateTopicsWithNoVersionRangesException>();
         }
 
         [Test]
@@ -166,11 +172,13 @@ namespace Papyrus.Tests.Business
         }
 
         [Test]
-        [ExpectedException(typeof(CannotDeleteTopicsWithoutTopicIdAssignedException))]
         public async Task fail_when_try_to_delete_a_topic_without_topic_id_assigned()
         {
             var topic = new Topic(anyProductId);
-            await topicService.Delete(topic.TopicId);
+
+            Func<Task> delete = async () => await topicService.Delete(topic.TopicId);
+
+            delete.ShouldThrow<CannotDeleteTopicsWithoutTopicIdAssignedException>();
         }
     }
 }

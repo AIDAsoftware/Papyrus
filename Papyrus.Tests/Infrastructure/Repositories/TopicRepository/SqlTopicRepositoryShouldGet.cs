@@ -4,10 +4,8 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 using Papyrus.Business.Documents;
-using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
-using Papyrus.Business.Topics.Exceptions;
 using Papyrus.Business.VersionRanges;
 using Papyrus.Infrastructure.Core.Database;
 using Papyrus.Tests.Builders;
@@ -43,7 +41,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async void a_topic_summary_list()
+        public async Task a_topic_summary_list()
         {
             await InsertProductWithItsVersions();
             var topic = new TopicBuilder(ProductId, "AnyTopicId")
@@ -86,7 +84,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async void a_list_with_topics_with_wildcard_as_to_version()
+        public async Task a_list_with_topics_with_wildcard_as_to_version()
         {
             await InsertProductWithItsVersions();
             var topic = new Topic(ProductId).WithId("AnyTopicId");

@@ -22,7 +22,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories {
         }
 
         [Test]
-        public async void load_a_product() {
+        public async Task load_a_product() {
             const string anyVersionId = "AnyVersionId";
             const string anyVersionName = "AnyVersionName";
             var versions = new List<ProductVersion> { new ProductVersion(anyVersionId, anyVersionName, DateTime.Today) };
@@ -39,7 +39,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories {
         }
 
         [Test]
-        public async void load_a_product_with_its_versions() {
+        public async Task load_a_product_with_its_versions() {
             var versions = new List<ProductVersion>
             {
                 new ProductVersion("versionId1", "version1", DateTime.Today.AddDays(-1)),
@@ -56,7 +56,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories {
         }
 
         [Test]
-        public async void return_null_when_try_to_load_an_no_existing_product() {
+        public async Task return_null_when_try_to_load_an_no_existing_product() {
             var product = await sqlProductRepository.GetProduct("AnyId");
 
             product.Should().Be(null);
