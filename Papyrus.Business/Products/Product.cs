@@ -36,12 +36,17 @@ namespace Papyrus.Business.Products
         
         public ProductVersion FirstVersion()
         {
-            return Versions.OrderBy(productVersion => productVersion.Release).First();
+            return OrderedVersions().First();
         }
 
         public ProductVersion LastVersion()
         {
-            return Versions.OrderBy(productVersion => productVersion.Release).Last();
+            return OrderedVersions().Last();
+        }
+
+        private IEnumerable<ProductVersion> OrderedVersions()
+        {
+            return Versions.OrderBy(productVersion => productVersion.Release);
         }
     }
 }
