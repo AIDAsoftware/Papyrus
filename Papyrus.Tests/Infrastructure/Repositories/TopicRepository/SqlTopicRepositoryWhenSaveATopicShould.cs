@@ -29,7 +29,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async void save_a_topic()
+        public async Task save_a_topic()
         {
             await topicRepository.Save(anyTopic);
 
@@ -38,7 +38,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async void save_version_ranges_of_a_topic()
+        public async Task save_version_ranges_of_a_topic()
         {
             var versionRange = new VersionRange(fromVersion: version1, toVersion: version1).WithId("FirstVersionRangeId");
             anyTopic.AddVersionRange(versionRange);
@@ -52,7 +52,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async void save_documents_foreach_version_range_in_a_topic()
+        public async Task save_documents_foreach_version_range_in_a_topic()
         {
             var versionRange = new VersionRange(fromVersion: version1, toVersion: version1).WithId("AnyVersionRangeId");
             anyTopic.AddVersionRange(versionRange);

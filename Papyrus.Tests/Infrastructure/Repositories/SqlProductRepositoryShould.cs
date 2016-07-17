@@ -65,7 +65,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories {
         }
 
         [Test]
-        public async Task load_a_list_with_all_products_containing_its_versions() {
+	public async Task load_a_list_with_all_products_containing_its_versions() {
             var versionsForPapyrus = new List<ProductVersion>
             {
                 new ProductVersion("AnyIdForPapyrus", "AnyVersion", DateTime.Today.AddDays(-1)),
