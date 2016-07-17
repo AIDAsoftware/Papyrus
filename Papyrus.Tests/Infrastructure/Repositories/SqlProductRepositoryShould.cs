@@ -87,23 +87,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories {
             products.ToArray().Length.Should().Be(2);
         }
 
-        [Test]
-        public async Task gets_range_that_goes_from_first_version_to_the_latest_one() {
-            var versions = new List<ProductVersion>
-            {
-                new ProductVersion("FirstVersionId", "1.0", DateTime.Today.AddDays(-3)),
-                new ProductVersion("SecondVersionId", "2.0", DateTime.Today.AddDays(-2)),
-                new ProductVersion("ThirdVersionId", "3.0", DateTime.Today.AddDays(-1)),
-            };
-            var product = new Product("PapyrusId", "Papyrus", versions);
-            await InsertProduct(product);
-
-            var fullRange = await sqlProductRepository.GetFullVersionRangeForProduct(product.Id);
-
-            fullRange.FirstVersionId.Should().Be("FirstVersionId");
-            fullRange.LatestVersionId.Should().Be("ThirdVersionId");
-        }
-
         private async Task InsertProduct(Product product) {
             await dbConnection.Execute(@"INSERT INTO Product(ProductId, ProductName) 
                                 VALUES (@ProductId, @ProductName);",

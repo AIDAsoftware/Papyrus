@@ -9,7 +9,5 @@ namespace Papyrus.Business.Products
     {
         Task<Product> GetProduct(string productId);
         Task<List<DisplayableProduct>> GetAllDisplayableProducts();
-        Task<ProductVersion> GetVersion(string versionId);
-        Task<FullVersionRange> GetFullVersionRangeForProduct(string productId);
     }
 }
