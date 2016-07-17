@@ -38,5 +38,10 @@ namespace Papyrus.Business.Products
         {
             return Versions.OrderBy(productVersion => productVersion.Release).First();
         }
+
+        public ProductVersion LastVersion()
+        {
+            return Versions.OrderBy(productVersion => productVersion.Release).Last();
+        }
     }
 }

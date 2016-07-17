@@ -21,5 +21,18 @@ namespace Papyrus.Tests.Business
 
             product.FirstVersion().Should().Be(firstVersion);
         }
+
+        [Test]
+        public void return_its_last_version()
+        {
+            var lastVersion = new ProductVersion("Any", "Any", DateTime.Now);
+            var versions = new List<ProductVersion> {
+                new ProductVersion("Any", "Any", DateTime.Now.AddDays(-1)),
+                lastVersion,
+            };
+            var product = new Product("AnyId", "AnyName", versions);
+
+            product.LastVersion().Should().Be(lastVersion);
+        }
     }
 }
