@@ -38,7 +38,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories {
             productVersion.VersionName.Should().Be(anyVersionName);
         }
 
-        [Test]
+        [Test, Ignore]
         public async Task return_null_when_try_to_load_an_no_existing_product()
         {
             var product = await sqlProductRepository.GetProduct("DontExist");
@@ -102,21 +102,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories {
 
             fullRange.FirstVersionId.Should().Be("FirstVersionId");
             fullRange.LatestVersionId.Should().Be("ThirdVersionId");
-        }
-
-        [Test]
-        public async Task gets_all_versions_for_a_given_product() {
-            var papyrusVersions = new List<ProductVersion>
-            {
-                new ProductVersion("FirstVersionId", "1.0", DateTime.Today.AddDays(-3)),
-                new ProductVersion("SecondVersionId", "2.0", DateTime.Today.AddDays(-2)),
-            };
-            var product = new Product("PapyrusId", "Papyrus", papyrusVersions);
-            await InsertProduct(product);
-
-            var versions = await sqlProductRepository.GetAllVersionsFor("PapyrusId");
-
-            versions.ShouldAllBeEquivalentTo(papyrusVersions);
         }
 
         private async Task InsertProduct(Product product) {

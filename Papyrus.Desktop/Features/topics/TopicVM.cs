@@ -106,7 +106,8 @@ namespace Papyrus.Desktop.Features.Topics
 
         public async void Initialize()
         {
-            var versions = await productRepository.GetAllVersionsFor(EditableTopic.Product.ProductId);
+            var product = await productRepository.GetProduct(EditableTopic.Product.ProductId);
+            var versions = product.Versions;
             FromVersions.AddRange(versions);
             FillToVersions(versions);
         }

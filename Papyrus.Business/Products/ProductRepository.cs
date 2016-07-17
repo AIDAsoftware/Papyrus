@@ -1,6 +1,4 @@
 using Papyrus.Business.Documents;
-using Papyrus.Business.Exporters;
-using Papyrus.Business.Topics;
 
 namespace Papyrus.Business.Products
 {
@@ -13,6 +11,5 @@ namespace Papyrus.Business.Products
         Task<List<DisplayableProduct>> GetAllDisplayableProducts();
         Task<ProductVersion> GetVersion(string versionId);
         Task<FullVersionRange> GetFullVersionRangeForProduct(string productId);
-        Task<List<ProductVersion>> GetAllVersionsFor(string productId);
     }
 }

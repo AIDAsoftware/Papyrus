@@ -36,7 +36,8 @@ namespace Papyrus.Tests.Business
         {
             productRepository = Substitute.For<ProductRepository>();
             versionRangeCollisionDetector = new VersionRangeCollisionDetector(productRepository);
-            productRepository.GetAllVersionsFor(ProductId).Returns(Task.FromResult(productVersionsFrom1To5));
+            productRepository.GetProduct(ProductId)
+                .Returns(new Product("AnyId", "AnyName", productVersionsFrom1To5));
         }
 
         [Test]
