@@ -47,16 +47,6 @@ namespace Papyrus.Business.Topics {
             }
         }
 
-        public async Task<EditableTopic> GetEditableTopicById(string topicId) {
-            var product = await GetRelatedProductFor(topicId);
-            var observableVersionRanges = await GetVersionRangesOf(topicId);
-            return new EditableTopic {
-                TopicId = topicId,
-                Product = product,
-                VersionRanges = observableVersionRanges
-            };
-        }
-
         public async Task<Topic> GetTopicById(string topicId)
         {
             var product = await GetRelatedProductFor(topicId);
