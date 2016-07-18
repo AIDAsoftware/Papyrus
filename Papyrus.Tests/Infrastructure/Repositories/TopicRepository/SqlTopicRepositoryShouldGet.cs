@@ -11,11 +11,9 @@ using Papyrus.Infrastructure.Core.Database;
 using Papyrus.Tests.Builders;
 using Papyrus.Tests.Infrastructure.Repositories.Helpers;
 
-namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
-{
+namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository {
     [TestFixture]
-    public class SqlTopicRepositoryShouldGet : SqlTest
-    {
+    public class SqlTopicRepositoryShouldGet : SqlTest {
         private SqlInserter sqlInserter;
         private SqlTopicQueryRepository topicRepository;
         private const string EnglishLanguage = "en-GB";
@@ -31,8 +29,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         private ProductVersion version1 = new ProductVersion(FirstVersionId, FirstVersionName, DateTime.Today.AddDays(-20));
 
         [SetUp]
-        public void Initialize()
-        {
+        public void Initialize() {
             sqlInserter = new SqlInserter(dbConnection);
             topicRepository = new SqlTopicQueryRepository(dbConnection);
             TruncateDataBase().GetAwaiter().GetResult();
@@ -41,8 +38,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async Task a_topic_summary_list()
-        {
+        public async Task a_topic_summary_list() {
             await InsertProductWithItsVersions();
             var topic = new TopicBuilder(ProductId, "AnyTopicId")
                                 .WithVersionRanges(
@@ -54,7 +50,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             var topicSummaries = await topicRepository.GetAllTopicsSummariesFor("es-ES");
 
-            topicSummaries.Should().Contain(t => t.TopicId == "AnyTopicId" && 
+            topicSummaries.Should().Contain(t => t.TopicId == "AnyTopicId" &&
                                                t.Product.ProductName == "Opportunity" &&
                                                t.Product.ProductId == ProductId &&
                                                t.VersionName == FirstVersionName &&
@@ -84,8 +80,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async Task a_list_with_topics_with_wildcard_as_to_version()
-        {
+        public async Task a_list_with_topics_with_wildcard_as_to_version() {
             await InsertProductWithItsVersions();
             var topic = new Topic(ProductId).WithId("AnyTopicId");
             var firstVersionRange = new VersionRange(version1, new LastProductVersion()).WithId("AnyRangeId");
@@ -99,8 +94,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async Task a_displayable_topic_with_its_product()
-        {
+        public async Task a_displayable_topic_with_its_product() {
             await InsertProduct(ProductId, "Opportunity");
 
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
@@ -113,8 +107,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async Task a_topic()
-        {
+        public async Task a_topic() {
             await InsertProduct(ProductId, "Opportunity");
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             await sqlInserter.Insert(topic);
@@ -125,8 +118,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async Task a_displayable_topic_with_its_versionRanges()
-        {
+        public async Task a_displayable_topic_with_its_versionRanges() {
             await InsertProductWithAVersion();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var firstVersionRange = new VersionRange(version1, version1).WithId("FirstVersionRangeId");
@@ -144,8 +136,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async Task a_topic_with_its_versionRanges()
-        {
+        public async Task a_topic_with_its_versionRanges() {
             await InsertProductWithAVersion();
             var topicId = "FirstTopicOpportunityId";
             var topic = new Topic(ProductId).WithId(topicId);
@@ -164,8 +155,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async Task a_displayable_topic_with_documents_for_each_of_its_version_ranges()
-        {
+        public async Task a_displayable_topic_with_documents_for_each_of_its_version_ranges() {
             await InsertProductWithAVersion();
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var firstVersionRange = new VersionRange(version1, version1).WithId("FirstVersionRangeId");
@@ -186,8 +176,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
-        public async Task a_topic_with_documents_for_each_of_its_version_ranges()
-        {
+        public async Task a_topic_with_documents_for_each_of_its_version_ranges() {
             await InsertProductWithAVersion();
             var topicToInsert = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             var firstVersionRange = new VersionRange(version1, version1).WithId("FirstVersionRangeId");
@@ -241,7 +230,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             document.Title.Should().Be(spanishDocument.Title);
             document.Content.Should().Be(spanishDocument.Content);
         }
-        
+
         [Test]
         public async Task get_empty_list_if_there_are_no_documents() {
             await InsertProductWithItsVersions();
@@ -255,7 +244,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
 
             documents.Should().HaveCount(0);
         }
-        
+
         [Test]
         public async Task get_empty_exportable_document_list_if_there_given_version_does_not_exist() {
             await InsertProductWithItsVersions();
