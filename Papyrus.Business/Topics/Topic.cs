@@ -21,12 +21,6 @@ namespace Papyrus.Business.Topics
             return this;
         }
 
-        public Topic ForProduct(string productId)
-        {
-            ProductId = productId;
-            return this;
-        }
-
         public void AddVersionRange(VersionRange versionRange)
         {
             VersionRanges.Add(versionRange);
