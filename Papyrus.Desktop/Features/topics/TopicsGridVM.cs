@@ -121,7 +121,23 @@ namespace Papyrus.Desktop.Features.Topics {
 
         public async Task<EditableTopic> GetEditableTopicById(string topicId)
         {
-            return await topicRepository.GetEditableTopicById(topicId);
+            var topic = await topicRepository.GetTopicById(topicId);
+            return new EditableTopic {
+                Product = new DisplayableProduct { ProductId = topic.ProductId },
+                TopicId = topic.TopicId,
+                VersionRanges = new ObservableCollection<EditableVersionRange>(
+                    topic.VersionRanges.Select(vr => new EditableVersionRange {
+                        FromVersion = vr.FromVersion,
+                        ToVersion = vr.ToVersion,
+                        Documents = new ObservableCollection<EditableDocument>(
+                        vr.Documents.Select(d => new EditableDocument {
+                            Title = d.Title,
+                            Content = d.Content,
+                            Description = d.Description,
+                            Language = d.Language
+                        }))
+                    }))
+            };
         }
 
         public async Task<EditableTopic> PrepareNewDocument()
