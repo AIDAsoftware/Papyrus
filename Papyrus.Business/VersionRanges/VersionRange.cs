@@ -15,7 +15,7 @@ namespace Papyrus.Business.VersionRanges
         public string ToVersionId => ToVersion.VersionId;
         public string VersionRangeId { get; private set; }
 
-        public Documents.Documents Documents { get; private set; }
+        public Documents.Documents Documents { get; }
 
         public VersionRange(ProductVersion fromVersion, ProductVersion toVersion) {
             if (fromVersion.Release > toVersion.Release) throw new VersionRangeCannotBeDescendentException();

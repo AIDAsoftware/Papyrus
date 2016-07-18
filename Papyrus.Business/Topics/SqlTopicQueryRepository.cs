@@ -171,10 +171,10 @@ namespace Papyrus.Business.Topics {
                 .Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
                                 FROM VersionRange WHERE TopicId = @TopicId",
                                 new { TopicId = topicId })).ToList();
-            foreach (var versionRange in versionRanges)
-            {
+            foreach (var versionRange in versionRanges) {
                 await AssignProductVersionTo(versionRange);
             }
+            await AddDocumentsToEachVersionRangeIn(versionRanges);
             return versionRanges.Select(MapToVersionRange).ToList();
         }
 
@@ -201,6 +201,14 @@ namespace Papyrus.Business.Topics {
             }
         }
 
+        private async Task AddDocumentsToEachVersionRangeIn(List<dynamic> versionRanges)
+        {
+            foreach (var versionRange in versionRanges)
+            {
+                versionRange.Documents = await DocumentsOf(versionRange);
+            }
+        }
+
         private EditableVersionRange MapToEditableVersionRange(dynamic versionRange) {
             var fromVersion = versionRange.FromVersion;
             var toVersion = versionRange.ToVersion;
@@ -217,7 +225,10 @@ namespace Papyrus.Business.Topics {
 
         private VersionRange MapToVersionRange(dynamic versionRange)
         {
-            return new VersionRange(versionRange.FromVersion, versionRange.ToVersion);
+            var result = new VersionRange(versionRange.FromVersion, versionRange.ToVersion);
+            var documents = (List<Document>) versionRange.Documents;
+            documents.ForEach(result.AddDocument);
+            return result;
         }
 
         private async Task<List<EditableDocument>> GetDocumentsOf(dynamic versionRange) {
@@ -228,5 +239,14 @@ namespace Papyrus.Business.Topics {
                 .ToList();
             return documents;
         }
+
+        private async Task<List<Document>> DocumentsOf(dynamic versionRange)
+        {
+            return (await connection.Query<Document>(@"SELECT Title, Description, Content, Language
+                                                                            FROM Document
+                                                                            WHERE VersionRangeId = @VersionRangeId",
+                new { VersionRangeId = versionRange.VersionRangeId })).ToList();
+        }
+
     }
 }
