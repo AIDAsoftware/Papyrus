@@ -6,7 +6,7 @@ namespace Papyrus.Business.VersionRanges
 {
     public class VersionRanges : IEnumerable<VersionRange>
     {
-        IList<VersionRange> versions = new List<VersionRange>();  
+        private readonly IList<VersionRange> versions = new List<VersionRange>();  
 
         public void Add(VersionRange versionRange)
         {

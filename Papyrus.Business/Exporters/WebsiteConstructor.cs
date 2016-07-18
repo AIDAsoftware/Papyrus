@@ -28,16 +28,6 @@ namespace Papyrus.Business.Exporters {
             return websites;
         }
 
-        private async Task AddWebsitesFor(Product product, List<string> languages) {
-            foreach (var version in product.Versions) {
-                foreach (var language in languages) {
-                    var website = await CreateWebsiteWithAllDocumentsFor(product, version, language);
-                    if (website.HasNotDocuments()) continue;
-                    websitesCollection.Add(website);
-                }
-            }
-        }
-
         private async Task<WebSite> CreateWebsiteWithAllDocumentsFor(Product product, ProductVersion version, string language) {
             var documents = await topicRepo.GetAllDocumentsFor(product.Id, version.VersionName, language);
             return new WebSite(documents, product.Name, language, version.VersionName);
