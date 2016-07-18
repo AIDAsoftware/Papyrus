@@ -60,7 +60,10 @@ namespace Papyrus.Business.Topics {
         public async Task<Topic> GetTopicById(string topicId)
         {
             var product = await GetRelatedProductFor(topicId);
-            return new Topic(product.ProductId);
+            var versionRanges = await VersionRangesOf(topicId);
+            var topic = new Topic(product.ProductId);
+            versionRanges.ForEach(topic.AddVersionRange);
+            return topic;
         }
 
         public async Task<List<ExportableDocument>> GetAllDocumentsFor(string product, string version, string language) {
@@ -162,6 +165,19 @@ namespace Papyrus.Business.Topics {
             return new ObservableCollection<EditableVersionRange>(editableVersionRanges);
         }
 
+        private async Task<List<VersionRange>> VersionRangesOf(string topicId)
+        {
+            var versionRanges = (await connection
+                .Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
+                                FROM VersionRange WHERE TopicId = @TopicId",
+                                new { TopicId = topicId })).ToList();
+            foreach (var versionRange in versionRanges)
+            {
+                await AssignProductVersionTo(versionRange);
+            }
+            return versionRanges.Select(MapToVersionRange).ToList();
+        }
+
         private async Task AssignProductVersionTo(dynamic versionRange) {
             string fromVersionId = versionRange.FromVersionId;
             versionRange.FromVersion = await SelectProductVersionById(fromVersionId);
@@ -197,6 +213,11 @@ namespace Papyrus.Business.Topics {
                 editableVersionRange.Documents.Add(editableDocument);
             }
             return editableVersionRange;
+        }
+
+        private VersionRange MapToVersionRange(dynamic versionRange)
+        {
+            return new VersionRange(versionRange.FromVersion, versionRange.ToVersion);
         }
 
         private async Task<List<EditableDocument>> GetDocumentsOf(dynamic versionRange) {

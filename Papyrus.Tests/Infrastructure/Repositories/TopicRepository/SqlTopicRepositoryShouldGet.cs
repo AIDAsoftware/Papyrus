@@ -116,7 +116,6 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         public async Task a_topic()
         {
             await InsertProduct(ProductId, "Opportunity");
-
             var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
             await sqlInserter.Insert(topic);
 
@@ -135,6 +134,26 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
             await sqlInserter.Insert(topic);
 
             var editableTopic = await topicRepository.GetEditableTopicById("FirstTopicPapyrusId");
+
+            var editableVersionRanges = editableTopic.VersionRanges;
+            editableVersionRanges.Should().HaveCount(1);
+            editableVersionRanges.First().FromVersion.VersionId.Should().Be(FirstVersionId);
+            editableVersionRanges.First().FromVersion.VersionName.Should().Be(FirstVersionName);
+            editableVersionRanges.First().ToVersion.VersionId.Should().Be(FirstVersionId);
+            editableVersionRanges.First().ToVersion.VersionName.Should().Be(FirstVersionName);
+        }
+
+        [Test]
+        public async Task a_topic_with_its_versionRanges()
+        {
+            await InsertProductWithAVersion();
+            var topicId = "FirstTopicOpportunityId";
+            var topic = new Topic(ProductId).WithId(topicId);
+            var firstVersionRange = new VersionRange(version1, version1).WithId("FirstVersionRangeId");
+            topic.AddVersionRange(firstVersionRange);
+            await sqlInserter.Insert(topic);
+
+            var editableTopic = await topicRepository.GetTopicById(topicId);
 
             var editableVersionRanges = editableTopic.VersionRanges;
             editableVersionRanges.Should().HaveCount(1);
