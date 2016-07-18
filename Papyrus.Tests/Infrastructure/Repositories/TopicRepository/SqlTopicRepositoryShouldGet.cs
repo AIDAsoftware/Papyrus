@@ -113,6 +113,19 @@ namespace Papyrus.Tests.Infrastructure.Repositories.TopicRepository
         }
 
         [Test]
+        public async Task a_topic()
+        {
+            await InsertProduct(ProductId, "Opportunity");
+
+            var topic = new Topic(ProductId).WithId("FirstTopicPapyrusId");
+            await sqlInserter.Insert(topic);
+
+            var editableTopic = await topicRepository.GetTopicById("FirstTopicPapyrusId");
+
+            editableTopic.ProductId.Should().Be(ProductId);
+        }
+
+        [Test]
         public async Task a_displayable_topic_with_its_versionRanges()
         {
             await InsertProductWithAVersion();

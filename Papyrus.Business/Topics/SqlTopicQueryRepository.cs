@@ -57,6 +57,12 @@ namespace Papyrus.Business.Topics {
             };
         }
 
+        public async Task<Topic> GetTopicById(string topicId)
+        {
+            var product = await GetRelatedProductFor(topicId);
+            return new Topic(product.ProductId);
+        }
+
         public async Task<List<ExportableDocument>> GetAllDocumentsFor(string product, string version, string language) {
             var documents = new List<ExportableDocument>();
             var dateOfWishedVersion = await GetReleaseFor(product, version);
