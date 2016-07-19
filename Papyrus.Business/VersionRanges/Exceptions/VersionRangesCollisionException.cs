@@ -20,12 +20,6 @@ namespace Papyrus.Business.VersionRanges.Exceptions
             return rangesToShow;
         }
 
-        private static string ParseToString(EditableVersionRange editableVersionRange)
-        {
-            return "(" + editableVersionRange.FromVersion.VersionName + " -- " +
-                   editableVersionRange.ToVersion.VersionName + ")";
-        }
-
         private static string ParseToString(VersionRange editableVersionRange) {
             return "(" + editableVersionRange.FromVersion.VersionName + " -- " +
                    editableVersionRange.ToVersion.VersionName + ")";

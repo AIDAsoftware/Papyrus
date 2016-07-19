@@ -124,6 +124,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EditableDocument.cs" />
+    <Compile Include="EditableTopic.cs" />
+    <Compile Include="EditableVersionRange.cs" />
     <Compile Include="Features\Topics\DesignModeTopicsGridVm.cs" />
     <Compile Include="Features\Topics\DocumentUserControl.xaml.cs">
       <DependentUpon>DocumentUserControl.xaml</DependentUpon>

@@ -62,7 +62,6 @@
     <Compile Include="Documents\DisplayableProduct.cs" />
     <Compile Include="Documents\Document.cs" />
     <Compile Include="Documents\Documents.cs" />
-    <Compile Include="Documents\EditableDocument.cs" />
     <Compile Include="Exporters\ConfigurationPaths.cs" />
     <Compile Include="Exporters\ExportableDocument.cs" />
     <Compile Include="Exporters\FileWriter.cs" />
@@ -75,7 +74,6 @@
     <Compile Include="Products\FullVersionRange.cs" />
     <Compile Include="Products\ProductVersion.cs" />
     <Compile Include="Products\WebSite.cs" />
-    <Compile Include="Topics\EditableTopic.cs" />
     <Compile Include="Topics\Exceptions\CannotDeleteTopicsWithoutTopicIdAssignedException.cs" />
     <Compile Include="Topics\SqlTopicCommandRepository.cs" />
     <Compile Include="Topics\SqlTopicQueryRepository.cs" />
@@ -96,7 +94,6 @@
     <Compile Include="Topics\TopicService.cs" />
     <Compile Include="Topics\TopicSummary.cs" />
     <Compile Include="VersionRanges\Collision.cs" />
-    <Compile Include="VersionRanges\EditableVersionRange.cs" />
     <Compile Include="VersionRanges\Exceptions\VersionRangeCannotBeDescendentException.cs" />
     <Compile Include="VersionRanges\Exceptions\VersionRangesCollisionException.cs" />
     <Compile Include="VersionRanges\RangeWithAllVersions.cs" />

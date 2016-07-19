@@ -7,6 +7,7 @@ using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Business.VersionRanges;
+using Papyrus.Desktop;
 
 namespace Papyrus.Tests.Business
 {

@@ -1,11 +1,12 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Papyrus.Business.Documents;
+using Papyrus.Business.Topics;
 using Papyrus.Business.VersionRanges;
 
-namespace Papyrus.Business.Topics
+namespace Papyrus.Desktop
 {
     public class EditableTopic : INotifyPropertyChanged
     {
