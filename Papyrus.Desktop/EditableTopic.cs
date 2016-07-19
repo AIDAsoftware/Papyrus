@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Papyrus.Business.Documents;
 using Papyrus.Business.Topics;
-using Papyrus.Business.VersionRanges;
 
 namespace Papyrus.Desktop
 {

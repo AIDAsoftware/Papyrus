@@ -1,6 +1,5 @@
 using System.Collections.ObjectModel;
 using System.Linq;
-using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
 using Papyrus.Business.VersionRanges;
 
