@@ -33,13 +33,8 @@ namespace Papyrus.Business.VersionRanges
             return collisions;
         }
 
-        private EditableVersionRange ToEditableVersionRange()
-        {
-            return new EditableVersionRange
-            {
-                FromVersion = VersionRange.FromVersion,
-                ToVersion = VersionRange.ToVersion
-            };
+        private VersionRange ToEditableVersionRange() {
+            return new VersionRange(VersionRange.FromVersion, VersionRange.ToVersion);
         }
     }
 }

@@ -53,10 +53,14 @@ namespace Papyrus.Tests.Business
             var expectedCollisions = new List<Collision>
             {
                 new Collision(
-                    new EditableVersionRange { FromVersion = version3, ToVersion = version4 },
-                    new EditableVersionRange { FromVersion = version4, ToVersion = version5 })
+                    AVersionRange(from: version3, to: version4), 
+                    AVersionRange(from:version4, to: version5))
             };
             collisions.ShouldAllBeEquivalentTo(expectedCollisions);
+        }
+
+        private VersionRange AVersionRange(ProductVersion from, ProductVersion to) {
+            return new VersionRange(from, to);
         }
         
         [Test]
@@ -71,8 +75,8 @@ namespace Papyrus.Tests.Business
             var expectedCollisions = new List<Collision>
             {
                 new Collision(
-                    new EditableVersionRange { FromVersion = version1, ToVersion = version3 },
-                    new EditableVersionRange { FromVersion = version2, ToVersion = version4 }
+                    AVersionRange(from: version1, to: version3),
+                    AVersionRange(from: version2, to: version4)
                 )};
             collisions.ShouldAllBeEquivalentTo(expectedCollisions);
         }
@@ -102,8 +106,8 @@ namespace Papyrus.Tests.Business
             var expectedCollisions = new List<Collision>
             {
                 new Collision(
-                    new EditableVersionRange { FromVersion = version3, ToVersion = version4 },
-                    new EditableVersionRange { FromVersion = version4, ToVersion = new LastProductVersion()}
+                    AVersionRange(from: version3, to: version4),
+                    AVersionRange(from: version4, to: new LastProductVersion())
                 )
             };
 

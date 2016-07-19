@@ -73,11 +73,10 @@ namespace Papyrus.Tests.Business
             var topic = new Topic(anyProductId);
             topic.AddVersionRange(anyVersionRange);
             topic.AddVersionRange(anyVersionRange);
-            var anyEditableVersionRange = new EditableVersionRange
-            {
-                FromVersion = new ProductVersion("Any", "2.0", DateTime.Today),
-                ToVersion = new ProductVersion("Any", "3.0", DateTime.Today)
-            };
+            var anyEditableVersionRange = new VersionRange(
+                fromVersion: new ProductVersion("Any", "2.0", DateTime.Today),
+                toVersion: new ProductVersion("Any", "3.0", DateTime.Today)
+            );
             var anyListToRepresentConflictedVersionRanges = new List<Collision> {new Collision(
                 anyEditableVersionRange, anyEditableVersionRange
             )};
@@ -132,11 +131,10 @@ namespace Papyrus.Tests.Business
                 .WithId("AnyTopicId");
             topic.AddVersionRange(anyVersionRange);
             topic.AddVersionRange(anyVersionRange);
-            var anyEditableVersionRange = new EditableVersionRange
-            {
-                FromVersion = new ProductVersion("Any", "2.0", DateTime.Today),
-                ToVersion = new ProductVersion("Any", "3.0", DateTime.Today)
-            };
+            var anyEditableVersionRange = new VersionRange(
+                fromVersion: new ProductVersion("Any", "2.0", DateTime.Today),
+                toVersion: new ProductVersion("Any", "3.0", DateTime.Today)
+            );
             var anyListToRepresentConflictedVersionRanges = new List<Collision> {new Collision(
                 anyEditableVersionRange, anyEditableVersionRange
             )};
