@@ -5,6 +5,7 @@ using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using Papyrus.Business;
 
 namespace Papyrus.Tests {
 
@@ -33,41 +34,6 @@ namespace Papyrus.Tests {
 
             givenDocumentation.Should().HaveCount(1);
             givenDocumentation.First().ShouldBeEquivalentTo(document);
-        }
-    }
-
-    public class GetDocumentation {
-        public DocumentsRepository DocumentsRepository { get; set; }
-
-        public GetDocumentation(DocumentsRepository documentsRepository) {
-            DocumentsRepository = documentsRepository;
-        }
-
-        public List<Document> ExecuteFor(string productId, string versionId) {
-            return DocumentsRepository.GetDocumentationFor(productId, versionId).ToList();
-        }
-    }
-
-    public interface DocumentsRepository {
-        Documentation GetDocumentationFor(string productId, string versionId);
-    }
-
-    public class Documentation {
-        public void AddDocuments(List<Document> documents) {
-            Documents = documents;
-        }
-
-        public List<Document> Documents { get; set; }
-
-
-        public List<Document> ToList() {
-            return Documents;
-        }
-    }
-
-    public class Document {
-        public Document(string title, string description, string content, string language) {
-            
         }
     }
 }

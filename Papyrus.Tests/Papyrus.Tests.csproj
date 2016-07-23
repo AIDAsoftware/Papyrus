@@ -68,11 +68,18 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="GetDocumentation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PapyrusShould.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Papyrus.Business\Papyrus.Business.csproj">
+      <Project>{f3a01b7b-9b53-447e-bd8d-67dd0ab3e1ff}</Project>
+      <Name>Papyrus.Business</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
