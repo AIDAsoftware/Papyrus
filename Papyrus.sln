@@ -1,17 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Tests", "Papyrus.Tests\Papyrus.Tests.csproj", "{DE4059F0-5988-4F42-95AB-C8E8899347A8}"
-	ProjectSection(ProjectDependencies) = postProject
-		{483C609B-26F5-441B-9FC5-D77B8365ED9B} = {483C609B-26F5-441B-9FC5-D77B8365ED9B}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Business", "Papyrus.Business\Papyrus.Business.csproj", "{7A99DDC4-A4CC-45DB-ACE6-5A8D10D66DB7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Infrastructure.Migrations", "Papyrus.Infrastructure.Migrations\Papyrus.Infrastructure.Migrations.csproj", "{72C8FCFC-7BA4-4D3D-8A83-6523653B6AF6}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B9B731D7-661F-4605-A422-CC8CF711ECEB}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -21,34 +12,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B9B731
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Infrastructure.Core", "Papyrus.Infrastructure.Core\Papyrus.Infrastructure.Core.csproj", "{EFA054E5-3390-41F7-A683-C74EF1B0F384}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Desktop", "Papyrus.Desktop\Papyrus.Desktop.csproj", "{483C609B-26F5-441B-9FC5-D77B8365ED9B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DE4059F0-5988-4F42-95AB-C8E8899347A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE4059F0-5988-4F42-95AB-C8E8899347A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE4059F0-5988-4F42-95AB-C8E8899347A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE4059F0-5988-4F42-95AB-C8E8899347A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A99DDC4-A4CC-45DB-ACE6-5A8D10D66DB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A99DDC4-A4CC-45DB-ACE6-5A8D10D66DB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A99DDC4-A4CC-45DB-ACE6-5A8D10D66DB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A99DDC4-A4CC-45DB-ACE6-5A8D10D66DB7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{72C8FCFC-7BA4-4D3D-8A83-6523653B6AF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72C8FCFC-7BA4-4D3D-8A83-6523653B6AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72C8FCFC-7BA4-4D3D-8A83-6523653B6AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72C8FCFC-7BA4-4D3D-8A83-6523653B6AF6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EFA054E5-3390-41F7-A683-C74EF1B0F384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EFA054E5-3390-41F7-A683-C74EF1B0F384}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFA054E5-3390-41F7-A683-C74EF1B0F384}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFA054E5-3390-41F7-A683-C74EF1B0F384}.Release|Any CPU.Build.0 = Release|Any CPU
-		{483C609B-26F5-441B-9FC5-D77B8365ED9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{483C609B-26F5-441B-9FC5-D77B8365ED9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{483C609B-26F5-441B-9FC5-D77B8365ED9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{483C609B-26F5-441B-9FC5-D77B8365ED9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
