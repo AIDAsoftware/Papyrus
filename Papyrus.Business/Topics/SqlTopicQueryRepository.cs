@@ -50,7 +50,7 @@ namespace Papyrus.Business.Topics {
         {
             var product = await GetRelatedProductFor(topicId);
             var versionRanges = await VersionRangesOf(topicId);
-            var topic = new Topic(product.ProductId);
+            var topic = new Topic(product.ProductId).WithId(topicId);
             versionRanges.ForEach(topic.AddVersionRange);
             return topic;
         }
@@ -106,7 +106,7 @@ namespace Papyrus.Business.Topics {
         }
 
         private async Task<dynamic> GetExportableADocumentBy(string language, dynamic versionRange) {
-            var document = (await connection.Query<dynamic>(@"SELECT Title, Content, Order FROM Document 
+            var document = (await connection.Query<dynamic>(@"SELECT Title, Content, [Order] FROM Document 
                                                                     WHERE VersionRangeId = @VersionRangeId
                                                                     AND Language = @Language",
                 new { VersionRangeId = versionRange.VersionRangeId, Language = language }))

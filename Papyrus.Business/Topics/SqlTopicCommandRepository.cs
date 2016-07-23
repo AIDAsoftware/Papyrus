@@ -57,7 +57,7 @@ namespace Papyrus.Business.Topics
 
         private async Task InsertDocumentForVersionRange(Document document, VersionRange versionRange)
         {
-            await connection.Execute(@"INSERT INTO Document(DocumentId, Title, Description, Content, Language, VersionRangeId, Order)
+            await connection.Execute(@"INSERT INTO Document(DocumentId, Title, [Description], Content, [Language], VersionRangeId, [Order])
                                                     VALUES(@DocumentId, @Title, @Description, @Content, @Language, @VersionRangeId, @Order);",
                 new
                 {

@@ -43,7 +43,7 @@ namespace Papyrus.Desktop
             }
         }
 
-        private string order;
+        private string order = "200";
         public string Order {
             get { return order; }
             set {
@@ -68,12 +68,16 @@ namespace Papyrus.Desktop
                 description: Description,
                 content: Content,
                 language: Language,
-                order: int.Parse(Order)
+                order: string.IsNullOrEmpty(Order) ? int.MaxValue : int.Parse(Order)
             );
         }
 
         protected bool Equals(EditableDocument other) {
-            return string.Equals(title, other.title) && string.Equals(description, other.description) && string.Equals(content, other.content) && string.Equals(Language, other.Language);
+            return string.Equals(title, other.title) && 
+                string.Equals(description, other.description) && 
+                string.Equals(content, other.content) && 
+                string.Equals(order, other.order) && 
+                string.Equals(Language, other.Language);
         }
 
         public override bool Equals(object obj) {
@@ -88,7 +92,8 @@ namespace Papyrus.Desktop
                 Title = Title,
                 Content = Content,
                 Language = Language,
-                Description = Description
+                Description = Description,
+                Order = Order
             };
         }
     }

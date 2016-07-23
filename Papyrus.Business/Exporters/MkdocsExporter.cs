@@ -54,6 +54,7 @@ namespace Papyrus.Business.Exporters {
 
         private static async Task WriteConfigurationYmlInPath(MkdocsConfiguration configuration, string path) {
             var ymlPath = Path.Combine(path, YmlFileName);
+            File.Delete(ymlPath);
             await WriteInFile(ymlPath, configuration.ToString());
         }
 
@@ -65,11 +66,11 @@ namespace Papyrus.Business.Exporters {
         }
 
         private static void AddIndexPageTo(MkdocsConfiguration configuration) {
-            configuration.AddPage("Home", "index.md");
+            configuration.AddPage("Home", new ExportableDocument("index", string.Empty, 0));
         }
 
         private static async Task AddDocumentToTheConfiguration(ExportableDocument document, MkdocsConfiguration configuration) {
-            configuration.AddPage(document.Title, ConvertToValidFileName(document.Title) + MarkDownExtension);
+            configuration.AddPage(document.Title, document);
         }
 
         private static async Task ExportDocumentIn(ExportableDocument document, string directoryPath) {
