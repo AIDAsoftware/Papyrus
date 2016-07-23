@@ -65,6 +65,7 @@
     <Compile Include="Document\4 - RenameIdColumnToTopicId.cs" />
     <Compile Include="Document\5 - AdaptDocumentToBeContainedByVersionRange.cs" />
     <Compile Include="Document\6 - IncreaseTheContentSize.cs" />
+    <Compile Include="Document\7-AddOrderToDocuments.cs" />
     <Compile Include="ProductVersion\2 - AddReleaseColumn.cs" />
     <Compile Include="Product\1 - CreateProductTable.cs" />
     <Compile Include="Product\2 - ConvertProductToProductVersion.cs" />

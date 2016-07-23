@@ -134,7 +134,8 @@ namespace Papyrus.Desktop.Features.Topics {
                             Title = d.Title,
                             Content = d.Content,
                             Description = d.Description,
-                            Language = d.Language
+                            Language = d.Language,
+                            Order = d.Order.ToString()
                         }))
                     }))
             };

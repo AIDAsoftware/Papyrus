@@ -67,10 +67,10 @@ namespace Papyrus.Business.Topics {
                     var fromVersion = await SelectProductVersionById(versionRange.FromVersionId);
                     ProductVersion toVersion;
                     if (versionRange.ToVersionId == "*") {
-                        toVersion = (await connection.Query<ProductVersion>(@"SELECT TOP 1 VersionId,                                     VersionName, Release
-                                                            FROM ProductVersion
-                                                            WHERE ProductId = @ProductId
-                                                            ORDER BY Release DESC", 
+                        toVersion = (await connection.Query<ProductVersion>(@"SELECT TOP 1 VersionId, VersionName, Release
+                                                            FROM            ProductVersion
+                                                            WHERE           ProductId = @ProductId
+                                                            ORDER BY        Release DESC", 
                                                 new { ProductId = product })).First();
                     }
                     else {
@@ -78,9 +78,9 @@ namespace Papyrus.Business.Topics {
                     }
                     if (fromVersion.Release <= dateOfWishedVersion && 
                             dateOfWishedVersion <= toVersion.Release) {
-                        var document = await GetTitleAndContentOfADocumentBy(language, versionRange);
+                        var document = await GetExportableADocumentBy(language, versionRange);
                         if (!(document is NoDocument))
-                            documents.Add(new ExportableDocument(document.Title, document.Content));
+                            documents.Add(new ExportableDocument(document.Title, document.Content, document.Order));
                     }
                 }
             }
@@ -105,8 +105,8 @@ namespace Papyrus.Business.Topics {
                 new { TopicId = topicId })).ToList();
         }
 
-        private async Task<dynamic> GetTitleAndContentOfADocumentBy(string language, dynamic versionRange) {
-            var document = (await connection.Query<dynamic>(@"SELECT Title, Content FROM Document 
+        private async Task<dynamic> GetExportableADocumentBy(string language, dynamic versionRange) {
+            var document = (await connection.Query<dynamic>(@"SELECT Title, Content, Order FROM Document 
                                                                     WHERE VersionRangeId = @VersionRangeId
                                                                     AND Language = @Language",
                 new { VersionRangeId = versionRange.VersionRangeId, Language = language }))
@@ -189,9 +189,9 @@ namespace Papyrus.Business.Topics {
 
         private async Task<List<Document>> DocumentsOf(dynamic versionRange)
         {
-            return (await connection.Query<Document>(@"SELECT Title, Description, Content, Language
-                                                                            FROM Document
-                                                                            WHERE VersionRangeId = @VersionRangeId",
+            return (await connection.Query<Document>(@"SELECT Title, [Description], Content, [Language], [Order]
+                                                        FROM Document
+                                                        WHERE VersionRangeId = @VersionRangeId",
                 new { VersionRangeId = versionRange.VersionRangeId })).ToList();
         }
 

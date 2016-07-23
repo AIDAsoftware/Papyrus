@@ -33,13 +33,21 @@ namespace Papyrus.Desktop
         }
 
         private string content;
-
         public string Content
         {
             get { return content; }
             set
             {
                 content = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string order;
+        public string Order {
+            get { return order; }
+            set {
+                order = value;
                 OnPropertyChanged();
             }
         }
@@ -59,8 +67,9 @@ namespace Papyrus.Desktop
                 title: Title,
                 description: Description,
                 content: Content,
-                language: Language
-                );
+                language: Language,
+                order: int.Parse(Order)
+            );
         }
 
         protected bool Equals(EditableDocument other) {
