@@ -120,6 +120,14 @@ namespace Papyrus.Desktop.Features.Topics
         public bool TopicIsSaved() {
             return EditableTopic.Equals(LastTopicSaved);
         }
+
+
+        public string Order
+        {
+            get { return EditableTopic.Order; }
+            set { EditableTopic.Order = !value.All(char.IsDigit) ? "200" : value; }
+        }
+
     }
 
     internal class OnTopicSaved {

@@ -14,8 +14,6 @@
         <StackPanel DockPanel.Dock="Top">
             <Label Content="Title"/>
             <TextBox x:Name="TitleTextBox" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"/>
-            <Label Content="Order"></Label>
-            <TextBox x:Name="OrderTextBox" Text="{Binding Order, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         </StackPanel>
         <StackPanel  DockPanel.Dock="Top">
             <Label Content="Description"/>

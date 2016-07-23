@@ -16,12 +16,12 @@ namespace Papyrus.Desktop
             Documents = new ObservableCollection<EditableDocument>();
         }
 
-        public VersionRange ToVersionRange()
+        public VersionRange ToVersionRange(string order)
         {
             var versionRange = new VersionRange(FromVersion, ToVersion);
             foreach (var editableDocument in Documents)
             {
-                versionRange.Documents.Add(editableDocument.ToDocument());
+                versionRange.Documents.Add(editableDocument.ToDocument(order));
             }
             return versionRange;
         }

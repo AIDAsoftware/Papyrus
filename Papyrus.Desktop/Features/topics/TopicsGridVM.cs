@@ -130,14 +130,14 @@ namespace Papyrus.Desktop.Features.Topics {
                         FromVersion = vr.FromVersion,
                         ToVersion = vr.ToVersion,
                         Documents = new ObservableCollection<EditableDocument>(
-                        vr.Documents.Select(d => new EditableDocument {
-                            Title = d.Title,
-                            Content = d.Content,
-                            Description = d.Description,
-                            Language = d.Language,
-                            Order = d.Order.ToString()
-                        }))
-                    }))
+                            vr.Documents.Select(d => new EditableDocument {
+                                Title = d.Title,
+                                Content = d.Content,
+                                Description = d.Description,
+                                Language = d.Language,
+                            }))
+                    })),
+                Order = topic.VersionRanges.First().Documents["es-ES"].Order.ToString()
             };
         }
 

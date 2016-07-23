@@ -16,12 +16,13 @@ namespace Papyrus.Desktop
         public DisplayableProduct Product
         {
             get { return product; }
-            set
-            {
+            set {
                 product = value;
                 OnPropertyChanged();
             }
         }
+
+        public string Order { get; set; } = "200";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -41,7 +42,7 @@ namespace Papyrus.Desktop
             var topic = new Topic(Product.ProductId).WithId(TopicId);
             foreach (var editableVersionRange in VersionRanges)
             {
-                topic.AddVersionRange(editableVersionRange.ToVersionRange());
+                topic.AddVersionRange(editableVersionRange.ToVersionRange(Order));
             }
             return topic;
         }
@@ -61,6 +62,7 @@ namespace Papyrus.Desktop
             var newTopic = new EditableTopic {
                 Product = Product.Clone(),
                 TopicId = TopicId,
+                Order = Order
             };
             var versionRanges = new ObservableCollection<EditableVersionRange>();
             foreach (var range in VersionRanges) {

@@ -1,5 +1,8 @@
+using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using Papyrus.Business.Documents;
 
 namespace Papyrus.Desktop
@@ -43,15 +46,6 @@ namespace Papyrus.Desktop
             }
         }
 
-        private string order = "200";
-        public string Order {
-            get { return order; }
-            set {
-                order = value;
-                OnPropertyChanged();
-            }
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -61,14 +55,14 @@ namespace Papyrus.Desktop
             }
         }
 
-        public Document ToDocument()
+        public Document ToDocument(string incomingOrder)
         {
             return new Document(
                 title: Title,
                 description: Description,
                 content: Content,
                 language: Language,
-                order: string.IsNullOrEmpty(Order) ? int.MaxValue : int.Parse(Order)
+                order: int.Parse(incomingOrder)
             );
         }
 
@@ -76,7 +70,6 @@ namespace Papyrus.Desktop
             return string.Equals(title, other.title) && 
                 string.Equals(description, other.description) && 
                 string.Equals(content, other.content) && 
-                string.Equals(order, other.order) && 
                 string.Equals(Language, other.Language);
         }
 
@@ -93,7 +86,6 @@ namespace Papyrus.Desktop
                 Content = Content,
                 Language = Language,
                 Description = Description,
-                Order = Order
             };
         }
     }
