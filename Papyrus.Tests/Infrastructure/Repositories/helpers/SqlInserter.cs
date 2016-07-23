@@ -49,8 +49,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.Helpers
         private async Task InsertDocumentForVersionRange(Document document, VersionRange versionRange)
         {
             await dbConnection.Execute(
-                @"INSERT INTO Document(DocumentId, Title, Description, Content, Language, VersionRangeId)
-                                                    VALUES(@DocumentId, @Title, @Description, @Content, @Language, @VersionRangeId);",
+                @"INSERT INTO Document(DocumentId, Title, Description, Content, Language, VersionRangeId, [Order])
+                                                    VALUES(@DocumentId, @Title, @Description, @Content, @Language, @VersionRangeId, @Order);",
                 new
                 {
                     DocumentId = document.DocumentId,
@@ -58,7 +58,8 @@ namespace Papyrus.Tests.Infrastructure.Repositories.Helpers
                     Description = document.Description,
                     Content = document.Content,
                     Language = document.Language,
-                    VersionRangeId = versionRange.VersionRangeId
+                    VersionRangeId = versionRange.VersionRangeId,
+                    Order = document.Order
                 });
         }
     }
