@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Tests", "Papyrus.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Business", "Papyrus.Business\Papyrus.Business.csproj", "{F3A01B7B-9B53-447E-BD8D-67DD0AB3E1FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Api", "Papyrus.Api\Papyrus.Api.csproj", "{85E757DA-2675-479F-AF86-7254589DE8AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{F3A01B7B-9B53-447E-BD8D-67DD0AB3E1FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3A01B7B-9B53-447E-BD8D-67DD0AB3E1FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3A01B7B-9B53-447E-BD8D-67DD0AB3E1FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85E757DA-2675-479F-AF86-7254589DE8AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85E757DA-2675-479F-AF86-7254589DE8AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85E757DA-2675-479F-AF86-7254589DE8AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85E757DA-2675-479F-AF86-7254589DE8AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
