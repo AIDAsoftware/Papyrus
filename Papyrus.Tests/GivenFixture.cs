@@ -44,5 +44,16 @@ namespace Papyrus.Tests {
                 .Returns(documentation);
             return this;
         }
+
+        public static DocumentDto ADocumentDtoFor(TestProductVersion version) {
+            return new DocumentDto {
+                Title = AnyUniqueString(),
+                Description = AnyUniqueString(),
+                Content = AnyUniqueString(),
+                Language = AnyUniqueString(),
+                ProductId = version.ProductId,
+                VersionId = version.VersionId
+            };
+        }
     }
 }

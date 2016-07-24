@@ -24,6 +24,7 @@ namespace Papyrus.Tests {
         [SetUp]
         public void SetUp() {
             repository = Substitute.For<DocumentsRepository>();
+            given = new GivenFixture();
         }
 
         [Test]
@@ -31,8 +32,8 @@ namespace Papyrus.Tests {
             var document = GivenFixture.ADocument();
             var version = GivenFixture.AVersion();
             given.ADocumentationWith(document)
-                .ForVersion(version)
-                .InRepository(repository);
+                .InRepository(repository)
+                .ForVersion(version);
 
             var givenDocumentation = GetDocumentationFor(version);
 
@@ -42,21 +43,17 @@ namespace Papyrus.Tests {
 
         [Test]
         public void create_document_for_a_given_product_and_version() {
+            var version = GivenFixture.AVersion();
+            var documentDto = GivenFixture.ADocumentDtoFor(version);
+
+            ExecuteCreateDocument(documentDto);
+
+            repository.Received(1).CreateDocumentFor(documentDto.AsDocument(), version.ProductId, version.VersionId);
+        }
+
+        private void ExecuteCreateDocument(DocumentDto documentDto) {
             var createDocument = new CreateDocument(repository);
-
-            const string anyProductid = "Any ProductID";
-            const string anyVersionid = "Any VersionID";
-            var documentDto = new DocumentDto {
-                Title = "Any Title",
-                Description = "Any Description",
-                Content = "Any Content",
-                Language = "Any Language",
-                ProductId = anyProductid,
-                VersionId = anyVersionid
-            };
             createDocument.ExecuteFor(documentDto: documentDto);
-
-            repository.Received(1).CreateDocumentFor(documentDto.AsDocument(), anyProductid, anyVersionid);
         }
 
         private List<Document> GetDocumentationFor(TestProductVersion version) {
