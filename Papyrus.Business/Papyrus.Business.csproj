@@ -45,6 +45,7 @@
     <Compile Include="Documentation.cs" />
     <Compile Include="DocumentDto.cs" />
     <Compile Include="DocumentsRepository.cs" />
+    <Compile Include="GetDocumentation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
