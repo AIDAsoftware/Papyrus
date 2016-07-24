@@ -40,8 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateDocument.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="Documentation.cs" />
+    <Compile Include="DocumentDto.cs" />
     <Compile Include="DocumentsRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

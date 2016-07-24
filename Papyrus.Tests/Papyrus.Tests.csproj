@@ -69,8 +69,11 @@
   </Choose>
   <ItemGroup>
     <Compile Include="GetDocumentation.cs" />
+    <Compile Include="GivenFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PapyrusShould.cs" />
+    <Compile Include="TestExtensionMethodsForDocumentDto.cs" />
+    <Compile Include="TestProductVersion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
