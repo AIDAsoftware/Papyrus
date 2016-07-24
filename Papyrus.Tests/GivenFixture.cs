@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NSubstitute;
 using Papyrus.Business;
 
 namespace Papyrus.Tests {
     public class GivenFixture {
-        private Documentation documentation = new Documentation();
+        private Documentation documentation = Documentation.WithDocuments(new List<Document>());
         private DocumentsRepository repository;
         private TestProductVersion version;
 
@@ -15,8 +16,7 @@ namespace Papyrus.Tests {
         }
 
         public GivenFixture ADocumentationWith(params Document[] documents) {
-            documentation = new Documentation();
-            documentation.AddDocuments(documents.ToList());
+            documentation = Documentation.WithDocuments(documents.ToList());
             return this;
         }
 

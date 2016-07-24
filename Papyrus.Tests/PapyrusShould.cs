@@ -33,7 +33,8 @@ namespace Papyrus.Tests {
             var version = GivenFixture.AVersion();
             given.ADocumentationWith(document)
                 .InRepository(repository)
-                .ForVersion(version);
+                .ForVersion(version)
+                .CreateContext();
 
             var givenDocumentation = GetDocumentationFor(version);
 
