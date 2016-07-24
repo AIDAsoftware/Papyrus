@@ -34,10 +34,10 @@ namespace Papyrus.Tests {
                 .ForVersion(version)
                 .CreateContext();
 
-            var givenDocumentation = GetDocumentationFor(version);
+            var documentation = GetDocumentationFor(version);
 
-            givenDocumentation.Should().HaveCount(1);
-            givenDocumentation.First().ShouldBeEquivalentTo(document);
+            documentation.Should().HaveCount(1);
+            documentation.First().ShouldBeEquivalentTo(document);
         }
 
         [Test]
@@ -45,14 +45,14 @@ namespace Papyrus.Tests {
             var version = GivenFixture.AVersion();
             var documentDto = GivenFixture.ADocumentDtoFor(version);
 
-            ExecuteCreateDocument(documentDto);
+            ExecuteCreateDocument(documentDto, version.ProductId, version.VersionId);
 
             repository.Received(1).CreateDocumentFor(documentDto.AsDocument(), version.ProductId, version.VersionId);
         }
 
-        private void ExecuteCreateDocument(DocumentDto documentDto) {
+        private void ExecuteCreateDocument(DocumentDto documentDto, string productId, string versionId) {
             var createDocument = new CreateDocument(repository);
-            createDocument.ExecuteFor(documentDto: documentDto);
+            createDocument.ExecuteFor(documentDto: documentDto, productId: productId, versionId: versionId);
         }
 
         private List<Document> GetDocumentationFor(TestProductVersion version) {

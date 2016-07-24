@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using Papyrus.Business;
 
@@ -10,11 +7,17 @@ namespace Papyrus.Api.Controllers
 {
     public class DocumentationController : ApiController
     {
-        private readonly InMemoryDocumentsRepository documentsRepository = new InMemoryDocumentsRepository();
+        private static readonly InMemoryDocumentsRepository documentsRepository = new InMemoryDocumentsRepository();
 
-        [Route("documentation/products/{productId}/versions/{versionId}"), HttpGet]
+        [Route("products/{productId}/versions/{versionId}/documents"), HttpGet]
         public List<Document> GetDocumentationFor(string productId, string versionId) {
             return new GetDocumentation(documentsRepository).ExecuteFor(productId, versionId);            
+        }
+
+        [Route("products/{productId}/versions/{versionId}/documents"), HttpPost]
+        public void CreateDocument(string productId, string versionId, DocumentDto documentDto)
+        {
+            new CreateDocument(documentsRepository).ExecuteFor(documentDto, productId, versionId);
         }
     }
 
@@ -29,7 +32,10 @@ namespace Papyrus.Api.Controllers
         }
 
         public void CreateDocumentFor(Document document, string productId, string versionId) {
-            throw new NotImplementedException();
+            if (!documentations.ContainsKey(productId + versionId)) {
+                documentations.Add(productId + versionId, Documentation.WithDocuments(new List<Document>()));
+            }
+            documentations[productId + versionId].Documents.Add(document);
         }
     }
 }
