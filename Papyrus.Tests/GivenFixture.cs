@@ -5,18 +5,12 @@ using Papyrus.Business;
 
 namespace Papyrus.Tests {
     public class GivenFixture {
-        private Documentation documentation;
+        private Documentation documentation = new Documentation();
         private DocumentsRepository repository;
+        private TestProductVersion version;
 
         public GivenFixture InRepository(DocumentsRepository givenRepository) {
             repository = givenRepository;
-            return this;
-        }
-
-        public GivenFixture ForVersion(string productId, string versionId) {
-            repository
-                .GetDocumentationFor(productId: "myProductId", versionId: "myVersionId")
-                .Returns(documentation);
             return this;
         }
 
@@ -38,10 +32,8 @@ namespace Papyrus.Tests {
             return new TestProductVersion(AnyUniqueString(), AnyUniqueString());
         }
 
-        public GivenFixture ForVersion(TestProductVersion version) {
-            repository
-                .GetDocumentationFor(productId: version.ProductId, versionId: version.VersionId)
-                .Returns(documentation);
+        public GivenFixture ForVersion(TestProductVersion givenVersion) {
+            version = givenVersion;
             return this;
         }
 
@@ -55,5 +47,17 @@ namespace Papyrus.Tests {
                 VersionId = version.VersionId
             };
         }
+
+        public void CreateContext() {
+            if (repository == null || version == null)
+                throw new UncompletedTestContextException("Repository or Version is not set");
+            repository
+                .GetDocumentationFor(productId: version.ProductId, versionId: version.VersionId)
+                .Returns(documentation);
+        }
+    }
+
+    public class UncompletedTestContextException : Exception {
+        public UncompletedTestContextException(string message) : base(message) {}
     }
 }
