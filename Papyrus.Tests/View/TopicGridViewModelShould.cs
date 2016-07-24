@@ -33,7 +33,7 @@ namespace Papyrus.Tests.View {
         public void SetUp() {
             topicRepo = Substitute.For<TopicQueryRepository>();
             productRepo = Substitute.For<ProductRepository>();
-            websiteConstructor = Substitute.For<WebsiteConstructor>(topicRepo, productRepo);
+            websiteConstructor = Substitute.For<WebsiteConstructor>(topicRepo);
             exporter = Substitute.For<MkDocsExporter>(new object[] {null});
         }
 

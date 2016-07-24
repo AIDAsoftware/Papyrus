@@ -7,12 +7,10 @@ using Papyrus.Business.Topics;
 namespace Papyrus.Business.Exporters {
     public class WebsiteConstructor {
         private readonly TopicQueryRepository topicRepo;
-        private readonly ProductRepository productRepo;
         private WebsiteCollection websitesCollection;
 
-        public WebsiteConstructor(TopicQueryRepository topicRepo, ProductRepository productRepo) {
+        public WebsiteConstructor(TopicQueryRepository topicRepo) {
             this.topicRepo = topicRepo;
-            this.productRepo = productRepo;
         }
 
         public virtual async Task<WebsiteCollection> Construct(Product product, List<string> languages)

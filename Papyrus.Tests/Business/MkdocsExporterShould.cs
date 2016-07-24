@@ -42,13 +42,13 @@ namespace Papyrus.Tests.Business {
         }
 
         [Test]
-        public async Task generate_documents_in_docs_file() {
+        public async Task generate_documents_in_docs_file_naming_as_index_the_first_one() {
             var webSite = WebSiteWithDocuments(new ExportableDocument("Title", "Content"));
 
             string path = GetAnyExportationPath();
             await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationPaths(path, AnyImagesPath));
 
-            var content = GetFileContentFrom(Path.Combine(GetAnyExportationPath(), "docs/Title.md"));
+            var content = GetFileContentFrom(Path.Combine(GetAnyExportationPath(), "docs/index.md"));
             content.Should().Be("Content" + Environment.NewLine);
         }
         
@@ -106,8 +106,7 @@ namespace Papyrus.Tests.Business {
             var ymlPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
             GetFileContentFrom(ymlPath).Should().Contain(
                 "pages: " + newLine +
-                "- 'Home': 'index.md'" + newLine +
-                "- 'this/is|the*Title': 'this-is-the-Title.md'" + newLine +
+                "- 'this/is|the*Title': 'index.md'" + newLine +
                 "- 'otro>título?ñ': 'otro-titulo-n.md'");
         }
         

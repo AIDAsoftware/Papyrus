@@ -32,13 +32,16 @@ namespace Papyrus.Business.Exporters {
             var siteNameLine = "site_name" + KeyValueSeparator + SiteName + NewLine;
             var siteDir = "site_dir" + KeyValueSeparator + SiteDir + NewLine;
             var pagesLines = "pages" + KeyValueSeparator + NewLine;
-            pagesLines = pages
+            var orderedPages = pages
                 .Select(k => new Page {
                     FileName = ConvertToValidFileName(k.Value.Title),
                     Title = k.Key,
                     Order = k.Value.Order
                 })
                 .OrderBy(p => p.Order)
+                .ToList();
+            orderedPages[0].FileName = "index.md";
+            pagesLines = orderedPages
                 .Aggregate(pagesLines, (current, page) => current + ToMkdocsPageFormat(page));
             return themeLine + siteNameLine + siteDir + pagesLines;
         }

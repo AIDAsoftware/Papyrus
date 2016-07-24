@@ -12,7 +12,7 @@ namespace Papyrus.Desktop {
         public static TopicsGridVm TopicsGrid() {
             var topicQueryRepository = RepositoriesFactory.QueryTopic();
             var productRepository = RepositoriesFactory.Product();
-            return new TopicsGridVm(topicQueryRepository, productRepository, new MkDocsExporter(new FileSystemImagesCopier()), new WebsiteConstructor(topicQueryRepository, productRepository));
+            return new TopicsGridVm(topicQueryRepository, productRepository, new MkDocsExporter(new FileSystemImagesCopier()), new WebsiteConstructor(topicQueryRepository));
         }
 
         public static TopicVM Topic(EditableTopic topic)

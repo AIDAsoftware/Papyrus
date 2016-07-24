@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
 using Papyrus.Infrastructure.Core;
@@ -9,6 +10,7 @@ namespace Papyrus.Business.Exporters {
         private const string MarkDownExtension = ".md";
         private static readonly string NewLine = System.Environment.NewLine;
         private readonly FileSystemImagesCopier imagesCopier;
+        private int firstDocumentOrder;
         public const string IndexContent = "SIMA Documentation";
 
         public MkDocsExporter(FileSystemImagesCopier imagesCopier) {
@@ -20,6 +22,7 @@ namespace Papyrus.Business.Exporters {
             var exportationPath = configurationPaths.ExportationPath;
             await InitializeMkdocsStructure(
                 exportationPath, configuration);
+            firstDocumentOrder = webSite.Documents.OrderBy(d => d.Order).First().Order;
             foreach (var document in webSite.Documents) {
                 await ExportDocumentIn(document, 
                     DocsPathIn(exportationPath));
@@ -60,22 +63,19 @@ namespace Papyrus.Business.Exporters {
 
         private async Task InitializeMkdocsStructure(string path, MkdocsConfiguration configuration) {
             var docsPath = Path.Combine(path, "docs");
-            var docsDirectory = Directory.CreateDirectory(docsPath);
-            await WriteInFile(Path.Combine(docsDirectory.FullName, "index.md"), IndexContent);
-            AddIndexPageTo(configuration);
-        }
-
-        private static void AddIndexPageTo(MkdocsConfiguration configuration) {
-            configuration.AddPage("Home", new ExportableDocument("index", string.Empty, 0));
+            Directory.CreateDirectory(docsPath);
         }
 
         private static async Task AddDocumentToTheConfiguration(ExportableDocument document, MkdocsConfiguration configuration) {
             configuration.AddPage(document.Title, document);
         }
 
-        private static async Task ExportDocumentIn(ExportableDocument document, string directoryPath) {
+        private async Task ExportDocumentIn(ExportableDocument document, string directoryPath) {
             var documentDirectory = Directory.CreateDirectory(directoryPath);
-            var documentPath = Path.Combine(documentDirectory.FullName, ConvertToValidFileName(document.Title) + MarkDownExtension);
+            var fileName = (document.Order == firstDocumentOrder) ? 
+                "index.md" : 
+                ConvertToValidFileName(document.Title) + MarkDownExtension;
+            var documentPath = Path.Combine(documentDirectory.FullName, fileName);
             await WriteInFile(documentPath, document.Content);
         }
 
