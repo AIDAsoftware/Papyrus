@@ -1,0 +1,50 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/paper-input/paper-input.html">
+<link rel="import" href="bower_components/paper-button/paper-button.html">
+<link rel="import" href="bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="polymer-element">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <paper-input label="Title" value={{title}}></paper-input>
+    <paper-input label="Description" value="{{description}}"></paper-input>
+    <paper-input label="Language" value="{{language}}"></paper-input>
+    <paper-textarea label="Content"value="{{content}}"></paper-textarea>
+    <paper-input label="ProductId" value="{{productId}}"></paper-input>
+    <paper-input label="VersionId" value="{{versionId}}"></paper-input>
+
+    <iron-ajax id="ajax"
+      url="http://localhost/Papyrus.Api/products/[[productId]]/versions/[[versionId]]/documents"
+      body='{"Title":"[[title]]", "Description":"[[description]]", "Content": "[[content]]", "Language": "[[language]]"}'
+      handle-as="json"
+      headers='{"Content-Type": "application/json;charset=utf-8"}'
+      method="POST"
+      on-response="handleResponse"
+      debounce-duration="300"></iron-ajax>
+
+  <paper-button onclick="submitForm()">Submit</paper-button>
+
+  </template>
+  <script>
+    function submitForm() {
+      document.getElementById('ajax').generateRequest();
+    }
+    Polymer({
+      is: 'polymer-element',
+      properties: {
+        title: String,
+        description: String,
+        language: String,
+        content: String,
+        productId: String,
+        versionId: String
+      }
+    });
+  </script>
+</dom-module>

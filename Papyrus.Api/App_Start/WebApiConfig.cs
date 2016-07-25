@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Newtonsoft.Json;
 
 namespace Papyrus.Api
 {
     public static class WebApiConfig
     {
-        public static void Register(HttpConfiguration config)
-        {
+        public static void Register(HttpConfiguration config) {
+            var corsConfig = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(corsConfig);
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 
