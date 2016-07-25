@@ -1,0 +1,43 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<link rel="import" href="bower_components/paper-input/paper-input.html">
+<link rel="import" href="bower_components/paper-card/paper-card.html">
+<link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="document-listing">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-input label="ProductId" value="{{productId}}"></paper-input>
+    <paper-input label="VersionId" value="{{versionId}}"></paper-input>
+    <input type="button" name="submit" value="Submit" onclick="submitForm()">
+    <iron-ajax id="ajax2"
+          url="http://localhost/Papyrus.Api/products/[[productId]]/versions/[[versionId]]/documents"
+          method="GET"
+          last-response="{{documents}}"></iron-ajax>
+        <template is="dom-repeat"  items="[[documents]]" as="document">
+            <paper-card heading="[[document.Title]]">
+              <div class="card-content">
+                  <p>Description: [[document.Description]]</p>
+              </div>
+            </paper-card>
+        </template>
+
+  </template>
+  <script>
+  function submitForm() {
+    document.getElementById('ajax2').generateRequest();
+  }
+    Polymer({
+      is: 'document-listing',
+      properties: {
+          productId: String,
+          versionId: String,
+          documents: Array
+      }
+    });
+  </script>
+</dom-module>

@@ -4,7 +4,7 @@
 <link rel="import" href="bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
 
-<dom-module id="polymer-element">
+<dom-module id="document-creator">
   <template>
     <style>
       :host {
@@ -36,7 +36,7 @@
       document.getElementById('ajax').generateRequest();
     }
     Polymer({
-      is: 'polymer-element',
+      is: 'document-creator',
       properties: {
         title: String,
         description: String,
