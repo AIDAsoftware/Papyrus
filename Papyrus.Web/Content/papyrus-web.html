@@ -1,0 +1,22 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<link rel="import" href="document-creator.html">
+<link rel="import" href="document-listing.html">
+
+<dom-module id="papyrus-web">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <document-creator></document-creator>
+    <document-listing></document-listing>
+  </template>
+  <script>
+    Polymer({
+      is: 'papyrus-web'
+    });
+  </script>
+</dom-module>
+
