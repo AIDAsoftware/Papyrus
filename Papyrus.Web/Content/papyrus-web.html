@@ -3,6 +3,10 @@
 <link rel="import" href="document-creator.html">
 <link rel="import" href="document-listing.html">
 
+<link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="bower_components/paper-item/paper-item.html">
+
 <dom-module id="papyrus-web">
   <template>
     <style>
@@ -10,12 +14,34 @@
         display: block;
       }
     </style>
-    <document-creator></document-creator>
-    <document-listing></document-listing>
+
+    <paper-dropdown-menu label="Product" value="{{product}}">
+      <paper-listbox class="dropdown-content">
+        <paper-item>1</paper-item>
+        <paper-item>1</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+    <paper-dropdown-menu label="Version" value="{{version}}">
+      <paper-listbox class="dropdown-content">
+          <paper-item>1</paper-item>
+          <paper-item>1</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+    <!-- <document-creator></document-creator> -->
+    <document-listing product="[[product]]" version="[[version]]"></document-listing>
   </template>
   <script>
     Polymer({
-      is: 'papyrus-web'
+      is: 'papyrus-web',
+      properties: {
+          product: {
+              type: String,
+              notify: true
+          },
+          version: String
+      }
     });
   </script>
 </dom-module>

@@ -11,11 +11,8 @@
         display: block;
       }
     </style>
-    <paper-input label="ProductId" value="{{productId}}"></paper-input>
-    <paper-input label="VersionId" value="{{versionId}}"></paper-input>
-    <input type="button" name="submit" value="Submit" onclick="submitForm()">
-    <iron-ajax id="ajax2"
-          url="http://localhost/Papyrus.Api/products/[[productId]]/versions/[[versionId]]/documents"
+
+    <iron-ajax id="ajax"
           method="GET"
           last-response="{{documents}}"></iron-ajax>
         <template is="dom-repeat"  items="[[documents]]" as="document">
@@ -28,15 +25,30 @@
 
   </template>
   <script>
-  function submitForm() {
-    document.getElementById('ajax2').generateRequest();
-  }
     Polymer({
       is: 'document-listing',
       properties: {
-          productId: String,
-          versionId: String,
-          documents: Array
+          product: {
+              type: String,
+              notify: true
+          },
+          version: {
+              String,
+              notify: true
+          },
+          documents: Array,
+          isVisible: {
+              type: Boolean,
+              value: false,
+              computed: '_checkVisibility(product, version)'
+          }
+      },
+      _checkVisibility: function(product, version) {
+          //TODO: Fix this, find a way to show the documents only when version and product are set
+          console.log(product != null && version != null);
+          this.$.ajax.url = "http://localhost/Papyrus.Api/products/"+ product +"/versions/"+ version +"/documents"
+          this.$.ajax.generateRequest();
+          return product != null && version != null;
       }
     });
   </script>
