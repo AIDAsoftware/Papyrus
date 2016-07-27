@@ -7,9 +7,9 @@
 <dom-module id="document-listing">
   <template>
     <style>
-      :host {
-        display: block;
-      }
+        :host {
+            display: block;
+        }
     </style>
 
     <iron-ajax id="ajax"
@@ -37,18 +37,15 @@
                     String,
                     notify: true
                 },
-                documents: Array,
-                isVisible: {
-                    type: Boolean,
-                    value: false,
-                    computed: '_checkVisibility(product, version)'
-                }
+                documents: Array
             },
-            _checkVisibility: function(product, version) {
-                if (product == null || version == null) {
+            observers: [
+                '_versionChanged(product, version)'
+            ],
+            _versionChanged: function(product, version) {
+                if (!product || !version) {
                     return;
                 }
-                this.$.ajax.url = "http://192.168.1.193/Papyrus.Api/products/"+ product +"/versions/"+ version +"/documents"
                 this.$.ajax.generateRequest();
                 return product != null && version != null;
             }
