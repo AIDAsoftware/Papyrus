@@ -17,11 +17,9 @@
     <paper-input label="Description" value="{{description}}"></paper-input>
     <paper-input label="Language" value="{{language}}"></paper-input>
     <paper-textarea label="Content"value="{{content}}"></paper-textarea>
-    <paper-input label="ProductId" value="{{productId}}"></paper-input>
-    <paper-input label="VersionId" value="{{versionId}}"></paper-input>
 
     <iron-ajax id="ajax"
-      url="http://localhost/Papyrus.Api/products/[[productId]]/versions/[[versionId]]/documents"
+      url="http://192.168.1.193/Papyrus.Api/products/[[product_id]]/versions/[[version_id]]/documents"
       body='{"Title":"[[title]]", "Description":"[[description]]", "Content": "[[content]]", "Language": "[[language]]"}'
       handle-as="json"
       headers='{"Content-Type": "application/json;charset=utf-8"}'
@@ -43,8 +41,8 @@
         description: String,
         language: String,
         content: String,
-        productId: String,
-        versionId: String
+        product_id: String,
+        version_id: String
       }
     });
   </script>
