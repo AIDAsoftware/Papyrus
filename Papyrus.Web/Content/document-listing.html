@@ -14,7 +14,8 @@
 
     <iron-ajax id="ajax"
           method="GET"
-          last-response="{{documents}}"></iron-ajax>
+          last-response="{{documents}}"
+          url="http://192.168.1.193/Papyrus.Api/products/[[product]]/versions/[[version]]/documents"></iron-ajax>
         <template is="dom-repeat"  items="[[documents]]" as="document">
             <paper-card heading="[[document.Title]]">
               <div class="card-content">
@@ -25,31 +26,32 @@
 
   </template>
   <script>
-    Polymer({
-      is: 'document-listing',
-      properties: {
-          product: {
-              type: String,
-              notify: true
-          },
-          version: {
-              String,
-              notify: true
-          },
-          documents: Array,
-          isVisible: {
-              type: Boolean,
-              value: false,
-              computed: '_checkVisibility(product, version)'
-          }
-      },
-      _checkVisibility: function(product, version) {
-          //TODO: Fix this, find a way to show the documents only when version and product are set
-          console.log(product != null && version != null);
-          this.$.ajax.url = "http://localhost/Papyrus.Api/products/"+ product +"/versions/"+ version +"/documents"
-          this.$.ajax.generateRequest();
-          return product != null && version != null;
-      }
-    });
-  </script>
+        Polymer({
+            is: 'document-listing',
+            properties: {
+                product: {
+                    type: String,
+                    notify: true
+                },
+                version: {
+                    String,
+                    notify: true
+                },
+                documents: Array,
+                isVisible: {
+                    type: Boolean,
+                    value: false,
+                    computed: '_checkVisibility(product, version)'
+                }
+            },
+            _checkVisibility: function(product, version) {
+                if (product == null || version == null) {
+                    return;
+                }
+                this.$.ajax.url = "http://192.168.1.193/Papyrus.Api/products/"+ product +"/versions/"+ version +"/documents"
+                this.$.ajax.generateRequest();
+                return product != null && version != null;
+            }
+        });
+    </script>
 </dom-module>
