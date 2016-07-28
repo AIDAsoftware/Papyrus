@@ -12,7 +12,7 @@
         }
     </style>
 
-    <iron-ajax id="ajax"
+    <iron-ajax
           method="GET"
           last-response="{{documents}}"
           url="http://192.168.1.193/Papyrus.Api/products/[[product]]/versions/[[version]]/documents"></iron-ajax>
@@ -46,7 +46,7 @@
                 if (!product || !version) {
                     return;
                 }
-                this.$.ajax.generateRequest();
+                document.querySelector('iron-ajax').generateRequest();
                 return product != null && version != null;
             }
         });
