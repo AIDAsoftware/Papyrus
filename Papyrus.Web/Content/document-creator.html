@@ -13,7 +13,7 @@
             }
         </style>
 
-        <form is="iron-form" method="post" action="[[url]]">
+        <form is="iron-form" method="post" action="[[constructUrlFrom(product_id, version_id)]]">
             <paper-input label="Title" name="Title"></paper-input>
             <paper-input label="Description" name="Description"></paper-input>
             <paper-input label="Language" name="Language"></paper-input>
@@ -27,11 +27,7 @@
         is: 'document-creator',
         properties: {
             product_id: String,
-            version_id: String,
-            url: {
-                value: String,
-                computed: "_productVersionChanged(product_id, version_id)"
-            }
+            version_id: String
         },
         submitForm: function() {
             if (!this.product_id || !this.version_id) {
@@ -39,7 +35,7 @@
             }
             document.querySelector('form').submit();
         },
-        _productVersionChanged: function(productId, versionId) {
+        constructUrlFrom: function(productId, versionId) {
             return "http://192.168.1.193/Papyrus.Api/products/" + productId + "/versions/" + versionId + "/documents"
         }
     });
