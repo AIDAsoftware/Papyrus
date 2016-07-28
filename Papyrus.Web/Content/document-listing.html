@@ -13,7 +13,6 @@
     </style>
 
     <iron-ajax
-        auto
         method="GET"
         last-response="{{documents}}"
         url="http://192.168.1.193/Papyrus.Api/products/[[product]]/versions/[[version]]/documents">
@@ -42,9 +41,9 @@
                 documents: Array
             },
             observers: [
-                '_versionChanged(product, version)'
+                'versionChanged(product, version)'
             ],
-            _versionChanged: function(product, version) {
+            versionChanged: function(product, version) {
                 console.log(version);
                 console.log(product);
                 if (!product || !version) {
