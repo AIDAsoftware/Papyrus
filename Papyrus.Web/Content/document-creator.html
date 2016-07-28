@@ -13,7 +13,7 @@
             }
         </style>
 
-        <form is="iron-form" method="post" action="http://192.168.1.193/Papyrus.Api/products/[[product_id]]/versions/[[version_id]]/documents">
+        <form is="iron-form" method="post" action="[[url]]">
             <paper-input label="Title" name="Title"></paper-input>
             <paper-input label="Description" name="Description"></paper-input>
             <paper-input label="Language" name="Language"></paper-input>
@@ -21,16 +21,27 @@
             <paper-button raised on-tap="submitForm">Submit</paper-button>
         </form>
     </template>
+
     <script>
     Polymer({
-      is: 'document-creator',
-      properties: {
-        product_id: String,
-        version_id: String
-      },
-      submitForm: function() {
+        is: 'document-creator',
+        properties: {
+            product_id: String,
+            version_id: String,
+            url: {
+                value: String,
+                computed: "_productVersionChanged(product_id, version_id)"
+            }
+        },
+        submitForm: function() {
+            if (!this.product_id || !this.version_id) {
+                return;
+            }
             document.querySelector('form').submit();
-      }
+        },
+        _productVersionChanged: function(productId, versionId) {
+            return "http://192.168.1.193/Papyrus.Api/products/" + productId + "/versions/" + versionId + "/documents"
+        }
     });
   </script>
 </dom-module>
