@@ -39,7 +39,7 @@
     </paper-dropdown-menu>
 
     <template is="dom-if" if="[[ !listing ]]">
-        <document-creator></document-creator>    
+        <document-creator product_id="[[product]]" version_id="[[version]]"></document-creator>    
     </template>
 
     <template is="dom-if" if="[[ listing ]]">
