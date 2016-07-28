@@ -6,6 +6,9 @@
 <link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="bower_components/paper-item/paper-item.html">
+<link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="bower_components/iron-icons/iron-icons.html">
 
 <dom-module id="papyrus-web">
   <template>
@@ -14,6 +17,12 @@
         display: block;
       }
     </style>
+
+    <paper-toolbar class="medium-tall">
+        <span class="title">Papyrus</span>
+        <paper-icon-button style="{color: white}" icon="refresh" on-tap="listDocuments"></paper-icon-button>
+        <paper-icon-button style="{color: white}" icon="add" on-tap="openCreator">+</paper-icon-button>
+    </paper-toolbar>
 
     <paper-dropdown-menu label="Product" value="{{product}}">
       <paper-listbox class="dropdown-content">
@@ -47,6 +56,16 @@
                 type: Boolean,
                 value: true
             }
+        },
+        listDocuments: function() {
+            console.log("list");
+            this.listing = true;
+            console.log(this.listing);
+        },
+        openCreator: function() {
+            console.log("create");
+            this.listing = false;
+            console.log(this.listing);
         }
     });
   </script>
