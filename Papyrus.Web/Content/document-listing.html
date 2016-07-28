@@ -13,16 +13,18 @@
     </style>
 
     <iron-ajax
-          method="GET"
-          last-response="{{documents}}"
-          url="http://192.168.1.193/Papyrus.Api/products/[[product]]/versions/[[version]]/documents"></iron-ajax>
-        <template is="dom-repeat"  items="[[documents]]" as="document">
-            <paper-card heading="[[document.Title]]">
-              <div class="card-content">
-                  <p>Description: [[document.Description]]</p>
-              </div>
-            </paper-card>
-        </template>
+        auto
+        method="GET"
+        last-response="{{documents}}"
+        url="http://192.168.1.193/Papyrus.Api/products/[[product]]/versions/[[version]]/documents">
+    </iron-ajax>
+    <template is="dom-repeat"  items="[[documents]]" as="document">
+        <paper-card heading="[[document.Title]]">
+            <div class="card-content">
+                <p>Description: [[document.Description]]</p>
+            </div>
+        </paper-card>
+    </template>
 
   </template>
   <script>
@@ -43,11 +45,12 @@
                 '_versionChanged(product, version)'
             ],
             _versionChanged: function(product, version) {
+                console.log(version);
+                console.log(product);
                 if (!product || !version) {
                     return;
                 }
                 document.querySelector('iron-ajax').generateRequest();
-                return product != null && version != null;
             }
         });
     </script>
