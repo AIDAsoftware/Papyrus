@@ -37,12 +37,18 @@ namespace Papyrus.Tests.Integration {
 
         [Test]
         public void retrieve_versions_of_products() {
-            GivenAProductWith(versions: new ProductVersion("4321", "0.0.1"));
+            var anyVersion = AnyVersion();
+            GivenAProductWith(versions: anyVersion);
             var productRepository = new FileProductRepository(ProductsPath);
 
             var products = productRepository.GetAllProducts();
 
-            products.First().Versions.Should().Contain(v => v.Id == "4321" && v.Name == "0.0.1");
+            products.First().Versions.Should()
+                .Contain(v => v.Id == anyVersion.Id && v.Name == anyVersion.Name);
+        }
+
+        private static ProductVersion AnyVersion() {
+            return new ProductVersion("4321", "0.0.1");
         }
 
         public void GivenAProductWith(string id = "Any", string name = "Any", params ProductVersion[] versions) {
