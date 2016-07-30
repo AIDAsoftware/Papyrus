@@ -37,12 +37,7 @@ namespace Papyrus.Tests.Integration {
 
         [Test]
         public void retrieve_versions_of_products() {
-            var product = new Product("1234", "Papyrus", new List<ProductVersion> {
-                new ProductVersion("4321", "0.0.1")
-            });
-            var productJson = JsonConvert.SerializeObject(product);
-            var productPath = Path.Combine(ProductsPath, "1234");
-            File.WriteAllText(productPath, productJson);
+            GivenAProductWith(versions: new ProductVersion("4321", "0.0.1"));
             var productRepository = new FileProductRepository(ProductsPath);
 
             var products = productRepository.GetAllProducts();
@@ -50,15 +45,8 @@ namespace Papyrus.Tests.Integration {
             products.First().Versions.Should().Contain(v => v.Id == "4321" && v.Name == "0.0.1");
         }
 
-        public void GivenAProductWith(string id, string name) {
-            var product = new Product(id, name, new List<ProductVersion>());
-            var productJson = JsonConvert.SerializeObject(product);
-            var productPath = Path.Combine(ProductsPath, "1234");
-            File.WriteAllText(productPath, productJson);
-        }
-
-        public void GivenAProductWithVersions(params ProductVersion[] versions) {
-            var product = new Product("1234", "Papyrus", versions.ToList());
+        public void GivenAProductWith(string id = "Any", string name = "Any", params ProductVersion[] versions) {
+            var product = new Product(id, name, versions.ToList());
             var productJson = JsonConvert.SerializeObject(product);
             var productPath = Path.Combine(ProductsPath, "1234");
             File.WriteAllText(productPath, productJson);
