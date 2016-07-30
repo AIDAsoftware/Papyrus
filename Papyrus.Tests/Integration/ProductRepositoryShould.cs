@@ -34,8 +34,8 @@ namespace Papyrus.Tests.Integration {
 
             var products = productRepository.GetAllProducts();
 
-            products.Should().Contain(p => p.Id ==productId);
-            products.Should().Contain(p => p.Name == productName);
+            products.First().Id.Should().Be(productId);
+            products.First().Name.Should().Be(productName);
         }
 
         [Test]
