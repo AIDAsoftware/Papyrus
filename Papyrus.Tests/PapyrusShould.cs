@@ -7,13 +7,6 @@ using Papyrus.Business;
 
 namespace Papyrus.Tests {
 
-    /*
-     * TODO
-     *  - Get the documentation given a product and a version
-     *  - Create a document for a given product and version
-     */
-
-
     [TestFixture]
     public class PapyrusShould {
         private DocumentsRepository repository;

@@ -43,6 +43,11 @@
       <HintPath>..\packages\FluentAssertions.4.12.0\lib\net45\FluentAssertions.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Build.Tasks.v4.0" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NSubstitute, Version=1.10.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
       <HintPath>..\packages\NSubstitute.1.10.0.0\lib\net45\NSubstitute.dll</HintPath>
       <Private>True</Private>
@@ -69,6 +74,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="GivenFixture.cs" />
+    <Compile Include="Integration\ProductRepositoryShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PapyrusShould.cs" />
     <Compile Include="TestExtensionMethodsForDocumentDto.cs" />
