@@ -11,11 +11,13 @@ namespace Papyrus.Tests.Integration {
 
     [TestFixture]
     public class ProductRepositoryShould {
+        private FileProductRepository productRepository;
         private string ProductsPath { get; set; }
 
         [SetUp]
         public void given_a_products_path() {
             ProductsPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Products"));
+            productRepository = new FileProductRepository(ProductsPath);
             Directory.CreateDirectory(ProductsPath);
         }
 
@@ -27,7 +29,6 @@ namespace Papyrus.Tests.Integration {
         [Test]
         public void retrieve_products() {
             GivenAProductWith(id: "1234", name: "Papyrus");
-            var productRepository = new FileProductRepository(ProductsPath);
 
             var products = productRepository.GetAllProducts();
 
@@ -39,7 +40,6 @@ namespace Papyrus.Tests.Integration {
         public void retrieve_versions_of_products() {
             var anyVersion = AnyVersion();
             GivenAProductWith(versions: anyVersion);
-            var productRepository = new FileProductRepository(ProductsPath);
 
             var products = productRepository.GetAllProducts();
 
