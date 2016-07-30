@@ -40,21 +40,4 @@ namespace Papyrus.Tests.Integration {
             products.First().Versions.Should().Contain(v => v.Id == "4321" && v.Name == "0.0.1");
         }
     }
-
-    public class FileProductRepository {
-        public string Path { get; }
-
-        public FileProductRepository(string path) {
-            Path = path;
-        }
-
-        public List<Product> GetAllProducts() {
-            var directory = new DirectoryInfo(Path);
-            var files = directory.GetFiles();
-            return files
-                .Select(f => File.ReadAllText(f.FullName))
-                .Select(JsonConvert.DeserializeObject<Product>)
-                .ToList();
-        }
-    }
 }
