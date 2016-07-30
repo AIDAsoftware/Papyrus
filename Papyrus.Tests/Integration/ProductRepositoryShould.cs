@@ -28,12 +28,14 @@ namespace Papyrus.Tests.Integration {
 
         [Test]
         public void retrieve_products() {
-            GivenAProductWith(id: "1234", name: "Papyrus");
+            const string productId = "1234";
+            const string productName = "Papyrus";
+            GivenAProductWith(id: productId, name: productName);
 
             var products = productRepository.GetAllProducts();
 
-            products.Should().Contain(p => p.Id =="1234");
-            products.Should().Contain(p => p.Name =="Papyrus");
+            products.Should().Contain(p => p.Id ==productId);
+            products.Should().Contain(p => p.Name == productName);
         }
 
         [Test]
