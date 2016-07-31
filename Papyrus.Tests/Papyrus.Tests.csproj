@@ -73,6 +73,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="FileDocumentsRepositoryShould.cs" />
     <Compile Include="GivenFixture.cs" />
     <Compile Include="Integration\ProductRepositoryShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
