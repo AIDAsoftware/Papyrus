@@ -27,15 +27,7 @@ namespace Papyrus.Tests {
         public void get_documents_for_a_concrete_version() {
             var productId = AnyUniqueString();
             var versionId = AnyUniqueString();
-            var documentToInsert = new FileDocument {
-                Id = AnyUniqueString(),
-                Title = AnyUniqueString(),
-                Content = AnyUniqueString(),
-                Description = AnyUniqueString(),
-                Language = AnyUniqueString(),
-                ProductId = productId,
-                VersionId = versionId
-            };
+            var documentToInsert = AnyDocumentFor(product: productId, version: versionId);
             var jsonDocument = JsonConvert.SerializeObject(documentToInsert);
             var productPath = Path.Combine(DocumentsPath, documentToInsert.Id);
             File.WriteAllText(productPath, jsonDocument);
@@ -49,6 +41,18 @@ namespace Papyrus.Tests {
             retrievedDocument.Content.Should().Be(documentToInsert.Content);
             retrievedDocument.Description.Should().Be(documentToInsert.Description);
             retrievedDocument.Language.Should().Be(documentToInsert.Language);
+        }
+
+        private static FileDocument AnyDocumentFor(string product, string version) {
+            return new FileDocument {
+                Id = AnyUniqueString(),
+                Title = AnyUniqueString(),
+                Content = AnyUniqueString(),
+                Description = AnyUniqueString(),
+                Language = AnyUniqueString(),
+                ProductId = product,
+                VersionId = version
+            };
         }
 
         private static string AnyUniqueString() {
