@@ -33,14 +33,14 @@ namespace Papyrus.Tests {
             File.WriteAllText(productPath, jsonDocument);
 
             var documentsRepository = new FileDocumentsRepository(DocumentsPath);
-            var documents = documentsRepository.GetDocumentationFor(productId, versionId);
+            var documents = documentsRepository.GetDocumentationFor(productId, versionId).ToList();
 
-            documents.ToList().Should().HaveCount(1);
-            var retrievedDocument = documents.ToList().First();
-            retrievedDocument.Title.Should().Be(documentToInsert.Title);
-            retrievedDocument.Content.Should().Be(documentToInsert.Content);
-            retrievedDocument.Description.Should().Be(documentToInsert.Description);
-            retrievedDocument.Language.Should().Be(documentToInsert.Language);
+            documents.Should().HaveCount(1);
+            documents.Should().Contain(d => 
+                        d.Title == documentToInsert.Title && 
+                        d.Description == documentToInsert.Description && 
+                        d.Content == documentToInsert.Content && 
+                        d.Language == documentToInsert.Language);
         }
 
         private static FileDocument AnyDocumentFor(string product, string version) {
