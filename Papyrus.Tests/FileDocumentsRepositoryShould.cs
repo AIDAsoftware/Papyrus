@@ -27,7 +27,7 @@ namespace Papyrus.Tests {
         public void get_documents_for_a_concrete_version() {
             var productId = AnyUniqueString();
             var versionId = AnyUniqueString();
-            var documentToInsert = new TestDocument {
+            var documentToInsert = new FileDocument {
                 Id = AnyUniqueString(),
                 Title = AnyUniqueString(),
                 Content = AnyUniqueString(),
@@ -68,7 +68,7 @@ namespace Papyrus.Tests {
             var files = directory.GetFiles();
             var documents = files
                 .Select(f => File.ReadAllText(f.FullName))
-                .Select(JsonConvert.DeserializeObject<TestDocument>)
+                .Select(JsonConvert.DeserializeObject<FileDocument>)
                 .Select(d => new Document(d.Title, d.Description, d.Content, d.Language))
                 .ToList();
             return Documentation.WithDocuments(documents);
@@ -79,7 +79,7 @@ namespace Papyrus.Tests {
         }
     }
 
-    public class TestDocument {
+    public class FileDocument {
         public string Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
