@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -36,11 +37,15 @@ namespace Papyrus.Tests {
             var documents = documentsRepository.GetDocumentationFor(productId, versionId).ToList();
 
             documents.Should().HaveCount(1);
-            documents.Should().Contain(d => 
-                        d.Title == documentToInsert.Title && 
-                        d.Description == documentToInsert.Description && 
-                        d.Content == documentToInsert.Content && 
-                        d.Language == documentToInsert.Language);
+            documents.Should().Contain(ADocumentEquivalentTo(documentToInsert));
+        }
+
+        private static Expression<Func<Document, bool>> ADocumentEquivalentTo(FileDocument documentToInsert) {
+            return document => 
+                document.Title == documentToInsert.Title && 
+                document.Description == documentToInsert.Description && 
+                document.Content == documentToInsert.Content && 
+                document.Language == documentToInsert.Language;
         }
 
         private static FileDocument AnyDocumentFor(string product, string version) {
