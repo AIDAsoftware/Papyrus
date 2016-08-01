@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 namespace Papyrus.Business {
-    public class Product {
+    public class Product : SerializableItem {
         public string Id { get; }
         public string Name { get; }
         public List<ProductVersion> Versions { get; set; }

@@ -11,7 +11,7 @@ namespace Papyrus.Business {
             this.DirectoryPath = directoryPath;
         }
 
-        public IEnumerable<T> GetAll<T>() {
+        public IEnumerable<T> GetAll<T>() where T : SerializableItem {
             var directory = new DirectoryInfo(DirectoryPath);
             var files = directory.GetFiles();
             return files
