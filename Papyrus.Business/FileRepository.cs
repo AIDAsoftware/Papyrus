@@ -18,5 +18,12 @@ namespace Papyrus.Business {
                 .Select(f => File.ReadAllText(f.FullName))
                 .Select(JsonConvert.DeserializeObject<T>);
         }
+
+        public void CreateFile(FileDocument fileDocument) {
+            Directory.CreateDirectory(DirectoryPath);
+            var documentPath = Path.Combine(DirectoryPath, fileDocument.Id);
+            var jsonDocument = JsonConvert.SerializeObject(fileDocument);
+            File.WriteAllText(documentPath, jsonDocument);
+        }
     }
 }

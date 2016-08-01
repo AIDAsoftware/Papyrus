@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 namespace Papyrus.Business {
     public class FileDocumentsRepository : DocumentsRepository {
         private FileRepository FileRepository { get; }
-        private string DocumentsPath => FileRepository.DirectoryPath;
 
         public FileDocumentsRepository(FileRepository fileRepository) {
             FileRepository = fileRepository;
@@ -21,7 +20,6 @@ namespace Papyrus.Business {
         }
 
         public void CreateDocumentFor(Document document, string productId, string versionId) {
-            Directory.CreateDirectory(DocumentsPath);
             var fileDocument = new FileDocument {
                 Id = Guid.NewGuid().ToString(),
                 Title = document.Title,
@@ -31,9 +29,7 @@ namespace Papyrus.Business {
                 ProductId = productId,
                 VersionId = versionId
             };
-            var documentPath = Path.Combine(DocumentsPath, fileDocument.Id);
-            var jsonDocument = JsonConvert.SerializeObject(fileDocument);
-            File.WriteAllText(documentPath, jsonDocument);
+            FileRepository.CreateFile(fileDocument);
         }
     }
 }
