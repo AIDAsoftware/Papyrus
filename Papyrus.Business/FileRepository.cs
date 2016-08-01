@@ -11,12 +11,12 @@ namespace Papyrus.Business {
             this.directoryPath = directoryPath;
         }
 
-        public IEnumerable<Product> GetAll() {
+        public IEnumerable<T> GetAll<T>() {
             var directory = new DirectoryInfo(directoryPath);
             var files = directory.GetFiles();
             return files
                 .Select(f => File.ReadAllText(f.FullName))
-                .Select(JsonConvert.DeserializeObject<Product>);
+                .Select(JsonConvert.DeserializeObject<T>);
         }
     }
 }

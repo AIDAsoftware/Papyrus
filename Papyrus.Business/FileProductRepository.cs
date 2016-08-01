@@ -13,7 +13,7 @@ namespace Papyrus.Business {
 
         public List<Product> GetAllProducts() {
             var fileRepo = new FileRepository(Path);
-            return fileRepo.GetAll().ToList();
+            return fileRepo.GetAll<Product>().ToList();
         }
     }
 }
