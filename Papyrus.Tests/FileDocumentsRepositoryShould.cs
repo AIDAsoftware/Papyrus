@@ -27,18 +27,27 @@ namespace Papyrus.Tests {
 
         [Test]
         public void get_documents_for_a_concrete_version() {
-            var productId = AnyUniqueString();
-            var versionId = AnyUniqueString();
-            var documentToInsert = AnyDocumentFor(product: productId, version: versionId);
+            var persistedDocument = AnyPersistedDocument();
+
+            var documents = GetDocumentationFor(persistedDocument.ProductId, persistedDocument.VersionId);
+
+            documents.Should().HaveCount(1);
+            documents.Should().Contain(ADocumentEquivalentTo(persistedDocument));
+        }
+
+        private List<Document> GetDocumentationFor(string product, string version) {
+            var documentsRepository = new FileDocumentsRepository(DocumentsPath);
+            var documents =
+                documentsRepository.GetDocumentationFor(product, version).ToList();
+            return documents;
+        }
+
+        private FileDocument AnyPersistedDocument() {
+            var documentToInsert = AnyDocumentFor(product: AnyUniqueString(), version: AnyUniqueString());
             var jsonDocument = JsonConvert.SerializeObject(documentToInsert);
             var productPath = Path.Combine(DocumentsPath, documentToInsert.Id);
             File.WriteAllText(productPath, jsonDocument);
-
-            var documentsRepository = new FileDocumentsRepository(DocumentsPath);
-            var documents = documentsRepository.GetDocumentationFor(productId, versionId).ToList();
-
-            documents.Should().HaveCount(1);
-            documents.Should().Contain(ADocumentEquivalentTo(documentToInsert));
+            return documentToInsert;
         }
 
         [Test]
