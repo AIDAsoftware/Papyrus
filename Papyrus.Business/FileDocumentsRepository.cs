@@ -29,7 +29,7 @@ namespace Papyrus.Business {
                 ProductId = productId,
                 VersionId = versionId
             };
-            FileRepository.CreateFile(fileDocument);
+            FileRepository.Create(fileDocument);
         }
     }
 }

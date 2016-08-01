@@ -1,5 +1,9 @@
 namespace Papyrus.Business {
-    public class FileDocument {
+    public interface SerializableItem {
+        string Id { get; }
+    }
+
+    public class FileDocument : SerializableItem {
         public string Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }

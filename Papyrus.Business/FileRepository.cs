@@ -19,10 +19,10 @@ namespace Papyrus.Business {
                 .Select(JsonConvert.DeserializeObject<T>);
         }
 
-        public void CreateFile(FileDocument fileDocument) {
+        public void Create(SerializableItem serializableItem) {
             Directory.CreateDirectory(DirectoryPath);
-            var documentPath = Path.Combine(DirectoryPath, fileDocument.Id);
-            var jsonDocument = JsonConvert.SerializeObject(fileDocument);
+            var documentPath = Path.Combine(DirectoryPath, serializableItem.Id);
+            var jsonDocument = JsonConvert.SerializeObject(serializableItem);
             File.WriteAllText(documentPath, jsonDocument);
         }
     }
