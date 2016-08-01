@@ -45,16 +45,12 @@ namespace Papyrus.Tests {
         public void create_a_document_for_a_concrete_version() {
             var productId = AnyUniqueString();
             var versionId = AnyUniqueString();
-            var documentToInsert = new Document(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString());
+            var documentToInsert = AnyDocument();
 
             var documentsRepository = new FileDocumentsRepository(DocumentsPath);
             documentsRepository.CreateDocumentFor(documentToInsert, productId, versionId);
             
-            var documents = new DirectoryInfo(DocumentsPath)
-                            .GetFiles()
-                            .Select(f => File.ReadAllText(f.FullName))
-                            .Select(JsonConvert.DeserializeObject<FileDocument>)
-                            .ToList();
+            var documents = GetAllDocumentsFrom(DocumentsPath);
             documents.Should().HaveCount(1);
             documents.First().ShouldBeEquivalentTo(documentToInsert, 
                 options => options.Excluding(d => d.ProductId)
@@ -62,6 +58,18 @@ namespace Papyrus.Tests {
                                 .Excluding(d => d.Id));
             documents.First().VersionId.Should().Be(versionId);
             documents.First().ProductId.Should().Be(productId);
+        }
+
+        private List<FileDocument> GetAllDocumentsFrom(string documentsPath) {
+            return new DirectoryInfo(documentsPath)
+                .GetFiles()
+                .Select(f => File.ReadAllText(f.FullName))
+                .Select(JsonConvert.DeserializeObject<FileDocument>)
+                .ToList();
+        }
+
+        private static Document AnyDocument() {
+            return new Document(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString());
         }
 
         private static Expression<Func<Document, bool>> ADocumentEquivalentTo(FileDocument documentToInsert) {
