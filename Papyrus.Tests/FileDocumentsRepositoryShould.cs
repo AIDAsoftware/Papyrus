@@ -29,13 +29,14 @@ namespace Papyrus.Tests {
         }
 
         [Test]
-        public void get_documents_for_a_concrete_version() {
-            var persistedDocument = AnyPersistedDocument();
+        public void get_only_documents_for_a_concrete_version() {
+            var expectedDocument = AnyUniquePersistedDocument();
+            AnyUniquePersistedDocument();
 
-            var documents = GetDocumentationFor(persistedDocument.ProductId, persistedDocument.VersionId);
+            var documents = GetDocumentationFor(expectedDocument.ProductId, expectedDocument.VersionId);
 
             documents.Should().HaveCount(1);
-            documents.Should().Contain(ADocumentEquivalentTo(persistedDocument));
+            documents.Should().Contain(ADocumentEquivalentTo(expectedDocument));
         }
 
         [Test]
@@ -70,7 +71,7 @@ namespace Papyrus.Tests {
             return documents;
         }
 
-        private FileDocument AnyPersistedDocument() {
+        private FileDocument AnyUniquePersistedDocument() {
             var documentToInsert = AnyDocumentFor(product: AnyUniqueString(), version: AnyUniqueString());
             var jsonDocument = JsonConvert.SerializeObject(documentToInsert);
             var productPath = Path.Combine(DocumentsPath, documentToInsert.Id);
@@ -120,6 +121,7 @@ namespace Papyrus.Tests {
             var documents = files
                 .Select(f => File.ReadAllText(f.FullName))
                 .Select(JsonConvert.DeserializeObject<FileDocument>)
+                .Where(d => d.ProductId == productId && d.VersionId == versionId)
                 .Select(d => new Document(d.Title, d.Description, d.Content, d.Language))
                 .ToList();
             return Documentation.WithDocuments(documents);
