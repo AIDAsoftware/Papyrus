@@ -83,7 +83,7 @@
     <Compile Include="FileDocumentsRepository.cs" />
     <Compile Include="FileProduct.cs" />
     <Compile Include="FileProductRepository.cs" />
-    <Compile Include="FileRepository.cs" />
+    <Compile Include="FileSystemProvider.cs" />
     <Compile Include="ObservableCollectionExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializableItem.cs" />

@@ -4,14 +4,14 @@ using Papyrus.Business;
 
 namespace Papyrus.Infrastructure.Core {
     public class FileProductRepository : ProductRepository {
-        private FileRepository FileRepository { get; }
+        private FileSystemProvider FileSystemProvider { get; }
 
-        public FileProductRepository(FileRepository fileRepository) {
-            FileRepository = fileRepository;
+        public FileProductRepository(FileSystemProvider fileSystemProvider) {
+            FileSystemProvider = fileSystemProvider;
         }
 
         public List<Product> GetAllProducts() {
-            return FileRepository.GetAll<FileProduct>()
+            return FileSystemProvider.GetAll<FileProduct>()
                 .Select(p => new Product(p.Id, p.Name, p.ProductVersions))
                 .ToList();
         }

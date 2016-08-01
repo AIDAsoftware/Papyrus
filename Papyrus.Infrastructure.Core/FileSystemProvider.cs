@@ -5,10 +5,10 @@ using Newtonsoft.Json;
 using Papyrus.Business;
 
 namespace Papyrus.Infrastructure.Core {
-    public class FileRepository {
+    public class FileSystemProvider {
         public readonly string DirectoryPath;
 
-        public FileRepository(string directoryPath) {
+        public FileSystemProvider(string directoryPath) {
             this.DirectoryPath = directoryPath;
         }
 

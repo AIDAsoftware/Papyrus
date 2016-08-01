@@ -18,7 +18,7 @@ namespace Papyrus.Tests.Integration {
         [SetUp]
         public void given_a_products_path() {
             ProductsPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Products"));
-            productRepository = new FileProductRepository(new FileRepository(ProductsPath));
+            productRepository = new FileProductRepository(new FileSystemProvider(ProductsPath));
             Directory.CreateDirectory(ProductsPath);
         }
 

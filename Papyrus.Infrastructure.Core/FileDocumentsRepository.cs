@@ -4,14 +4,14 @@ using Papyrus.Business;
 
 namespace Papyrus.Infrastructure.Core {
     public class FileDocumentsRepository : DocumentsRepository {
-        private FileRepository FileRepository { get; }
+        private FileSystemProvider FileSystemProvider { get; }
 
-        public FileDocumentsRepository(FileRepository fileRepository) {
-            FileRepository = fileRepository;
+        public FileDocumentsRepository(FileSystemProvider fileSystemProvider) {
+            FileSystemProvider = fileSystemProvider;
         }
 
         public Documentation GetDocumentationFor(string productId, string versionId) {
-            var documents = FileRepository.GetAll<FileDocument>()
+            var documents = FileSystemProvider.GetAll<FileDocument>()
                 .Where(d => d.ProductId == productId && d.VersionId == versionId)
                 .Select(d => new Document(d.Title, d.Description, d.Content, d.Language))
                 .ToList();
@@ -28,7 +28,7 @@ namespace Papyrus.Infrastructure.Core {
                 ProductId = productId,
                 VersionId = versionId
             };
-            FileRepository.Create(fileDocument);
+            FileSystemProvider.Create(fileDocument);
         }
     }
 }
