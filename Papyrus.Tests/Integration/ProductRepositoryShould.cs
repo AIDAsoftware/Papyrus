@@ -6,6 +6,7 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Papyrus.Business;
+using Papyrus.Infrastructure.Core;
 
 namespace Papyrus.Tests.Integration {
 
@@ -17,7 +18,7 @@ namespace Papyrus.Tests.Integration {
         [SetUp]
         public void given_a_products_path() {
             ProductsPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Products"));
-            productRepository = new ProductRepository(new FileRepository(ProductsPath));
+            productRepository = new FileProductRepository(new FileRepository(ProductsPath));
             Directory.CreateDirectory(ProductsPath);
         }
 
@@ -52,18 +53,22 @@ namespace Papyrus.Tests.Integration {
             return new ProductVersion("4321", "0.0.1");
         }
 
-        public void GivenAProductWith(Product product, params ProductVersion[] versions) {
+        public void GivenAProductWith(FileProduct product, params ProductVersion[] versions) {
             var productJson = JsonConvert.SerializeObject(product);
             var productPath = Path.Combine(ProductsPath, "1234");
             File.WriteAllText(productPath, productJson);
         }
 
-        private static Product AProductWith(params ProductVersion[] versions) {
-            return new Product("Any", "Any", versions.ToList());
+        private static FileProduct AProductWith(params ProductVersion[] versions) {
+            return new FileProduct {
+                Name = "Any",
+                Id = "Any",
+                ProductVersions = versions.ToList()
+            };
         }
 
-        private static Product AnyProduct() {
-            return new Product("Any", "Any", new List<ProductVersion>());
+        private static FileProduct AnyProduct() {
+            return AProductWith();
         }
     }
 }

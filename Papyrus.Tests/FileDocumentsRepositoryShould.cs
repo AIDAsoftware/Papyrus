@@ -8,6 +8,7 @@ using FluentAssertions.Common;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Papyrus.Business;
+using Papyrus.Infrastructure.Core;
 
 namespace Papyrus.Tests {
     [TestFixture]

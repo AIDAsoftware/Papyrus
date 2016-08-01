@@ -49,10 +49,7 @@
     <Compile Include="Documentation.cs" />
     <Compile Include="DocumentDto.cs" />
     <Compile Include="DocumentsRepository.cs" />
-    <Compile Include="FileDocument.cs" />
-    <Compile Include="FileDocumentsRepository.cs" />
     <Compile Include="ProductRepository.cs" />
-    <Compile Include="FileRepository.cs" />
     <Compile Include="GetDocumentation.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductVersion.cs" />

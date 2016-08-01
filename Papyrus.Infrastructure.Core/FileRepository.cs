@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Papyrus.Business;
 
-namespace Papyrus.Business {
+namespace Papyrus.Infrastructure.Core {
     public class FileRepository {
         public readonly string DirectoryPath;
 

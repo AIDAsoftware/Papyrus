@@ -1,9 +1,8 @@
 using System;
-using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
+using Papyrus.Business;
 
-namespace Papyrus.Business {
+namespace Papyrus.Infrastructure.Core {
     public class FileDocumentsRepository : DocumentsRepository {
         private FileRepository FileRepository { get; }
 
