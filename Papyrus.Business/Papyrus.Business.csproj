@@ -50,6 +50,7 @@
     <Compile Include="DocumentDto.cs" />
     <Compile Include="DocumentsRepository.cs" />
     <Compile Include="FileProductRepository.cs" />
+    <Compile Include="FileRepository.cs" />
     <Compile Include="GetDocumentation.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductVersion.cs" />

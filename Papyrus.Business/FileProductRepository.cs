@@ -12,12 +12,8 @@ namespace Papyrus.Business {
         }
 
         public List<Product> GetAllProducts() {
-            var directory = new DirectoryInfo(Path);
-            var files = directory.GetFiles();
-            return files
-                .Select(f => File.ReadAllText(f.FullName))
-                .Select(JsonConvert.DeserializeObject<Product>)
-                .ToList();
+            var fileRepo = new FileRepository(Path);
+            return fileRepo.GetAll().ToList();
         }
     }
 }
