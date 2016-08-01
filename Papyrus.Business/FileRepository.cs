@@ -5,14 +5,14 @@ using Newtonsoft.Json;
 
 namespace Papyrus.Business {
     public class FileRepository {
-        private readonly string directoryPath;
+        public readonly string DirectoryPath;
 
         public FileRepository(string directoryPath) {
-            this.directoryPath = directoryPath;
+            this.DirectoryPath = directoryPath;
         }
 
         public IEnumerable<T> GetAll<T>() {
-            var directory = new DirectoryInfo(directoryPath);
+            var directory = new DirectoryInfo(DirectoryPath);
             var files = directory.GetFiles();
             return files
                 .Select(f => File.ReadAllText(f.FullName))

@@ -20,7 +20,7 @@ namespace Papyrus.Tests {
         [SetUp]
         public void Setup() {
             Directory.CreateDirectory(DocumentsPath);
-            documentsRepository = new FileDocumentsRepository(DocumentsPath);
+            documentsRepository = new FileDocumentsRepository(new FileRepository(DocumentsPath));
         }
 
         [TearDown]

@@ -5,18 +5,15 @@ using Newtonsoft.Json;
 
 namespace Papyrus.Business {
     public class FileDocumentsRepository : DocumentsRepository {
-        private string DocumentsPath { get; }
+        private FileRepository FileRepository { get; }
+        private string DocumentsPath => FileRepository.DirectoryPath;
 
-        public FileDocumentsRepository(string documentsPath) {
-            DocumentsPath = documentsPath;
+        public FileDocumentsRepository(FileRepository fileRepository) {
+            FileRepository = fileRepository;
         }
 
         public Documentation GetDocumentationFor(string productId, string versionId) {
-            var directory = new DirectoryInfo(DocumentsPath);
-            var files = directory.GetFiles();
-            var documents = files
-                .Select(f => File.ReadAllText(f.FullName))
-                .Select(JsonConvert.DeserializeObject<FileDocument>)
+            var documents = FileRepository.GetAll<FileDocument>()
                 .Where(d => d.ProductId == productId && d.VersionId == versionId)
                 .Select(d => new Document(d.Title, d.Description, d.Content, d.Language))
                 .ToList();
