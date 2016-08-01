@@ -15,9 +15,12 @@ namespace Papyrus.Tests {
         public readonly string DocumentsPath =
             Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Documents"));
 
+        private FileDocumentsRepository documentsRepository;
+
         [SetUp]
         public void Setup() {
             Directory.CreateDirectory(DocumentsPath);
+            documentsRepository = new FileDocumentsRepository(DocumentsPath);
         }
 
         [TearDown]
@@ -35,28 +38,12 @@ namespace Papyrus.Tests {
             documents.Should().Contain(ADocumentEquivalentTo(persistedDocument));
         }
 
-        private List<Document> GetDocumentationFor(string product, string version) {
-            var documentsRepository = new FileDocumentsRepository(DocumentsPath);
-            var documents =
-                documentsRepository.GetDocumentationFor(product, version).ToList();
-            return documents;
-        }
-
-        private FileDocument AnyPersistedDocument() {
-            var documentToInsert = AnyDocumentFor(product: AnyUniqueString(), version: AnyUniqueString());
-            var jsonDocument = JsonConvert.SerializeObject(documentToInsert);
-            var productPath = Path.Combine(DocumentsPath, documentToInsert.Id);
-            File.WriteAllText(productPath, jsonDocument);
-            return documentToInsert;
-        }
-
         [Test]
         public void create_a_document_for_a_concrete_version() {
             var productId = AnyUniqueString();
             var versionId = AnyUniqueString();
             var documentToInsert = AnyDocument();
 
-            var documentsRepository = new FileDocumentsRepository(DocumentsPath);
             documentsRepository.CreateDocumentFor(documentToInsert, productId, versionId);
             
             var documents = GetAllDocumentsFrom(DocumentsPath);
@@ -75,6 +62,20 @@ namespace Papyrus.Tests {
                 .Select(f => File.ReadAllText(f.FullName))
                 .Select(JsonConvert.DeserializeObject<FileDocument>)
                 .ToList();
+        }
+
+        private List<Document> GetDocumentationFor(string product, string version) {
+            var documents =
+                documentsRepository.GetDocumentationFor(product, version).ToList();
+            return documents;
+        }
+
+        private FileDocument AnyPersistedDocument() {
+            var documentToInsert = AnyDocumentFor(product: AnyUniqueString(), version: AnyUniqueString());
+            var jsonDocument = JsonConvert.SerializeObject(documentToInsert);
+            var productPath = Path.Combine(DocumentsPath, documentToInsert.Id);
+            File.WriteAllText(productPath, jsonDocument);
+            return documentToInsert;
         }
 
         private static Document AnyDocument() {
