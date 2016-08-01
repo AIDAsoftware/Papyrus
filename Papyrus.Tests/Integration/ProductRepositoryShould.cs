@@ -11,13 +11,13 @@ namespace Papyrus.Tests.Integration {
 
     [TestFixture]
     public class ProductRepositoryShould {
-        private FileProductRepository productRepository;
+        private ProductRepository productRepository;
         private string ProductsPath { get; set; }
 
         [SetUp]
         public void given_a_products_path() {
             ProductsPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Products"));
-            productRepository = new FileProductRepository(new FileRepository(ProductsPath));
+            productRepository = new ProductRepository(new FileRepository(ProductsPath));
             Directory.CreateDirectory(ProductsPath);
         }
 
