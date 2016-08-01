@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using FluentAssertions;
+using FluentAssertions.Common;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Papyrus.Business;
@@ -12,7 +13,7 @@ namespace Papyrus.Tests {
     [TestFixture]
     public class FileDocumentsRepositoryShould {
         public readonly string DocumentsPath =
-            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Documents"));
+            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Documents"));
 
         [SetUp]
         public void Setup() {
@@ -38,6 +39,29 @@ namespace Papyrus.Tests {
 
             documents.Should().HaveCount(1);
             documents.Should().Contain(ADocumentEquivalentTo(documentToInsert));
+        }
+
+        [Test]
+        public void create_a_document_for_a_concrete_version() {
+            var productId = AnyUniqueString();
+            var versionId = AnyUniqueString();
+            var documentToInsert = new Document(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString());
+
+            var documentsRepository = new FileDocumentsRepository(DocumentsPath);
+            documentsRepository.CreateDocumentFor(documentToInsert, productId, versionId);
+            
+            var documents = new DirectoryInfo(DocumentsPath)
+                            .GetFiles()
+                            .Select(f => File.ReadAllText(f.FullName))
+                            .Select(JsonConvert.DeserializeObject<FileDocument>)
+                            .ToList();
+            documents.Should().HaveCount(1);
+            documents.First().ShouldBeEquivalentTo(documentToInsert, 
+                options => options.Excluding(d => d.ProductId)
+                                .Excluding(d => d.VersionId)
+                                .Excluding(d => d.Id));
+            documents.First().VersionId.Should().Be(versionId);
+            documents.First().ProductId.Should().Be(productId);
         }
 
         private static Expression<Func<Document, bool>> ADocumentEquivalentTo(FileDocument documentToInsert) {
@@ -66,14 +90,14 @@ namespace Papyrus.Tests {
     }
 
     public class FileDocumentsRepository : DocumentsRepository {
-        private string Path { get; }
+        private string DocumentsPath { get; }
 
-        public FileDocumentsRepository(string path) {
-            Path = path;
+        public FileDocumentsRepository(string documentsPath) {
+            DocumentsPath = documentsPath;
         }
 
         public Documentation GetDocumentationFor(string productId, string versionId) {
-            var directory = new DirectoryInfo(Path);
+            var directory = new DirectoryInfo(DocumentsPath);
             var files = directory.GetFiles();
             var documents = files
                 .Select(f => File.ReadAllText(f.FullName))
@@ -84,7 +108,19 @@ namespace Papyrus.Tests {
         }
 
         public void CreateDocumentFor(Document document, string productId, string versionId) {
-            throw new NotImplementedException();
+            Directory.CreateDirectory(DocumentsPath);
+            var fileDocument = new FileDocument {
+                Id = Guid.NewGuid().ToString(),
+                Title = document.Title,
+                Description = document.Description,
+                Content = document.Content,
+                Language = document.Language,
+                ProductId = productId,
+                VersionId = versionId
+            };
+            var documentPath = Path.Combine(DocumentsPath, fileDocument.Id);
+            var jsonDocument = JsonConvert.SerializeObject(fileDocument);
+            File.WriteAllText(documentPath, jsonDocument);
         }
     }
 
