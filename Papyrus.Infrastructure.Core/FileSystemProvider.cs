@@ -19,7 +19,7 @@ namespace Papyrus.Infrastructure.Core {
                 .Select(JsonConvert.DeserializeObject<T>);
         }
 
-        public void Create(SerializableItem serializableItem) {
+        public void Persist(SerializableItem serializableItem) {
             Directory.CreateDirectory(DirectoryPath);
             var documentPath = Path.Combine(DirectoryPath, serializableItem.Id);
             var jsonDocument = JsonConvert.SerializeObject(serializableItem);

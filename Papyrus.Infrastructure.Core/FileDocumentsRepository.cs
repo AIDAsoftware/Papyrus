@@ -28,7 +28,7 @@ namespace Papyrus.Infrastructure.Core {
                 ProductId = productId,
                 VersionId = versionId
             };
-            FileSystemProvider.Create(fileDocument);
+            FileSystemProvider.Persist(fileDocument);
         }
     }
 }

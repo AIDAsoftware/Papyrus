@@ -22,7 +22,7 @@ namespace Papyrus.Tests.Infrastructure {
         public void insert_an_item() {
             var expectedItem = AnyItem();
 
-            provider.Create(expectedItem);
+            provider.Persist(expectedItem);
 
             GetItemWithId(expectedItem.Id).ShouldBeEquivalentTo(expectedItem);
         }
