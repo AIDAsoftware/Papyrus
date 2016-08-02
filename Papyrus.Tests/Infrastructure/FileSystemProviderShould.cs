@@ -18,6 +18,11 @@ namespace Papyrus.Tests.Infrastructure {
             provider = new FileSystemProvider(directoryToPersist);
         }
 
+        [TearDown]
+        public void CleanUp() {
+            Directory.Delete(directoryToPersist, true);
+        }
+
         [Test]
         public void insert_an_item() {
             var expectedItem = AnyItem();
@@ -25,6 +30,20 @@ namespace Papyrus.Tests.Infrastructure {
             provider.Persist(expectedItem);
 
             GetItemWithId(expectedItem.Id).ShouldBeEquivalentTo(expectedItem);
+        }
+
+        [Test]
+        public void get_all_items() {
+            var expectedItem = AnyItem();
+            Directory.CreateDirectory(directoryToPersist);
+            var documentPath = Path.Combine(directoryToPersist, expectedItem.Id);
+            var jsonDocument = JsonConvert.SerializeObject(expectedItem);
+            File.WriteAllText(documentPath, jsonDocument);
+
+            var items = provider.GetAll<TestSerializableItem>().ToList();
+
+            items.Should().HaveCount(1);
+            items.First().ShouldBeEquivalentTo(expectedItem);
         }
 
         private TestSerializableItem GetItemWithId(string id) {
