@@ -35,15 +35,19 @@ namespace Papyrus.Tests.Infrastructure {
         [Test]
         public void get_all_items() {
             var expectedItem = AnyItem();
-            Directory.CreateDirectory(directoryToPersist);
-            var documentPath = Path.Combine(directoryToPersist, expectedItem.Id);
-            var jsonDocument = JsonConvert.SerializeObject(expectedItem);
-            File.WriteAllText(documentPath, jsonDocument);
+            GivenTheItem(expectedItem);
 
             var items = provider.GetAll<TestSerializableItem>().ToList();
 
             items.Should().HaveCount(1);
             items.First().ShouldBeEquivalentTo(expectedItem);
+        }
+
+        private void GivenTheItem(SerializableItem expectedItem) {
+            Directory.CreateDirectory(directoryToPersist);
+            var documentPath = Path.Combine(directoryToPersist, expectedItem.Id);
+            var jsonDocument = JsonConvert.SerializeObject(expectedItem);
+            File.WriteAllText(documentPath, jsonDocument);
         }
 
         private TestSerializableItem GetItemWithId(string id) {
