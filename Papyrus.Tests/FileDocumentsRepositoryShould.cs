@@ -16,13 +16,13 @@ namespace Papyrus.Tests {
             Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Documents"));
 
         private FileDocumentsRepository documentsRepository;
-        private DocumentsRepositoryBuilder given;
+        private InsertableDocumentsBuilder given;
 
         [SetUp]
         public void Setup() {
             Directory.CreateDirectory(DocumentsPath);
             documentsRepository = new FileDocumentsRepository(new FileSystemProvider(DocumentsPath));
-            given = new DocumentsRepositoryBuilder(DocumentsPath);
+            given = new InsertableDocumentsBuilder(DocumentsPath);
         }
 
         [TearDown]

@@ -4,10 +4,10 @@ using Newtonsoft.Json;
 using Papyrus.Infrastructure.Core;
 
 namespace Papyrus.Tests {
-    internal class DocumentsRepositoryBuilder {
+    internal class InsertableDocumentsBuilder {
         private string DocumentsPath { get; }
 
-        public DocumentsRepositoryBuilder(string documentsPath) {
+        public InsertableDocumentsBuilder(string documentsPath) {
             DocumentsPath = documentsPath;
         }
 

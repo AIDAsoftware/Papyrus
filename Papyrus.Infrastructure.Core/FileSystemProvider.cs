@@ -2,14 +2,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using Papyrus.Business;
 
 namespace Papyrus.Infrastructure.Core {
     public class FileSystemProvider {
         public readonly string DirectoryPath;
 
         public FileSystemProvider(string directoryPath) {
-            this.DirectoryPath = directoryPath;
+            DirectoryPath = directoryPath;
         }
 
         public IEnumerable<T> GetAll<T>() where T : SerializableItem {

@@ -73,7 +73,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DocumentsRepositoryBuilder.cs" />
+    <Compile Include="InsertableDocumentsBuilder.cs" />
     <Compile Include="FileDocumentsRepositoryShould.cs" />
     <Compile Include="GivenFixture.cs" />
     <Compile Include="Integration\ProductRepositoryShould.cs" />
