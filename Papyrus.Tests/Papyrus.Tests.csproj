@@ -73,6 +73,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Infrastructure\FileSystemProviderShould.cs" />
     <Compile Include="InsertableDocumentsBuilder.cs" />
     <Compile Include="FileDocumentsRepositoryShould.cs" />
     <Compile Include="GivenFixture.cs" />
