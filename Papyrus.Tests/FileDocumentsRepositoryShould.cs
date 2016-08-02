@@ -16,11 +16,13 @@ namespace Papyrus.Tests {
             Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Documents"));
 
         private FileDocumentsRepository documentsRepository;
+        private DocumentsRepositoryBuilder given;
 
         [SetUp]
         public void Setup() {
             Directory.CreateDirectory(DocumentsPath);
             documentsRepository = new FileDocumentsRepository(new FileSystemProvider(DocumentsPath));
+            given = new DocumentsRepositoryBuilder(DocumentsPath);
         }
 
         [TearDown]
@@ -32,23 +34,13 @@ namespace Papyrus.Tests {
         public void get_only_documents_for_a_concrete_version() {
             var product = AnyUniqueString();
             var version = AnyUniqueString();
-            var expectedDocument = CreateADocumentFor(product, version);
-            HavingAlsoAnotherDocument();
-            //TODO:
-//            var expectedDocument = Given.ADocument();
-//            Given.AnotherDocument();
-//            Given.AnotherDocument();
-//            Given.AnotherDocument();
-//            Given.AnotherDocument();
+            var expectedDocument = given.ADocumentFor(product, version);
+            given.AnyOtherDocument();
 
             var documents = GetDocumentationFor(product, version);
 
             documents.Should().HaveCount(1);
             documents.Should().Contain(ADocumentEquivalentTo(expectedDocument));
-        }
-
-        private void HavingAlsoAnotherDocument() {
-            CreateADocumentFor(AnyUniqueString(), AnyUniqueString());
         }
 
         [Test]
@@ -83,14 +75,6 @@ namespace Papyrus.Tests {
             return documents;
         }
 
-        private FileDocument CreateADocumentFor(string product, string version) {
-            var documentToInsert = AnyDocumentFor(product: product, version: version);
-            var jsonDocument = JsonConvert.SerializeObject(documentToInsert);
-            var productPath = Path.Combine(DocumentsPath, documentToInsert.Id);
-            File.WriteAllText(productPath, jsonDocument);
-            return documentToInsert;
-        }
-
         private static Document AnyDocument() {
             return new Document(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString());
         }
@@ -101,18 +85,6 @@ namespace Papyrus.Tests {
                 document.Description == documentToInsert.Description && 
                 document.Content == documentToInsert.Content && 
                 document.Language == documentToInsert.Language;
-        }
-
-        private static FileDocument AnyDocumentFor(string product, string version) {
-            return new FileDocument {
-                Id = AnyUniqueString(),
-                Title = AnyUniqueString(),
-                Content = AnyUniqueString(),
-                Description = AnyUniqueString(),
-                Language = AnyUniqueString(),
-                ProductId = product,
-                VersionId = version
-            };
         }
 
         private static string AnyUniqueString() {
