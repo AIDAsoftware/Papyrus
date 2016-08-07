@@ -41,7 +41,9 @@ namespace Papyrus.Tests {
                 Title = AnyUniqueString(),
                 Description = AnyUniqueString(),
                 Content = AnyUniqueString(),
-                Language = AnyUniqueString()
+                Language = AnyUniqueString(),
+                ProductId = version.ProductId,
+                VersionId = version.VersionId
             };
         }
 

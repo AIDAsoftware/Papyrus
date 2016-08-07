@@ -38,14 +38,14 @@ namespace Papyrus.Tests {
             var version = Build.AVersion();
             var documentDto = Build.ADocumentDtoFor(version);
 
-            ExecuteCreateDocument(documentDto, version.ProductId, version.VersionId);
+            ExecuteCreateDocument(documentDto);
 
             repository.Received(1).CreateDocumentFor(documentDto.AsDocument(), version.ProductId, version.VersionId);
         }
 
-        private void ExecuteCreateDocument(DocumentDto documentDto, string productId, string versionId) {
+        private void ExecuteCreateDocument(DocumentDto documentDto) {
             var createDocument = new CreateDocument(repository);
-            createDocument.ExecuteFor(documentDto: documentDto, productId: productId, versionId: versionId);
+            createDocument.ExecuteFor(documentDto: documentDto, productId: documentDto.ProductId, versionId: documentDto.VersionId);
         }
 
         private List<Document> GetDocumentationFor(TestProductVersion version) {
