@@ -10,9 +10,10 @@ namespace Papyrus.Business {
             return new Documentation(documents);
         }
 
+        //TODO private
         public List<Document> Documents { get; set; }
 
-
+        //TODO: Readonlycollection
         public List<Document> ToList() {
             return Documents;
         }

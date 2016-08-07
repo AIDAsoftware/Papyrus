@@ -4,6 +4,7 @@ using Papyrus.Business;
 
 namespace Papyrus.Infrastructure.Core {
     public class FileDocumentsRepository : DocumentsRepository {
+        // TODO : readonly field
         private FileSystemProvider FileSystemProvider { get; }
 
         public FileDocumentsRepository(FileSystemProvider fileSystemProvider) {
