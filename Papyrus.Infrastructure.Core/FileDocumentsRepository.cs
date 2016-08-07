@@ -14,7 +14,7 @@ namespace Papyrus.Infrastructure.Core {
         public Documentation GetDocumentationFor(string productId, string versionId) {
             var documents = FileSystemProvider.GetAll<FileDocument>()
                 .Where(d => d.ProductId == productId && d.VersionId == versionId)
-                .Select(d => new Document(d.Title, d.Description, d.Content, d.Language, d.ProductId, d.VersionId))
+                .Select(d => Document.CreateDocument(d.Title, d.Description, d.Content, d.Language, d.ProductId, d.VersionId))
                 .ToList();
             return Documentation.WithDocuments(documents);
         }
@@ -26,8 +26,8 @@ namespace Papyrus.Infrastructure.Core {
                 Description = document.Description,
                 Content = document.Content,
                 Language = document.Language,
-                ProductId = document.ProductId,
-                VersionId = document.VersionId
+                ProductId = document.VersionIdentifier.ProductId,
+                VersionId = document.VersionIdentifier.VersionId
             };
             FileSystemProvider.Persist(fileDocument);
         }

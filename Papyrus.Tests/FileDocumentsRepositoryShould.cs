@@ -49,7 +49,18 @@ namespace Papyrus.Tests {
 
             documentsRepository.CreateDocumentFor(documentToInsert);
 
-            GetAllDocumentsFrom(DocumentsPath).Single().ShouldBeEquivalentTo(documentToInsert, option => option.Excluding(d => d.Id));
+            var documents = GetAllDocumentsFrom(DocumentsPath).Single();
+            documents.ShouldBeEquivalentTo(documentToInsert, option => 
+                        option.Excluding(d => d.Id).Excluding(d => d.ProductId).Excluding(d => d.VersionId));
+            var versionIdentifier = GetVersionIdFrom(documents);
+            versionIdentifier.ShouldBeEquivalentTo(documentToInsert.VersionIdentifier);
+        }
+
+        private VersionIdentifier GetVersionIdFrom(FileDocument document) {
+            var versionId = document.VersionId;
+            var productId = document.ProductId;
+            var versionIdentifier = new VersionIdentifier(productId, versionId);
+            return versionIdentifier;
         }
 
         private List<FileDocument> GetAllDocumentsFrom(string documentsPath) {
@@ -65,7 +76,7 @@ namespace Papyrus.Tests {
         }
 
         private static Document AnyDocument() {
-            return new Document(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString());
+            return Document.CreateDocument(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString());
         }
 
         private static Expression<Func<Document, bool>> ADocumentEquivalentTo(FileDocument documentToInsert) {
@@ -74,8 +85,8 @@ namespace Papyrus.Tests {
                 document.Description == documentToInsert.Description && 
                 document.Content == documentToInsert.Content && 
                 document.Language == documentToInsert.Language && 
-                document.ProductId == documentToInsert.ProductId &&
-                document.VersionId == documentToInsert.VersionId;
+                document.VersionIdentifier.ProductId == documentToInsert.ProductId &&
+                document.VersionIdentifier.VersionId == documentToInsert.VersionId;
         }
 
         private static string AnyUniqueString() {

@@ -24,7 +24,7 @@ namespace Papyrus.Tests {
         }
 
         public static Document ADocument() {
-            return new Document(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString());
+            return Document.CreateDocument(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString());
         }
 
         public static TestProductVersion AVersion() {

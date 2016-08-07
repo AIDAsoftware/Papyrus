@@ -11,8 +11,7 @@
         }
 
         private static Document ToDocument(DocumentDto document) {
-            return new Document(
-                document.Title, 
+            return Document.CreateDocument(document.Title, 
                 document.Description, 
                 document.Content, 
                 document.Language,
