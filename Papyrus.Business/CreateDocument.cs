@@ -6,8 +6,8 @@
             DocumentsRepository = documentsRepository;
         }
 
-        public void ExecuteFor(DocumentDto documentDto, string productId, string versionId) {
-            DocumentsRepository.CreateDocumentFor(ToDocument(documentDto), productId, versionId);
+        public void ExecuteFor(DocumentDto documentDto) {
+            DocumentsRepository.CreateDocumentFor(ToDocument(documentDto), documentDto.ProductId, documentDto.VersionId);
         }
 
         private static Document ToDocument(DocumentDto document) {

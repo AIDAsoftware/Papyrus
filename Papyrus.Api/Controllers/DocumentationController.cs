@@ -15,9 +15,10 @@ namespace Papyrus.Api.Controllers
         }
 
         [Route("products/{productId}/versions/{versionId}/documents"), HttpPost]
-        public void CreateDocument(string productId, string versionId, [FromBody]DocumentDto documentDto)
-        {
-            new CreateDocument(documentsRepository).ExecuteFor(documentDto, productId, versionId);
+        public void CreateDocument(string productId, string versionId, [FromBody]DocumentDto documentDto) {
+            documentDto.ProductId = productId;
+            documentDto.VersionId = versionId;
+            new CreateDocument(documentsRepository).ExecuteFor(documentDto);
         }
     }
 
