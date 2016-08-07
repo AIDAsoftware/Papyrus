@@ -6,7 +6,7 @@ using NUnit.Framework;
 using Papyrus.Business;
 
 namespace Papyrus.Tests {
-
+    // TODO : Alias to get semantic
     [TestFixture]
     public class PapyrusShould {
         private DocumentsRepository repository;
@@ -15,15 +15,14 @@ namespace Papyrus.Tests {
         [SetUp]
         public void SetUp() {
             repository = Substitute.For<DocumentsRepository>();
-            given = new GivenFixture();
+            given = new GivenFixture(repository);
         }
 
-        [Test]
+        [Test] //TODO: unify Given and GivenFixture and hide repo
         public void get_the_documentation_for_a_given_product_and_version() {
             var document = GivenFixture.ADocument();
             var version = GivenFixture.AVersion();
             given.ADocumentationWith(document)
-                .InRepository(repository)
                 .ForVersion(version)
                 .CreateContext();
 
@@ -50,8 +49,7 @@ namespace Papyrus.Tests {
 
         private List<Document> GetDocumentationFor(TestProductVersion version) {
             var getDocumentation = new GetDocumentation(repository);
-            var givenDocumentation = getDocumentation.ExecuteFor(version.ProductId, version.VersionId);
-            return givenDocumentation;
+            return getDocumentation.ExecuteFor(version.ProductId, version.VersionId);
         }
     }
 }

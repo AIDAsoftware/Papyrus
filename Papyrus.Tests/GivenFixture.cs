@@ -10,9 +10,8 @@ namespace Papyrus.Tests {
         private DocumentsRepository repository;
         private TestProductVersion version;
 
-        public GivenFixture InRepository(DocumentsRepository givenRepository) {
-            repository = givenRepository;
-            return this;
+        public GivenFixture(DocumentsRepository documentsRepository) {
+            repository = documentsRepository;
         }
 
         public GivenFixture ADocumentationWith(params Document[] documents) {
