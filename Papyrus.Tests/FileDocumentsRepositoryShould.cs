@@ -76,7 +76,7 @@ namespace Papyrus.Tests {
         }
 
         private static Document AnyDocument() {
-            return Document.CreateDocument(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString());
+            return new Document(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), new VersionIdentifier(AnyUniqueString(), AnyUniqueString()));
         }
 
         private static Expression<Func<Document, bool>> ADocumentEquivalentTo(FileDocument documentToInsert) {

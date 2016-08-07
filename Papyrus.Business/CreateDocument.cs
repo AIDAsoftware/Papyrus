@@ -11,12 +11,7 @@
         }
 
         private static Document ToDocument(DocumentDto document) {
-            return Document.CreateDocument(document.Title, 
-                document.Description, 
-                document.Content, 
-                document.Language,
-                document.ProductId,
-                document.VersionId);
+            return new Document(document.Title, document.Description, document.Content, document.Language, new VersionIdentifier(document.ProductId, document.VersionId));
         }
     }
 }
