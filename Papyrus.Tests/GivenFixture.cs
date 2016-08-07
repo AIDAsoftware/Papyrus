@@ -8,7 +8,7 @@ namespace Papyrus.Tests {
     public class GivenFixture {
         private Documentation documentation = Documentation.WithDocuments(new List<Document>());
         private DocumentsRepository repository;
-        private TestProductVersion version;
+        private VersionIdentifier version;
 
         public GivenFixture(DocumentsRepository documentsRepository) {
             repository = documentsRepository;
@@ -27,16 +27,16 @@ namespace Papyrus.Tests {
             return new Document(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), new VersionIdentifier(AnyUniqueString(), AnyUniqueString()));
         }
 
-        public static TestProductVersion AVersion() {
-            return new TestProductVersion(AnyUniqueString(), AnyUniqueString());
+        public static VersionIdentifier AVersion() {
+            return new VersionIdentifier(AnyUniqueString(), AnyUniqueString());
         }
 
-        public GivenFixture ForVersion(TestProductVersion givenVersion) {
+        public GivenFixture ForVersion(VersionIdentifier givenVersion) {
             version = givenVersion;
             return this;
         }
 
-        public static DocumentDto ADocumentDtoFor(TestProductVersion version) {
+        public static DocumentDto ADocumentDtoFor(VersionIdentifier version) {
             return new DocumentDto {
                 Title = AnyUniqueString(),
                 Description = AnyUniqueString(),
@@ -50,8 +50,7 @@ namespace Papyrus.Tests {
         public void CreateContext() {
             if (repository == null || version == null)
                 throw new UncompletedTestContextException("Repository or Version is not set");
-            repository
-                .GetDocumentationFor(productId: version.ProductId, versionId: version.VersionId)
+            repository.GetDocumentationFor(new VersionIdentifier(version.ProductId, version.VersionId))
                 .Returns(documentation);
         }
     }

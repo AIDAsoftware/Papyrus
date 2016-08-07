@@ -1,6 +1,6 @@
 namespace Papyrus.Business {
     public interface DocumentsRepository {
-        Documentation GetDocumentationFor(string productId, string versionId);
+        Documentation GetDocumentationFor(VersionIdentifier versionId);
         void CreateDocumentFor(Document document);
     }
 }

@@ -26,13 +26,13 @@ namespace Papyrus.Api.Controllers
         private Dictionary<string, Documentation> documentations = 
                                     new Dictionary<string, Documentation>();
 
-        public Documentation GetDocumentationFor(string productId, string versionId) {
-            if (!documentations.ContainsKey(productId + versionId))
-                return Documentation.WithDocuments(new List<Document>());
-            return documentations[productId + versionId];
+        public Documentation GetDocumentationFor(VersionIdentifier versionId) {
+            return GetDocumentationFor(new VersionIdentifier(versionId.ProductId, versionId.VersionId));
         }
 
         public void CreateDocumentFor(Document document) {
+            var productId = document.VersionIdentifier.ProductId;
+            var versionId = document.VersionIdentifier.VersionId;
             if (!documentations.ContainsKey(productId + versionId)) {
                 documentations.Add(productId + versionId, Documentation.WithDocuments(new List<Document>()));
             }

@@ -48,7 +48,7 @@ namespace Papyrus.Tests {
             createDocument.ExecuteFor(documentDto);
         }
 
-        private List<Document> GetDocumentationFor(TestProductVersion version) {
+        private List<Document> GetDocumentationFor(VersionIdentifier version) {
             var getDocumentation = new GetDocumentation(repository);
             return getDocumentation.ExecuteFor(version.ProductId, version.VersionId);
         }

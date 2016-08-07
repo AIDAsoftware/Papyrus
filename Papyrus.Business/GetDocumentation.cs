@@ -9,7 +9,7 @@ namespace Papyrus.Business {
         }
 
         public List<Document> ExecuteFor(string productId, string versionId) {
-            return DocumentsRepository.GetDocumentationFor(productId, versionId).ToList();
+            return DocumentsRepository.GetDocumentationFor(new VersionIdentifier(productId, versionId)).ToList();
         }
     }
 }
