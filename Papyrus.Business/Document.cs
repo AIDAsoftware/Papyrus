@@ -7,13 +7,6 @@ namespace Papyrus.Business {
         public string ProductId { get; }
         public string VersionId { get; }
 
-        public Document(string title, string description, string content, string language) {
-            Title = title;
-            Description = description;
-            Content = content;
-            Language = language;
-        }
-
         public Document(string title, string description, string content, string language, string productId, string versionId) {
             Title = title;
             Description = description;

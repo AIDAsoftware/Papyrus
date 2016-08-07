@@ -61,9 +61,7 @@ namespace Papyrus.Tests {
         }
 
         private List<Document> GetDocumentationFor(string product, string version) {
-            var documents =
-                documentsRepository.GetDocumentationFor(product, version).ToList();
-            return documents;
+            return documentsRepository.GetDocumentationFor(product, version).ToList();
         }
 
         private static Document AnyDocument() {
@@ -75,7 +73,9 @@ namespace Papyrus.Tests {
                 document.Title == documentToInsert.Title && 
                 document.Description == documentToInsert.Description && 
                 document.Content == documentToInsert.Content && 
-                document.Language == documentToInsert.Language;
+                document.Language == documentToInsert.Language && 
+                document.ProductId == documentToInsert.ProductId &&
+                document.VersionId == documentToInsert.VersionId;
         }
 
         private static string AnyUniqueString() {
