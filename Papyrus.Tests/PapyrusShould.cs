@@ -4,38 +4,39 @@ using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using Papyrus.Business;
+// TODO : Separate Build and Given in two classes
+using Build = Papyrus.Tests.GivenFixture;
+using Given = Papyrus.Tests.GivenFixture;
 
 namespace Papyrus.Tests {
-    // TODO : Alias to get semantic
     [TestFixture]
     public class PapyrusShould {
         private DocumentsRepository repository;
-        private GivenFixture given;
+        private Given given;
 
         [SetUp]
         public void SetUp() {
             repository = Substitute.For<DocumentsRepository>();
-            given = new GivenFixture(repository);
+            given = new Given(repository);
         }
 
-        [Test] //TODO: unify Given and GivenFixture and hide repo
+        [Test]
         public void get_the_documentation_for_a_given_product_and_version() {
-            var document = GivenFixture.ADocument();
-            var version = GivenFixture.AVersion();
+            var document = Build.ADocument();
+            var version = Build.AVersion();
             given.ADocumentationWith(document)
                 .ForVersion(version)
                 .CreateContext();
 
             var documentation = GetDocumentationFor(version);
 
-            documentation.Should().HaveCount(1);
-            documentation.First().ShouldBeEquivalentTo(document);
+            documentation.Single().ShouldBeEquivalentTo(document);
         }
 
         [Test]
         public void create_document_for_a_given_product_and_version() {
-            var version = GivenFixture.AVersion();
-            var documentDto = GivenFixture.ADocumentDtoFor(version);
+            var version = Build.AVersion();
+            var documentDto = Build.ADocumentDtoFor(version);
 
             ExecuteCreateDocument(documentDto, version.ProductId, version.VersionId);
 
