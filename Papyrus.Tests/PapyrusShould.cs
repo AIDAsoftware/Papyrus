@@ -40,12 +40,12 @@ namespace Papyrus.Tests {
 
             ExecuteCreateDocument(documentDto);
 
-            repository.Received(1).CreateDocumentFor(documentDto.AsDocument(), version.ProductId, version.VersionId);
+            repository.Received(1).CreateDocumentFor(documentDto.AsDocument());
         }
 
         private void ExecuteCreateDocument(DocumentDto documentDto) {
             var createDocument = new CreateDocument(repository);
-            createDocument.ExecuteFor(documentDto: documentDto);
+            createDocument.ExecuteFor(documentDto);
         }
 
         private List<Document> GetDocumentationFor(TestProductVersion version) {

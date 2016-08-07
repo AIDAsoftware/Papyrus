@@ -45,20 +45,11 @@ namespace Papyrus.Tests {
 
         [Test]
         public void create_a_document_for_a_concrete_version() {
-            var productId = AnyUniqueString();
-            var versionId = AnyUniqueString();
             var documentToInsert = AnyDocument();
 
-            documentsRepository.CreateDocumentFor(documentToInsert, productId, versionId);
-            
-            var documents = GetAllDocumentsFrom(DocumentsPath);
-            documents.Should().HaveCount(1);
-            documents.First().ShouldBeEquivalentTo(documentToInsert, 
-                options => options.Excluding(d => d.ProductId)
-                                .Excluding(d => d.VersionId)
-                                .Excluding(d => d.Id));
-            documents.First().VersionId.Should().Be(versionId);
-            documents.First().ProductId.Should().Be(productId);
+            documentsRepository.CreateDocumentFor(documentToInsert);
+
+            GetAllDocumentsFrom(DocumentsPath).Single().ShouldBeEquivalentTo(documentToInsert, option => option.Excluding(d => d.Id));
         }
 
         private List<FileDocument> GetAllDocumentsFrom(string documentsPath) {
@@ -76,7 +67,7 @@ namespace Papyrus.Tests {
         }
 
         private static Document AnyDocument() {
-            return new Document(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString());
+            return new Document(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString());
         }
 
         private static Expression<Func<Document, bool>> ADocumentEquivalentTo(FileDocument documentToInsert) {

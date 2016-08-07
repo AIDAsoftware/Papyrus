@@ -19,15 +19,15 @@ namespace Papyrus.Infrastructure.Core {
             return Documentation.WithDocuments(documents);
         }
 
-        public void CreateDocumentFor(Document document, string productId, string versionId) {
+        public void CreateDocumentFor(Document document) {
             var fileDocument = new FileDocument {
                 Id = Guid.NewGuid().ToString(),
                 Title = document.Title,
                 Description = document.Description,
                 Content = document.Content,
                 Language = document.Language,
-                ProductId = productId,
-                VersionId = versionId
+                ProductId = document.ProductId,
+                VersionId = document.VersionId
             };
             FileSystemProvider.Persist(fileDocument);
         }

@@ -32,7 +32,7 @@ namespace Papyrus.Api.Controllers
             return documentations[productId + versionId];
         }
 
-        public void CreateDocumentFor(Document document, string productId, string versionId) {
+        public void CreateDocumentFor(Document document) {
             if (!documentations.ContainsKey(productId + versionId)) {
                 documentations.Add(productId + versionId, Documentation.WithDocuments(new List<Document>()));
             }

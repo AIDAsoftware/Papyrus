@@ -7,11 +7,17 @@
         }
 
         public void ExecuteFor(DocumentDto documentDto) {
-            DocumentsRepository.CreateDocumentFor(ToDocument(documentDto), documentDto.ProductId, documentDto.VersionId);
+            DocumentsRepository.CreateDocumentFor(ToDocument(documentDto));
         }
 
         private static Document ToDocument(DocumentDto document) {
-            return new Document(document.Title, document.Description, document.Content, document.Language);
+            return new Document(
+                document.Title, 
+                document.Description, 
+                document.Content, 
+                document.Language,
+                document.ProductId,
+                document.VersionId);
         }
     }
 }
