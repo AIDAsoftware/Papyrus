@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Web.Http;
 using Papyrus.Business;
+using Papyrus.Business.Actions;
+using Papyrus.Business.Domain.Documents;
+using Papyrus.Business.Domain.Products;
 
 namespace Papyrus.Api.Controllers
 {

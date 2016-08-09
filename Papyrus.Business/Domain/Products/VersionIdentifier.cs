@@ -1,4 +1,4 @@
-namespace Papyrus.Business {
+namespace Papyrus.Business.Domain.Products {
     public class VersionIdentifier {
         public string ProductId { get; }
         public string VersionId { get; }

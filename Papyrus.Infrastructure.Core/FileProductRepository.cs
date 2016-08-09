@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Papyrus.Business;
+using Papyrus.Business.Domain.Products;
 
 namespace Papyrus.Infrastructure.Core {
     public class FileProductRepository : ProductRepository {

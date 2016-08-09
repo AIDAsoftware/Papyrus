@@ -6,6 +6,7 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Papyrus.Business;
+using Papyrus.Business.Domain.Products;
 using Papyrus.Infrastructure.Core;
 
 namespace Papyrus.Tests.Integration {

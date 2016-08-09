@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using Papyrus.Business;
+using Papyrus.Business.Domain.Documents;
+using Papyrus.Business.Domain.Products;
 
 namespace Papyrus.Infrastructure.Core {
     public class FileDocumentsRepository : DocumentsRepository {

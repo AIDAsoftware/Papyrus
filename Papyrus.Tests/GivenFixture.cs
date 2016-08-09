@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NSubstitute;
 using Papyrus.Business;
+using Papyrus.Business.Domain.Documents;
+using Papyrus.Business.Domain.Products;
 
 namespace Papyrus.Tests {
     public class GivenFixture {

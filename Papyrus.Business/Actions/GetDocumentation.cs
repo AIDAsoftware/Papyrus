@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using Papyrus.Business.Domain.Documents;
+using Papyrus.Business.Domain.Products;
 
-namespace Papyrus.Business {
+namespace Papyrus.Business.Actions {
     public class GetDocumentation {
         public DocumentsRepository DocumentsRepository { get; set; }
 

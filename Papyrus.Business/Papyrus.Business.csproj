@@ -44,17 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateDocument.cs" />
-    <Compile Include="Document.cs" />
-    <Compile Include="Documentation.cs" />
-    <Compile Include="DocumentDto.cs" />
-    <Compile Include="DocumentsRepository.cs" />
-    <Compile Include="ProductRepository.cs" />
-    <Compile Include="GetDocumentation.cs" />
-    <Compile Include="Product.cs" />
-    <Compile Include="ProductVersion.cs" />
+    <Compile Include="Actions\CreateDocument.cs" />
+    <Compile Include="Actions\GetDocumentation.cs" />
+    <Compile Include="Domain\Documents\Document.cs" />
+    <Compile Include="Domain\Documents\Documentation.cs" />
+    <Compile Include="Domain\Documents\DocumentDto.cs" />
+    <Compile Include="Domain\Documents\DocumentsRepository.cs" />
+    <Compile Include="Domain\Products\Product.cs" />
+    <Compile Include="Domain\Products\ProductRepository.cs" />
+    <Compile Include="Domain\Products\ProductVersion.cs" />
+    <Compile Include="Domain\Products\VersionIdentifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VersionIdentifier.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

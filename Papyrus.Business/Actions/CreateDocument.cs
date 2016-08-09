@@ -1,4 +1,7 @@
-﻿namespace Papyrus.Business {
+﻿using Papyrus.Business.Domain.Documents;
+using Papyrus.Business.Domain.Products;
+
+namespace Papyrus.Business.Actions {
     public class CreateDocument {
         private DocumentsRepository DocumentsRepository { get; }
 

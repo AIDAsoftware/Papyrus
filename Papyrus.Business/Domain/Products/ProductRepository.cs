@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Papyrus.Business {
+namespace Papyrus.Business.Domain.Products {
     public interface ProductRepository {
         List<Product> GetAllProducts();
     }

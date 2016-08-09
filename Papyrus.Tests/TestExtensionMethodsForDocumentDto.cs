@@ -1,5 +1,6 @@
 using NSubstitute;
 using Papyrus.Business;
+using Papyrus.Business.Domain.Documents;
 
 namespace Papyrus.Tests {
     internal static class TestExtensionMethodsForDocumentDto {

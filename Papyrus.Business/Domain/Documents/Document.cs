@@ -1,4 +1,6 @@
-namespace Papyrus.Business {
+using Papyrus.Business.Domain.Products;
+
+namespace Papyrus.Business.Domain.Documents {
     public class Document {
         public string Title { get; }
         public string Description { get; }

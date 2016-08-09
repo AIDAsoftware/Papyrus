@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Papyrus.Business {
+namespace Papyrus.Business.Domain.Documents {
     public class Documentation {
         private Documentation(List<Document> documents) {
             Documents = documents;

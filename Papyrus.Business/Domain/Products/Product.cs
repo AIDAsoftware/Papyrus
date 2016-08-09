@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Papyrus.Business {
+namespace Papyrus.Business.Domain.Products {
     public class Product {
         public string Id { get; }
         public string Name { get; }

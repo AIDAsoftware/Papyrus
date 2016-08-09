@@ -1,4 +1,4 @@
-namespace Papyrus.Business {
+namespace Papyrus.Business.Domain.Documents {
     // TODO: replace this class for Document (they are equal for now)
     public class DocumentDto {
         public string Title { get; set; }
