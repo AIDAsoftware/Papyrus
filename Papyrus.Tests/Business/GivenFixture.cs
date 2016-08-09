@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NSubstitute;
-using Papyrus.Business;
 using Papyrus.Business.Domain.Documents;
 using Papyrus.Business.Domain.Products;
 
-namespace Papyrus.Tests {
+namespace Papyrus.Tests.Business {
     public class GivenFixture {
         private Documentation documentation = Documentation.WithDocuments(new List<Document>());
         private DocumentsRepository repository;

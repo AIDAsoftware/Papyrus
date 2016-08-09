@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using Papyrus.Business;
 using Papyrus.Business.Domain.Products;
-using Papyrus.Infrastructure;
 using Papyrus.Infrastructure.Core;
 using Papyrus.Infrastructure.Repositories;
 
-namespace Papyrus.Tests.Integration {
+namespace Papyrus.Tests.Repositories {
 
     [TestFixture]
     public class ProductRepositoryShould {

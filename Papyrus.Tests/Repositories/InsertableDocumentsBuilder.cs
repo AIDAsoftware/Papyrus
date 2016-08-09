@@ -3,7 +3,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Papyrus.Infrastructure.Repositories;
 
-namespace Papyrus.Tests {
+namespace Papyrus.Tests.Repositories {
     internal class InsertableDocumentsBuilder {
         private string DocumentsPath { get; }
 

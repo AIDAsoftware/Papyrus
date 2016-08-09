@@ -3,15 +3,14 @@ using System.Linq;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
-using Papyrus.Business;
 using Papyrus.Business.Actions;
 using Papyrus.Business.Domain.Documents;
 using Papyrus.Business.Domain.Products;
 // TODO : Separate Build and Given in two classes
-using Build = Papyrus.Tests.GivenFixture;
-using Given = Papyrus.Tests.GivenFixture;
+using Build = Papyrus.Tests.Business.GivenFixture;
+using Given = Papyrus.Tests.Business.GivenFixture;
 
-namespace Papyrus.Tests {
+namespace Papyrus.Tests.Business {
     [TestFixture]
     public class PapyrusShould {
         private DocumentsRepository repository;

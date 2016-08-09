@@ -6,14 +6,12 @@ using System.Linq.Expressions;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using Papyrus.Business;
 using Papyrus.Business.Domain.Documents;
 using Papyrus.Business.Domain.Products;
-using Papyrus.Infrastructure;
 using Papyrus.Infrastructure.Core;
 using Papyrus.Infrastructure.Repositories;
 
-namespace Papyrus.Tests {
+namespace Papyrus.Tests.Repositories {
     [TestFixture]
     public class FileDocumentsRepositoryShould {
         public readonly string DocumentsPath =
