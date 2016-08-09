@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Papyrus.Business;
 using Papyrus.Business.Domain.Products;
+using Papyrus.Infrastructure.Core;
 
-namespace Papyrus.Infrastructure.Core {
+namespace Papyrus.Infrastructure.Repositories {
     public class FileProduct : SerializableItem {
         public string Id { get; set; }
         public string Name { get; set; }

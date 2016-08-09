@@ -7,7 +7,9 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using Papyrus.Business;
 using Papyrus.Business.Domain.Products;
+using Papyrus.Infrastructure;
 using Papyrus.Infrastructure.Core;
+using Papyrus.Infrastructure.Repositories;
 
 namespace Papyrus.Tests.Integration {
 

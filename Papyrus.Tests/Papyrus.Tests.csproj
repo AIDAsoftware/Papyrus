@@ -90,9 +90,9 @@
       <Project>{f3a01b7b-9b53-447e-bd8d-67dd0ab3e1ff}</Project>
       <Name>Papyrus.Business</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Papyrus.Infrastructure.Core\Papyrus.Infrastructure.Core.csproj">
+    <ProjectReference Include="..\Papyrus.Infrastructure.Core\Papyrus.Infrastructure.csproj">
       <Project>{efa054e5-3390-41f7-a683-c74ef1b0f384}</Project>
-      <Name>Papyrus.Infrastructure.Core</Name>
+      <Name>Papyrus.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

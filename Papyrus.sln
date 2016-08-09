@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B9B731
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Infrastructure.Core", "Papyrus.Infrastructure.Core\Papyrus.Infrastructure.Core.csproj", "{EFA054E5-3390-41F7-A683-C74EF1B0F384}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Infrastructure", "Papyrus.Infrastructure.Core\Papyrus.Infrastructure.csproj", "{EFA054E5-3390-41F7-A683-C74EF1B0F384}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papyrus.Tests", "Papyrus.Tests\Papyrus.Tests.csproj", "{757DF8B5-C9BF-45A6-8BC4-7A5903808BAB}"
 EndProject

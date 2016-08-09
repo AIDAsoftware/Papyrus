@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Papyrus.Business;
 using Papyrus.Business.Domain.Products;
+using Papyrus.Infrastructure.Core;
 
-namespace Papyrus.Infrastructure.Core {
+namespace Papyrus.Infrastructure.Repositories {
     public class FileProductRepository : ProductRepository {
         private FileSystemProvider FileSystemProvider { get; }
 

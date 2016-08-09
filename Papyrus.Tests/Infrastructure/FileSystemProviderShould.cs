@@ -4,6 +4,7 @@ using System.Linq;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using Papyrus.Infrastructure;
 using Papyrus.Infrastructure.Core;
 
 namespace Papyrus.Tests.Infrastructure {

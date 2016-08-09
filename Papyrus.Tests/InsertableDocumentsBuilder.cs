@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
-using Papyrus.Infrastructure.Core;
+using Papyrus.Infrastructure.Repositories;
 
 namespace Papyrus.Tests {
     internal class InsertableDocumentsBuilder {

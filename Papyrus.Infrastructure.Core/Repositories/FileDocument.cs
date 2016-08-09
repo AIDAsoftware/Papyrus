@@ -1,4 +1,6 @@
-namespace Papyrus.Infrastructure.Core {
+using Papyrus.Infrastructure.Core;
+
+namespace Papyrus.Infrastructure.Repositories {
     public class FileDocument : SerializableItem {
         public string Id { get; set; }
         public string Title { get; set; }

@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
-using Papyrus.Business;
 using Papyrus.Business.Domain.Documents;
 using Papyrus.Business.Domain.Products;
+using Papyrus.Infrastructure.Core;
 
-namespace Papyrus.Infrastructure.Core {
+namespace Papyrus.Infrastructure.Repositories {
     public class FileDocumentsRepository : DocumentsRepository {
         // TODO : readonly field
         private readonly FileSystemProvider fileSystemProvider;
