@@ -12,11 +12,11 @@ namespace Papyrus.Tests.Infrastructure {
     public class FileSystemProviderShould {
         private readonly string directoryToPersist = 
             Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Items"));
-        private FileSystemProvider provider;
+        private JsonFileSystemProvider provider;
 
         [SetUp]
         public void SetUp() {
-            provider = new FileSystemProvider(directoryToPersist);
+            provider = new JsonFileSystemProvider(directoryToPersist);
         }
 
         [TearDown]

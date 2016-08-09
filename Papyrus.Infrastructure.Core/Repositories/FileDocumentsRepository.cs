@@ -7,14 +7,14 @@ using Papyrus.Infrastructure.Core;
 namespace Papyrus.Infrastructure.Repositories {
     public class FileDocumentsRepository : DocumentsRepository {
         // TODO : readonly field
-        private readonly FileSystemProvider fileSystemProvider;
+        private readonly JsonFileSystemProvider jsonFileSystemProvider;
 
-        public FileDocumentsRepository(FileSystemProvider fileSystemProvider) {
-            this.fileSystemProvider = fileSystemProvider;
+        public FileDocumentsRepository(JsonFileSystemProvider jsonFileSystemProvider) {
+            this.jsonFileSystemProvider = jsonFileSystemProvider;
         }
 
         public Documentation GetDocumentationFor(VersionIdentifier versionId) {
-            var documents = fileSystemProvider.GetAll<SerializableDocument>()
+            var documents = jsonFileSystemProvider.GetAll<SerializableDocument>()
                 .Where(d => d.ProductId == versionId.ProductId && d.VersionId == versionId.VersionId)
                 .Select(d => new Document(d.Title, d.Description, d.Content, d.Language, new VersionIdentifier(d.ProductId, d.VersionId)))
                 .ToList();
@@ -31,7 +31,7 @@ namespace Papyrus.Infrastructure.Repositories {
                 ProductId = document.VersionIdentifier.ProductId,
                 VersionId = document.VersionIdentifier.VersionId
             };
-            fileSystemProvider.Persist(fileDocument);
+            jsonFileSystemProvider.Persist(fileDocument);
         }
     }
 }

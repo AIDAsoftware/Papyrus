@@ -4,12 +4,11 @@ using System.Linq;
 using Newtonsoft.Json;
 
 namespace Papyrus.Infrastructure.Core {
-    //TODO : Is Json or not? 
     //TODO : SRP?
-    public class FileSystemProvider {
+    public class JsonFileSystemProvider {
         public readonly string DirectoryPath;
 
-        public FileSystemProvider(string directoryPath) {
+        public JsonFileSystemProvider(string directoryPath) {
             DirectoryPath = directoryPath;
         }
 

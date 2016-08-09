@@ -77,7 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\EventExtensions.cs" />
-    <Compile Include="Core\FileSystemProvider.cs" />
+    <Compile Include="Core\JsonFileSystemProvider.cs" />
     <Compile Include="Core\ObservableCollectionExtensionMethods.cs" />
     <Compile Include="Core\SerializableItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

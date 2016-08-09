@@ -23,7 +23,7 @@ namespace Papyrus.Tests.Repositories {
         [SetUp]
         public void Setup() {
             Directory.CreateDirectory(DocumentsPath);
-            documentsRepository = new FileDocumentsRepository(new FileSystemProvider(DocumentsPath));
+            documentsRepository = new FileDocumentsRepository(new JsonFileSystemProvider(DocumentsPath));
             given = new InsertableDocumentsBuilder(DocumentsPath);
         }
 

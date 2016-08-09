@@ -13,7 +13,7 @@ namespace Papyrus.Api.Controllers
     public class DocumentsController : ApiController {
         private static readonly string DocumentsPath =
             Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"MyDocuments"));
-        private static readonly DocumentsRepository documentsRepository = new FileDocumentsRepository(new FileSystemProvider(DocumentsPath));
+        private static readonly DocumentsRepository documentsRepository = new FileDocumentsRepository(new JsonFileSystemProvider(DocumentsPath));
 
         [Route("products/{productId}/versions/{versionId}/documents"), HttpGet]
         public List<Document> GetDocumentationFor(string productId, string versionId) {
