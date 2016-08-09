@@ -6,7 +6,7 @@ using Papyrus.Business.Domain.Products;
 
 namespace Papyrus.Api.Controllers
 {
-    public class DocumentationController : ApiController
+    public class DocumentsController : ApiController
     {
         private static readonly InMemoryDocumentsRepository documentsRepository = new InMemoryDocumentsRepository();
 
