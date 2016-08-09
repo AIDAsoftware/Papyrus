@@ -2,6 +2,8 @@ using System.Collections.Generic;
 
 namespace Papyrus.Business.Domain.Documents {
     public class Documentation {
+        private List<Document> Documents { get; }
+
         private Documentation(List<Document> documents) {
             Documents = documents;
         }
@@ -10,11 +12,7 @@ namespace Papyrus.Business.Domain.Documents {
             return new Documentation(documents);
         }
 
-        //TODO private
-        public List<Document> Documents { get; set; }
-
-        //TODO: Readonlycollection
-        public List<Document> ToList() {
+        public IReadOnlyCollection<Document> AsDocumentsCollection() {
             return Documents;
         }
     }

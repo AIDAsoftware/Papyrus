@@ -118,6 +118,10 @@
       <Project>{F3A01B7B-9B53-447E-BD8D-67DD0AB3E1FF}</Project>
       <Name>Papyrus.Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Papyrus.Infrastructure.Core\Papyrus.Infrastructure.csproj">
+      <Project>{efa054e5-3390-41f7-a683-c74ef1b0f384}</Project>
+      <Name>Papyrus.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

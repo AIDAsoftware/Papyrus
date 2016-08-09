@@ -1,18 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Web.Http;
 using Papyrus.Business.Actions;
 using Papyrus.Business.Domain.Documents;
-using Papyrus.Business.Domain.Products;
+using Papyrus.Infrastructure.Core;
+using Papyrus.Infrastructure.Repositories;
 
 namespace Papyrus.Api.Controllers
 {
-    public class DocumentsController : ApiController
-    {
-        private static readonly InMemoryDocumentsRepository documentsRepository = new InMemoryDocumentsRepository();
+    public class DocumentsController : ApiController {
+        private static readonly string DocumentsPath =
+            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"MyDocuments"));
+        private static readonly DocumentsRepository documentsRepository = new FileDocumentsRepository(new FileSystemProvider(DocumentsPath));
 
         [Route("products/{productId}/versions/{versionId}/documents"), HttpGet]
         public List<Document> GetDocumentationFor(string productId, string versionId) {
-            return new GetDocumentation(documentsRepository).ExecuteFor(productId, versionId);            
+            return new GetDocumentation(documentsRepository).ExecuteFor(productId, versionId).ToList();            
         }
 
         [Route("products/{productId}/versions/{versionId}/documents"), HttpPost]
@@ -20,24 +25,6 @@ namespace Papyrus.Api.Controllers
             documentDto.ProductId = productId;
             documentDto.VersionId = versionId;
             new CreateDocument(documentsRepository).ExecuteFor(documentDto);
-        }
-    }
-
-    internal class InMemoryDocumentsRepository : DocumentsRepository {
-        private Dictionary<string, Documentation> documentations = 
-                                    new Dictionary<string, Documentation>();
-
-        public Documentation GetDocumentationFor(VersionIdentifier versionId) {
-            return GetDocumentationFor(new VersionIdentifier(versionId.ProductId, versionId.VersionId));
-        }
-
-        public void CreateDocumentFor(Document document) {
-            var productId = document.VersionIdentifier.ProductId;
-            var versionId = document.VersionIdentifier.VersionId;
-            if (!documentations.ContainsKey(productId + versionId)) {
-                documentations.Add(productId + versionId, Documentation.WithDocuments(new List<Document>()));
-            }
-            documentations[productId + versionId].Documents.Add(document);
         }
     }
 }

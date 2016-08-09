@@ -52,7 +52,7 @@ namespace Papyrus.Tests.Business {
 
         private List<Document> GetDocumentationFor(VersionIdentifier version) {
             var getDocumentation = new GetDocumentation(repository);
-            return getDocumentation.ExecuteFor(version.ProductId, version.VersionId);
+            return getDocumentation.ExecuteFor(version.ProductId, version.VersionId).ToList();
         }
     }
 }

@@ -74,7 +74,10 @@ namespace Papyrus.Tests.Repositories {
         }
 
         private List<Document> GetDocumentationFor(string product, string version) {
-            return documentsRepository.GetDocumentationFor(new VersionIdentifier(product, version)).ToList();
+            return documentsRepository
+                .GetDocumentationFor(new VersionIdentifier(product, version))
+                .AsDocumentsCollection()
+                .ToList();
         }
 
         private static Document AnyDocument() {

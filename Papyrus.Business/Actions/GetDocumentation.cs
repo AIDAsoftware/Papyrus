@@ -10,8 +10,9 @@ namespace Papyrus.Business.Actions {
             DocumentsRepository = documentsRepository;
         }
 
-        public List<Document> ExecuteFor(string productId, string versionId) {
-            return DocumentsRepository.GetDocumentationFor(new VersionIdentifier(productId, versionId)).ToList();
+        public IReadOnlyCollection<Document> ExecuteFor(string productId, string versionId) {
+            return DocumentsRepository
+                .GetDocumentationFor(new VersionIdentifier(productId, versionId)).AsDocumentsCollection();
         }
     }
 }
