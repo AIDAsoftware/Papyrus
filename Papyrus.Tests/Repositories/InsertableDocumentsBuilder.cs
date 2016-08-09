@@ -11,7 +11,7 @@ namespace Papyrus.Tests.Repositories {
             DocumentsPath = documentsPath;
         }
 
-        public FileDocument ADocumentFor(string product, string version) {
+        public SerializableDocument ADocumentFor(string product, string version) {
             var documentToInsert = AnyDocumentFor(product: product, version: version);
             var jsonDocument = JsonConvert.SerializeObject(documentToInsert);
             var productPath = Path.Combine(DocumentsPath, documentToInsert.Id);
@@ -23,8 +23,8 @@ namespace Papyrus.Tests.Repositories {
             ADocumentFor(AnyUniqueString(), AnyUniqueString());
         }
 
-        private static FileDocument AnyDocumentFor(string product, string version) {
-            return new FileDocument {
+        private static SerializableDocument AnyDocumentFor(string product, string version) {
+            return new SerializableDocument {
                 Id = AnyUniqueString(),
                 Title = AnyUniqueString(),
                 Content = AnyUniqueString(),

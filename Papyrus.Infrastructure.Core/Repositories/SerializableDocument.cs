@@ -1,7 +1,7 @@
 using Papyrus.Infrastructure.Core;
 
 namespace Papyrus.Infrastructure.Repositories {
-    public class FileDocument : SerializableItem {
+    public class SerializableDocument : SerializableItem {
         public string Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }

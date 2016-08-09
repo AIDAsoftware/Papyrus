@@ -14,7 +14,7 @@ namespace Papyrus.Infrastructure.Repositories {
         }
 
         public Documentation GetDocumentationFor(VersionIdentifier versionId) {
-            var documents = fileSystemProvider.GetAll<FileDocument>()
+            var documents = fileSystemProvider.GetAll<SerializableDocument>()
                 .Where(d => d.ProductId == versionId.ProductId && d.VersionId == versionId.VersionId)
                 .Select(d => new Document(d.Title, d.Description, d.Content, d.Language, new VersionIdentifier(d.ProductId, d.VersionId)))
                 .ToList();
@@ -22,7 +22,7 @@ namespace Papyrus.Infrastructure.Repositories {
         }
 
         public void CreateDocumentFor(Document document) {
-            var fileDocument = new FileDocument {
+            var fileDocument = new SerializableDocument {
                 Id = Guid.NewGuid().ToString(),
                 Title = document.Title,
                 Description = document.Description,

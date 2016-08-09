@@ -58,18 +58,18 @@ namespace Papyrus.Tests.Repositories {
             versionIdentifier.ShouldBeEquivalentTo(documentToInsert.VersionIdentifier);
         }
 
-        private VersionIdentifier GetVersionIdFrom(FileDocument document) {
+        private VersionIdentifier GetVersionIdFrom(SerializableDocument document) {
             var versionId = document.VersionId;
             var productId = document.ProductId;
             var versionIdentifier = new VersionIdentifier(productId, versionId);
             return versionIdentifier;
         }
 
-        private List<FileDocument> GetAllDocumentsFrom(string documentsPath) {
+        private List<SerializableDocument> GetAllDocumentsFrom(string documentsPath) {
             return new DirectoryInfo(documentsPath)
                 .GetFiles()
                 .Select(f => File.ReadAllText(f.FullName))
-                .Select(JsonConvert.DeserializeObject<FileDocument>)
+                .Select(JsonConvert.DeserializeObject<SerializableDocument>)
                 .ToList();
         }
 
@@ -81,7 +81,7 @@ namespace Papyrus.Tests.Repositories {
             return new Document(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), new VersionIdentifier(AnyUniqueString(), AnyUniqueString()));
         }
 
-        private static Expression<Func<Document, bool>> ADocumentEquivalentTo(FileDocument documentToInsert) {
+        private static Expression<Func<Document, bool>> ADocumentEquivalentTo(SerializableDocument documentToInsert) {
             return document => 
                 document.Title == documentToInsert.Title && 
                 document.Description == documentToInsert.Description && 
