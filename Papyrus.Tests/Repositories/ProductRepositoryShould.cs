@@ -53,21 +53,21 @@ namespace Papyrus.Tests.Repositories {
             return new ProductVersion("4321", "0.0.1");
         }
 
-        public void GivenAProductWith(FileProduct product, params ProductVersion[] versions) {
+        public void GivenAProductWith(SerializableProduct product, params ProductVersion[] versions) {
             var productJson = JsonConvert.SerializeObject(product);
             var productPath = Path.Combine(ProductsPath, "1234");
             File.WriteAllText(productPath, productJson);
         }
 
-        private static FileProduct AProductWith(params ProductVersion[] versions) {
-            return new FileProduct {
+        private static SerializableProduct AProductWith(params ProductVersion[] versions) {
+            return new SerializableProduct {
                 Name = "Any",
                 Id = "Any",
                 ProductVersions = versions.ToList()
             };
         }
 
-        private static FileProduct AnyProduct() {
+        private static SerializableProduct AnyProduct() {
             return AProductWith();
         }
     }

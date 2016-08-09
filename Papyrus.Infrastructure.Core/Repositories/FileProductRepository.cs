@@ -12,7 +12,7 @@ namespace Papyrus.Infrastructure.Repositories {
         }
 
         public List<Product> GetAllProducts() {
-            return FileSystemProvider.GetAll<FileProduct>()
+            return FileSystemProvider.GetAll<SerializableProduct>()
                 .Select(p => new Product(p.Id, p.Name, p.ProductVersions))
                 .ToList();
         }
