@@ -6,7 +6,6 @@ using Papyrus.Infrastructure.Core;
 
 namespace Papyrus.Infrastructure.Repositories {
     public class FileDocumentsRepository : DocumentsRepository {
-        // TODO : readonly field
         private readonly JsonFileSystemProvider jsonFileSystemProvider;
 
         public FileDocumentsRepository(JsonFileSystemProvider jsonFileSystemProvider) {
