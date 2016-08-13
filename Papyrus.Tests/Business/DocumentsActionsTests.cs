@@ -13,7 +13,7 @@ using Given = Papyrus.Tests.Business.GivenFixture;
 
 namespace Papyrus.Tests.Business {
     [TestFixture]
-    public class PapyrusShould {
+    public class DocumentsActionsTests {
         private DocumentsRepository documentsRepository;
         private Given given;
 

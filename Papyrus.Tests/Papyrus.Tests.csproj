@@ -74,7 +74,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Business\GivenFixture.cs" />
-    <Compile Include="Business\PapyrusShould.cs" />
+    <Compile Include="Business\DocumentsActionsTests.cs" />
     <Compile Include="Business\ProductActionsTests.cs" />
     <Compile Include="Business\TestExtensionMethodsForDocumentDto.cs" />
     <Compile Include="Infrastructure\FileSystemProviderShould.cs" />
