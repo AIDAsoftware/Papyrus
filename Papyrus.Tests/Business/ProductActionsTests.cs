@@ -9,17 +9,39 @@ using Papyrus.Business.Domain.Products;
 namespace Papyrus.Tests.Business {
     [TestFixture]
     public class ProductActionsTests {
+        private ProductRepository productRepository;
+
+        [SetUp]
+        public void SetUp() {
+            productRepository = Substitute.For<ProductRepository>();
+        }
+
         [Test]
         public void get_all_products() {
-            var version = new ProductVersion("any", "any");
-            var product = new Product("any", "any", new List<ProductVersion> {version});
-            var productsRepository = Substitute.For<ProductRepository>();
-            productsRepository.GetAllProducts().Returns(new List<Product> {product});
+            var product = AnyProduct();
+            productRepository.GetAllProducts().Returns(AListWith(product));
 
-            var getAllProducts = new GetProducts(productsRepository);
-            var products = getAllProducts.Execute();
+            var products = ExecuteGetAllProducts();
 
             products.Single().Should().Be(product);
+        }
+
+        private IReadOnlyCollection<Product> ExecuteGetAllProducts() {
+            var getAllProducts = new GetProducts(productRepository);
+            var products = getAllProducts.Execute();
+            return products;
+        }
+
+        private static Product AnyProduct() {
+            return new Product("any", "any", new List<ProductVersion> {AnyVersion()});
+        }
+
+        private static ProductVersion AnyVersion() {
+            return new ProductVersion("any", "any");
+        }
+
+        private static List<Product> AListWith(Product product) {
+            return new List<Product> {product};
         }
     }
 }
