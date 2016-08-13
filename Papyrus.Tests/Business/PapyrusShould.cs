@@ -42,7 +42,7 @@ namespace Papyrus.Tests.Business {
 
             ExecuteCreateDocument(documentDto);
 
-            repository.Received(1).CreateDocumentFor(documentDto.AsDocument());
+            repository.Received(1).CreateDocumentFor(documentDto.Equivalent());
         }
 
         private void ExecuteCreateDocument(DocumentDto documentDto) {
