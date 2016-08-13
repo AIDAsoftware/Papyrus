@@ -78,6 +78,7 @@
     <Compile Include="Business\TestExtensionMethodsForDocumentDto.cs" />
     <Compile Include="Infrastructure\FileSystemProviderShould.cs" />
     <Compile Include="Repositories\FileDocumentsRepositoryShould.cs" />
+    <Compile Include="Repositories\FileRepositoryTest.cs" />
     <Compile Include="Repositories\InsertableDocumentsBuilder.cs" />
     <Compile Include="Repositories\ProductRepositoryShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

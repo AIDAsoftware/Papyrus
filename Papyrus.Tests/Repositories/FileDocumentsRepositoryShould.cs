@@ -13,23 +13,14 @@ using Papyrus.Infrastructure.Repositories;
 
 namespace Papyrus.Tests.Repositories {
     [TestFixture]
-    public class FileDocumentsRepositoryShould {
-        public readonly string DocumentsPath =
-            Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Documents"));
-
+    public class FileDocumentsRepositoryShould : FileRepositoryTest {
         private FileDocumentsRepository documentsRepository;
         private InsertableDocumentsBuilder given;
 
         [SetUp]
         public void Setup() {
-            Directory.CreateDirectory(DocumentsPath);
-            documentsRepository = new FileDocumentsRepository(new JsonFileSystemProvider(DocumentsPath));
-            given = new InsertableDocumentsBuilder(DocumentsPath);
-        }
-
-        [TearDown]
-        public void TearDown() {
-            Directory.Delete(DocumentsPath, true);
+            documentsRepository = new FileDocumentsRepository(new JsonFileSystemProvider(WorkingDirectoryPath));
+            given = new InsertableDocumentsBuilder(WorkingDirectoryPath);
         }
 
         [Test]
@@ -51,7 +42,7 @@ namespace Papyrus.Tests.Repositories {
 
             documentsRepository.CreateDocumentFor(documentToInsert);
 
-            var documents = GetAllDocumentsFrom(DocumentsPath).Single();
+            var documents = GetAllDocumentsFrom(WorkingDirectoryPath).Single();
             documents.ShouldBeEquivalentTo(documentToInsert, option => 
                         option.Excluding(d => d.Id).Excluding(d => d.ProductId).Excluding(d => d.VersionId));
             var versionIdentifier = GetVersionIdFrom(documents);
@@ -98,11 +89,6 @@ namespace Papyrus.Tests.Repositories {
                 document.Language == documentToInsert.Language && 
                 document.VersionIdentifier.ProductId == documentToInsert.ProductId &&
                 document.VersionIdentifier.VersionId == documentToInsert.VersionId;
-        }
-
-        //TODO: extension method for create unique strings
-        private static string AnyUniqueString() {
-            return Guid.NewGuid().ToString();
         }
     }
 }
