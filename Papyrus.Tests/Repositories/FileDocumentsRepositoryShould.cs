@@ -81,7 +81,13 @@ namespace Papyrus.Tests.Repositories {
         }
 
         private static Document AnyDocument() {
-            return new Document(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), new VersionIdentifier(AnyUniqueString(), AnyUniqueString()));
+            return new Document(
+                new DocumentId(AnyUniqueString()), 
+                AnyUniqueString(), 
+                AnyUniqueString(), 
+                AnyUniqueString(), 
+                AnyUniqueString(), 
+                new VersionIdentifier(AnyUniqueString(), AnyUniqueString()));
         }
 
         private static Expression<Func<Document, bool>> ADocumentEquivalentTo(SerializableDocument documentToInsert) {
@@ -94,6 +100,7 @@ namespace Papyrus.Tests.Repositories {
                 document.VersionIdentifier.VersionId == documentToInsert.VersionId;
         }
 
+        //TODO: extension method for create unique strings
         private static string AnyUniqueString() {
             return Guid.NewGuid().ToString();
         }

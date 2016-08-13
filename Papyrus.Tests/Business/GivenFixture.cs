@@ -25,7 +25,13 @@ namespace Papyrus.Tests.Business {
         }
 
         public static Document ADocument() {
-            return new Document(AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), AnyUniqueString(), new VersionIdentifier(AnyUniqueString(), AnyUniqueString()));
+            return new Document(
+                new DocumentId(AnyUniqueString()), 
+                AnyUniqueString(), 
+                AnyUniqueString(), 
+                AnyUniqueString(), 
+                AnyUniqueString(), 
+                new VersionIdentifier(AnyUniqueString(), AnyUniqueString()));
         }
 
         public static VersionIdentifier AVersion() {
@@ -39,6 +45,7 @@ namespace Papyrus.Tests.Business {
 
         public static DocumentDto ADocumentDtoFor(VersionIdentifier version) {
             return new DocumentDto {
+                Id = AnyUniqueString(),
                 Title = AnyUniqueString(),
                 Description = AnyUniqueString(),
                 Content = AnyUniqueString(),

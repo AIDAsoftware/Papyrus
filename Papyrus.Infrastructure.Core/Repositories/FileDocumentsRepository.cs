@@ -15,7 +15,13 @@ namespace Papyrus.Infrastructure.Repositories {
         public Documentation GetDocumentationFor(VersionIdentifier versionId) {
             var documents = jsonFileSystemProvider.GetAll<SerializableDocument>()
                 .Where(d => d.ProductId == versionId.ProductId && d.VersionId == versionId.VersionId)
-                .Select(d => new Document(d.Title, d.Description, d.Content, d.Language, new VersionIdentifier(d.ProductId, d.VersionId)))
+                .Select(d => new Document(
+                    new DocumentId(d.Id), 
+                    d.Title, 
+                    d.Description, 
+                    d.Content, 
+                    d.Language, 
+                    new VersionIdentifier(d.ProductId, d.VersionId)))
                 .ToList();
             return Documentation.WithDocuments(documents);
         }

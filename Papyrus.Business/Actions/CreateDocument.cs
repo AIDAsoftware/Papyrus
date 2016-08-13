@@ -14,7 +14,13 @@ namespace Papyrus.Business.Actions {
         }
 
         private static Document ToDocument(DocumentDto document) {
-            return new Document(document.Title, document.Description, document.Content, document.Language, new VersionIdentifier(document.ProductId, document.VersionId));
+            return new Document(
+                new DocumentId(document.Id), 
+                document.Title, 
+                document.Description, 
+                document.Content, 
+                document.Language, 
+                new VersionIdentifier(document.ProductId, document.VersionId));
         }
     }
 }
