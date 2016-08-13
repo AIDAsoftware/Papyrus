@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 
 namespace Papyrus.Infrastructure.Core {
-    //TODO : SRP?
+    // SRP?
     public class JsonFileSystemProvider {
         public readonly string DirectoryPath;
 
