@@ -11,20 +11,13 @@ using Papyrus.Infrastructure.Repositories;
 namespace Papyrus.Tests.Repositories {
 
     [TestFixture]
-    public class ProductRepositoryShould {
+    public class ProductRepositoryShould : FileRepositoryTest {
         private ProductRepository productRepository;
-        private string ProductsPath { get; set; }
 
         [SetUp]
-        public void given_a_products_path() {
-            ProductsPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Products"));
-            productRepository = new FileProductRepository(new JsonFileSystemProvider(ProductsPath));
-            Directory.CreateDirectory(ProductsPath);
-        }
-
-        [TearDown]
-        public void Delete() {
-            Directory.Delete(ProductsPath, true);
+        public void SetUp() {
+            productRepository = new FileProductRepository(new JsonFileSystemProvider(WorkingDirectoryPath));
+            Directory.CreateDirectory(WorkingDirectoryPath);
         }
 
         [Test]
@@ -50,19 +43,19 @@ namespace Papyrus.Tests.Repositories {
         }
 
         private static ProductVersion AnyVersion() {
-            return new ProductVersion("4321", "0.0.1");
+            return new ProductVersion(AnyUniqueString(), AnyUniqueString());
         }
 
         public void GivenAProductWith(SerializableProduct product, params ProductVersion[] versions) {
             var productJson = JsonConvert.SerializeObject(product);
-            var productPath = Path.Combine(ProductsPath, "1234");
+            var productPath = Path.Combine(WorkingDirectoryPath, AnyUniqueString());
             File.WriteAllText(productPath, productJson);
         }
 
         private static SerializableProduct AProductWith(params ProductVersion[] versions) {
             return new SerializableProduct {
-                Name = "Any",
-                Id = "Any",
+                Name = AnyUniqueString(),
+                Id = AnyUniqueString(),
                 ProductVersions = versions.ToList()
             };
         }
