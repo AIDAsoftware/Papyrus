@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Actions\CreateDocument.cs" />
     <Compile Include="Actions\GetDocumentation.cs" />
+    <Compile Include="Actions\GetProducts.cs" />
     <Compile Include="Domain\Documents\Document.cs" />
     <Compile Include="Domain\Documents\Documentation.cs" />
     <Compile Include="Domain\Documents\DocumentDto.cs" />
