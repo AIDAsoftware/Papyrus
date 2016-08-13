@@ -15,7 +15,7 @@
     <iron-ajax
         method="GET"
         last-response="{{documents}}"
-        url="http://10.211.55.3/Papyrus.Api/products/[[product]]/versions/[[version]]/documents">
+        url="http://myserver/Papyrus.Api/products/[[product]]/versions/[[version]]/documents">
     </iron-ajax>
     <template is="dom-repeat"  items="[[documents]]" as="document">
         <paper-card heading="[[document.Title]]">
