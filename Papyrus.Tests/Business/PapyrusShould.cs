@@ -46,19 +46,6 @@ namespace Papyrus.Tests.Business {
             documentsRepository.Received(1).CreateDocumentFor(documentDto.Equivalent());
         }
 
-        [Test]
-        public void get_all_products() {
-            var version = new ProductVersion("any", "any");
-            var product = new Product("any", "any", new List<ProductVersion> {version});
-            var productsRepository = Substitute.For<ProductRepository>();
-            productsRepository.GetAllProducts().Returns(new List<Product> {product});
-
-            var getAllProducts = new GetProducts(productsRepository);
-            var products = getAllProducts.Execute();
-
-            products.Single().Should().Be(product);
-        }
-
         private void ExecuteCreateDocument(DocumentDto documentDto) {
             var createDocument = new CreateDocument(documentsRepository);
             createDocument.ExecuteFor(documentDto);
@@ -67,18 +54,6 @@ namespace Papyrus.Tests.Business {
         private List<Document> GetDocumentationFor(VersionIdentifier version) {
             var getDocumentation = new GetDocumentation(documentsRepository);
             return getDocumentation.ExecuteFor(version.ProductId, version.VersionId).ToList();
-        }
-    }
-
-    public class GetProducts {
-        private readonly ProductRepository productsRepository;
-
-        public GetProducts(ProductRepository productsRepository) {
-            this.productsRepository = productsRepository;
-        }
-
-        public IReadOnlyCollection<Product> Execute() {
-            return productsRepository.GetAllProducts();
         }
     }
 }
