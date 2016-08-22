@@ -4,13 +4,21 @@
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
+
+<link rel="import" href="nav-bar.html">
+<link rel="import" href="product-version-selector.html">
+
 <dom-module id="document-listing">
   <template>
     <style>
         :host {
-            display: block;
+            display: flex;
+            flex-direction: column;
         }
     </style>
+
+    <product-version-selector product="{{product}}" version="{{version}}">
+    </product-version-selector>
 
     <iron-ajax
         method="GET"
@@ -44,8 +52,6 @@
                 'versionChanged(product, version)'
             ],
             versionChanged: function(product, version) {
-                console.log(version);
-                console.log(product);
                 if (!product || !version) {
                     return;
                 }
