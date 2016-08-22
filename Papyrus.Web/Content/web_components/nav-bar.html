@@ -1,0 +1,44 @@
+
+<dom-module id="nav-bar">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            paper-item {
+                --paper-item: {
+                    color: black;
+                };
+            }
+        </style>
+        <paper-toolbar>
+            <span class="title">Papyrus</span>
+            <paper-menu-button>
+                <paper-button class="dropdown-trigger">Documents</paper-button>
+                <paper-menu class="dropdown-content">
+                    <paper-item on-tap="browseDocuments">Browse</paper-item>
+                    <paper-item on-tap="openCreator">Create</paper-item>
+                </paper-menu>
+            </paper-menu-button>
+            <paper-button >Products</paper-icon-button>
+        </paper-toolbar>
+    </template>
+    <script>
+        Polymer({
+            is: 'nav-bar',
+            properties: {
+                listing: {
+                    type: Boolean,
+                    notify: true
+                }
+            },
+            browseDocuments: function() {
+                this.listing = true;
+            },
+            openCreator: function() {
+                this.listing = false;
+            }
+        });
+    </script>
+</dom-module>

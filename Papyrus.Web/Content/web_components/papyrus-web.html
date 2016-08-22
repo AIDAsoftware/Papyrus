@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
+<link rel="import" href="nav-bar.html">
 <link rel="import" href="document-creator.html">
 <link rel="import" href="document-listing.html">
 <link rel="import" href="product-version-selector.html">
@@ -27,17 +28,7 @@
             }
         </style>
 
-        <paper-toolbar>
-            <span class="title">Papyrus</span>
-            <paper-menu-button>
-                <paper-button class="dropdown-trigger">Documents</paper-button>
-                <paper-menu class="dropdown-content">
-                    <paper-item on-tap="browseDocuments">Browse</paper-item>
-                    <paper-item on-tap="openCreator">Create</paper-item>
-                </paper-menu>
-            </paper-menu-button>
-            <paper-button >Products</paper-icon-button>
-        </paper-toolbar>
+        <nav-bar listing={{listing}}></nav-bar>
 
         <product-version-selector product="{{product}}" version="{{version}}">
         </product-version-selector>
@@ -60,14 +51,6 @@
                 type: Boolean,
                 value: true
             }
-        },
-        browseDocuments: function() {
-            console.log("---" + this.product);
-            console.log("---" + this.version);
-            this.listing = true;
-        },
-        openCreator: function() {
-            this.listing = false;
         }
     });
   </script>
