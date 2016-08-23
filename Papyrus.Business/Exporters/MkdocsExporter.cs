@@ -11,15 +11,14 @@ namespace Papyrus.Business.Exporters {
         private static readonly string NewLine = System.Environment.NewLine;
         private readonly FileSystemImagesCopier imagesCopier;
         private int firstDocumentOrder;
-        public const string IndexContent = "SIMA Documentation";
 
         public MkDocsExporter(FileSystemImagesCopier imagesCopier) {
             this.imagesCopier = imagesCopier;
         }
 
-        public virtual async Task Export(WebSite webSite, ConfigurationPaths configurationPaths) {
-            var configuration = CreateConfiguration(configurationPaths.SiteDir);
-            var exportationPath = configurationPaths.ExportationPath;
+        public virtual async Task Export(WebSite webSite, ConfigurationSettings configurationSettings) {
+            var configuration = CreateConfiguration(configurationSettings.SiteDir);
+            var exportationPath = configurationSettings.ExportationPath;
             await InitializeMkdocsStructure(
                 exportationPath, configuration);
             firstDocumentOrder = webSite.Documents.OrderBy(d => d.Order).First().Order;
@@ -31,7 +30,7 @@ namespace Papyrus.Business.Exporters {
             await WriteConfigurationYmlInPath(configuration, exportationPath);
             CopyImagesInTheSite(
                 exportationPath, 
-                configurationPaths.ImagesFolder);
+                configurationSettings.ImagesFolder);
         }
 
         private void CopyImagesInTheSite(string path, string imagesFolder) {
@@ -72,11 +71,14 @@ namespace Papyrus.Business.Exporters {
 
         private async Task ExportDocumentIn(ExportableDocument document, string directoryPath) {
             var documentDirectory = Directory.CreateDirectory(directoryPath);
-            var fileName = (document.Order == firstDocumentOrder) ? 
-                "index.md" : 
-                ConvertToValidFileName(document.Title) + MarkDownExtension;
+            var fileName = (IsFirstDocument(document, directoryPath)) ? 
+                            "index.md" : ConvertToValidFileName(document.Title) + MarkDownExtension;
             var documentPath = Path.Combine(documentDirectory.FullName, fileName);
             await WriteInFile(documentPath, document.Content);
+        }
+
+        private bool IsFirstDocument(ExportableDocument document, string directoryPath) {
+            return document.Order == firstDocumentOrder && !File.Exists(Path.Combine(directoryPath, "index.md"));
         }
 
         private static async Task WriteInFile(string documentPath, string content) {

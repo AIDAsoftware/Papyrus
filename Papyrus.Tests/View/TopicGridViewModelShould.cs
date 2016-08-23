@@ -51,7 +51,7 @@ namespace Papyrus.Tests.View {
 
             await ExecuteExportSelectedProductCommandFrom(viewModel);
 
-            exporter.Received().Export(WebsiteWithADocument, Arg.Any<ConfigurationPaths>());
+            exporter.Received().Export(WebsiteWithADocument, Arg.Any<ConfigurationSettings>());
         }
 
         private void StubOutProductRepoToReturnAsAllVersionsWhenIsCalledWithProduct(List<string> versions, string productId)

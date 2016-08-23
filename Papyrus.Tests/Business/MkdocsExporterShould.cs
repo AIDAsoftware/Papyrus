@@ -36,7 +36,7 @@ namespace Papyrus.Tests.Business {
             var webSite = WebSiteWithDocuments(AnyDocument());
 
             string path = GetAnyExportationPath();
-            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationPaths(path, AnyImagesPath));
+            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationSettings(path, AnyImagesPath));
 
             GetFilesFrom(AnyMkdocsPath).Should().Contain(x => x.Name == "mkdocs.yml");
         }
@@ -46,7 +46,7 @@ namespace Papyrus.Tests.Business {
             var webSite = WebSiteWithDocuments(new ExportableDocument("Title", "Content"));
 
             string path = GetAnyExportationPath();
-            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationPaths(path, AnyImagesPath));
+            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationSettings(path, AnyImagesPath));
 
             var content = GetFileContentFrom(Path.Combine(GetAnyExportationPath(), "docs/index.md"));
             content.Should().Be("Content" + Environment.NewLine);
@@ -57,7 +57,7 @@ namespace Papyrus.Tests.Business {
             var webSite = WebSiteWithDocuments(AnyDocument());
 
             string path = GetAnyExportationPath();
-            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationPaths(path, AnyImagesPath));
+            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationSettings(path, AnyImagesPath));
 
             GetFoldersFrom(AnyMkdocsPath).Should().Contain(x => x.Name == "docs");
         }
@@ -67,7 +67,7 @@ namespace Papyrus.Tests.Business {
             var webSite = WebSiteWithDocuments(AnyDocument());
 
             string path = GetAnyExportationPath();
-            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationPaths(path, AnyImagesPath));
+            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationSettings(path, AnyImagesPath));
 
             var documentPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
             GetFileContentFrom(documentPath).Should().Contain("theme: readthedocs");
@@ -78,7 +78,7 @@ namespace Papyrus.Tests.Business {
             var webSite = WebSiteWithDocuments(AnyDocument());
 
             string path = GetAnyExportationPath();
-            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationPaths(path, AnyImagesPath));
+            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationSettings(path, AnyImagesPath));
 
             var documentPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
             GetFileContentFrom(documentPath).Should().Contain("site_name: SIMA Documentation");
@@ -89,7 +89,7 @@ namespace Papyrus.Tests.Business {
             var webSite = WebSiteWithDocuments(AnyDocument());
 
             string path = GetAnyExportationPath();
-            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationPaths(path, AnyImagesPath));
+            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationSettings(path, AnyImagesPath));
 
             GetDocsFrom(GetAnyExportationPath()).Should().Contain(d => d.Name == "index.md");
         }
@@ -101,7 +101,7 @@ namespace Papyrus.Tests.Business {
                 new ExportableDocument("otro>título?ñ", "AnotherContent"));
 
             string path = GetAnyExportationPath();
-            await new MkDocsExporter(imagesCopier).Export(website, new ConfigurationPaths(path, AnyImagesPath));
+            await new MkDocsExporter(imagesCopier).Export(website, new ConfigurationSettings(path, AnyImagesPath));
 
             var ymlPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
             GetFileContentFrom(ymlPath).Should().Contain(
@@ -115,9 +115,24 @@ namespace Papyrus.Tests.Business {
             var webSite = WebSiteWithDocuments(AnyDocument());
 
             var anyExportationPath = GetAnyExportationPath();
-            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationPaths(anyExportationPath, AnyImagesPath));
+            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationSettings(anyExportationPath, AnyImagesPath));
 
             imagesCopier.Received(1).CopyFolder(AnyImagesPath, Path.Combine(anyExportationPath, "docs", AnyImagesPath));
+        }
+
+        [Test]
+        public async Task dont_override_the_index_when_exist_a_collision_between_two_documents_to_be_the_first()
+        {
+            var aDocument = AnyDocument();
+            var anotherDocument = AnyDocument();
+            var webSite = WebSiteWithDocuments(aDocument, anotherDocument);
+
+            var anyExportationPath = GetAnyExportationPath();
+            await new MkDocsExporter(imagesCopier).Export(webSite, new ConfigurationSettings(anyExportationPath, AnyImagesPath));
+
+            GetDocsFrom(GetAnyExportationPath()).Should().HaveCount(2)
+                .And.Contain(d => d.Name == "index.md")
+                .And.Contain(d => d.Name.Contains(aDocument.Title) || d.Name.Contains(anotherDocument.Title));
         }
 
         private string GetAnyExportationPath() {
@@ -142,7 +157,11 @@ namespace Papyrus.Tests.Business {
         }
 
         private static ExportableDocument AnyDocument() {
-            return new ExportableDocument("AnyTitle", "AnyContent");
+            return new ExportableDocument(AnyUniqueString(), "AnyContent");
+        }
+
+        private static string AnyUniqueString() {
+            return Guid.NewGuid().ToString();
         }
 
         private static WebSite WebSiteWithDocuments(params ExportableDocument[] exportableDocuments) {

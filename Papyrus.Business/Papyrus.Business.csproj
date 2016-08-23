@@ -62,7 +62,7 @@
     <Compile Include="Documents\DisplayableProduct.cs" />
     <Compile Include="Documents\Document.cs" />
     <Compile Include="Documents\Documents.cs" />
-    <Compile Include="Exporters\ConfigurationPaths.cs" />
+    <Compile Include="Exporters\ConfigurationSettings.cs" />
     <Compile Include="Exporters\ExportableDocument.cs" />
     <Compile Include="Exporters\FileWriter.cs" />
     <Compile Include="Exporters\MkdocsConfiguration.cs" />
