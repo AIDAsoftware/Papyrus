@@ -1,11 +1,13 @@
 ﻿namespace Papyrus.Business.Exporters
 {
     public class ConfigurationSettings {
+        public string GoogleAnalyticsId { get; }
         public string ExportationPath { get; }
         public string ImagesFolder { get; }
         public string SiteDir { get; }
 
-        public ConfigurationSettings(string exportationPath, string imagesFolder, string siteDir = "") {
+        public ConfigurationSettings(string exportationPath, string imagesFolder, string siteDir = "", string googleAnalyticsId = "") {
+            GoogleAnalyticsId = googleAnalyticsId;
             ExportationPath = exportationPath;
             ImagesFolder = imagesFolder;
             SiteDir = siteDir;

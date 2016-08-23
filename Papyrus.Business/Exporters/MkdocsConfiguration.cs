@@ -10,13 +10,15 @@ namespace Papyrus.Business.Exporters {
         private const string DefaultTheme = "readthedocs";
         private const string KeyValueSeparator = ": ";
         private static readonly string NewLine = Environment.NewLine;
-        
+
         public string Theme { get; }
         public string SiteName { get; }
         public string SiteDir { get; }
+        private readonly string googleAnalyticsId;
         private readonly Dictionary<string, ExportableDocument> pages = new Dictionary<string, ExportableDocument>();
 
-        public MkdocsConfiguration(string siteDir) {
+        public MkdocsConfiguration(string siteDir, string googleAnalyticsId) {
+            this.googleAnalyticsId = googleAnalyticsId;
             Theme = DefaultTheme;
             SiteName = SimaSiteName;
             SiteDir = siteDir;
@@ -30,6 +32,7 @@ namespace Papyrus.Business.Exporters {
         public override string ToString() {
             var themeLine = "theme" + KeyValueSeparator + Theme + NewLine;
             var siteNameLine = "site_name" + KeyValueSeparator + SiteName + NewLine;
+            var googleAnalyticsLine = "google_analytics" + KeyValueSeparator + $"['{googleAnalyticsId}', 'auto']" + NewLine;
             var siteDir = "site_dir" + KeyValueSeparator + SiteDir + NewLine;
             var pagesLines = "pages" + KeyValueSeparator + NewLine;
             var orderedPages = pages
@@ -43,7 +46,7 @@ namespace Papyrus.Business.Exporters {
             orderedPages[0].FileName = "index.md";
             pagesLines = orderedPages
                 .Aggregate(pagesLines, (current, page) => current + ToMkdocsPageFormat(page));
-            return themeLine + siteNameLine + siteDir + pagesLines;
+            return themeLine + siteNameLine + googleAnalyticsLine + siteDir + pagesLines;
         }
 
         private static string ToMkdocsPageFormat(Page page)

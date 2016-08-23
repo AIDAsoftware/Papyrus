@@ -17,7 +17,7 @@ namespace Papyrus.Business.Exporters {
         }
 
         public virtual async Task Export(WebSite webSite, ConfigurationSettings configurationSettings) {
-            var configuration = CreateConfiguration(configurationSettings.SiteDir);
+            var configuration = CreateConfiguration(configurationSettings.SiteDir, configurationSettings);
             var exportationPath = configurationSettings.ExportationPath;
             await InitializeMkdocsStructure(
                 exportationPath, configuration);
@@ -50,8 +50,8 @@ namespace Papyrus.Business.Exporters {
             return Path.Combine(path, "docs");
         }
 
-        private static MkdocsConfiguration CreateConfiguration(string siteDir) {
-            return new MkdocsConfiguration(siteDir);
+        private static MkdocsConfiguration CreateConfiguration(string siteDir, ConfigurationSettings configurationSettings) {
+            return new MkdocsConfiguration(configurationSettings.SiteDir, configurationSettings.GoogleAnalyticsId);
         }
 
         private static async Task WriteConfigurationYmlInPath(MkdocsConfiguration configuration, string path) {

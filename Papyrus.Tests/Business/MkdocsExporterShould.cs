@@ -135,6 +135,20 @@ namespace Papyrus.Tests.Business {
                 .And.Contain(d => d.Name.Contains(aDocument.Title) || d.Name.Contains(anotherDocument.Title));
         }
 
+        [Test]
+        public async Task configure_google_analytics_in_the_yml_file()
+        {
+            var webSite = WebSiteWithDocuments(AnyDocument());
+            string path = GetAnyExportationPath();
+            var googleAnalyticsId = "GoogleAnalyticsId";
+            var settings = new ConfigurationSettings(path, AnyImagesPath, googleAnalyticsId: googleAnalyticsId);
+
+            await new MkDocsExporter(imagesCopier).Export(webSite, settings);
+
+            var documentPath = Path.Combine(GetAnyExportationPath(), "mkdocs.yml");
+            GetFileContentFrom(documentPath).Should().Contain("google_analytics: ['" + googleAnalyticsId + "', 'auto']");
+        }
+
         private string GetAnyExportationPath() {
             return Path.Combine(testDirectory.FullName, AnyMkdocsPath);
         }

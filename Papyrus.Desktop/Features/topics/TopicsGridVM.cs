@@ -11,7 +11,6 @@ using Papyrus.Business.Documents;
 using Papyrus.Business.Exporters;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
-using Papyrus.Business.VersionRanges;
 using Papyrus.Desktop.Annotations;
 using Papyrus.Desktop.Util.Command;
 using Papyrus.Infrastructure.Core.DomainEvents;
@@ -86,10 +85,16 @@ namespace Papyrus.Desktop.Features.Topics {
         private async Task TryExportation(WebsiteCollection websiteCollection) {
             foreach (var webSite in websiteCollection) {
                 var imagesFolder = ConfigurationManager.AppSettings["ImagesFolder"];
+                var googleAnalyticsId = ConfigurationManager.AppSettings["GoogleAnalyticsId"];
                 var siteDir = Path.Combine(DefaultDirectoryPath, webSite.ProductName, webSite.Version, webSite.Language);
                 var exportationPath = DefaultDirectoryPath + "/" + GenerateMkdocsPath(webSite);
-                await exporter.Export(webSite,
-                    new ConfigurationSettings(exportationPath, imagesFolder, siteDir));
+                await exporter.Export(webSite, 
+                            new ConfigurationSettings(
+                                exportationPath: exportationPath, 
+                                imagesFolder: imagesFolder, 
+                                siteDir: siteDir, 
+                                googleAnalyticsId: googleAnalyticsId)
+                            );
             }
         }
 
