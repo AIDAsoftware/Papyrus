@@ -7,17 +7,6 @@
     <link rel="import" href="bower_components/app-router/app-router.html">
     <link rel="import" href="web_components/nav-bar.html">
     <title>Papyrus</title>
-</head>
-
-<body>
-    <nav-bar></nav-bar>
-    <app-router>
-        <!-- matches an exact path -->
-        <app-route path="/" import="/web_components/document-listing.html"></app-route>
-        <app-route path="/document-creator" import="/web_components/document-creator.html"></app-route>
-    </app-router>
-    <a href="#/">Navigate</a>
-    <a href="#/document-creator">Navigate2</a>
     <style>
         body {
             display: flex;
@@ -30,6 +19,15 @@
             height: 100%;
         }
     </style>
+</head>
+
+<body>
+    <nav-bar></nav-bar>
+    <app-router>
+        <!-- matches an exact path -->
+        <app-route path="/" import="/web_components/document-listing.html"></app-route>
+        <app-route path="/document-creator" import="/web_components/document-creator.html"></app-route>
+    </app-router>
 </body>
 
 </html>

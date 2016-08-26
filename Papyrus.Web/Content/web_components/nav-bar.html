@@ -33,17 +33,11 @@
     <script>
         Polymer({
             is: 'nav-bar',
-            properties: {
-                listing: {
-                    type: Boolean,
-                    notify: true
-                }
-            },
             browseDocuments: function() {
-                this.listing = true;
+                window.location.href = '#/';
             },
             openCreator: function() {
-                this.listing = false;
+                window.location.href = '#/document-creator';
             }
         });
     </script>
