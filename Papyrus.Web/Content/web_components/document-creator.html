@@ -13,7 +13,10 @@
             }
         </style>
 
-        <form is="iron-form" method="post" action="[[constructUrlFrom(product_id, version_id)]]">
+        <product-version-selector product="{{productId}}" version="{{versionId}}">
+        </product-version-selector>
+
+        <form is="iron-form" method="post" action="[[constructUrlFrom(productId, versionId)]]">
             <paper-input label="Title" name="Title"></paper-input>
             <paper-input label="Description" name="Description"></paper-input>
             <paper-input label="Language" name="Language"></paper-input>
@@ -27,11 +30,11 @@
         //TODO : use better MVVM
         is: 'document-creator',
         properties: {
-            product_id: String,
-            version_id: String
+            productId: String,
+            versionId: String
         },
         submitForm: function() {
-            if (!this.product_id || !this.version_id) {
+            if (!this.productId || !this.versionId) {
                 return;
             }
             document.querySelector('form').submit();
