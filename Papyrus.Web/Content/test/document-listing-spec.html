@@ -19,6 +19,7 @@
   </test-fixture>
 
   <script>
+      var should = chai.should();
     describe('document listing', function() {
       context('when version changed', function() {
         var documentListing;
@@ -27,22 +28,22 @@
         });
         
         it('should not generate a request to load documents if product is empty', function() {
-          var requestWasRaised = false;
-          documentListing.querySelector('iron-ajax').generateRequest = function() {
-              requestWasRaised = true;
-          }
-          documentListing.version = '123';
-          expect(requestWasRaised).to.be.equal(false);
+            var request = sinon.spy();
+            documentListing.querySelector('iron-ajax').generateRequest = request;
+            
+            documentListing.version = '123';
+            
+            request.called.should.be.false;
         });
 
         it('should generate a request when product and version is selected', function() {
-          var requestWasRaised = false;
-          documentListing.querySelector('iron-ajax').generateRequest = function() {
-              requestWasRaised = true;
-          }
-          documentListing.version = '123';
-          documentListing.product = '123';
-          expect(requestWasRaised).to.be.equal(true);
+            var request = sinon.spy();
+            documentListing.querySelector('iron-ajax').generateRequest = request;
+            
+            documentListing.version = '123';
+            documentListing.product = '123';
+            
+            expect(request.called);
         });
       });
     });
