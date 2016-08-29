@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <script src="../bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <script src="../node_modules/web-component-tester/browser.js"></script>
+  <script src="../node_modules/test-fixture/test-fixture-mocha.js"></script>
+  
+  <link rel="import" href="../web_components/document-listing.html">
+  <link rel="import" href="../node_modules/test-fixture/test-fixture.html">
+  
+</head>
+<body>
+  <test-fixture id="document-listing">
+      <template>
+          <document-listing></document-listing>
+      </template>
+  </test-fixture>
+
+  <script>
+    describe('document listing', function() {
+      context('when version changed', function() {
+        var documentListing;
+        beforeEach(function() {
+            documentListing = fixture("document-listing");
+        });
+        
+        it('should not generate a request to load documents if product is empty', function() {
+          var requestWasRaised = false;
+          documentListing.querySelector('iron-ajax').generateRequest = function() {
+              requestWasRaised = true;
+          }
+          documentListing.version = '123';
+          expect(requestWasRaised).to.be.equal(false);
+        });
+
+        it('should generate a request when product and version is selected', function() {
+          var requestWasRaised = false;
+          documentListing.querySelector('iron-ajax').generateRequest = function() {
+              requestWasRaised = true;
+          }
+          documentListing.version = '123';
+          documentListing.product = '123';
+          expect(requestWasRaised).to.be.equal(true);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
