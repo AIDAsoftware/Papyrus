@@ -23,27 +23,23 @@
     describe('document listing', function() {
       context('when version changed', function() {
         var documentListing;
+        var requestAction;
         beforeEach(function() {
             documentListing = fixture("document-listing");
+            requestAction = sinon.spy();
+            documentListing.querySelector('iron-ajax').generateRequest = requestAction;            
         });
         
         it('should not generate a request to load documents if product is empty', function() {
-            var request = sinon.spy();
-            documentListing.querySelector('iron-ajax').generateRequest = request;
-            
             documentListing.version = '123';
-            
-            request.called.should.be.false;
+            requestAction.called.should.be.false;
         });
 
         it('should generate a request when product and version is selected', function() {
-            var request = sinon.spy();
-            documentListing.querySelector('iron-ajax').generateRequest = request;
-            
             documentListing.version = '123';
             documentListing.product = '123';
-            
-            expect(request.called);
+
+            requestAction.called.should.be.true;
         });
       });
     });
