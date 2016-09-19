@@ -9,7 +9,11 @@ const glob = require('globule');
 
 const sourcesFolder = './src/main.js';
 const outputBundleFile = 'bundle.js';
-const distFolder = './dist'
+const distFolder = './dist';
+
+const testsFolder = './test/specs/**/*.js';
+const outputTestFile = 'specs.js';
+const distTestFolder = './test/dist';
 
 gulp.task('default', ['lint', 'build']);
  
@@ -19,10 +23,18 @@ gulp.task('lint', () => {
         .pipe(eslint.format())
 });
  
-gulp.task('build', ['lint'], function() {
+gulp.task('build', function() {
     browserify(sourcesFolder)
         .transform(babelify, {presets: ["es2015", "react"]})
         .bundle()
         .pipe(vinylSource(outputBundleFile))
         .pipe(gulp.dest(distFolder));
+});
+
+gulp.task('test', function() {
+    browserify(glob.find(testsFolder))
+        .transform(babelify, {presets: ["es2015", "react"]})
+        .bundle()
+        .pipe(vinylSource(outputTestFile))
+        .pipe(gulp.dest(distTestFolder));
 });
