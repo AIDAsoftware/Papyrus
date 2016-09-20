@@ -2,8 +2,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SampleComponent from './components/sampleComponent';
+import {Button} from 'react-toolbox/lib/button';
 
-ReactDOM.render(<SampleComponent />, document.getElementById('app'));
-
-process.exit();
+ReactDOM.render(
+  <Button label="Hello World!" />, document.getElementById('app')
+);
