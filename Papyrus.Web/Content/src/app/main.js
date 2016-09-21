@@ -2,6 +2,16 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import NavigationBar from './components/NavigationBar'
+import Routes from './components/Routes';
+import NavigationBar from './components/NavigationBar';
 
-ReactDOM.render(<NavigationBar />, document.getElementById('app'));
+const App = () => {
+    return (
+        <div>
+            <NavigationBar />
+            <Routes />
+        </div>
+    );
+}    
+
+ReactDOM.render(<App />, document.getElementById('app'));
