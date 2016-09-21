@@ -12,6 +12,6 @@ const App = () => {
             <Routes />
         </div>
     );
-}    
+};    
 
 ReactDOM.render(<App />, document.getElementById('app'));

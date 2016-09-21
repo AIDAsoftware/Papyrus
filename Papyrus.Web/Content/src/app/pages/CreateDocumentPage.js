@@ -1,7 +1,5 @@
 import React from 'react';
 
-import NavigationBar from './../components/NavigationBar';
-
 class CreateDocumentPage extends React.Component {
 
     render () {
