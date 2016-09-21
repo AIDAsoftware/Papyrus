@@ -2,8 +2,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Button } from 'react-toolbox/lib/button';
+import NavigationBar from './components/NavigationBar'
 
-ReactDOM.render(
-  <Button label="Hello World!" />, document.getElementById('app')
-);
+ReactDOM.render(<NavigationBar />, document.getElementById('app'));
