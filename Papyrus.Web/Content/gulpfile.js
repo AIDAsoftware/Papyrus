@@ -6,6 +6,8 @@ const vinylSource = require('vinyl-source-stream');
 const babelify = require('babelify');
 const eslint = require('gulp-eslint');
 const glob = require('globule');
+const gulpWatch = require('gulp-watch');
+const runSequence = require('run-sequence');
 
 const mainJs = './src/app/main.js';
 const outputBundleFile = 'bundle.js';
@@ -23,13 +25,7 @@ gulp.task('lint', () => {
         .pipe(eslint.format())
 });
  
-gulp.task('build', ['lint'], function() {
-    browserify(mainJs)
-        .transform(babelify, {presets: ["es2015", "react"], plugins: ["transform-decorators-legacy"]})
-        .bundle()
-        .pipe(vinylSource(outputBundleFile))
-        .pipe(gulp.dest(distFolder));
-});
+gulp.task('build', ['lint'], build);
 
 gulp.task('test', function() {
     browserify(glob.find(testsFolder))
@@ -38,3 +34,18 @@ gulp.task('test', function() {
         .pipe(vinylSource(outputTestFile))
         .pipe(gulp.dest(distTestFolder));
 });
+
+// Remember to use Plumber to reconstruct the watcher
+gulp.task('watch', () => {
+    gulpWatch('./src/**/*.js', () => {
+        runSequence('build');
+    });
+});
+
+function build() {
+    browserify(mainJs)
+        .transform(babelify, {presets: ["es2015", "react"], plugins: ["transform-decorators-legacy"]})
+        .bundle()
+        .pipe(vinylSource(outputBundleFile))
+        .pipe(gulp.dest(distFolder));  
+}
