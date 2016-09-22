@@ -1,21 +1,18 @@
 import React from 'react';
+import { Router, Route, hashHistory } from 'react-router';
 
-import { Router, Route, IndexRoute, hashHistory} from 'react-router';
-import HomePage from './../pages/HomePage';
-import CreateDocumentPage from './../pages/CreateDocumentPage';
-import DocumentsPage from './../pages/DocumentsPage';
+import HomePage from '../pages/HomePage';
+import NewDocumentPage from '../pages/NewDocumentPage';
 
-class Routes extends React.Component {
+export default class Routes extends React.Component {
 
-    render () {        
+    render() {
         return (
             <Router history={hashHistory}>
-                <Route path="/" component={HomePage}/>
-                <Route path="/documents/create" component={CreateDocumentPage}/>
-                <Route path="documents" component={DocumentsPage} />
-            </Router>
+                <Route path='/' component={HomePage}/>
+                <Route path='/documents/new' component={NewDocumentPage} />
+            </Router>    
         );
     }
-}
 
-export default Routes;
+}

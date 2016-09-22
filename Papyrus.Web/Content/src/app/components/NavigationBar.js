@@ -1,37 +1,39 @@
 import React from 'react';
-
-import {Tab, Tabs} from 'react-toolbox';
+import { Tabs, Tab } from 'material-ui/Tabs';
+import autobind from 'autobind-decorator';
 import { hashHistory } from 'react-router';
 
-class NavigationBar extends React.Component {
+export default class NavigationBar extends React.Component {
 
     constructor() {
-        super();
+        super();        
         this.state = {
-            inverseIndex : 0
+            value : 'home'
         };
-        this.handleInverseTabChange = (index) => {
-            const routes = {
-                0 : '/',
-                1 : '/documents/create',
-                2 : '/documents'
-            };
-            this.setState({inverseIndex: index});
-            hashHistory.push(routes[index]);
+    }
+
+    @autobind
+    handleChange(value) {
+        this.setState({
+            value: value
+        });
+        const routes = {
+            'home' : '/',
+            'new-document' : 'documents/new'
         };
+        hashHistory.push(routes[value]);
     }
 
     render() {
         return (
             <div>
-                <Tabs index={this.state.inverseIndex} onChange={this.handleInverseTabChange} inverse>
-                    <Tab label='Home' />
-                    <Tab label='Create Document' />
-                    <Tab label='Documents' />
+                <Tabs value={this.state.value} onChange={this.handleChange}>
+                    <Tab label="Home" value="home" />
+                    <Tab label="New Document" value="new-document" />
                 </Tabs>
             </div>
-        );
+        )
     }
 }
 
-export default NavigationBar;
+
