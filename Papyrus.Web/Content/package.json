@@ -26,7 +26,9 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
+    "material-ui": "^0.15.4",
     "react": "^15.3.1",
-    "react-router": "^2.8.1"
+    "react-router": "^2.8.1",
+    "react-tap-event-plugin": "^1.0.0"
   }
 }
