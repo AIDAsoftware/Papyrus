@@ -1,31 +1,58 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import autobind from 'autobind-decorator';
 
 export default class NewDocumentPage extends React.Component {
 
-    centerStyle() {
+    constructor() {
+        super();
+        this.state = {
+            value: 1
+        };
+    }
+
+    style() {
         return {
-            margin: "auto",
-            display: "block",
-            padding: "0 30%"
+            container: {
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'column'
+            }
         }
     }
 
-    textFieldStyle() {
-        return {
-            width: "100%"
-        }
+    @autobind
+    handleChange(event, index, value) { 
+        this.setState({value}); 
     }
 
     render () {
+        const languages = [
+            <MenuItem key={1} value={1} primaryText="Spanish" />,
+            <MenuItem key={2} value={2} primaryText="English" />
+        ];
         return (
-            <div style={this.centerStyle()}>
-                <TextField hintText="Title" style={this.textFieldStyle()}/>
+            <div style={this.style().container}>
+                <TextField 
+                    hintText="Title" 
+                    fullWidth/>
+                <SelectField
+                    value={this.state.value}
+                    onChange={this.handleChange}
+                    fullWidth>
+                    {languages}
+                </SelectField>
+                <TextField 
+                    hintText="Description" 
+                    fullWidth/>
                 <TextField 
                     hintText="Content"
                     rows={4}
-                    rowsMax={15}
-                    style={this.textFieldStyle()}/>
+                    multiLine={true}
+                    rowsMax={10}
+                    fullWidth/>
             </div>
         );
         

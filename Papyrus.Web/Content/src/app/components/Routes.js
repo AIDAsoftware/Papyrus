@@ -1,8 +1,8 @@
 import React from 'react';
 import { Router, Route, hashHistory } from 'react-router';
 
-import HomePage from '../pages/HomePage';
-import NewDocumentPage from '../pages/NewDocumentPage';
+import HomePage from './../pages/HomePage';
+import NewDocumentPage from './../pages/NewDocumentPage';
 
 export default class Routes extends React.Component {
 
