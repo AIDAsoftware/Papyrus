@@ -25,7 +25,7 @@ gulp.task('lint', () => {
  
 gulp.task('build', function() {
     browserify(sourcesFolder)
-        .transform(babelify, {presets: ["es2015", "react"]})
+        .transform(babelify, {presets: ["es2015", "react"], plugins: ["transform-decorators-legacy"]})
         .bundle()
         .pipe(vinylSource(outputBundleFile))
         .pipe(gulp.dest(distFolder));

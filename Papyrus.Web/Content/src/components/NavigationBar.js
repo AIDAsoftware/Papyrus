@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
+import autobind from 'autobind-decorator'
 
 export default class NavigationBar extends React.Component {
 
@@ -10,6 +11,7 @@ export default class NavigationBar extends React.Component {
         };
     }
 
+    @autobind
     handleChange(value) {
         this.setState({
             value: value
@@ -19,7 +21,7 @@ export default class NavigationBar extends React.Component {
     render() {
         return (
             <div>
-                <Tabs value={this.state.value} onChange={this.handleChange.bind(this)}>
+                <Tabs value={this.state.value} onChange={this.handleChange}>
                     <Tab label="Create Document" value="create-document">fahidah</Tab>
                     <Tab label="Documents" value="documents">gafgafagw</Tab>
                 </Tabs>
