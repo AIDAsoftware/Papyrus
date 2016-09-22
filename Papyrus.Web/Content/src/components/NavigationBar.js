@@ -1,19 +1,31 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
 
-class NavigationBar extends React.Component {
+export default class NavigationBar extends React.Component {
+
+    constructor() {
+        super();        
+        this.state = {
+            value : 'documents'
+        };
+    }
+
+    handleChange(value) {
+        this.setState({
+            value: value
+        });
+    }
+
     render() {
         return (
             <div>
-                <Tabs>
-                    <Tab label="Item One"></Tab>
-                    <Tab label="Item Two"></Tab>
-                    <Tab label="onActive"
-                    data-route="/home"></Tab>
+                <Tabs value={this.state.value} onChange={this.handleChange.bind(this)}>
+                    <Tab label="Create Document" value="create-document">fahidah</Tab>
+                    <Tab label="Documents" value="documents">gafgafagw</Tab>
                 </Tabs>
             </div>
         )
     }
 }
 
-export default NavigationBar;
+
