@@ -1,5 +1,5 @@
 'use strict'
- 
+
 const gulp = require('gulp');
 const browserify = require('browserify');
 const vinylSource = require('vinyl-source-stream');
@@ -18,13 +18,13 @@ const outputTestFile = 'specs.js';
 const distTestFolder = './test/dist';
 
 gulp.task('default', ['lint', 'build']);
- 
+
 gulp.task('lint', () => {
     return gulp.src(mainJs)
         .pipe(eslint())
         .pipe(eslint.format())
 });
- 
+
 gulp.task('build', ['lint'], build);
 
 gulp.task('test', function() {
@@ -44,8 +44,8 @@ gulp.task('watch', () => {
 
 function build() {
     browserify(mainJs)
-        .transform(babelify, {presets: ["es2015", "react"], plugins: ["transform-decorators-legacy"]})
+        .transform(babelify, {presets: ["es2015", "react", "stage-2"]})
         .bundle()
         .pipe(vinylSource(outputBundleFile))
-        .pipe(gulp.dest(distFolder));  
+        .pipe(gulp.dest(distFolder));
 }

@@ -2,7 +2,6 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import autobind from 'autobind-decorator';
 
 export default class NewDocumentPage extends React.Component {
 
@@ -23,9 +22,8 @@ export default class NewDocumentPage extends React.Component {
         }
     }
 
-    @autobind
-    handleChange(event, index, value) { 
-        this.setState({value}); 
+    handleChange = (event, index, value)  => { 
+        this.setState({value});
     }
 
     render () {
@@ -35,8 +33,8 @@ export default class NewDocumentPage extends React.Component {
         ];
         return (
             <div style={this.style().container}>
-                <TextField 
-                    hintText="Title" 
+                <TextField
+                    hintText="Title"
                     fullWidth/>
                 <SelectField
                     value={this.state.value}
@@ -44,10 +42,10 @@ export default class NewDocumentPage extends React.Component {
                     fullWidth>
                     {languages}
                 </SelectField>
-                <TextField 
-                    hintText="Description" 
+                <TextField
+                    hintText="Description"
                     fullWidth/>
-                <TextField 
+                <TextField
                     hintText="Content"
                     rows={4}
                     multiLine={true}
@@ -55,6 +53,6 @@ export default class NewDocumentPage extends React.Component {
                     fullWidth/>
             </div>
         );
-        
+
     }
 }

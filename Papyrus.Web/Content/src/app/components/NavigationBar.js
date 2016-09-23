@@ -1,19 +1,17 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import autobind from 'autobind-decorator';
 import { hashHistory } from 'react-router';
 
 export default class NavigationBar extends React.Component {
 
     constructor() {
-        super();        
+        super();
         this.state = {
             value : 'home'
         };
     }
 
-    @autobind
-    handleChange(value) {
+    handleChange = (value) => {
         this.setState({
             value: value
         });
@@ -22,7 +20,7 @@ export default class NavigationBar extends React.Component {
             'new-document' : 'documents/new'
         };
         hashHistory.push(routes[value]);
-    }
+    };
 
     render() {
         return (
