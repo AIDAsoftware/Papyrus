@@ -30,7 +30,7 @@ export default class NavigationBar extends React.Component {
                     <Tab label="New Document" value="new-document" />
                 </Tabs>
             </div>
-        )
+        );
     }
 }
 

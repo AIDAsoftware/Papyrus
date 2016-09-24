@@ -19,10 +19,10 @@ export default class NewDocumentPage extends React.Component {
                 alignItems: 'center',
                 flexDirection: 'column'
             }
-        }
+        };
     }
 
-    handleChange = (event, index, value)  => { 
+    handleChange = (event, index, value)  => {
         this.setState({value});
     }
 
