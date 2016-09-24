@@ -3,12 +3,7 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-
-const DocumentActions  = {
-    createDocument: (title, language, description, content) => {
-        console.log(title, language, description, content);
-    }
-};
+import DocumentActions from '../actions/DocumentActions';
 
 export default class NewDocumentPage extends React.Component {
 
