@@ -10,44 +10,45 @@ const gulpWatch = require('gulp-watch');
 const runSequence = require('run-sequence');
 const plumber = require('gulp-plumber');
 
-const mainJs = './src/app/main.js';
-const outputBundleFile = 'bundle.js';
-const distFolder = './dist';
+const sources = {
+    files : './src/app/main.js',
+    outputFile : 'bundle.js',
+    distFolder : './dist'
+};
 
-const testsFolder = './test/specs/**/*.js';
-const outputTestFile = 'specs.js';
-const distTestFolder = './test/dist';
+const tests = {
+    files : './test/specs/**/*.js',
+    outputFile : 'specs.js',
+    distFolder : './test/dist'
+};
 
 gulp.task('default', ['lint', 'build']);
 
 gulp.task('lint', () => {
-    return gulp.src(mainJs)
+    return gulp.src(['**/*.js', '!node_modules/**/*', '!dist/**/*', '!test/dist/**/*'])
         .pipe(eslint())
         .pipe(eslint.format());
 });
 
-gulp.task('build', ['lint'], build);
-
-gulp.task('test', function() {
-    browserify(glob.find(testsFolder))
-        .transform(babelify, {presets: ['es2015', 'react']})
-        .bundle()
-        .pipe(vinylSource(outputTestFile))
-        .pipe(gulp.dest(distTestFolder));
+gulp.task('build', ['lint'], () => {
+    build(sources.files, sources.outputFile, sources.distFolder);
 });
 
-// Remember to use Plumber to reconstruct the watcher
+gulp.task('test', function() {
+    build(tests.files, tests.outputFile, tests.distFolder);
+});
+
 gulp.task('watch', () => {
     gulpWatch('./src/**/*.js', () => {
         runSequence('build');
     });
 });
 
-function build() {
-    browserify(mainJs)
+function build(files, outputFile, distFolder) {
+    browserify(glob.find(files))
         .transform(babelify, {presets: ['es2015', 'react', 'stage-2']})
         .bundle()
         .pipe(plumber())
-        .pipe(vinylSource(outputBundleFile))
+        .pipe(vinylSource(outputFile))
         .pipe(gulp.dest(distFolder));
 }
