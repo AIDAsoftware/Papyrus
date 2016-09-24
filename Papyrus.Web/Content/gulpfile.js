@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const gulp = require('gulp');
 const browserify = require('browserify');
@@ -8,6 +8,7 @@ const eslint = require('gulp-eslint');
 const glob = require('globule');
 const gulpWatch = require('gulp-watch');
 const runSequence = require('run-sequence');
+const plumber = require('gulp-plumber');
 
 const mainJs = './src/app/main.js';
 const outputBundleFile = 'bundle.js';
@@ -22,14 +23,14 @@ gulp.task('default', ['lint', 'build']);
 gulp.task('lint', () => {
     return gulp.src(mainJs)
         .pipe(eslint())
-        .pipe(eslint.format())
+        .pipe(eslint.format());
 });
 
 gulp.task('build', ['lint'], build);
 
 gulp.task('test', function() {
     browserify(glob.find(testsFolder))
-        .transform(babelify, {presets: ["es2015", "react"]})
+        .transform(babelify, {presets: ['es2015', 'react']})
         .bundle()
         .pipe(vinylSource(outputTestFile))
         .pipe(gulp.dest(distTestFolder));
@@ -44,8 +45,9 @@ gulp.task('watch', () => {
 
 function build() {
     browserify(mainJs)
-        .transform(babelify, {presets: ["es2015", "react", "stage-2"]})
+        .transform(babelify, {presets: ['es2015', 'react', 'stage-2']})
         .bundle()
+        .pipe(plumber())
         .pipe(vinylSource(outputBundleFile))
         .pipe(gulp.dest(distFolder));
 }
