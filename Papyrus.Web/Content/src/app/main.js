@@ -13,11 +13,17 @@ const App = () => (
   <MuiThemeProvider>
     <div>
         <NavigationBar />
-        <Routes />
-    </div>    
+        <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%'
+        }}>
+            <Routes />
+        </div>
+    </div>
   </MuiThemeProvider>
 );
- 
+
 ReactDOM.render(
   <App />,
   document.getElementById('app')

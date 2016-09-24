@@ -12,14 +12,10 @@ export default class NewDocumentPage extends React.Component {
         };
     }
 
-    style() {
-        return {
-            container: {
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'column'
-            }
-        };
+    style = {
+        container: {
+            textAlign: 'center'
+        }
     }
 
     handleChange = (event, index, value)  => {
@@ -32,7 +28,7 @@ export default class NewDocumentPage extends React.Component {
             <MenuItem key={2} value={2} primaryText="English" />
         ];
         return (
-            <div style={this.style().container}>
+            <div >
                 <TextField
                     hintText="Title"
                     fullWidth/>
