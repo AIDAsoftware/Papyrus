@@ -11,7 +11,7 @@ const runSequence = require('run-sequence');
 const plumber = require('gulp-plumber');
 
 const sources = {
-    files : './src/app/main.js',
+    files : './src/main.js',
     outputFile : 'bundle.js',
     distFolder : './dist'
 };

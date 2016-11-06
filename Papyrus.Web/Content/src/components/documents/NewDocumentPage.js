@@ -3,10 +3,8 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-import DocumentActions from '../actions/DocumentActions';
 
 export default class NewDocumentPage extends React.Component {
-
     constructor() {
         super();
         this.state = {
@@ -34,7 +32,7 @@ export default class NewDocumentPage extends React.Component {
     }
 
     createDocument = () => {
-        DocumentActions.createDocument(this.state.title, this.state.language, this.state.description, this.state.content);
+        console.log('saving document');
     }
 
     render () {
