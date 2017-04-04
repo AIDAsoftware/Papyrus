@@ -38,7 +38,7 @@ namespace Papyrus.Tests.Infrastructure.Repositories {
             productVersion.VersionName.Should().Be(anyVersionName);
         }
 
-        [Test, Ignore]
+        [Test, Ignore("Dont run with other tests")]
         public async Task return_null_when_try_to_load_an_no_existing_product()
         {
             var product = await sqlProductRepository.GetProduct("DontExist");
