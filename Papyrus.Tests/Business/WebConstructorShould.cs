@@ -26,7 +26,7 @@ namespace Papyrus.Tests.Business {
         public void SetUp() {
             topicRepo = Substitute.For<TopicQueryRepository>();
             productRepo = Substitute.For<ProductRepository>();
-            websiteConstructor = new WebsiteConstructor(topicRepo, productRepo);
+            websiteConstructor = new WebsiteConstructor(topicRepo);
         }
         
         [Test]

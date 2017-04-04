@@ -32,7 +32,7 @@ namespace Papyrus.Business.VersionRanges
 
         private async Task LoadAllVersionsFor(string productId)
         {
-            Versions = await productRepository.GetAllVersionsFor(productId);
+            Versions = (await productRepository.GetProduct(productId)).Versions;
         }
 
         private List<Collision> CollisionsIn(List<RangeWithAllVersions> rangesWithAllVersions)

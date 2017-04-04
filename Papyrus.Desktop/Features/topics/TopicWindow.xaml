@@ -24,6 +24,8 @@
         <StackPanel Grid.Row ="1"  Orientation="Horizontal" HorizontalAlignment="Right" Height="25" >
             <Button Command="{Binding DeleteTopic}" CommandParameter="{Binding ElementName=TopicView}" Margin="0,0,20,0" Width="150" Height="25">Borrar Topic</Button>
             <Button Command="{Binding SaveTopic}" Width="150" Margin="0,0,20,0" Height="25">Guardar Topic</Button>
+            <Label Content="Order"></Label>
+            <TextBox Width="100" x:Name="OrderTextBox" Text="{Binding Order, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         </StackPanel>
     </Grid>
 </Window>

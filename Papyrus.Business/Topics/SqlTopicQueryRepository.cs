@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Papyrus.Business.Documents;
@@ -47,14 +46,13 @@ namespace Papyrus.Business.Topics {
             }
         }
 
-        public async Task<EditableTopic> GetEditableTopicById(string topicId) {
+        public async Task<Topic> GetTopicById(string topicId)
+        {
             var product = await GetRelatedProductFor(topicId);
-            var observableVersionRanges = await GetVersionRangesOf(topicId);
-            return new EditableTopic {
-                TopicId = topicId,
-                Product = product,
-                VersionRanges = observableVersionRanges
-            };
+            var versionRanges = await VersionRangesOf(topicId);
+            var topic = new Topic(product.ProductId).WithId(topicId);
+            versionRanges.ForEach(topic.AddVersionRange);
+            return topic;
         }
 
         public async Task<List<ExportableDocument>> GetAllDocumentsFor(string product, string version, string language) {
@@ -69,10 +67,10 @@ namespace Papyrus.Business.Topics {
                     var fromVersion = await SelectProductVersionById(versionRange.FromVersionId);
                     ProductVersion toVersion;
                     if (versionRange.ToVersionId == "*") {
-                        toVersion = (await connection.Query<ProductVersion>(@"SELECT TOP 1 VersionId,                                     VersionName, Release
-                                                            FROM ProductVersion
-                                                            WHERE ProductId = @ProductId
-                                                            ORDER BY Release DESC", 
+                        toVersion = (await connection.Query<ProductVersion>(@"SELECT TOP 1 VersionId, VersionName, Release
+                                                            FROM            ProductVersion
+                                                            WHERE           ProductId = @ProductId
+                                                            ORDER BY        Release DESC", 
                                                 new { ProductId = product })).First();
                     }
                     else {
@@ -80,9 +78,9 @@ namespace Papyrus.Business.Topics {
                     }
                     if (fromVersion.Release <= dateOfWishedVersion && 
                             dateOfWishedVersion <= toVersion.Release) {
-                        var document = await GetTitleAndContentOfADocumentBy(language, versionRange);
+                        var document = await GetExportableADocumentBy(language, versionRange);
                         if (!(document is NoDocument))
-                            documents.Add(new ExportableDocument(document.Title, document.Content));
+                            documents.Add(new ExportableDocument(document.Title, document.Content, document.Order));
                     }
                 }
             }
@@ -107,8 +105,8 @@ namespace Papyrus.Business.Topics {
                 new { TopicId = topicId })).ToList();
         }
 
-        private async Task<dynamic> GetTitleAndContentOfADocumentBy(string language, dynamic versionRange) {
-            var document = (await connection.Query<dynamic>(@"SELECT Title, Content FROM Document 
+        private async Task<dynamic> GetExportableADocumentBy(string language, dynamic versionRange) {
+            var document = (await connection.Query<dynamic>(@"SELECT Title, Content, [Order] FROM Document 
                                                                     WHERE VersionRangeId = @VersionRangeId
                                                                     AND Language = @Language",
                 new { VersionRangeId = versionRange.VersionRangeId, Language = language }))
@@ -143,7 +141,8 @@ namespace Papyrus.Business.Topics {
             return product;
         }
 
-        private async Task<ObservableCollection<EditableVersionRange>> GetVersionRangesOf(string topicId) {
+        private async Task<List<VersionRange>> VersionRangesOf(string topicId)
+        {
             var versionRanges = (await connection
                 .Query<dynamic>(@"SELECT VersionRangeId, FromVersionId, ToVersionId 
                                 FROM VersionRange WHERE TopicId = @TopicId",
@@ -151,9 +150,8 @@ namespace Papyrus.Business.Topics {
             foreach (var versionRange in versionRanges) {
                 await AssignProductVersionTo(versionRange);
             }
-            await AddDocumentsForEachVersionRangeIn(versionRanges);
-            var editableVersionRanges = versionRanges.Select(MapToEditableVersionRange);
-            return new ObservableCollection<EditableVersionRange>(editableVersionRanges);
+            await AddDocumentsToEachVersionRangeIn(versionRanges);
+            return versionRanges.Select(MapToVersionRange).ToList();
         }
 
         private async Task AssignProductVersionTo(dynamic versionRange) {
@@ -173,33 +171,29 @@ namespace Papyrus.Business.Topics {
                     new {VersionId = id})).First();
         }
 
-        private async Task AddDocumentsForEachVersionRangeIn(IEnumerable<dynamic> versionRanges) {
-            foreach (var versionRange in versionRanges) {
-                versionRange.Documents = await GetDocumentsOf(versionRange);
+        private async Task AddDocumentsToEachVersionRangeIn(List<dynamic> versionRanges)
+        {
+            foreach (var versionRange in versionRanges)
+            {
+                versionRange.Documents = await DocumentsOf(versionRange);
             }
         }
 
-        private EditableVersionRange MapToEditableVersionRange(dynamic versionRange) {
-            var fromVersion = versionRange.FromVersion;
-            var toVersion = versionRange.ToVersion;
-            var editableVersionRange = new EditableVersionRange() {
-                FromVersion = versionRange.FromVersion,
-                ToVersion = versionRange.ToVersion
-            };
-
-            foreach (var editableDocument in versionRange.Documents) {
-                editableVersionRange.Documents.Add(editableDocument);
-            }
-            return editableVersionRange;
+        private VersionRange MapToVersionRange(dynamic versionRange)
+        {
+            var result = new VersionRange(versionRange.FromVersion, versionRange.ToVersion);
+            var documents = (List<Document>) versionRange.Documents;
+            documents.ForEach(result.AddDocument);
+            return result;
         }
 
-        private async Task<List<EditableDocument>> GetDocumentsOf(dynamic versionRange) {
-            var documents = (await connection.Query<EditableDocument>(@"SELECT Title, Description, Content, Language
-                                                                            FROM Document
-                                                                            WHERE VersionRangeId = @VersionRangeId",
-                new { VersionRangeId = versionRange.VersionRangeId }))
-                .ToList();
-            return documents;
+        private async Task<List<Document>> DocumentsOf(dynamic versionRange)
+        {
+            return (await connection.Query<Document>(@"SELECT Title, [Description], Content, [Language], [Order]
+                                                        FROM Document
+                                                        WHERE VersionRangeId = @VersionRangeId",
+                new { VersionRangeId = versionRange.VersionRangeId })).ToList();
         }
+
     }
 }

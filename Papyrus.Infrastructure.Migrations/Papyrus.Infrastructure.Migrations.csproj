@@ -57,12 +57,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Document\2 - AddProductVersionToDocument.cs" />
@@ -71,6 +65,7 @@
     <Compile Include="Document\4 - RenameIdColumnToTopicId.cs" />
     <Compile Include="Document\5 - AdaptDocumentToBeContainedByVersionRange.cs" />
     <Compile Include="Document\6 - IncreaseTheContentSize.cs" />
+    <Compile Include="Document\7-AddOrderToDocuments.cs" />
     <Compile Include="ProductVersion\2 - AddReleaseColumn.cs" />
     <Compile Include="Product\1 - CreateProductTable.cs" />
     <Compile Include="Product\2 - ConvertProductToProductVersion.cs" />

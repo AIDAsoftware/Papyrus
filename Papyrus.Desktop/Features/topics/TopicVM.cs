@@ -106,7 +106,8 @@ namespace Papyrus.Desktop.Features.Topics
 
         public async void Initialize()
         {
-            var versions = await productRepository.GetAllVersionsFor(EditableTopic.Product.ProductId);
+            var product = await productRepository.GetProduct(EditableTopic.Product.ProductId);
+            var versions = product.Versions;
             FromVersions.AddRange(versions);
             FillToVersions(versions);
         }
@@ -119,6 +120,14 @@ namespace Papyrus.Desktop.Features.Topics
         public bool TopicIsSaved() {
             return EditableTopic.Equals(LastTopicSaved);
         }
+
+
+        public string Order
+        {
+            get { return EditableTopic.Order; }
+            set { EditableTopic.Order = !value.All(char.IsDigit) ? "200" : value; }
+        }
+
     }
 
     internal class OnTopicSaved {

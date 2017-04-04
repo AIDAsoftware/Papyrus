@@ -2,11 +2,10 @@ namespace Papyrus.Business.VersionRanges
 {
     public class Collision
     {
-        public EditableVersionRange FirstVersionRange { get; private set; }
-        public EditableVersionRange SecondVersionRange { get; private set; }
+        public VersionRange FirstVersionRange { get; private set; }
+        public VersionRange SecondVersionRange { get; private set; }
 
-        public Collision(EditableVersionRange firstVersionRange, EditableVersionRange secondVersionRange)
-        {
+        public Collision(VersionRange firstVersionRange, VersionRange secondVersionRange) {
             FirstVersionRange = firstVersionRange;
             SecondVersionRange = secondVersionRange;
         }

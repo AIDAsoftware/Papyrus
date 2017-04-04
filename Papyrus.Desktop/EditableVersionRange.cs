@@ -1,10 +1,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
-using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
-using Papyrus.Business.Topics;
+using Papyrus.Business.VersionRanges;
 
-namespace Papyrus.Business.VersionRanges
+namespace Papyrus.Desktop
 {
     public class EditableVersionRange
     {
@@ -17,12 +16,12 @@ namespace Papyrus.Business.VersionRanges
             Documents = new ObservableCollection<EditableDocument>();
         }
 
-        public VersionRange ToVersionRange()
+        public VersionRange ToVersionRange(string order)
         {
             var versionRange = new VersionRange(FromVersion, ToVersion);
             foreach (var editableDocument in Documents)
             {
-                versionRange.Documents.Add(editableDocument.ToDocument());
+                versionRange.Documents.Add(editableDocument.ToDocument(order));
             }
             return versionRange;
         }

@@ -7,6 +7,7 @@ using Papyrus.Business.Documents;
 using Papyrus.Business.Products;
 using Papyrus.Business.Topics;
 using Papyrus.Business.VersionRanges;
+using Papyrus.Desktop;
 
 namespace Papyrus.Tests.Business
 {
@@ -54,7 +55,8 @@ namespace Papyrus.Tests.Business
             versionRange.FromVersionId.Should().Be(editableVersionRange.FromVersion.VersionId);
             versionRange.ToVersionId.Should().Be(editableVersionRange.ToVersion.VersionId);
             versionRange.Documents.Should().HaveCount(1);
-            versionRange.Documents["es-ES"].ShouldBeEquivalentTo(editableDocument, options => options.Excluding(d => d.DocumentId));
+            versionRange.Documents["es-ES"].ShouldBeEquivalentTo(editableDocument, 
+                options => options.Excluding(d => d.DocumentId).Excluding(d => d.Order));
         }
 
         private readonly static ProductVersion product2 = new ProductVersion("first", "1.0", DateTime.MaxValue);

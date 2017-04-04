@@ -7,12 +7,10 @@ using Papyrus.Business.Topics;
 namespace Papyrus.Business.Exporters {
     public class WebsiteConstructor {
         private readonly TopicQueryRepository topicRepo;
-        private readonly ProductRepository productRepo;
         private WebsiteCollection websitesCollection;
 
-        public WebsiteConstructor(TopicQueryRepository topicRepo, ProductRepository productRepo) {
+        public WebsiteConstructor(TopicQueryRepository topicRepo) {
             this.topicRepo = topicRepo;
-            this.productRepo = productRepo;
         }
 
         public virtual async Task<WebsiteCollection> Construct(Product product, List<string> languages)
@@ -26,16 +24,6 @@ namespace Papyrus.Business.Exporters {
                 }
             }
             return websites;
-        }
-
-        private async Task AddWebsitesFor(Product product, List<string> languages) {
-            foreach (var version in product.Versions) {
-                foreach (var language in languages) {
-                    var website = await CreateWebsiteWithAllDocumentsFor(product, version, language);
-                    if (website.HasNotDocuments()) continue;
-                    websitesCollection.Add(website);
-                }
-            }
         }
 
         private async Task<WebSite> CreateWebsiteWithAllDocumentsFor(Product product, ProductVersion version, string language) {

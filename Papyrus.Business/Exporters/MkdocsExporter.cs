@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Papyrus.Business.Products;
 using Papyrus.Infrastructure.Core;
@@ -9,17 +10,18 @@ namespace Papyrus.Business.Exporters {
         private const string MarkDownExtension = ".md";
         private static readonly string NewLine = System.Environment.NewLine;
         private readonly FileSystemImagesCopier imagesCopier;
-        public const string IndexContent = "SIMA Documentation";
+        private int firstDocumentOrder;
 
         public MkDocsExporter(FileSystemImagesCopier imagesCopier) {
             this.imagesCopier = imagesCopier;
         }
 
-        public virtual async Task Export(WebSite webSite, ConfigurationPaths configurationPaths) {
-            var configuration = CreateConfiguration(configurationPaths.SiteDir);
-            var exportationPath = configurationPaths.ExportationPath;
+        public virtual async Task Export(WebSite webSite, ConfigurationSettings configurationSettings) {
+            var configuration = CreateConfiguration(configurationSettings.SiteDir, configurationSettings);
+            var exportationPath = configurationSettings.ExportationPath;
             await InitializeMkdocsStructure(
                 exportationPath, configuration);
+            firstDocumentOrder = webSite.Documents.OrderBy(d => d.Order).First().Order;
             foreach (var document in webSite.Documents) {
                 await ExportDocumentIn(document, 
                     DocsPathIn(exportationPath));
@@ -28,7 +30,7 @@ namespace Papyrus.Business.Exporters {
             await WriteConfigurationYmlInPath(configuration, exportationPath);
             CopyImagesInTheSite(
                 exportationPath, 
-                configurationPaths.ImagesFolder);
+                configurationSettings.ImagesFolder);
         }
 
         private void CopyImagesInTheSite(string path, string imagesFolder) {
@@ -48,34 +50,35 @@ namespace Papyrus.Business.Exporters {
             return Path.Combine(path, "docs");
         }
 
-        private static MkdocsConfiguration CreateConfiguration(string siteDir) {
-            return new MkdocsConfiguration(siteDir);
+        private static MkdocsConfiguration CreateConfiguration(string siteDir, ConfigurationSettings configurationSettings) {
+            return new MkdocsConfiguration(configurationSettings.SiteDir, configurationSettings.GoogleAnalyticsId);
         }
 
         private static async Task WriteConfigurationYmlInPath(MkdocsConfiguration configuration, string path) {
             var ymlPath = Path.Combine(path, YmlFileName);
+            File.Delete(ymlPath);
             await WriteInFile(ymlPath, configuration.ToString());
         }
 
         private async Task InitializeMkdocsStructure(string path, MkdocsConfiguration configuration) {
             var docsPath = Path.Combine(path, "docs");
-            var docsDirectory = Directory.CreateDirectory(docsPath);
-            await WriteInFile(Path.Combine(docsDirectory.FullName, "index.md"), IndexContent);
-            AddIndexPageTo(configuration);
-        }
-
-        private static void AddIndexPageTo(MkdocsConfiguration configuration) {
-            configuration.AddPage("Home", "index.md");
+            Directory.CreateDirectory(docsPath);
         }
 
         private static async Task AddDocumentToTheConfiguration(ExportableDocument document, MkdocsConfiguration configuration) {
-            configuration.AddPage(document.Title, ConvertToValidFileName(document.Title) + MarkDownExtension);
+            configuration.AddPage(document.Title, document);
         }
 
-        private static async Task ExportDocumentIn(ExportableDocument document, string directoryPath) {
+        private async Task ExportDocumentIn(ExportableDocument document, string directoryPath) {
             var documentDirectory = Directory.CreateDirectory(directoryPath);
-            var documentPath = Path.Combine(documentDirectory.FullName, ConvertToValidFileName(document.Title) + MarkDownExtension);
+            var fileName = (IsFirstDocument(document, directoryPath)) ? 
+                            "index.md" : ConvertToValidFileName(document.Title) + MarkDownExtension;
+            var documentPath = Path.Combine(documentDirectory.FullName, fileName);
             await WriteInFile(documentPath, document.Content);
+        }
+
+        private bool IsFirstDocument(ExportableDocument document, string directoryPath) {
+            return document.Order == firstDocumentOrder && !File.Exists(Path.Combine(directoryPath, "index.md"));
         }
 
         private static async Task WriteInFile(string documentPath, string content) {

@@ -1,17 +1,19 @@
 ﻿namespace Papyrus.Business.Exporters
 {
-    public class ConfigurationPaths {
+    public class ConfigurationSettings {
+        public string GoogleAnalyticsId { get; }
         public string ExportationPath { get; }
         public string ImagesFolder { get; }
         public string SiteDir { get; }
 
-        public ConfigurationPaths(string exportationPath, string imagesFolder, string siteDir = "") {
+        public ConfigurationSettings(string exportationPath, string imagesFolder, string siteDir = "", string googleAnalyticsId = "") {
+            GoogleAnalyticsId = googleAnalyticsId;
             ExportationPath = exportationPath;
             ImagesFolder = imagesFolder;
             SiteDir = siteDir;
         }
 
-        protected bool Equals(ConfigurationPaths other)
+        protected bool Equals(ConfigurationSettings other)
         {
             return string.Equals(ExportationPath, other.ExportationPath) && 
                    string.Equals(ImagesFolder, other.ImagesFolder) && 
@@ -23,7 +25,7 @@
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((ConfigurationPaths) obj);
+            return Equals((ConfigurationSettings) obj);
         }
 
         public override int GetHashCode()

@@ -6,9 +6,10 @@
              xmlns:topics="clr-namespace:Papyrus.Business.Topics;assembly=Papyrus.Business"
              xmlns:markdown="clr-namespace:Papyrus.Desktop.Markdown"
              xmlns:documents="clr-namespace:Papyrus.Business.Documents;assembly=Papyrus.Business"
+             xmlns:desktop="clr-namespace:Papyrus.Desktop"
              mc:Ignorable="d" 
              d:DesignHeight="492" d:DesignWidth="648"
-             d:DataContext="{d:DesignInstance Type=documents:EditableDocument, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=desktop:EditableDocument, IsDesignTimeCreatable=True}">
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Top">
             <Label Content="Title"/>
